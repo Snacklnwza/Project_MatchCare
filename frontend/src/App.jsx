@@ -3,9 +3,39 @@ import heroImg from './assets/hero.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
+import { supabase } from './lib/supabase'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [skills, setSkills] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [hasLoaded, setHasLoaded] = useState(false)
+  async function loadSkills() {
+    setLoading(true)
+    setError('')
+
+    try {
+      const { data, error: queryError } = await supabase
+        .from('skills')
+        .select('id, name, description')
+        .order('id')
+
+      if (queryError) {
+        throw queryError
+      }
+
+      setSkills(data ?? [])
+      setHasLoaded(true)
+    } catch (err) {
+      setError(err.message || 'ไม่สามารถโหลดทักษะได้')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+
+
 
   return (
     <>
@@ -17,6 +47,26 @@ function App() {
         </div>
         <div>
           <h1>MatchCare</h1>
+          <button
+  type="button"
+  onClick={loadSkills}
+  disabled={loading}
+>
+  {loading ? 'กำลังโหลด...' : 'โหลดทักษะ'}
+</button>
+
+{error && <p role="alert">{error}</p>}
+{hasLoaded && !loading && !error && skills.length === 0 && (
+  <p>ไม่พบทักษะที่เปิดใช้งาน</p>
+)}
+
+<ul>
+  {skills.map((skill) => (
+    <li key={skill.id}>
+      {skill.name} — {skill.description}
+    </li>
+  ))}
+</ul>
           <p>
             Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
           </p>

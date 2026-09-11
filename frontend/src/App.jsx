@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import LoginForm from './components/LoginForm'
 import { supabase } from './lib/supabase'
+import RegisterForm from './components/RegisterForm'
+import ProfileSetupForm from './components/ProfileSetupForm'
+
 
 function App() {
   const [skills, setSkills] = useState([])
@@ -11,11 +14,49 @@ function App() {
   const [session, setSession] = useState(null)
   const [authLoading, setAuthLoading] = useState(true)
   const [authError, setAuthError] = useState('')
+  const [authMode, setAuthMode] = useState('login')
+  const [profile, setProfile] = useState(null)
+  const [profileLoading, setProfileLoading] = useState(false)
+  const [profileError, setProfileError] = useState('')
+
+  async function loadProfile(userId) {
+    setProfileLoading(true)
+    setProfileError('')
+
+    try {
+      const { data, error: queryError } = await supabase
+        .from('profiles')
+        .select('id, role, first_name, last_name')
+        .eq('id', userId)
+        .maybeSingle()
+
+      if (queryError) {
+        throw queryError
+      }
+
+      setProfile(data)
+    } catch (queryError) {
+      setProfile(null)
+      setProfileError(queryError.message || 'ไม่สามารถโหลดโปรไฟล์ได้')
+    } finally {
+      setProfileLoading(false)
+    }
+  }
+
 
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (_event, currentSession) => {
         setSession(currentSession)
+
+        if (currentSession) {
+          loadProfile(currentSession.user.id)
+        } else {
+          setProfile(null)
+          setProfileLoading(false)
+          setProfileError('')
+        }
+
         setAuthLoading(false)
       },
     )
@@ -71,6 +112,22 @@ function App() {
       {session ? (
         <section className="auth-status">
           <p>เข้าสู่ระบบแล้ว: {session.user.email}</p>
+          {profileLoading && <p>กำลังโหลดข้อมูลโปรไฟล์...</p>}
+
+          {profileError && <p role="alert">{profileError}</p>}
+
+          {!profileLoading && !profileError && profile && (
+            <p>
+              บทบาท: {profile.role} — {profile.first_name} {profile.last_name}
+            </p>
+          )}
+
+          {!profileLoading && !profileError && !profile && (
+            <ProfileSetupForm
+              userId={session.user.id}
+              onProfileCreated={() => loadProfile(session.user.id)}
+            />
+          )}
 
           <button type="button" onClick={handleSignOut}>
             ออกจากระบบ
@@ -79,7 +136,20 @@ function App() {
           {authError && <p role="alert">{authError}</p>}
         </section>
       ) : (
-        <LoginForm />
+        <section className="auth-panel">
+          {authMode === 'login' ? <LoginForm /> : <RegisterForm />}
+
+          <button
+            type="button"
+            onClick={() =>
+              setAuthMode(authMode === 'login' ? 'register' : 'login')
+            }
+          >
+            {authMode === 'login'
+              ? 'ยังไม่มีบัญชี? สมัครสมาชิก'
+              : 'มีบัญชีแล้ว? เข้าสู่ระบบ'}
+          </button>
+        </section>
       )}
 
       <section className="skills-demo" aria-labelledby="skills-heading">

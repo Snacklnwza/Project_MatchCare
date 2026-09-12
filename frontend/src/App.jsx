@@ -4,6 +4,7 @@ import LoginForm from './components/LoginForm'
 import { supabase } from './lib/supabase'
 import RegisterForm from './components/RegisterForm'
 import ProfileSetupForm from './components/ProfileSetupForm'
+import RoleDashboard from './pages/RoleDashboard'
 
 
 function App() {
@@ -117,9 +118,7 @@ function App() {
           {profileError && <p role="alert">{profileError}</p>}
 
           {!profileLoading && !profileError && profile && (
-            <p>
-              บทบาท: {profile.role} — {profile.first_name} {profile.last_name}
-            </p>
+              <RoleDashboard profile={profile} />
           )}
 
           {!profileLoading && !profileError && !profile && (

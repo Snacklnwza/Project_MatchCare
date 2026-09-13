@@ -68,3 +68,29 @@
   padding-left: 24px;
   text-align: left;
 }
+
+.role-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.role-navigation button {
+  flex: 1 1 140px;
+  background: #ffffff;
+  color: #167340;
+  border: 1px solid #20ad61;
+}
+
+.role-navigation button.active {
+  background: #20ad61;
+  color: #ffffff;
+}
+
+.role-dashboard {
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #dce7e1;
+  border-radius: 16px;
+}

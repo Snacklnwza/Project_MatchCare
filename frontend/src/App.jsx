@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import LoginForm from './components/LoginForm'
 import { supabase } from './lib/supabase'
@@ -19,6 +19,7 @@ function App() {
   const [profile, setProfile] = useState(null)
   const [profileLoading, setProfileLoading] = useState(false)
   const [profileError, setProfileError] = useState('')
+  const manualSignOutRef = useRef(false)
 
   async function loadProfile(userId) {
     setProfileLoading(true)
@@ -47,15 +48,25 @@ function App() {
 
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
-      (_event, currentSession) => {
+      (event, currentSession) => {
         setSession(currentSession)
 
         if (currentSession) {
+          setAuthError('')
           loadProfile(currentSession.user.id)
         } else {
           setProfile(null)
           setProfileLoading(false)
           setProfileError('')
+        }
+
+        if (event === 'SIGNED_OUT') {
+          const wasManualSignOut = manualSignOutRef.current
+          manualSignOutRef.current = false
+
+          if (!wasManualSignOut) {
+            setAuthError('เซสชันหมดอายุ กรุณาเข้าสู่ระบบอีกครั้ง')
+          }
         }
 
         setAuthLoading(false)
@@ -68,12 +79,14 @@ function App() {
   }, [])
   async function handleSignOut() {
     setAuthError('')
+    manualSignOutRef.current = true
 
     const { error: signOutError } = await supabase.auth.signOut({
       scope: 'local',
     })
 
     if (signOutError) {
+      manualSignOutRef.current = false
       setAuthError('ไม่สามารถออกจากระบบได้')
     }
   }
@@ -118,7 +131,7 @@ function App() {
           {profileError && <p role="alert">{profileError}</p>}
 
           {!profileLoading && !profileError && profile && (
-              <RoleDashboard profile={profile} />
+            <RoleDashboard profile={profile} />
           )}
 
           {!profileLoading && !profileError && !profile && (
@@ -136,6 +149,8 @@ function App() {
         </section>
       ) : (
         <section className="auth-panel">
+          {authError && <p role="alert">{authError}</p>}
+
           {authMode === 'login' ? <LoginForm /> : <RegisterForm />}
 
           <button

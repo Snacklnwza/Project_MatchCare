@@ -5,13 +5,14 @@ import { supabase } from './lib/supabase'
 import RegisterForm from './components/RegisterForm'
 import ProfileSetupForm from './components/ProfileSetupForm'
 import RoleDashboard from './pages/RoleDashboard'
+import LandingPage from './pages/LandingPage'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 
 function App() {
   const [session, setSession] = useState(null)
   const [authLoading, setAuthLoading] = useState(true)
   const [authError, setAuthError] = useState('')
-  const [authMode, setAuthMode] = useState('login')
+  const [authMode, setAuthMode] = useState('landing')
   const [profile, setProfile] = useState(null)
   const [profileLoading, setProfileLoading] = useState(false)
   const [profileError, setProfileError] = useState('')
@@ -69,8 +70,11 @@ function App() {
           const wasManualSignOut = manualSignOutRef.current
           manualSignOutRef.current = false
 
-          if (!wasManualSignOut) {
+          if (wasManualSignOut) {
+            setAuthMode('landing')
+          } else {
             setAuthError('เซสชันหมดอายุ กรุณาเข้าสู่ระบบอีกครั้ง')
+            setAuthMode('login')
           }
         }
 
@@ -98,9 +102,18 @@ function App() {
   if (authLoading) {
     return <p>กำลังตรวจสอบสถานะการเข้าสู่ระบบ...</p>
   }
+  const isLandingPage = !session && authMode === 'landing'
+
   return (
-    <main className={`app-shell${session && profile ? ' app-shell-dashboard' : ''}`}>
-      {!(session && profile) && <header className="app-header">
+    <main className={`app-shell${session && profile ? ' app-shell-dashboard' : ''}${isLandingPage ? ' app-shell-landing' : ''}`}>
+      {isLandingPage && (
+        <LandingPage
+          onLogin={() => setAuthMode('login')}
+          onRegister={() => setAuthMode('register')}
+        />
+      )}
+
+      {!(session && profile) && !isLandingPage && <header className="app-header">
         <h1>MatchCare</h1>
         <p>ระบบจับคู่ผู้ดูแลกับผู้ที่ต้องการการดูแล</p>
       </header>}
@@ -129,7 +142,7 @@ function App() {
 
           {authError && <p role="alert">{authError}</p>}
         </section>
-      ) : (
+      ) : !isLandingPage ? (
         <section className="auth-panel">
           {authError && <p role="alert">{authError}</p>}
 
@@ -145,8 +158,11 @@ function App() {
               ? 'ยังไม่มีบัญชี? สมัครสมาชิก'
               : 'มีบัญชีแล้ว? เข้าสู่ระบบ'}
           </button>
+          <button className="auth-home-button" type="button" onClick={() => setAuthMode('landing')}>
+            กลับหน้าหลัก
+          </button>
         </section>
-      )}
+      ) : null}
 
       <SpeedInsights />
     </main>

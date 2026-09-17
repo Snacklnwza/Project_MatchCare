@@ -1,11 +1,16 @@
 import { useState } from 'react'
-import RoleNavigation from '../components/RoleNavigation'
+import Navbar from '../components/Navbar'
 import AdminDashboard from './AdminDashboard'
 import CaregiverDashboard from './CaregiverDashboard'
 import EmployerDashboard from './EmployerDashboard'
+import PatientManager from '../components/PatientManager'
 
 const pageDetails = {
   employer: {
+    history: {
+      title: 'ประวัติการจ้างงาน',
+      emptyMessage: 'ระบบประวัติการจ้างงานยังไม่เปิดใช้งาน',
+    },
     patients: {
       title: 'ข้อมูลผู้ป่วย',
       emptyMessage: 'ยังไม่มีข้อมูลผู้ป่วย',
@@ -45,7 +50,7 @@ const pageDetails = {
   },
 }
 
-function RoleDashboard({ profile }) {
+function RoleDashboard({ profile, onSignOut }) {
   const [activePage, setActivePage] = useState('dashboard')
 
   let dashboard
@@ -64,14 +69,16 @@ function RoleDashboard({ profile }) {
 
   return (
     <>
-      <RoleNavigation
-        role={profile.role}
+      <Navbar
+        profile={profile}
+        onSignOut={onSignOut}
         activePage={activePage}
         onSelect={setActivePage}
       />
-
       {activePage === 'dashboard' ? (
         dashboard
+      ) : activePage === 'patients' && profile.role === 'employer' ? (
+        <PatientManager />
       ) : (
         <section className="role-dashboard">
           <h2>{selectedPage?.title}</h2>

@@ -201,6 +201,256 @@
   border-radius: 16px;
 }
 
+.employer-dashboard {
+  display: grid;
+  grid-template-columns: minmax(280px, 384px) minmax(0, 800px);
+  gap: 32px;
+  min-height: 500px;
+  padding-top: 0;
+}
+
+.dashboard-patients,
+.dashboard-jobs {
+  min-width: 0;
+}
+
+.dashboard-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.employer-dashboard h2 {
+  margin: 0 0 12px;
+  color: #1e293b;
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.dashboard-section-heading button {
+  flex-shrink: 0;
+  margin-bottom: 12px;
+  padding: 4px 0;
+  border: 0;
+  background: transparent;
+  color: #059669;
+  font: inherit;
+  cursor: pointer;
+}
+
+.dashboard-patient-list {
+  display: grid;
+  gap: 12px;
+}
+
+.dashboard-patient-card,
+.dashboard-state,
+.dashboard-empty-jobs {
+  box-sizing: border-box;
+  border: 1px solid #f1f5f9;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 5%);
+}
+
+.dashboard-patient-card {
+  padding: 24px;
+}
+
+.dashboard-patient-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.dashboard-patient-avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #cce5ff;
+}
+
+.dashboard-patient-avatar img {
+  width: 14px;
+  height: 22px;
+}
+
+.dashboard-patient-header h3 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 18px;
+  line-height: 29px;
+}
+
+.dashboard-patient-header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.dashboard-patient-detail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 0;
+  color: #3d4a42;
+  font-size: 14px;
+}
+
+.dashboard-patient-detail img {
+  width: 15px;
+  height: 15px;
+  object-fit: contain;
+}
+
+.dashboard-state {
+  margin: 0;
+  padding: 24px;
+  color: #64748b;
+}
+
+.dashboard-empty-patients button {
+  padding: 8px 14px;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  background: #f0f9ff;
+  color: #0369a1;
+  font: inherit;
+  cursor: pointer;
+}
+
+.dashboard-empty-jobs {
+  min-height: 347px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+}
+
+.dashboard-empty-icon {
+  display: grid;
+  place-items: center;
+  width: 80px;
+  height: 56px;
+  margin-bottom: 24px;
+  border-radius: 50%;
+  background: #f8fafc;
+}
+
+.dashboard-empty-icon img {
+  width: 40px;
+  height: 38px;
+}
+
+.dashboard-empty-title {
+  margin: 0 0 24px;
+  color: #1e293b;
+  font-size: 14px;
+}
+
+.dashboard-empty-description {
+  margin: 0 0 24px;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.dashboard-empty-jobs button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(310px, 100%);
+  min-height: 48px;
+  padding: 10px 20px;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  background: #f0f9ff;
+  color: #0369a1;
+  font: inherit;
+  cursor: pointer;
+}
+
+.dashboard-empty-jobs button img {
+  width: 15px;
+  height: 15px;
+  margin-right: 8px;
+}
+
+.app-footer {
+  width: 100vw;
+  margin: 72px 0 -48px calc(50% - 50vw);
+  border-top: 1px solid #bccac0;
+  background: #ffffff;
+}
+
+.app-footer-inner {
+  box-sizing: border-box;
+  width: min(calc(100% - 64px), 1216px);
+  min-height: 104px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  color: #171d19;
+  font-size: 14px;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #006948;
+  font-size: 18px;
+}
+
+.app-footer-inner > p {
+  margin: 0;
+}
+
+.app-footer nav {
+  display: flex;
+  gap: 24px;
+  color: #475569;
+}
+
+@media (max-width: 900px) {
+  .employer-dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .app-footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px 0;
+  }
+
+  .app-footer nav {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .employer-dashboard h2 {
+    font-size: 20px;
+  }
+
+  .dashboard-patient-card {
+    padding: 20px;
+  }
+
+  .app-footer-inner {
+    width: calc(100% - 32px);
+  }
+}
+
 .patient-manager {
   width: 100%;
 }

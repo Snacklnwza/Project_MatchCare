@@ -4,6 +4,7 @@ import AdminDashboard from './AdminDashboard'
 import CaregiverDashboard from './CaregiverDashboard'
 import EmployerDashboard from './EmployerDashboard'
 import PatientManager from '../components/PatientManager'
+import Footer from '../components/Footer'
 
 const pageDetails = {
   employer: {
@@ -56,7 +57,7 @@ function RoleDashboard({ profile, onSignOut }) {
   let dashboard
 
   if (profile.role === 'employer') {
-    dashboard = <EmployerDashboard profile={profile} />
+    dashboard = <EmployerDashboard onNavigate={setActivePage} />
   } else if (profile.role === 'caregiver') {
     dashboard = <CaregiverDashboard profile={profile} />
   } else if (profile.role === 'admin') {
@@ -85,6 +86,7 @@ function RoleDashboard({ profile, onSignOut }) {
           <p>{selectedPage?.emptyMessage}</p>
         </section>
       )}
+      <Footer />
     </>
   )
 }

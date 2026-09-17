@@ -5,7 +5,7 @@ import { supabase } from './lib/supabase'
 import RegisterForm from './components/RegisterForm'
 import ProfileSetupForm from './components/ProfileSetupForm'
 import RoleDashboard from './pages/RoleDashboard'
-
+import { SpeedInsights } from "@vercel/speed-insights/react"
 
 function App() {
   const [session, setSession] = useState(null)

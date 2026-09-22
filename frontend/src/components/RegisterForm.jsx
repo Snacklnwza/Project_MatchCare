@@ -27,6 +27,9 @@ function RegisterForm({ onBack, onLogin }) {
             const { data, error: signUpError } = await supabase.auth.signUp({
                 email: email.trim(),
                 password,
+                options: {
+                    emailRedirectTo: `${window.location.origin}/`,
+                },
             })
 
             if (signUpError) {

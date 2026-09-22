@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import { supabase } from '../lib/supabase'
+import logo from '../assets/navbar/logo.png'
 
-function RegisterForm() {
+function RegisterForm({ onBack, onLogin }) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [error, setError] = useState('')
     const [message, setMessage] = useState('')
     const [loading, setLoading] = useState(false)
+    const [acceptedTerms, setAcceptedTerms] = useState(false)
 
     async function handleSubmit(event) {
         event.preventDefault()
@@ -44,8 +46,19 @@ function RegisterForm() {
     }
 
     return (
-        <form className="auth-form" onSubmit={handleSubmit}>
-            <h2>สมัครสมาชิก</h2>
+        <form className="auth-form auth-card" onSubmit={handleSubmit}>
+            <button className="auth-back-button" type="button" onClick={onBack}>
+                <span aria-hidden="true">‹</span>
+                ย้อนกลับ
+            </button>
+
+            <div className="auth-card-header">
+                <span className="auth-card-logo" aria-hidden="true">
+                    <img src={logo} alt="" />
+                </span>
+                <h2>สมัครสมาชิก</h2>
+                <p>สร้างบัญชีเพื่อเริ่มใช้งาน MatchCare</p>
+            </div>
 
             <label htmlFor="register-email">อีเมล</label>
             <input
@@ -54,6 +67,7 @@ function RegisterForm() {
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 autoComplete="email"
+                placeholder="example@email.com"
                 required
             />
 
@@ -64,6 +78,7 @@ function RegisterForm() {
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 autoComplete="new-password"
+                placeholder="อย่างน้อย 8 ตัวอักษร"
                 minLength={8}
                 required
             />
@@ -75,15 +90,42 @@ function RegisterForm() {
                 value={confirmPassword}
                 onChange={(event) => setConfirmPassword(event.target.value)}
                 autoComplete="new-password"
+                placeholder="ระบุรหัสผ่านอีกครั้ง"
                 minLength={8}
                 required
             />
+
+            <p className="auth-info-notice">
+                <span aria-hidden="true">ⓘ</span>
+                หลังยืนยันอีเมล คุณจะได้เลือกประเภทบัญชีและกรอกข้อมูลโปรไฟล์
+            </p>
+
+            <label className="auth-terms">
+                <input
+                    type="checkbox"
+                    checked={acceptedTerms}
+                    onChange={(event) => setAcceptedTerms(event.target.checked)}
+                    required
+                />
+                <span>
+                    ฉันยอมรับ <strong>ข้อตกลงการใช้งาน</strong> และ{' '}
+                    <strong>นโยบายความเป็นส่วนตัว</strong>
+                </span>
+            </label>
+
             {error && <p role="alert">{error}</p>}
             {message && <p role="status">{message}</p>}
 
-            <button type="submit" disabled={loading}>
+            <button type="submit" disabled={loading || !acceptedTerms}>
                 {loading ? 'กำลังสมัครสมาชิก...' : 'สมัครสมาชิก'}
             </button>
+
+            <p className="auth-switch-copy">
+                มีบัญชีอยู่แล้ว?{' '}
+                <button type="button" onClick={onLogin}>
+                    เข้าสู่ระบบ
+                </button>
+            </p>
         </form>
     )
 }

@@ -113,14 +113,8 @@ function App() {
         />
       )}
 
-      {!(session && profile) && !isLandingPage && <header className="app-header">
-        <h1>MatchCare</h1>
-        <p>ระบบจับคู่ผู้ดูแลกับผู้ที่ต้องการการดูแล</p>
-      </header>}
-
       {session ? (
         <section className="auth-status">
-          {!profile && <p>เข้าสู่ระบบแล้ว: {session.user.email}</p>}
           {profileLoading && <p>กำลังโหลดข้อมูลโปรไฟล์...</p>}
 
           {profileError && <p role="alert">{profileError}</p>}
@@ -132,11 +126,13 @@ function App() {
           {!profileLoading && !profileError && !profile && (
             <ProfileSetupForm
               userId={session.user.id}
+              email={session.user.email}
+              onSignOut={handleSignOut}
               onProfileCreated={() => loadProfile(session.user.id)}
             />
           )}
 
-          {(!profile || !['employer', 'caregiver', 'admin'].includes(profile.role)) && <button type="button" onClick={handleSignOut}>
+          {profile && !['employer', 'caregiver', 'admin'].includes(profile.role) && <button type="button" onClick={handleSignOut}>
             ออกจากระบบ
           </button>}
 
@@ -146,21 +142,17 @@ function App() {
         <section className="auth-panel">
           {authError && <p role="alert">{authError}</p>}
 
-          {authMode === 'login' ? <LoginForm /> : <RegisterForm />}
-
-          <button
-            type="button"
-            onClick={() =>
-              setAuthMode(authMode === 'login' ? 'register' : 'login')
-            }
-          >
-            {authMode === 'login'
-              ? 'ยังไม่มีบัญชี? สมัครสมาชิก'
-              : 'มีบัญชีแล้ว? เข้าสู่ระบบ'}
-          </button>
-          <button className="auth-home-button" type="button" onClick={() => setAuthMode('landing')}>
-            กลับหน้าหลัก
-          </button>
+          {authMode === 'login' ? (
+            <LoginForm
+              onBack={() => setAuthMode('landing')}
+              onRegister={() => setAuthMode('register')}
+            />
+          ) : (
+            <RegisterForm
+              onBack={() => setAuthMode('landing')}
+              onLogin={() => setAuthMode('login')}
+            />
+          )}
         </section>
       ) : null}
 

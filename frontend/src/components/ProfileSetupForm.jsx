@@ -38,6 +38,10 @@ function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
     ),
   ]
 
+  function handlePhoneChange(event) {
+    const digitsOnly = event.target.value.replace(/\D/g, '').slice(0, 10)
+    setPhone(digitsOnly)
+  }
 
   async function handleSubmit(event) {
     event.preventDefault()
@@ -151,9 +155,11 @@ function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
             id="profile-phone"
             type="tel"
             value={phone}
-            onChange={(event) => setPhone(event.target.value)}
+            onChange={handlePhoneChange}
+            inputMode="numeric"
+            maxLength={10}
             autoComplete="tel"
-            placeholder="08X-XXX-XXXX"
+            placeholder="08XXXXXXXX"
             required
           />
         </div>

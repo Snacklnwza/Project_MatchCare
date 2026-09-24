@@ -6,7 +6,7 @@ function Footer() {
       <div className="app-footer-inner">
         <div className="footer-brand">
           <span className="navbar-logo"><img src={logo} alt="" /></span>
-          <strong>MATCHCARE</strong>
+          <strong>MatchCare</strong>
         </div>
         <p>© 2026 MatchCare Healthcare Matching. สงวนลิขสิทธิ์</p>
         <nav aria-label="ข้อมูลเว็บไซต์">

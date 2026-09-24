@@ -12,14 +12,15 @@ const mobilityLabels = {
 function PatientManager() {
     const [patients, setPatients] = useState([])
     const [loading, setLoading] = useState(true)
-    const [error, setError] = useState('')
+    const [loadError, setLoadError] = useState('')
+    const [feedback, setFeedback] = useState(null)
     const [showForm, setShowForm] = useState(false)
     const [editingPatient, setEditingPatient] = useState(null)
 
     useEffect(() => {
         async function loadPatients() {
             setLoading(true)
-            setError('')
+            setLoadError('')
 
             const { data, error: queryError } = await supabase
                 .from('patients')
@@ -43,7 +44,7 @@ function PatientManager() {
                 .order('created_at', { ascending: false })
 
             if (queryError) {
-                setError(queryError.message)
+                setLoadError(queryError.message)
                 setPatients([])
             } else {
                 setPatients(data ?? [])
@@ -55,7 +56,18 @@ function PatientManager() {
         loadPatients()
     }, [])
 
+    useEffect(() => {
+        if (feedback?.type !== 'success') {
+            return undefined
+        }
+
+        const timeoutId = window.setTimeout(() => setFeedback(null), 4000)
+        return () => window.clearTimeout(timeoutId)
+    }, [feedback])
+
     function handlePatientSaved(savedPatient) {
+        const wasEditing = Boolean(editingPatient)
+
         setPatients((currentPatients) => {
             const patientExists = currentPatients.some(
                 (patient) => patient.id === savedPatient.id,
@@ -72,6 +84,12 @@ function PatientManager() {
 
         setEditingPatient(null)
         setShowForm(false)
+        setFeedback({
+            type: 'success',
+            message: wasEditing
+                ? 'แก้ไขข้อมูลผู้ป่วยสำเร็จ'
+                : 'เพิ่มข้อมูลผู้ป่วยสำเร็จ',
+        })
     }
 
     async function handleDeactivate(patient) {
@@ -83,7 +101,7 @@ function PatientManager() {
             return
         }
 
-        setError('')
+        setFeedback(null)
 
         const { error: updateError } = await supabase
             .from('patients')
@@ -91,7 +109,10 @@ function PatientManager() {
             .eq('id', patient.id)
 
         if (updateError) {
-            setError(updateError.message)
+            setFeedback({
+                type: 'error',
+                message: `ไม่สามารถปิดใช้งานผู้ป่วยได้: ${updateError.message}`,
+            })
             return
         }
 
@@ -100,19 +121,39 @@ function PatientManager() {
                 (currentPatient) => currentPatient.id !== patient.id,
             ),
         )
+        setFeedback({
+            type: 'success',
+            message: 'ปิดใช้งานข้อมูลผู้ป่วยสำเร็จ',
+        })
     }
 
     if (loading) {
         return <p>กำลังโหลดข้อมูลผู้ป่วย...</p>
     }
 
-    if (error) {
-        return <p role="alert">ไม่สามารถโหลดข้อมูลผู้ป่วย: {error}</p>
+    if (loadError) {
+        return <p role="alert">ไม่สามารถโหลดข้อมูลผู้ป่วย: {loadError}</p>
     }
 
     return (
         <section className="patient-manager">
             <h2>รายชื่อผู้ป่วยในการดูแล</h2>
+
+            {feedback && (
+                <div
+                    className={`patient-feedback patient-feedback-${feedback.type}`}
+                    role={feedback.type === 'error' ? 'alert' : 'status'}
+                >
+                    <span>{feedback.message}</span>
+                    <button
+                        type="button"
+                        onClick={() => setFeedback(null)}
+                        aria-label="ปิดข้อความแจ้งเตือน"
+                    >
+                        ✕
+                    </button>
+                </div>
+            )}
 
             <div className="patient-grid">
                 {patients.map((patient) => (
@@ -133,6 +174,7 @@ function PatientManager() {
                             <button
                                 type="button"
                                 onClick={() => {
+                                    setFeedback(null)
                                     setEditingPatient(patient)
                                     setShowForm(true)
                                 }}
@@ -154,6 +196,7 @@ function PatientManager() {
                     className="add-patient-card"
                     type="button"
                     onClick={() => {
+                        setFeedback(null)
                         setEditingPatient(null)
                         setShowForm(true)
                     }}

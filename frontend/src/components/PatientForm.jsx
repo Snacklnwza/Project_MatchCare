@@ -102,103 +102,26 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
         setError('')
 
         try {
-            const { data: userData, error: userError } =
-                await supabase.auth.getUser()
-
-            if (userError) {
-                throw userError
-            }
-
-            if (!userData.user) {
-                throw new Error('ไม่พบผู้ใช้งาน กรุณาเข้าสู่ระบบใหม่')
-            }
-
-            const patientData = {
-                first_name: firstName.trim(),
-                last_name: lastName.trim(),
-                birth_date: birthDate,
-                mobility_status: mobilityStatus,
-                care_notes: careNotes.trim() || null,
-                province,
-                district,
-                subdistrict,
-                address_detail: addressDetail.trim(),
-            }
-
-            let query = supabase.from('patients')
-
-            if (patient) {
-                query = query.update(patientData).eq('id', patient.id)
-            } else {
-                query = query.insert({
-                    ...patientData,
-                    employer_id: userData.user.id,
-                })
-            }
-
-            const { data, error: saveError } = await query
-                .select(
-                    `
-            id,
-            first_name,
-            last_name,
-            birth_date,
-            mobility_status,
-            care_notes,
-            province,
-            district,
-            subdistrict,
-            address_detail
-          `,
-                )
-                .single()
+            const { data, error: saveError } = await supabase.rpc(
+                'save_patient_with_tags',
+                {
+                    p_patient_id: patient?.id ?? null,
+                    p_first_name: firstName.trim(),
+                    p_last_name: lastName.trim(),
+                    p_birth_date: birthDate,
+                    p_mobility_status: mobilityStatus,
+                    p_care_notes: careNotes.trim() || null,
+                    p_province: province,
+                    p_district: district,
+                    p_subdistrict: subdistrict,
+                    p_address_detail: addressDetail.trim(),
+                    p_condition_ids: selectedConditionIds,
+                    p_skill_ids: selectedSkillIds,
+                },
+            )
 
             if (saveError) {
                 throw saveError
-            }
-
-            if (patient) {
-                const [conditionDelete, skillDelete] = await Promise.all([
-                    supabase
-                        .from('patient_conditions')
-                        .delete()
-                        .eq('patient_id', data.id),
-                    supabase
-                        .from('patient_required_skills')
-                        .delete()
-                        .eq('patient_id', data.id),
-                ])
-
-                if (conditionDelete.error || skillDelete.error) {
-                    throw (
-                        conditionDelete.error ||
-                        skillDelete.error
-                    )
-                }
-            }
-
-            const conditionRows = selectedConditionIds.map((conditionId) => ({
-                patient_id: data.id,
-                condition_id: conditionId,
-            }))
-            const skillRows = selectedSkillIds.map((skillId) => ({
-                patient_id: data.id,
-                skill_id: skillId,
-            }))
-
-            const [conditionInsert, skillInsert] = await Promise.all([
-                conditionRows.length > 0
-                    ? supabase.from('patient_conditions').insert(conditionRows)
-                    : Promise.resolve({ error: null }),
-                skillRows.length > 0
-                    ? supabase
-                          .from('patient_required_skills')
-                          .insert(skillRows)
-                    : Promise.resolve({ error: null }),
-            ])
-
-            if (conditionInsert.error || skillInsert.error) {
-                throw conditionInsert.error || skillInsert.error
             }
 
             onSaved({

@@ -44,11 +44,6 @@ function EmployerDashboard({ onNavigate }) {
       <aside className="dashboard-patients">
         <div className="dashboard-section-heading">
           <h2>รายชื่อผู้ป่วยในการดูแล</h2>
-          {patients.length > 0 && (
-            <button type="button" onClick={() => onNavigate('patients')}>
-              ดูทั้งหมด
-            </button>
-          )}
         </div>
 
         {loading && <p className="dashboard-state">กำลังโหลดข้อมูลผู้ป่วย...</p>}

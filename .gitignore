@@ -16,3 +16,6 @@ npm-debug.log*
 # Operating system files
 .DS_Store
 Thumbs.db
+# Local browser test artifacts (may contain test sessions)
+.playwright-cli/
+output/

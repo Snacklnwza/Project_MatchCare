@@ -5,6 +5,7 @@ import CaregiverDashboard from './CaregiverDashboard'
 import EmployerDashboard from './EmployerDashboard'
 import PatientManager from '../components/PatientManager'
 import Footer from '../components/Footer'
+import JobManager from '../components/JobManager'
 
 const pageDetails = {
   employer: {
@@ -80,6 +81,8 @@ function RoleDashboard({ profile, onSignOut }) {
         dashboard
       ) : activePage === 'patients' && profile.role === 'employer' ? (
         <PatientManager />
+      ) : activePage === 'jobs' && profile.role === 'employer' ? (
+        <JobManager />
       ) : (
         <section className="role-dashboard">
           <h2>{selectedPage?.title}</h2>

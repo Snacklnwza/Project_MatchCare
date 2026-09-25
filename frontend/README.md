@@ -1,16 +1,15 @@
-# React + Vite
+# MatchCare Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React + Vite ใช้ Supabase Auth และ PostgreSQL ผ่าน RLS/RPC
 
-Currently, two official plugins are available:
+ดู [README หลัก](../README.md) และ [ผลรีวิว Sprint 1](../docs/SPRINT1_CODE_REVIEW.md)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+| คำสั่ง | หน้าที่ |
+|---|---|
+| npm run dev | เปิดเว็บพัฒนา |
+| npm run lint | ตรวจด้วย Oxlint |
+| npm run build | สร้าง bundle ใน dist |
+| npm run preview | เปิด bundle ที่ build แล้ว |
+| npm run generate:geography | สร้างข้อมูลพื้นที่แบบย่อ |
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+ห้ามใส่ service-role key หรือรหัสผ่านในตัวแปร VITE_* เพราะถูกส่งไปยังเบราว์เซอร์ ใช้ publishable key และบังคับสิทธิ์ด้วย RLS

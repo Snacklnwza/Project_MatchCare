@@ -1,13 +1,12 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
-import geography from '../data/geography.json'
+import geography from '../data/geography-options.json'
 import logo from '../assets/navbar/logo.png'
 
-const provinces = [
-  ...new Set(geography.map((location) => location.provinceNameTh)),
-]
+const provinces = Object.keys(geography)
 
 function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
+  const submitting = useRef(false)
   const [role, setRole] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -19,24 +18,8 @@ function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
   const [addressDetail, setAddressDetail] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const districts = [
-    ...new Set(
-      geography
-        .filter((location) => location.provinceNameTh === province)
-        .map((location) => location.districtNameTh),
-    ),
-  ]
-  const subdistricts = [
-    ...new Set(
-      geography
-        .filter(
-          (location) =>
-            location.provinceNameTh === province &&
-            location.districtNameTh === district,
-        )
-        .map((location) => location.subdistrictNameTh),
-    ),
-  ]
+  const districts = Object.keys(geography[province] ?? {})
+  const subdistricts = geography[province]?.[district] ?? []
 
   function handlePhoneChange(event) {
     const digitsOnly = event.target.value.replace(/\D/g, '').slice(0, 10)
@@ -45,6 +28,17 @@ function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
 
   async function handleSubmit(event) {
     event.preventDefault()
+    if (submitting.current) return
+    const form = event.currentTarget
+    for (const field of form.querySelectorAll(
+      'input[required], textarea[required], select[required]',
+    )) {
+      field.setCustomValidity(
+        field.value.trim() ? '' : 'กรุณากรอกข้อมูลช่องนี้',
+      )
+    }
+    if (!form.reportValidity()) return
+    submitting.current = true
     setLoading(true)
     setError('')
 
@@ -70,12 +64,17 @@ function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
     } catch (insertError) {
       setError(insertError.message || 'ไม่สามารถสร้างโปรไฟล์ได้')
     } finally {
+      submitting.current = false
       setLoading(false)
     }
   }
 
   return (
-    <form className="profile-setup-form" onSubmit={handleSubmit}>
+    <form
+      className="profile-setup-form"
+      onSubmit={handleSubmit}
+      onInput={(event) => event.target.setCustomValidity?.('')}
+    >
       <header className="profile-setup-header">
         <span className="auth-card-logo" aria-hidden="true">
           <img src={logo} alt="" />
@@ -87,12 +86,18 @@ function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
       </header>
 
       <div className="profile-account-notice">
-        <span>เข้าสู่ระบบด้วย <strong>{email}</strong></span>
-        <button type="button" onClick={onSignOut}>เปลี่ยนบัญชี</button>
+        <span>
+          เข้าสู่ระบบด้วย <strong>{email}</strong>
+        </span>
+        <button type="button" onClick={onSignOut}>
+          เปลี่ยนบัญชี
+        </button>
       </div>
 
       <fieldset className="profile-role-options">
-        <legend>เลือกประเภทบัญชี <span>*</span></legend>
+        <legend>
+          เลือกประเภทบัญชี <span>*</span>
+        </legend>
         <div className="profile-role-grid">
           <label className={role === 'employer' ? 'selected' : ''}>
             <input
@@ -103,7 +108,10 @@ function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
               onChange={(event) => setRole(event.target.value)}
               required
             />
-            <span><strong>ผู้ว่าจ้าง</strong><small>ต้องการค้นหาผู้ดูแล</small></span>
+            <span>
+              <strong>ผู้ว่าจ้าง</strong>
+              <small>ต้องการค้นหาผู้ดูแล</small>
+            </span>
           </label>
 
           <label className={role === 'caregiver' ? 'selected' : ''}>
@@ -115,14 +123,19 @@ function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
               onChange={(event) => setRole(event.target.value)}
               required
             />
-            <span><strong>ผู้ดูแล</strong><small>ต้องการค้นหางานดูแล</small></span>
+            <span>
+              <strong>ผู้ดูแล</strong>
+              <small>ต้องการค้นหางานดูแล</small>
+            </span>
           </label>
         </div>
       </fieldset>
 
       <div className="profile-form-row">
         <div className="profile-field">
-          <label htmlFor="profile-first-name">ชื่อ <span>*</span></label>
+          <label htmlFor="profile-first-name">
+            ชื่อ <span>*</span>
+          </label>
           <input
             id="profile-first-name"
             type="text"
@@ -135,7 +148,9 @@ function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
         </div>
 
         <div className="profile-field">
-          <label htmlFor="profile-last-name">นามสกุล <span>*</span></label>
+          <label htmlFor="profile-last-name">
+            นามสกุล <span>*</span>
+          </label>
           <input
             id="profile-last-name"
             type="text"
@@ -150,7 +165,9 @@ function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
 
       <div className="profile-form-row">
         <div className="profile-field">
-          <label htmlFor="profile-phone">เบอร์โทรศัพท์ <span>*</span></label>
+          <label htmlFor="profile-phone">
+            เบอร์โทรศัพท์ <span>*</span>
+          </label>
           <input
             id="profile-phone"
             type="tel"
@@ -158,6 +175,8 @@ function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
             onChange={handlePhoneChange}
             inputMode="numeric"
             maxLength={10}
+            pattern="[0-9]{9,10}"
+            title="กรอกเบอร์โทรศัพท์ 9–10 หลัก"
             autoComplete="tel"
             placeholder="08XXXXXXXX"
             required
@@ -165,7 +184,9 @@ function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
         </div>
 
         <div className="profile-field">
-          <label htmlFor="profile-line-id">Line ID <small>(ไม่บังคับ)</small></label>
+          <label htmlFor="profile-line-id">
+            Line ID <small>(ไม่บังคับ)</small>
+          </label>
           <input
             id="profile-line-id"
             type="text"
@@ -176,11 +197,16 @@ function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
         </div>
       </div>
 
-      <section className="profile-address-section" aria-labelledby="profile-address-heading">
+      <section
+        className="profile-address-section"
+        aria-labelledby="profile-address-heading"
+      >
         <h3 id="profile-address-heading">พื้นที่อยู่อาศัย</h3>
         <div className="profile-location-grid">
           <div className="profile-field">
-            <label htmlFor="profile-province">จังหวัด <span>*</span></label>
+            <label htmlFor="profile-province">
+              จังหวัด <span>*</span>
+            </label>
             <select
               id="profile-province"
               value={province}
@@ -193,13 +219,17 @@ function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
             >
               <option value="">เลือกจังหวัด</option>
               {provinces.map((provinceName) => (
-                <option key={provinceName} value={provinceName}>{provinceName}</option>
+                <option key={provinceName} value={provinceName}>
+                  {provinceName}
+                </option>
               ))}
             </select>
           </div>
 
           <div className="profile-field">
-            <label htmlFor="profile-district">อำเภอ/เขต <span>*</span></label>
+            <label htmlFor="profile-district">
+              อำเภอ/เขต <span>*</span>
+            </label>
             <select
               id="profile-district"
               value={district}
@@ -212,13 +242,17 @@ function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
             >
               <option value="">เลือกอำเภอ/เขต</option>
               {districts.map((districtName) => (
-                <option key={districtName} value={districtName}>{districtName}</option>
+                <option key={districtName} value={districtName}>
+                  {districtName}
+                </option>
               ))}
             </select>
           </div>
 
           <div className="profile-field">
-            <label htmlFor="profile-subdistrict">ตำบล/แขวง <span>*</span></label>
+            <label htmlFor="profile-subdistrict">
+              ตำบล/แขวง <span>*</span>
+            </label>
             <select
               id="profile-subdistrict"
               value={subdistrict}
@@ -228,14 +262,18 @@ function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
             >
               <option value="">เลือกตำบล/แขวง</option>
               {subdistricts.map((subdistrictName) => (
-                <option key={subdistrictName} value={subdistrictName}>{subdistrictName}</option>
+                <option key={subdistrictName} value={subdistrictName}>
+                  {subdistrictName}
+                </option>
               ))}
             </select>
           </div>
         </div>
 
         <div className="profile-field">
-          <label htmlFor="profile-address-detail">รายละเอียดที่อยู่ <span>*</span></label>
+          <label htmlFor="profile-address-detail">
+            รายละเอียดที่อยู่ <span>*</span>
+          </label>
           <textarea
             id="profile-address-detail"
             value={addressDetail}
@@ -249,7 +287,11 @@ function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
 
       {error && <p role="alert">{error}</p>}
 
-      <button className="profile-submit-button" type="submit" disabled={loading}>
+      <button
+        className="profile-submit-button"
+        type="submit"
+        disabled={loading}
+      >
         {loading ? 'กำลังบันทึก...' : 'บันทึกและเริ่มใช้งาน'}
       </button>
     </form>

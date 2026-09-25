@@ -1,12 +1,13 @@
-import { useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import './App.css'
 import LoginForm from './components/LoginForm'
 import { supabase } from './lib/supabase'
 import RegisterForm from './components/RegisterForm'
-import ProfileSetupForm from './components/ProfileSetupForm'
 import RoleDashboard from './pages/RoleDashboard'
 import LandingPage from './pages/LandingPage'
 import { SpeedInsights } from '@vercel/speed-insights/react'
+
+const ProfileSetupForm = lazy(() => import('./components/ProfileSetupForm'))
 
 function App() {
   const [session, setSession] = useState(null)
@@ -17,75 +18,61 @@ function App() {
   const [profileLoading, setProfileLoading] = useState(false)
   const [profileError, setProfileError] = useState('')
   const manualSignOutRef = useRef(false)
-  const loadedProfileUserIdRef = useRef(null)
+  const [profileRetry, setProfileRetry] = useState(0)
+  const [loadedUserId, setLoadedUserId] = useState(null)
 
-  async function loadProfile(userId) {
-    setProfileLoading(true)
-    setProfileError('')
-
-    try {
-      const { data, error: queryError } = await supabase
-        .from('profiles')
-        .select('id, role, first_name, last_name')
-        .eq('id', userId)
-        .maybeSingle()
-
-      if (queryError) {
-        throw queryError
-      }
-
-      setProfile(data)
-    } catch (queryError) {
-      loadedProfileUserIdRef.current = null
-      setProfile(null)
-      setProfileError(queryError.message || 'ไม่สามารถโหลดโปรไฟล์ได้')
-    } finally {
-      setProfileLoading(false)
-    }
-  }
-
-
+  // Query profiles outside the Auth callback to avoid holding the auth lock.
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (event, currentSession) => {
         setSession(currentSession)
-
-        if (currentSession) {
-          setAuthError('')
-
-          const userId = currentSession.user.id
-
-          if (loadedProfileUserIdRef.current !== userId) {
-            loadedProfileUserIdRef.current = userId
-            loadProfile(userId)
-          }
-        } else {
-          loadedProfileUserIdRef.current = null
-          setProfile(null)
-          setProfileLoading(false)
-          setProfileError('')
-        }
-
+        if (currentSession) setAuthError('')
         if (event === 'SIGNED_OUT') {
-          const wasManualSignOut = manualSignOutRef.current
-          manualSignOutRef.current = false
-
-          if (wasManualSignOut) {
-            setAuthMode('landing')
-          } else {
+          setAuthMode(manualSignOutRef.current ? 'landing' : 'login')
+          if (!manualSignOutRef.current)
             setAuthError('เซสชันหมดอายุ กรุณาเข้าสู่ระบบอีกครั้ง')
-            setAuthMode('login')
-          }
+          manualSignOutRef.current = false
         }
-
         setAuthLoading(false)
       },
     )
-
-    return () => {
-      authListener.subscription.unsubscribe()
-    }
+    return () => authListener.subscription.unsubscribe()
   }, [])
+
+  const userId = session?.user.id
+  useEffect(() => {
+    let cancelled = false
+    async function loadProfile() {
+      setProfile(null)
+      setProfileError('')
+      if (!userId) {
+        setProfileLoading(false)
+        return
+      }
+      setProfileLoading(true)
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('id, role, first_name, last_name')
+          .eq('id', userId)
+          .maybeSingle()
+        if (error) throw error
+        if (!cancelled) setProfile(data)
+      } catch {
+        if (!cancelled) setProfileError('ไม่สามารถโหลดโปรไฟล์ได้ กรุณาลองใหม่')
+      } finally {
+        if (!cancelled) {
+          setLoadedUserId(userId)
+          setProfileLoading(false)
+        }
+      }
+    }
+    loadProfile()
+    return () => {
+      cancelled = true
+    }
+  }, [userId, profileRetry])
+
   async function handleSignOut() {
     setAuthError('')
     manualSignOutRef.current = true
@@ -102,10 +89,14 @@ function App() {
   if (authLoading) {
     return <p>กำลังตรวจสอบสถานะการเข้าสู่ระบบ...</p>
   }
+  const isProfilePending =
+    profileLoading || (session && loadedUserId !== session.user.id)
   const isLandingPage = !session && authMode === 'landing'
 
   return (
-    <main className={`app-shell${session && profile ? ' app-shell-dashboard' : ''}${isLandingPage ? ' app-shell-landing' : ''}`}>
+    <main
+      className={`app-shell${session && profile ? ' app-shell-dashboard' : ''}${isLandingPage ? ' app-shell-landing' : ''}`}
+    >
       {isLandingPage && (
         <LandingPage
           onLogin={() => setAuthMode('login')}
@@ -115,26 +106,48 @@ function App() {
 
       {session ? (
         <section className="auth-status">
-          {profileLoading && <p>กำลังโหลดข้อมูลโปรไฟล์...</p>}
+          {isProfilePending && <p>กำลังโหลดข้อมูลโปรไฟล์...</p>}
 
-          {profileError && <p role="alert">{profileError}</p>}
-
-          {!profileLoading && !profileError && profile && (
-            <RoleDashboard profile={profile} onSignOut={handleSignOut} />
+          {profileError && (
+            <div role="alert">
+              <p>{profileError}</p>
+              <button
+                type="button"
+                onClick={() => setProfileRetry((key) => key + 1)}
+              >
+                ลองใหม่
+              </button>
+              <button type="button" onClick={handleSignOut}>
+                ออกจากระบบ
+              </button>
+            </div>
           )}
 
-          {!profileLoading && !profileError && !profile && (
+          {!isProfilePending && !profileError && profile && (
+            <RoleDashboard
+              key={profile.id}
+              profile={profile}
+              onSignOut={handleSignOut}
+            />
+          )}
+
+          {!isProfilePending && !profileError && !profile && (
+            <Suspense fallback={<p>กำลังโหลดแบบฟอร์ม...</p>}>
             <ProfileSetupForm
               userId={session.user.id}
               email={session.user.email}
               onSignOut={handleSignOut}
-              onProfileCreated={() => loadProfile(session.user.id)}
+              onProfileCreated={() => setProfileRetry((key) => key + 1)}
             />
+            </Suspense>
           )}
 
-          {profile && !['employer', 'caregiver', 'admin'].includes(profile.role) && <button type="button" onClick={handleSignOut}>
-            ออกจากระบบ
-          </button>}
+          {profile &&
+            !['employer', 'caregiver', 'admin'].includes(profile.role) && (
+              <button type="button" onClick={handleSignOut}>
+                ออกจากระบบ
+              </button>
+            )}
 
           {authError && <p role="alert">{authError}</p>}
         </section>

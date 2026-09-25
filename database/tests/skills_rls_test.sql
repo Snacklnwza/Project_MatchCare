@@ -4,7 +4,7 @@ begin;
 
 update public.skills
 set is_active = false
-where name = 'First Aid';
+where name = 'การปฐมพยาบาลเบื้องต้น';
 
 set local role anon;
 
@@ -24,7 +24,7 @@ select
   (
     select is_active
     from public.skills
-    where name = 'First Aid'
+    where name = 'การปฐมพยาบาลเบื้องต้น'
   ) as first_aid_restored,
 
   has_table_privilege(

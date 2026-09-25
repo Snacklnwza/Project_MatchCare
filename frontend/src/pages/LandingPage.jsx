@@ -34,16 +34,28 @@ function LandingPage({ onLogin, onRegister }) {
       <section className="landing-hero">
         <div className="landing-hero-inner">
           <div className="landing-hero-copy">
-            <h1>หาผู้ดูแลที่ใช่ ด้วยความ<br />ใส่ใจที่เรามี</h1>
+            <h1>
+              หาผู้ดูแลที่ใช่ ด้วยความ
+              <br />
+              ใส่ใจที่เรามี
+            </h1>
             <p>
               แพลตฟอร์มจับคู่ผู้ดูแลผู้ป่วยและผู้สูงอายุที่ผ่านการตรวจสอบประวัติ
               และใบรับรองวิชาชีพ เพื่อความอุ่นใจของครอบครัวคุณ
             </p>
             <div className="landing-hero-actions">
-              <button type="button" className="landing-primary-button" onClick={onRegister}>
+              <button
+                type="button"
+                className="landing-primary-button"
+                onClick={onRegister}
+              >
                 ค้นหาผู้ดูแล (สำหรับผู้ว่าจ้าง)
               </button>
-              <button type="button" className="landing-caregiver-button" onClick={onRegister}>
+              <button
+                type="button"
+                className="landing-caregiver-button"
+                onClick={onRegister}
+              >
                 สมัครเป็นผู้ดูแล
               </button>
             </div>
@@ -59,7 +71,10 @@ function LandingPage({ onLogin, onRegister }) {
         </div>
       </section>
 
-      <section className="landing-how-it-works" aria-labelledby="how-it-works-heading">
+      <section
+        className="landing-how-it-works"
+        aria-labelledby="how-it-works-heading"
+      >
         <div className="landing-section-heading">
           <h2 id="how-it-works-heading">ทำงานอย่างไร?</h2>
           <span />

@@ -5,6 +5,7 @@ import emptyJobsIcon from '../assets/dashboard/empty-jobs.svg'
 import locationIcon from '../assets/dashboard/location.svg'
 import patientIcon from '../assets/dashboard/patient.svg'
 import { supabase } from '../lib/supabase'
+import { formatJobDate, payUnitLabels } from '../lib/jobs'
 
 const mobilityLabels = {
   bedridden: 'ผู้ป่วยติดเตียง',
@@ -17,12 +18,45 @@ function EmployerDashboard({ onNavigate }) {
   const [patients, setPatients] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [jobs, setJobs] = useState([])
+  const [jobsError, setJobsError] = useState('')
+  const [jobsLoading, setJobsLoading] = useState(true)
+
+  useEffect(() => {
+    let cancelled = false
+    async function loadJobs() {
+      try {
+        const { data, error: queryError } = await supabase
+          .from('job_posts')
+          .select(
+            'id, title, starts_at, pay_amount, pay_unit, province, district',
+          )
+          .eq('status', 'open')
+          .order('created_at', { ascending: false })
+        if (queryError) throw queryError
+        if (!cancelled) setJobs(data ?? [])
+      } catch {
+        if (!cancelled)
+          setJobsError(
+            'ไม่สามารถโหลดประกาศงานได้ กรุณาเปิดหน้าประกาศงานเพื่อลองใหม่',
+          )
+      } finally {
+        if (!cancelled) setJobsLoading(false)
+      }
+    }
+    loadJobs()
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   useEffect(() => {
     async function loadPatients() {
       const { data, error: queryError } = await supabase
         .from('patients')
-        .select('id, first_name, last_name, mobility_status, district, province')
+        .select(
+          'id, first_name, last_name, mobility_status, district, province',
+        )
         .eq('is_active', true)
         .order('created_at', { ascending: false })
         .limit(3)
@@ -46,8 +80,14 @@ function EmployerDashboard({ onNavigate }) {
           <h2>รายชื่อผู้ป่วยในการดูแล</h2>
         </div>
 
-        {loading && <p className="dashboard-state">กำลังโหลดข้อมูลผู้ป่วย...</p>}
-        {error && <p className="dashboard-state" role="alert">{error}</p>}
+        {loading && (
+          <p className="dashboard-state">กำลังโหลดข้อมูลผู้ป่วย...</p>
+        )}
+        {error && (
+          <p className="dashboard-state" role="alert">
+            {error}
+          </p>
+        )}
 
         {!loading && !error && patients.length === 0 && (
           <div className="dashboard-state dashboard-empty-patients">
@@ -66,13 +106,16 @@ function EmployerDashboard({ onNavigate }) {
                   <img src={patientIcon} alt="" />
                 </span>
                 <div>
-                  <h3>{patient.first_name} {patient.last_name}</h3>
+                  <h3>
+                    {patient.first_name} {patient.last_name}
+                  </h3>
                   <p>ผู้ป่วยในการดูแล</p>
                 </div>
               </div>
               <p className="dashboard-patient-detail">
                 <img src={careIcon} alt="" />
-                {mobilityLabels[patient.mobility_status] ?? patient.mobility_status}
+                {mobilityLabels[patient.mobility_status] ??
+                  patient.mobility_status}
               </p>
               <p className="dashboard-patient-detail">
                 <img src={locationIcon} alt="" />
@@ -84,21 +127,49 @@ function EmployerDashboard({ onNavigate }) {
       </aside>
 
       <section className="dashboard-jobs">
-        <h2>ประกาศงานที่เปิดรับ (Active Jobs)</h2>
-        <div className="dashboard-empty-jobs">
-          <span className="dashboard-empty-icon">
-            <img src={emptyJobsIcon} alt="" />
-          </span>
-          <p className="dashboard-empty-title">คุณยังไม่มีประกาศงานที่เปิดรับในขณะนี้</p>
-          <p className="dashboard-empty-description">
-            เริ่มสร้างประกาศงานแรกของคุณเพื่อค้นหาผู้ดูแลที่เหมาะสม<br />
-            สำหรับคนที่คุณรัก
-          </p>
-          <button type="button" onClick={() => onNavigate('jobs')}>
-            <img src={addIcon} alt="" />
-            ไปที่หน้าประกาศงาน
-          </button>
-        </div>
+        <h2>ประกาศงานที่เปิดรับ</h2>
+        {jobsLoading ? (
+          <p role="status">กำลังโหลดประกาศงาน...</p>
+        ) : jobsError ? (
+          <p role="alert">{jobsError}</p>
+        ) : jobs.length > 0 ? (
+          <div className="job-list">
+            {jobs.map((job) => (
+              <article className="job-card" key={job.id}>
+                <h3>{job.title}</h3>
+                <p>
+                  อ.{job.district} จ.{job.province}
+                </p>
+                <p>เริ่มงาน {formatJobDate(job.starts_at)}</p>
+                <p>
+                  {Number(job.pay_amount).toLocaleString('th-TH')} บาท{' '}
+                  {payUnitLabels[job.pay_unit]}
+                </p>
+                <button type="button" onClick={() => onNavigate('jobs')}>
+                  จัดการประกาศ
+                </button>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <div className="dashboard-empty-jobs">
+            <span className="dashboard-empty-icon">
+              <img src={emptyJobsIcon} alt="" />
+            </span>
+            <p className="dashboard-empty-title">
+              คุณยังไม่มีประกาศงานที่เปิดรับในขณะนี้
+            </p>
+            <p className="dashboard-empty-description">
+              เริ่มสร้างประกาศงานแรกของคุณเพื่อค้นหาผู้ดูแลที่เหมาะสม
+              <br />
+              สำหรับคนที่คุณรัก
+            </p>
+            <button type="button" onClick={() => onNavigate('jobs')}>
+              <img src={addIcon} alt="" />
+              ไปที่หน้าประกาศงาน
+            </button>
+          </div>
+        )}
       </section>
     </section>
   )

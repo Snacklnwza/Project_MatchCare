@@ -1549,6 +1549,47 @@
   resize: vertical;
 }
 
+.patient-province-picker input {
+  width: 100%;
+  min-height: 40px;
+  padding: 9px 12px;
+  border: 1px solid #bccac0;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #1e293b;
+  font: inherit;
+}
+
+.patient-province-options {
+  display: grid;
+  max-height: 176px;
+  overflow-y: auto;
+  margin-top: 4px;
+  border: 1px solid #bccac0;
+  border-radius: 6px;
+  background: #ffffff;
+}
+
+.patient-province-options button {
+  padding: 9px 12px;
+  border: 0;
+  background: transparent;
+  color: #1e293b;
+  font: inherit;
+  text-align: left;
+}
+
+.patient-province-options button:hover,
+.patient-province-options button[aria-selected='true'] {
+  background: #e5f6ed;
+}
+
+.patient-province-options p {
+  margin: 0;
+  padding: 9px 12px;
+  color: #64748b;
+}
+
 .patient-option-group {
   display: grid;
   gap: 8px;

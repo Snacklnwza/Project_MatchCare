@@ -43,10 +43,13 @@ begin
   p := public.save_patient_with_tags(null,'ทดสอบ','ผู้ป่วย','1950-01-01','walker',null,
     'กรุงเทพมหานคร','พระนคร','พระบรมมหาราชวัง','ข้อมูลสมมติ','{}',skills);
   perform set_config('test.patient',p.id::text,true);
+  -- Use the same calendar as validate_patient, including UTC/Thai midnight overlap.
+  update public.patients set birth_date=(now() at time zone 'Asia/Bangkok')::date where id=p.id;
   begin
-    update public.patients set birth_date=current_date+1 where id=p.id;
+    update public.patients set birth_date=(now() at time zone 'Asia/Bangkok')::date+1 where id=p.id;
     raise exception 'future birthday allowed';
   exception when check_violation then null; end;
+  update public.patients set birth_date='1950-01-01' where id=p.id;
   j := public.create_job_with_tags(p.id,'ทดสอบประกาศ','รายละเอียด','การดูแล',now()+interval '1 day',now()+interval '2 days',1200,'day',skills);
   perform set_config('test.job',j::text,true);
   if not exists(select 1 from public.job_posts where id=j and status='open' and published_at is not null)

@@ -229,7 +229,7 @@ begin
       (select auth.uid()),
       'ผู้ป่วย',
       'วันเกิดผิด',
-      current_date + 1,
+      (now() at time zone 'Asia/Bangkok')::date + 1,
       'walker',
       'กรุงเทพมหานคร',
       'บางเขน',

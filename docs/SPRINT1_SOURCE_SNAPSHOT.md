@@ -2758,7 +2758,7 @@ rollback;
 
 ## database/tests/patients_rls_test.sql
 
-SHA-256: `1a2aaa41e5821d56bdf34769046d74e1bb81da0e7a9db37101c9399a45190288`
+SHA-256: `a0f28f281e956505be8df3c262eee15662dbdf9826a508d94845919185b38e0a`
 
 ````sql
 -- Test 1: Employer เพิ่มและอ่านผู้ป่วยของตนเองได้
@@ -2992,7 +2992,7 @@ begin
       (select auth.uid()),
       'ผู้ป่วย',
       'วันเกิดผิด',
-      current_date + 1,
+      (now() at time zone 'Asia/Bangkok')::date + 1,
       'walker',
       'กรุงเทพมหานคร',
       'บางเขน',
@@ -3753,7 +3753,7 @@ select
 
 ## database/tests/sprint1_integration_test.sql
 
-SHA-256: `f017559589b3cf5e7d987c128fd8a22bc4f8f07108f44a40ecb0fee48c65945d`
+SHA-256: `13cdaf5f88fb32650d3b1334d1212ff00ef22e27e13b534c5270562b4add2439`
 
 ````sql
 -- Repeatable integration checks. All fixture rows roll back; sequence gaps are expected.
@@ -3801,10 +3801,13 @@ begin
   p := public.save_patient_with_tags(null,'ทดสอบ','ผู้ป่วย','1950-01-01','walker',null,
     'กรุงเทพมหานคร','พระนคร','พระบรมมหาราชวัง','ข้อมูลสมมติ','{}',skills);
   perform set_config('test.patient',p.id::text,true);
+  -- Use the same calendar as validate_patient, including UTC/Thai midnight overlap.
+  update public.patients set birth_date=(now() at time zone 'Asia/Bangkok')::date where id=p.id;
   begin
-    update public.patients set birth_date=current_date+1 where id=p.id;
+    update public.patients set birth_date=(now() at time zone 'Asia/Bangkok')::date+1 where id=p.id;
     raise exception 'future birthday allowed';
   exception when check_violation then null; end;
+  update public.patients set birth_date='1950-01-01' where id=p.id;
   j := public.create_job_with_tags(p.id,'ทดสอบประกาศ','รายละเอียด','การดูแล',now()+interval '1 day',now()+interval '2 days',1200,'day',skills);
   perform set_config('test.job',j::text,true);
   if not exists(select 1 from public.job_posts where id=j and status='open' and published_at is not null)

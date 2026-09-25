@@ -8,64 +8,73 @@
 
 ## รายการไฟล์
 
-1. [database/prototypes/skills_setup.sql](../database/prototypes/skills_setup.sql)
-2. [database/schema/01_profiles.sql](../database/schema/01_profiles.sql)
-3. [database/schema/02_profiles_policies.sql](../database/schema/02_profiles_policies.sql)
-4. [database/schema/03_updated_at_trigger.sql](../database/schema/03_updated_at_trigger.sql)
-5. [database/schema/04_patient_tables.sql](../database/schema/04_patient_tables.sql)
-6. [database/schema/05_patient_policies.sql](../database/schema/05_patient_policies.sql)
-7. [database/schema/06_patient_seed.sql](../database/schema/06_patient_seed.sql)
-8. [database/schema/07_caregiver_tables.sql](../database/schema/07_caregiver_tables.sql)
-9. [database/schema/08_caregiver_policies.sql](../database/schema/08_caregiver_policies.sql)
-10. [database/schema/09_patient_atomic_save.sql](../database/schema/09_patient_atomic_save.sql)
-11. [database/schema/10_job_posts.sql](../database/schema/10_job_posts.sql)
-12. [database/schema/11_job_policies.sql](../database/schema/11_job_policies.sql)
-13. [database/schema/12_patient_open_job_guard.sql](../database/schema/12_patient_open_job_guard.sql)
-14. [database/schema/13_job_atomic_save.sql](../database/schema/13_job_atomic_save.sql)
-15. [database/schema/14_job_atomic_update.sql](../database/schema/14_job_atomic_update.sql)
-16. [database/schema/15_sprint1_integrity.sql](../database/schema/15_sprint1_integrity.sql)
-17. [database/schema/16_sprint1_indexes_and_dates.sql](../database/schema/16_sprint1_indexes_and_dates.sql)
-18. [database/tests/caregiver_profiles_rls_test.sql](../database/tests/caregiver_profiles_rls_test.sql)
-19. [database/tests/job_posts_id4_test.sql](../database/tests/job_posts_id4_test.sql)
-20. [database/tests/patient_atomic_save_test.sql](../database/tests/patient_atomic_save_test.sql)
-21. [database/tests/patients_rls_test.sql](../database/tests/patients_rls_test.sql)
-22. [database/tests/profiles_rls_test.sql](../database/tests/profiles_rls_test.sql)
-23. [database/tests/skills_crud_test.sql](../database/tests/skills_crud_test.sql)
-24. [database/tests/skills_rls_test.sql](../database/tests/skills_rls_test.sql)
-25. [database/tests/sprint1_integration_test.sql](../database/tests/sprint1_integration_test.sql)
-26. [frontend/index.html](../frontend/index.html)
-27. [frontend/package.json](../frontend/package.json)
-28. [frontend/scripts/generate-geography.mjs](../frontend/scripts/generate-geography.mjs)
-29. [frontend/src/App.css](../frontend/src/App.css)
-30. [frontend/src/App.jsx](../frontend/src/App.jsx)
-31. [frontend/src/components/Footer.jsx](../frontend/src/components/Footer.jsx)
-32. [frontend/src/components/JobForm.jsx](../frontend/src/components/JobForm.jsx)
-33. [frontend/src/components/JobManager.jsx](../frontend/src/components/JobManager.jsx)
-34. [frontend/src/components/LandingNavbar.jsx](../frontend/src/components/LandingNavbar.jsx)
-35. [frontend/src/components/LoginForm.jsx](../frontend/src/components/LoginForm.jsx)
-36. [frontend/src/components/Navbar.jsx](../frontend/src/components/Navbar.jsx)
-37. [frontend/src/components/PatientForm.jsx](../frontend/src/components/PatientForm.jsx)
-38. [frontend/src/components/PatientManager.jsx](../frontend/src/components/PatientManager.jsx)
-39. [frontend/src/components/ProfileSetupForm.jsx](../frontend/src/components/ProfileSetupForm.jsx)
-40. [frontend/src/components/RegisterForm.jsx](../frontend/src/components/RegisterForm.jsx)
-41. [frontend/src/index.css](../frontend/src/index.css)
-42. [frontend/src/lib/jobs.js](../frontend/src/lib/jobs.js)
-43. [frontend/src/lib/patients.js](../frontend/src/lib/patients.js)
-44. [frontend/src/lib/supabase.js](../frontend/src/lib/supabase.js)
-45. [frontend/src/main.jsx](../frontend/src/main.jsx)
-46. [frontend/src/pages/AdminDashboard.jsx](../frontend/src/pages/AdminDashboard.jsx)
-47. [frontend/src/pages/CaregiverDashboard.jsx](../frontend/src/pages/CaregiverDashboard.jsx)
-48. [frontend/src/pages/EmployerDashboard.jsx](../frontend/src/pages/EmployerDashboard.jsx)
-49. [frontend/src/pages/LandingPage.jsx](../frontend/src/pages/LandingPage.jsx)
-50. [frontend/src/pages/RoleDashboard.jsx](../frontend/src/pages/RoleDashboard.jsx)
-51. [frontend/vite.config.js](../frontend/vite.config.js)
-52. [scripts/generate-review-snapshot.mjs](../scripts/generate-review-snapshot.mjs)
+1. [database/migrations/001_patient_normal_mobility.sql](../database/migrations/001_patient_normal_mobility.sql)
+2. [database/schema/01_core.sql](../database/schema/01_core.sql)
+3. [database/schema/02_patients.sql](../database/schema/02_patients.sql)
+4. [database/schema/03_caregivers.sql](../database/schema/03_caregivers.sql)
+5. [database/schema/04_jobs.sql](../database/schema/04_jobs.sql)
+6. [database/schema/05_integrity.sql](../database/schema/05_integrity.sql)
+7. [database/tests/caregiver_profiles_rls_test.sql](../database/tests/caregiver_profiles_rls_test.sql)
+8. [database/tests/job_posts_id4_test.sql](../database/tests/job_posts_id4_test.sql)
+9. [database/tests/patient_atomic_save_test.sql](../database/tests/patient_atomic_save_test.sql)
+10. [database/tests/patients_rls_test.sql](../database/tests/patients_rls_test.sql)
+11. [database/tests/profiles_rls_test.sql](../database/tests/profiles_rls_test.sql)
+12. [database/tests/skills_crud_test.sql](../database/tests/skills_crud_test.sql)
+13. [database/tests/skills_rls_test.sql](../database/tests/skills_rls_test.sql)
+14. [database/tests/sprint1_integration_test.sql](../database/tests/sprint1_integration_test.sql)
+15. [frontend/index.html](../frontend/index.html)
+16. [frontend/package.json](../frontend/package.json)
+17. [frontend/scripts/generate-geography.mjs](../frontend/scripts/generate-geography.mjs)
+18. [frontend/src/App.css](../frontend/src/App.css)
+19. [frontend/src/App.jsx](../frontend/src/App.jsx)
+20. [frontend/src/components/Footer.jsx](../frontend/src/components/Footer.jsx)
+21. [frontend/src/components/JobForm.jsx](../frontend/src/components/JobForm.jsx)
+22. [frontend/src/components/JobManager.jsx](../frontend/src/components/JobManager.jsx)
+23. [frontend/src/components/LandingNavbar.jsx](../frontend/src/components/LandingNavbar.jsx)
+24. [frontend/src/components/LoginForm.jsx](../frontend/src/components/LoginForm.jsx)
+25. [frontend/src/components/Navbar.jsx](../frontend/src/components/Navbar.jsx)
+26. [frontend/src/components/PatientForm.jsx](../frontend/src/components/PatientForm.jsx)
+27. [frontend/src/components/PatientManager.jsx](../frontend/src/components/PatientManager.jsx)
+28. [frontend/src/components/ProfileSetupForm.jsx](../frontend/src/components/ProfileSetupForm.jsx)
+29. [frontend/src/components/RegisterForm.jsx](../frontend/src/components/RegisterForm.jsx)
+30. [frontend/src/index.css](../frontend/src/index.css)
+31. [frontend/src/lib/jobs.js](../frontend/src/lib/jobs.js)
+32. [frontend/src/lib/patients.js](../frontend/src/lib/patients.js)
+33. [frontend/src/lib/supabase.js](../frontend/src/lib/supabase.js)
+34. [frontend/src/main.jsx](../frontend/src/main.jsx)
+35. [frontend/src/pages/AdminDashboard.jsx](../frontend/src/pages/AdminDashboard.jsx)
+36. [frontend/src/pages/CaregiverDashboard.jsx](../frontend/src/pages/CaregiverDashboard.jsx)
+37. [frontend/src/pages/EmployerDashboard.jsx](../frontend/src/pages/EmployerDashboard.jsx)
+38. [frontend/src/pages/LandingPage.jsx](../frontend/src/pages/LandingPage.jsx)
+39. [frontend/src/pages/RoleDashboard.jsx](../frontend/src/pages/RoleDashboard.jsx)
+40. [frontend/vite.config.js](../frontend/vite.config.js)
+41. [scripts/generate-review-snapshot.mjs](../scripts/generate-review-snapshot.mjs)
 
-## database/prototypes/skills_setup.sql
+## database/migrations/001_patient_normal_mobility.sql
 
-SHA-256: `2f5dca41f75aa37bf6b18ca3e3d4348749b590081a2545fca03e00d44ee45914`
+SHA-256: `e89b5e9b1ad069b04fa150a151ba18205811619c002b58c442ed4de689435842`
 
 ````sql
+-- Run once on an existing MatchCare database created before `normal` was added.
+-- Fresh databases already include this value in schema/02_patients.sql.
+begin;
+
+alter table public.patients
+  drop constraint if exists patients_mobility_status_valid;
+
+alter table public.patients
+  add constraint patients_mobility_status_valid
+  check (mobility_status in ('normal', 'bedridden', 'wheelchair', 'walker', 'cane'));
+
+commit;
+````
+
+## database/schema/01_core.sql
+
+SHA-256: `4a53b34167f38a4a3d6a96b6b3ea8f0e3848b94f1e16ec586768df13a22557b4`
+
+````sql
+-- Source: database/prototypes/skills_setup.sql
 -- ต้นแบบฐานข้อมูล MatchCare
 -- ข้อมูลทักษะหลักสำหรับผู้ดูแลและความต้องการของประกาศงาน
 create table
@@ -119,13 +128,8 @@ from
   public.skills
 order by
   id;
-````
 
-## database/schema/01_profiles.sql
-
-SHA-256: `a87a50cf04575060930f9646fc75d7a0a6208ed492f067f32f8042265eaff5b4`
-
-````sql
+-- Source: database/schema/01_profiles.sql
 -- ตารางข้อมูลผู้ใช้งานของ MatchCare
 -- ข้อมูลบัญชี อีเมล และรหัสผ่านจัดการโดย Supabase Auth
 
@@ -186,13 +190,8 @@ from anon, authenticated;
 grant select, insert, update
 on table public.profiles
 to authenticated;
-````
 
-## database/schema/02_profiles_policies.sql
-
-SHA-256: `27ce264508851f49a307e5cf7cf360f15c772a00ef3045ac9e0ce2a634ef43a2`
-
-````sql
+-- Source: database/schema/02_profiles_policies.sql
 -- จำกัดสิทธิ์ระดับคอลัมน์ของตาราง profiles
 -- ผู้ใช้ห้ามแก้ id, role, created_at และ updated_at ด้วยตนเอง
 
@@ -266,13 +265,8 @@ using (
 with check (
   (select auth.uid()) = id
 );
-````
 
-## database/schema/03_updated_at_trigger.sql
-
-SHA-256: `da122d5dd2aef2b5402bf49c68b4cd15dd935a416d217590ede21268a63c175a`
-
-````sql
+-- Source: database/schema/03_updated_at_trigger.sql
 -- Schema สำหรับเก็บฟังก์ชันภายในฐานข้อมูล
 -- Frontend ไม่ควรเรียกใช้ฟังก์ชันเหล่านี้โดยตรง
 create schema if not exists private;
@@ -307,11 +301,12 @@ for each row
 execute function private.set_updated_at();
 ````
 
-## database/schema/04_patient_tables.sql
+## database/schema/02_patients.sql
 
-SHA-256: `fb098283461e12256cb3408d6c732b3addac95d2ba4585cb34087d9fa1252ee6`
+SHA-256: `71454078592fb1f4a2b2dc36a5e1c898336cc1273707894d9d3da3b3a68c704f`
 
 ````sql
+-- Source: database/schema/04_patient_tables.sql
 -- รายการสภาวะและความต้องการดูแลสำหรับเลือกให้ผู้ป่วย
 -- เป็นข้อมูลตัวอย่างสำหรับระบบ ไม่ใช่คำวินิจฉัยทางการแพทย์
 
@@ -374,6 +369,7 @@ create table public.patients (
   constraint patients_mobility_status_valid
     check (
       mobility_status in (
+        'normal',
         'bedridden',
         'wheelchair',
         'walker',
@@ -491,13 +487,8 @@ on public.patient_required_skills (skill_id);
 
 alter table public.patient_required_skills
 enable row level security;
-````
 
-## database/schema/05_patient_policies.sql
-
-SHA-256: `8e527158bed5b5599141d127db743a56bc1ef9487600ae6b5eebb2dca4bff06a`
-
-````sql
+-- Source: database/schema/05_patient_policies.sql
 -- สิทธิ์อ่านรายการสภาวะที่เปิดใช้งาน
 -- RLS Policy ด้านล่างจะกรองแถวที่อ่านได้อีกชั้น
 
@@ -726,13 +717,8 @@ using (
       and patients.employer_id = (select auth.uid())
   )
 );
-````
 
-## database/schema/06_patient_seed.sql
-
-SHA-256: `f775e7cc13316215a8d17013ea8a36c6f9562cd8f76259c3e19def71980bbb47`
-
-````sql
+-- Source: database/schema/06_patient_seed.sql
 -- ข้อมูลตัวอย่างสำหรับใช้พัฒนาและทดสอบ MatchCare
 -- ไม่ใช่มาตรฐานหรือคำวินิจฉัยทางการแพทย์
 
@@ -754,13 +740,110 @@ values
     'ต้องการผู้ดูแลคอยสังเกตอาการและความปลอดภัย'
   )
 on conflict do nothing;
+
+-- Source: database/schema/09_patient_atomic_save.sql
+-- บันทึกข้อมูลผู้ป่วยและแท็กในคำสั่งเดียว เพื่อให้ล้มเหลว/สำเร็จพร้อมกัน
+-- SECURITY INVOKER ใช้สิทธิ์และ RLS ของผู้เรียก ไม่ข้ามข้อจำกัดเจ้าของข้อมูล
+
+create or replace function public.save_patient_with_tags(
+  p_patient_id bigint,
+  p_first_name text,
+  p_last_name text,
+  p_birth_date date,
+  p_mobility_status text,
+  p_care_notes text,
+  p_province text,
+  p_district text,
+  p_subdistrict text,
+  p_address_detail text,
+  p_condition_ids bigint[],
+  p_skill_ids bigint[]
+)
+returns public.patients
+language plpgsql
+security invoker
+set search_path = pg_catalog
+as $$
+declare
+  v_patient public.patients;
+begin
+  if (select auth.uid()) is null then
+    raise exception 'กรุณาเข้าสู่ระบบก่อนบันทึกข้อมูลผู้ป่วย';
+  end if;
+
+  if p_patient_id is null then
+    insert into public.patients (
+      employer_id, first_name, last_name, birth_date, mobility_status,
+      care_notes, province, district, subdistrict, address_detail
+    )
+    values (
+      (select auth.uid()), p_first_name, p_last_name, p_birth_date,
+      p_mobility_status, p_care_notes, p_province, p_district,
+      p_subdistrict, p_address_detail
+    )
+    returning * into v_patient;
+  else
+    update public.patients
+    set first_name = p_first_name,
+        last_name = p_last_name,
+        birth_date = p_birth_date,
+        mobility_status = p_mobility_status,
+        care_notes = p_care_notes,
+        province = p_province,
+        district = p_district,
+        subdistrict = p_subdistrict,
+        address_detail = p_address_detail
+    where id = p_patient_id
+      and employer_id = (select auth.uid())
+      and is_active = true
+    returning * into v_patient;
+
+    if not found then
+      raise exception 'ไม่พบผู้ป่วยที่แก้ไขได้';
+    end if;
+  end if;
+
+  delete from public.patient_conditions
+  where patient_id = v_patient.id
+    and not (condition_id = any(coalesce(p_condition_ids, '{}'::bigint[])));
+
+  insert into public.patient_conditions (patient_id, condition_id)
+  select v_patient.id, selected.condition_id
+  from (
+    select distinct unnest(coalesce(p_condition_ids, '{}'::bigint[])) as condition_id
+  ) as selected
+  on conflict do nothing;
+
+  delete from public.patient_required_skills
+  where patient_id = v_patient.id
+    and not (skill_id = any(coalesce(p_skill_ids, '{}'::bigint[])));
+
+  insert into public.patient_required_skills (patient_id, skill_id)
+  select v_patient.id, selected.skill_id
+  from (
+    select distinct unnest(coalesce(p_skill_ids, '{}'::bigint[])) as skill_id
+  ) as selected
+  on conflict do nothing;
+
+  return v_patient;
+end;
+$$;
+
+revoke all on function public.save_patient_with_tags(
+  bigint, text, text, date, text, text, text, text, text, text, bigint[], bigint[]
+) from public, anon;
+
+grant execute on function public.save_patient_with_tags(
+  bigint, text, text, date, text, text, text, text, text, text, bigint[], bigint[]
+) to authenticated;
 ````
 
-## database/schema/07_caregiver_tables.sql
+## database/schema/03_caregivers.sql
 
-SHA-256: `a8a10f633783e7b55376a4fe699910f91beb7b027c98366cd938a01c2a595902`
+SHA-256: `429f5389a95b1c03089cce479b629096db2438ed51c870009c6340814f0a8508`
 
 ````sql
+-- Source: database/schema/07_caregiver_tables.sql
 create table public.caregiver_profiles (
     caregiver_id uuid primary key references public.profiles(id) on delete cascade,
     bio text,
@@ -895,13 +978,8 @@ enable row level security;
 revoke all privileges
 on table public.caregiver_skills
 from anon, authenticated;
-````
 
-## database/schema/08_caregiver_policies.sql
-
-SHA-256: `442193caa7955479ef6c28819de4c1527172b9bb30ff2fdc5e7e8764b8a4a2b4`
-
-````sql
+-- Source: database/schema/08_caregiver_policies.sql
 -- ผู้ใช้ที่เข้าสู่ระบบอ่านข้อมูลผ่าน RLS ได้
 -- ไม่ให้สิทธิ์ลบโปรไฟล์ผู้ดูแล
 
@@ -1031,112 +1109,12 @@ using (
 );
 ````
 
-## database/schema/09_patient_atomic_save.sql
+## database/schema/04_jobs.sql
 
-SHA-256: `d850cbe41fb1c95e0ce7ee286e96433bcdd63781f7db809227ed48c0123c6f7d`
-
-````sql
--- บันทึกข้อมูลผู้ป่วยและแท็กในคำสั่งเดียว เพื่อให้ล้มเหลว/สำเร็จพร้อมกัน
--- SECURITY INVOKER ใช้สิทธิ์และ RLS ของผู้เรียก ไม่ข้ามข้อจำกัดเจ้าของข้อมูล
-
-create or replace function public.save_patient_with_tags(
-  p_patient_id bigint,
-  p_first_name text,
-  p_last_name text,
-  p_birth_date date,
-  p_mobility_status text,
-  p_care_notes text,
-  p_province text,
-  p_district text,
-  p_subdistrict text,
-  p_address_detail text,
-  p_condition_ids bigint[],
-  p_skill_ids bigint[]
-)
-returns public.patients
-language plpgsql
-security invoker
-set search_path = pg_catalog
-as $$
-declare
-  v_patient public.patients;
-begin
-  if (select auth.uid()) is null then
-    raise exception 'กรุณาเข้าสู่ระบบก่อนบันทึกข้อมูลผู้ป่วย';
-  end if;
-
-  if p_patient_id is null then
-    insert into public.patients (
-      employer_id, first_name, last_name, birth_date, mobility_status,
-      care_notes, province, district, subdistrict, address_detail
-    )
-    values (
-      (select auth.uid()), p_first_name, p_last_name, p_birth_date,
-      p_mobility_status, p_care_notes, p_province, p_district,
-      p_subdistrict, p_address_detail
-    )
-    returning * into v_patient;
-  else
-    update public.patients
-    set first_name = p_first_name,
-        last_name = p_last_name,
-        birth_date = p_birth_date,
-        mobility_status = p_mobility_status,
-        care_notes = p_care_notes,
-        province = p_province,
-        district = p_district,
-        subdistrict = p_subdistrict,
-        address_detail = p_address_detail
-    where id = p_patient_id
-      and employer_id = (select auth.uid())
-      and is_active = true
-    returning * into v_patient;
-
-    if not found then
-      raise exception 'ไม่พบผู้ป่วยที่แก้ไขได้';
-    end if;
-  end if;
-
-  delete from public.patient_conditions
-  where patient_id = v_patient.id
-    and not (condition_id = any(coalesce(p_condition_ids, '{}'::bigint[])));
-
-  insert into public.patient_conditions (patient_id, condition_id)
-  select v_patient.id, selected.condition_id
-  from (
-    select distinct unnest(coalesce(p_condition_ids, '{}'::bigint[])) as condition_id
-  ) as selected
-  on conflict do nothing;
-
-  delete from public.patient_required_skills
-  where patient_id = v_patient.id
-    and not (skill_id = any(coalesce(p_skill_ids, '{}'::bigint[])));
-
-  insert into public.patient_required_skills (patient_id, skill_id)
-  select v_patient.id, selected.skill_id
-  from (
-    select distinct unnest(coalesce(p_skill_ids, '{}'::bigint[])) as skill_id
-  ) as selected
-  on conflict do nothing;
-
-  return v_patient;
-end;
-$$;
-
-revoke all on function public.save_patient_with_tags(
-  bigint, text, text, date, text, text, text, text, text, text, bigint[], bigint[]
-) from public, anon;
-
-grant execute on function public.save_patient_with_tags(
-  bigint, text, text, date, text, text, text, text, text, text, bigint[], bigint[]
-) to authenticated;
-````
-
-## database/schema/10_job_posts.sql
-
-SHA-256: `8b479b160378aed9e560eb97c703870947bda721d400db714f03d7e7cce426b8`
+SHA-256: `05e074edba53477f386a0b5fe1af2b0ddcada8d8423ec60b77bc97baa4647437`
 
 ````sql
+-- Source: database/schema/10_job_posts.sql
 -- ID 4: ประกาศรับสมัครผู้ดูแลและทักษะที่ต้องการ
 -- เก็บที่อยู่ในประกาศเป็น snapshot; ห้ามเปิดเผยตารางนี้ทั้งแถวแก่ผู้ใช้ทั่วไป
 
@@ -1317,13 +1295,8 @@ create constraint trigger job_required_skills_require_skill
 after delete on public.job_required_skills
 deferrable initially deferred
 for each row execute function private.require_open_job_skill();
-````
 
-## database/schema/11_job_policies.sql
-
-SHA-256: `69883162110b70e4df0fc008c60e374b3f78fa2f88d5fa2b8b8de8a5d14f26ee`
-
-````sql
+-- Source: database/schema/11_job_policies.sql
 -- เจ้าของอ่านและจัดการประกาศของตน; ยังไม่เปิดตารางที่มีที่อยู่ละเอียดให้ผู้อื่นอ่าน
 
 revoke all privileges on table public.job_posts from anon, authenticated;
@@ -1411,13 +1384,8 @@ using (
       and status in ('draft', 'open')
   )
 );
-````
 
-## database/schema/12_patient_open_job_guard.sql
-
-SHA-256: `eb43239278e2290e24ecb01438dafe4afca51150fab8806f972aeff0cce27071`
-
-````sql
+-- Source: database/schema/12_patient_open_job_guard.sql
 -- ID 3 ข้อ 7: ผู้ป่วยที่ผูกกับประกาศ/งานที่ยังดำเนินอยู่ปิดใช้งานไม่ได้
 
 create or replace function private.prevent_patient_deactivation_with_job()
@@ -1443,13 +1411,8 @@ $$;
 create trigger patients_prevent_deactivation_with_job
 before update of is_active on public.patients
 for each row execute function private.prevent_patient_deactivation_with_job();
-````
 
-## database/schema/13_job_atomic_save.sql
-
-SHA-256: `1906af415a4eeb45ec30e9bcb3fe74133a632a599a49a37d2de5c5f1393390da`
-
-````sql
+-- Source: database/schema/13_job_atomic_save.sql
 -- สร้างประกาศกับทักษะใน transaction เดียว ภายใต้สิทธิ์/RLS ของผู้เรียก
 create or replace function public.create_job_with_tags(
   p_patient_id bigint, p_title text, p_description text, p_care_summary text,
@@ -1508,13 +1471,8 @@ end;
 $$;
 revoke all on function public.create_job_with_tags(bigint,text,text,text,timestamptz,timestamptz,numeric,text,bigint[]) from public, anon;
 grant execute on function public.create_job_with_tags(bigint,text,text,text,timestamptz,timestamptz,numeric,text,bigint[]) to authenticated;
-````
 
-## database/schema/14_job_atomic_update.sql
-
-SHA-256: `369a2b19789c784836fc5505cd822a24fc649c013cc0207bcfd03b323b106b59`
-
-````sql
+-- Source: database/schema/14_job_atomic_update.sql
 create or replace function public.update_job_with_tags(
   p_job_id bigint,
   p_patient_id bigint,
@@ -1597,11 +1555,12 @@ revoke all on function public.close_job(bigint) from public, anon;
 grant execute on function public.close_job(bigint) to authenticated;
 ````
 
-## database/schema/15_sprint1_integrity.sql
+## database/schema/05_integrity.sql
 
-SHA-256: `7f0f37131fa9769007e3192c0baca3b13bb27dbe8c689acb42a245a16fe3b97d`
+SHA-256: `b4f5a3bd830423a07a5d909988131cd87ec8c5f7893fe6937ebedd7b47a86558`
 
 ````sql
+-- Source: database/schema/15_sprint1_integrity.sql
 -- Shared-row locks keep concurrent skill changes and patient closure consistent.
 create or replace function private.validate_job_post()
 returns trigger
@@ -1673,13 +1632,8 @@ alter table public.job_posts add constraint job_posts_title_length check (length
 alter table public.job_posts add constraint job_posts_finite_dates check (isfinite(starts_at) and isfinite(ends_at));
 -- Honor the UI's maximum of 10 digits at the database boundary as well.
 alter table public.profiles add constraint profiles_phone_digits check (phone ~ '^[0-9]{1,10}$') not valid;
-````
 
-## database/schema/16_sprint1_indexes_and_dates.sql
-
-SHA-256: `f5157ea088c0daad44ceeb14335e5db1ec19d2f3a956f3ba61cf4b657af5014c`
-
-````sql
+-- Source: database/schema/16_sprint1_indexes_and_dates.sql
 -- Full indexes support FK checks for both open and historical jobs.
 create index job_posts_patient_owner_idx on public.job_posts(patient_id, employer_id);
 create index job_posts_cancelled_by_idx on public.job_posts(cancelled_by);
@@ -6822,7 +6776,7 @@ export default Navbar
 
 ## frontend/src/components/PatientForm.jsx
 
-SHA-256: `e1ef540f1c41b1b6be2e72b9bd82c63226e0c40a3c41e39550911859ef34509a`
+SHA-256: `0b67be3294cb97ea6bc6da174cf1aadb2d109e8f95c4d9d7e2818647b5c95774`
 
 ````jsx
 import { useEffect, useRef, useState } from 'react'
@@ -7125,6 +7079,7 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
         required
       >
         <option value="">เลือกสถานะการเคลื่อนไหว</option>
+        <option value="normal">เคลื่อนไหวได้ปกติ</option>
         <option value="bedridden">ผู้ป่วยติดเตียง</option>
         <option value="wheelchair">ใช้รถเข็น</option>
         <option value="walker">ใช้เครื่องช่วยเดิน</option>
@@ -7327,7 +7282,7 @@ export default PatientForm
 
 ## frontend/src/components/PatientManager.jsx
 
-SHA-256: `5d1fd88edd1767821ac1b2fd8bce40670136dba1b6aed8de3196bde7cbba7860`
+SHA-256: `783e793ef20277558be3f62118189a5fcff9dc1a03998d431e2c1a080d879a1f`
 
 ````jsx
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
@@ -7336,6 +7291,7 @@ import { formatPatientAge } from '../lib/patients'
 const PatientForm = lazy(() => import('./PatientForm'))
 
 const mobilityLabels = {
+  normal: 'เคลื่อนไหวได้ปกติ',
   bedridden: 'ผู้ป่วยติดเตียง',
   wheelchair: 'ใช้รถเข็น',
   walker: 'ใช้เครื่องช่วยเดิน',
@@ -8255,7 +8211,7 @@ export default CaregiverDashboard
 
 ## frontend/src/pages/EmployerDashboard.jsx
 
-SHA-256: `862c89f7563ad7b6b880b0ec9e621ff50e3082cdfe22699541c96347d9eb3dfe`
+SHA-256: `5b087ef48678c64f2c5984544eaa8c7a9035a538403f907da6f266ea68a373e3`
 
 ````jsx
 import { useEffect, useState } from 'react'
@@ -8269,6 +8225,7 @@ import { formatJobDate, payUnitLabels } from '../lib/jobs'
 import { formatPatientAge } from '../lib/patients'
 
 const mobilityLabels = {
+  normal: 'เคลื่อนไหวได้ปกติ',
   bedridden: 'ผู้ป่วยติดเตียง',
   wheelchair: 'ใช้รถเข็น',
   walker: 'ใช้เครื่องช่วยเดิน',

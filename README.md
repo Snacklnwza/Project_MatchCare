@@ -19,7 +19,7 @@
 - npm run lint: ตรวจโค้ด
 - npm run build: สร้าง production bundle
 
-ฐานข้อมูลใหม่: รัน database/prototypes/skills_setup.sql แล้ว schema 01–16 ตามลำดับ ฐานเดิมไม่ควรรัน CREATE TABLE ซ้ำ
+ฐานข้อมูลใหม่: รัน `database/schema/01_core.sql` ถึง `05_integrity.sql` ตามลำดับ ดูรายละเอียดใน [คู่มือฐานข้อมูล](database/README.md) ฐานเดิมไม่ควรรันไฟล์สร้างตารางซ้ำ
 
 Regression: รัน database/tests/sprint1_integration_test.sql ทั้งไฟล์ใน SQL Editor ข้อมูลทดสอบจะ rollback
 

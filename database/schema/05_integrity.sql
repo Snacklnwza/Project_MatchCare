@@ -1,3 +1,4 @@
+-- Source: database/schema/15_sprint1_integrity.sql
 -- Shared-row locks keep concurrent skill changes and patient closure consistent.
 create or replace function private.validate_job_post()
 returns trigger
@@ -69,3 +70,37 @@ alter table public.job_posts add constraint job_posts_title_length check (length
 alter table public.job_posts add constraint job_posts_finite_dates check (isfinite(starts_at) and isfinite(ends_at));
 -- Honor the UI's maximum of 10 digits at the database boundary as well.
 alter table public.profiles add constraint profiles_phone_digits check (phone ~ '^[0-9]{1,10}$') not valid;
+
+-- Source: database/schema/16_sprint1_indexes_and_dates.sql
+-- Full indexes support FK checks for both open and historical jobs.
+create index job_posts_patient_owner_idx on public.job_posts(patient_id, employer_id);
+create index job_posts_cancelled_by_idx on public.job_posts(cancelled_by);
+
+-- Match the Thai calendar day instead of the database server's UTC day.
+create or replace function private.validate_patient()
+returns trigger
+language plpgsql
+security invoker
+set search_path = pg_catalog
+as $$
+begin
+  if not isfinite(new.birth_date) or new.birth_date > (now() at time zone 'Asia/Bangkok')::date then
+    raise exception using
+      errcode = '23514',
+      message = 'patient_birth_date_cannot_be_in_future';
+  end if;
+
+  if not exists (
+    select 1
+    from public.profiles
+    where id = new.employer_id
+      and role = 'employer'
+  ) then
+    raise exception using
+      errcode = '23514',
+      message = 'patient_owner_must_be_employer';
+  end if;
+
+  return new;
+end;
+$$;

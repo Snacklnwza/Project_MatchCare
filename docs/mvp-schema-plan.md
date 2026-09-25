@@ -519,4 +519,4 @@ pending -> not_selected
 - `docs/requirements.md`
 - `docs/database-audit.md`
 - `docs/development-plan.md`
-- `database/prototypes/skills_setup.sql`
+- `database/schema/01_core.sql` (ตาราง skills และข้อมูลทักษะตั้งต้น)

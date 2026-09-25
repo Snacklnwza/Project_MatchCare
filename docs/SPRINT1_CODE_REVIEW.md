@@ -28,19 +28,19 @@
 
 | ปัญหาเดิม | การแก้ | ไฟล์หลัก |
 |---|---|---|
-| ประกาศสร้างได้อย่างเดียว | เพิ่ม edit form, update RPC, close RPC, confirmation, filter และข้อมูลในการ์ด | `JobForm.jsx`, `JobManager.jsx`, schema 14 |
+| ประกาศสร้างได้อย่างเดียว | เพิ่ม edit form, update RPC, close RPC, confirmation, filter และข้อมูลในการ์ด | `JobForm.jsx`, `JobManager.jsx`, `schema/04_jobs.sql` |
 | หน้าหลักบอกไม่มีประกาศตลอด | Query `status = open` และแสดงงานจริง; แยก loading/error/empty | `EmployerDashboard.jsx` |
-| หลายคำสั่งอาจบันทึกงานสำเร็จแต่แท็กไม่ครบ | ใช้ RPC transaction เดียว; ตรวจทักษะก่อนบันทึก; rollback เมื่อผิด | schema 13–14 |
+| หลายคำสั่งอาจบันทึกงานสำเร็จแต่แท็กไม่ครบ | ใช้ RPC transaction เดียว; ตรวจทักษะก่อนบันทึก; rollback เมื่อผิด | `schema/04_jobs.sql` |
 | อาจแจ้งปิดผู้ป่วยสำเร็จทั้งที่ไม่แก้แถวใด | update พร้อม `select('id').single()` และตรวจ error/data ก่อนเอาการ์ดออก | `PatientManager.jsx` |
 | กดบันทึกซ้ำ/กดยกเลิกระหว่างบันทึก | ใช้ ref กัน submit ซ้ำ, disabled state, finally คืนสถานะ | ฟอร์มผู้ป่วย/ประกาศ/โปรไฟล์ |
 | Query profile ใน auth callback | ย้าย query ไป effect ตาม user ID; ป้องกันผลเก่ามาทับบัญชีใหม่; ไม่ reload profile ทุก token refresh | `App.jsx` |
 | Error ส่งเมลถี่เกินเป็นอังกฤษ/ข้อความทั่วไป | แปล error code และ HTTP 429; ไม่แสดงว่าสมัครสำเร็จแน่นอนเมื่อ Auth ปกปิดบัญชีซ้ำ | `RegisterForm.jsx` |
 | Modal ใช้คีย์บอร์ดไม่ครบ | focus เริ่มต้น, Tab อยู่ใน modal, Escape, คืน focus และล็อก body scroll | `PatientForm.jsx` |
-| ข้อมูลไม่ครบ/วันเกิดอนาคต | inline message เชื่อม `aria-describedby`, native validity, ตรวจซ้ำที่ DB | `PatientForm.jsx`, schema 16 |
-| เปิดประกาศพร้อมปิดผู้ป่วย/แก้แท็กพร้อมกัน | ล็อกแถวผู้ป่วย/ประกาศใน transaction; คง constraint ว่างานเปิดต้องมีทักษะ | schema 13–15 |
-| วันเกิดใช้วันของเซิร์ฟเวอร์ UTC | ตรวจวันใน Asia/Bangkok ที่ DB และ date input ตามวันท้องถิ่นใน UI | schema 16, `jobs.js` |
+| ข้อมูลไม่ครบ/วันเกิดอนาคต | inline message เชื่อม `aria-describedby`, native validity, ตรวจซ้ำที่ DB | `PatientForm.jsx`, `schema/05_integrity.sql` |
+| เปิดประกาศพร้อมปิดผู้ป่วย/แก้แท็กพร้อมกัน | ล็อกแถวผู้ป่วย/ประกาศใน transaction; คง constraint ว่างานเปิดต้องมีทักษะ | `schema/04_jobs.sql`, `schema/05_integrity.sql` |
+| วันเกิดใช้วันของเซิร์ฟเวอร์ UTC | ตรวจวันใน Asia/Bangkok ที่ DB และ date input ตามวันท้องถิ่นใน UI | `schema/05_integrity.sql`, `jobs.js` |
 | JS ก้อนหลักประมาณ 2.86 MB | สร้างข้อมูลจังหวัดเฉพาะชื่อไทยที่ใช้ และ lazy-load ฟอร์ม | `generate-geography.mjs`, `geography-options.json`, `App.jsx`, `PatientManager.jsx` |
-| FK ประกาศขาด covering index | เพิ่ม index patient/owner และ cancelled_by | schema 16 |
+| FK ประกาศขาด covering index | เพิ่ม index patient/owner และ cancelled_by | `schema/05_integrity.sql` |
 
 โค้ด JSX/CSS บางไฟล์มีการจัดรูปแบบด้วย Prettier เพื่ออ่านง่ายด้วย การเปลี่ยนรูปแบบไม่ได้เพิ่มความสามารถให้หน้าที่เป็น placeholder
 
@@ -51,8 +51,8 @@
 1. `frontend/src/main.jsx` → `App.jsx`: เริ่ม React, รับ session, โหลด profile, เลือกหน้า
 2. `RegisterForm.jsx` → `LoginForm.jsx` → `ProfileSetupForm.jsx`: บัญชีและข้อมูลส่วนตัว
 3. `RoleDashboard.jsx` → `Navbar.jsx`: role กับหน้าในระบบ
-4. `PatientManager.jsx` → `PatientForm.jsx` → schema 09: รายการ/ฟอร์ม/บันทึกผู้ป่วย
-5. `JobManager.jsx` → `JobForm.jsx` → schema 10–16: ประกาศและกฎฐานข้อมูล
+4. `PatientManager.jsx` → `PatientForm.jsx` → `schema/02_patients.sql`: รายการ/ฟอร์ม/บันทึกผู้ป่วย
+5. `JobManager.jsx` → `JobForm.jsx` → `schema/04_jobs.sql` → `schema/05_integrity.sql`: ประกาศและกฎฐานข้อมูล
 6. `EmployerDashboard.jsx`: สรุปผู้ป่วยและงานเปิดรับ
 7. `database/tests/sprint1_integration_test.sql`: ตรวจว่าสิทธิ์และเงื่อนไขทำงานจริง
 
@@ -103,23 +103,12 @@
 
 | ไฟล์ | หน้าที่ |
 |---|---|
-| `prototypes/skills_setup.sql` | สร้าง skills/seed ไทย และ policy อ่านเฉพาะ active; ใช้เป็น prerequisite ของ schema 04 แม้อยู่โฟลเดอร์ prototypes |
-| `schema/01_profiles.sql` | profile PK UUID อ้าง auth.users, role/contact/address และ constraints |
-| `schema/02_profiles_policies.sql` | อ่าน/สร้าง/แก้เฉพาะตน; client สร้าง admin ไม่ได้ และแก้ role ไม่ได้ |
-| `schema/03_updated_at_trigger.sql` | private schema และ trigger updated_at |
-| `schema/04_patient_tables.sql` | conditions, patients, patient_conditions, patient_required_skills; owner/date/mobility constraints |
-| `schema/05_patient_policies.sql` | patient owner policies, active reference data และสิทธิ์ join tables |
-| `schema/06_patient_seed.sql` | สภาวะตัวอย่าง 3 รายการ; ไม่ใช่คำวินิจฉัยทางการแพทย์ |
-| `schema/07_caregiver_tables.sql` | caregiver_profiles/caregiver_skills และ verification constraints; โครงรองรับ Sprint ถัดไป |
-| `schema/08_caregiver_policies.sql` | caregiver จัดการตนเองได้ แต่ยืนยันตัวเองไม่ได้ |
-| `schema/09_patient_atomic_save.sql` | save_patient_with_tags: insert/update และเปลี่ยนแท็กใน transaction เดียว |
-| `schema/10_job_posts.sql` | job_posts/job_required_skills, FK คู่ patient+owner, status/date/pay constraints, deferred skill guard |
-| `schema/11_job_policies.sql` | own job select/insert/update และ own editable skill relations; ไม่เปิดที่อยู่ละเอียดให้สาธารณะ |
-| `schema/12_patient_open_job_guard.sql` | block soft delete เมื่อมี open/matched/in_progress |
-| `schema/13_job_atomic_save.sql` | create_job_with_tags: lock patient, validate, draft→tags→open, คืน ID |
-| `schema/14_job_atomic_update.sql` | update_job_with_tags และ close_job; ล็อกงาน, ป้องกันแก้/ปิดข้ามเจ้าของและงานที่ปิดแล้ว |
-| `schema/15_sprint1_integrity.sql` | patient/skill locking, title length, finite timestamps, phone constraint สำหรับการเขียนใหม่ |
-| `schema/16_sprint1_indexes_and_dates.sql` | covering FK indexes; birth date finite และวันปัจจุบันแบบไทย |
+| `schema/01_core.sql` | skills/seed ไทยและสิทธิ์อ่าน, profiles/สิทธิ์, private schema และ trigger updated_at |
+| `schema/02_patients.sql` | conditions, patients, ความสัมพันธ์กับทักษะและสภาวะ, RLS, seed และ save_patient_with_tags |
+| `schema/03_caregivers.sql` | caregiver_profiles/caregiver_skills, verification constraints และ RLS |
+| `schema/04_jobs.sql` | job_posts/job_required_skills, RLS, guard และ RPC สร้าง/แก้/ปิดงาน |
+| `schema/05_integrity.sql` | patient/skill locking, ข้อจำกัดข้อมูล, covering FK indexes และวันปัจจุบันแบบไทย |
+| `migrations/001_patient_normal_mobility.sql` | เพิ่มค่า `normal` สำหรับฐานเดิม; ฐานใหม่มีอยู่ใน `schema/02_patients.sql` แล้ว |
 
 ### กฎสำคัญที่ผู้รีวิวต้องตรวจ
 
@@ -180,9 +169,9 @@
 | การแก้พร้อมกัน | edit สองหน้าพร้อมกันเป็น last successful write wins | หากต้องรักษาร่างหลายคน ให้เพิ่ม optimistic concurrency ด้วย updated_at ใน Sprint ต่อไป |
 | ปริมาณข้อมูล | รายการ jobs ยังไม่มี pagination | เหมาะกับข้อมูลโครงงาน; เพิ่ม pagination ก่อนมีข้อมูลมาก |
 | ข้อมูลอ้างอิง | ทักษะ inactive ที่เคยเลือกอาจถูกซ่อนโดย RLS | ก่อนเพิ่มหน้า Admin ปิดทักษะ ต้องออกแบบการแสดง historical tags/การเปลี่ยนแท็กให้ชัดเจน |
-| การบำรุงรักษา | schema เป็น numbered scripts ไม่ใช่ migration runner เต็มรูปแบบ | รันตามลำดับบนฐานใหม่; ฐานเดิมใช้ migration ที่ยังไม่เคยรัน ไม่รัน CREATE TABLE ซ้ำ |
+| การบำรุงรักษา | schema เป็นชุดติดตั้งฐานใหม่ ไม่ใช่ migration runner เต็มรูปแบบ | รัน `schema/01_core.sql` ถึง `05_integrity.sql` เฉพาะฐานใหม่; ฐานเดิมใช้เฉพาะ migration ที่ยังไม่เคยรัน |
 
-Supabase Performance Advisor เคยแจ้ง FK ที่ขาด index 2 จุด ซึ่งเพิ่มแล้วใน schema 16; unused indexes ของข้อมูลขนาดเล็กไม่ใช่เหตุให้ลบทันที ดู [คำอธิบาย linter](https://supabase.com/docs/guides/database/database-linter?lint=0001_unindexed_foreign_keys)
+Supabase Performance Advisor เคยแจ้ง FK ที่ขาด index 2 จุด ซึ่งเพิ่มแล้วใน `schema/05_integrity.sql`; unused indexes ของข้อมูลขนาดเล็กไม่ใช่เหตุให้ลบทันที ดู [คำอธิบาย linter](https://supabase.com/docs/guides/database/database-linter?lint=0001_unindexed_foreign_keys)
 
 ## 8. วิธีรันและตรวจด้วยตนเอง
 
@@ -197,7 +186,7 @@ npm run build
 
 ตั้ง Vercel Root Directory = `frontend`, Framework = Vite, Build = `npm run build`, Output = `dist`; ตั้ง env ใน Vercel แล้ว redeploy เมื่อเปลี่ยนค่า env
 
-ฐานใหม่: `prototypes/skills_setup.sql` → schema `01` ถึง `16` ตามลำดับ ส่วนฐานเดิมที่ใช้ทดสอบมีการ apply migrations แล้ว ไม่ต้องรัน CREATE TABLE ซ้ำ
+ฐานใหม่: `schema/01_core.sql` → `02_patients.sql` → `03_caregivers.sql` → `04_jobs.sql` → `05_integrity.sql` ตามลำดับ ส่วนฐานเดิมที่ใช้ทดสอบมีการ apply migrations แล้ว ไม่ต้องรัน CREATE TABLE ซ้ำ
 
 Regression ที่แนะนำ: รัน `database/tests/sprint1_integration_test.sql` ทั้งไฟล์ใน SQL Editor พร้อม BEGIN/ROLLBACK; ต้องได้ true ทั้งหกค่า ไม่มีรหัสผ่านในไฟล์นี้
 

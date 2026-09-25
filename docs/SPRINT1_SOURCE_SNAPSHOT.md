@@ -50,15 +50,16 @@
 40. [frontend/src/components/RegisterForm.jsx](../frontend/src/components/RegisterForm.jsx)
 41. [frontend/src/index.css](../frontend/src/index.css)
 42. [frontend/src/lib/jobs.js](../frontend/src/lib/jobs.js)
-43. [frontend/src/lib/supabase.js](../frontend/src/lib/supabase.js)
-44. [frontend/src/main.jsx](../frontend/src/main.jsx)
-45. [frontend/src/pages/AdminDashboard.jsx](../frontend/src/pages/AdminDashboard.jsx)
-46. [frontend/src/pages/CaregiverDashboard.jsx](../frontend/src/pages/CaregiverDashboard.jsx)
-47. [frontend/src/pages/EmployerDashboard.jsx](../frontend/src/pages/EmployerDashboard.jsx)
-48. [frontend/src/pages/LandingPage.jsx](../frontend/src/pages/LandingPage.jsx)
-49. [frontend/src/pages/RoleDashboard.jsx](../frontend/src/pages/RoleDashboard.jsx)
-50. [frontend/vite.config.js](../frontend/vite.config.js)
-51. [scripts/generate-review-snapshot.mjs](../scripts/generate-review-snapshot.mjs)
+43. [frontend/src/lib/patients.js](../frontend/src/lib/patients.js)
+44. [frontend/src/lib/supabase.js](../frontend/src/lib/supabase.js)
+45. [frontend/src/main.jsx](../frontend/src/main.jsx)
+46. [frontend/src/pages/AdminDashboard.jsx](../frontend/src/pages/AdminDashboard.jsx)
+47. [frontend/src/pages/CaregiverDashboard.jsx](../frontend/src/pages/CaregiverDashboard.jsx)
+48. [frontend/src/pages/EmployerDashboard.jsx](../frontend/src/pages/EmployerDashboard.jsx)
+49. [frontend/src/pages/LandingPage.jsx](../frontend/src/pages/LandingPage.jsx)
+50. [frontend/src/pages/RoleDashboard.jsx](../frontend/src/pages/RoleDashboard.jsx)
+51. [frontend/vite.config.js](../frontend/vite.config.js)
+52. [scripts/generate-review-snapshot.mjs](../scripts/generate-review-snapshot.mjs)
 
 ## database/prototypes/skills_setup.sql
 
@@ -6029,12 +6030,13 @@ export default Footer
 
 ## frontend/src/components/JobForm.jsx
 
-SHA-256: `a75a11a74ae0a46e221e1d392164d897c322b8fb399cc319d0370cb80ceeff5e`
+SHA-256: `bd47a6f8cf05f22d79c5d1462abf36441a2900b9266d6ab041896ccd5000e007`
 
 ````jsx
 import { useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { toLocalDateTime } from '../lib/jobs'
+import { formatPatientAge } from '../lib/patients'
 
 function JobForm({ job = null, onCancel, onSaved }) {
   const savingRef = useRef(false)
@@ -6068,7 +6070,7 @@ function JobForm({ job = null, onCancel, onSaved }) {
       const { data, error: queryError } = await supabase
         .from('patients')
         .select(
-          'id, first_name, last_name, province, district, subdistrict, address_detail',
+          'id, first_name, last_name, birth_date, province, district, subdistrict, address_detail',
         )
         .eq('is_active', true)
         .order('created_at', { ascending: false })
@@ -6224,7 +6226,7 @@ function JobForm({ job = null, onCancel, onSaved }) {
               <option value="">เลือกผู้ป่วย</option>
               {patients.map((patient) => (
                 <option key={patient.id} value={patient.id}>
-                  {patient.first_name} {patient.last_name}
+                  {patient.first_name} {patient.last_name} ({formatPatientAge(patient.birth_date)})
                 </option>
               ))}
             </select>
@@ -7325,11 +7327,12 @@ export default PatientForm
 
 ## frontend/src/components/PatientManager.jsx
 
-SHA-256: `228b335b0958982cda5c0193cf7ab6bd5e93c6bfd49eb5a2edf9b5a29d12904e`
+SHA-256: `5d1fd88edd1767821ac1b2fd8bce40670136dba1b6aed8de3196bde7cbba7860`
 
 ````jsx
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { formatPatientAge } from '../lib/patients'
 const PatientForm = lazy(() => import('./PatientForm'))
 
 const mobilityLabels = {
@@ -7521,6 +7524,8 @@ function PatientManager() {
             <h3>
               {patient.first_name} {patient.last_name}
             </h3>
+
+            <p>{formatPatientAge(patient.birth_date)}</p>
 
             <p>
               {mobilityLabels[patient.mobility_status] ??
@@ -8117,6 +8122,56 @@ export function formatJobDate(value) {
 }
 ````
 
+## frontend/src/lib/patients.js
+
+SHA-256: `1b0af30b866174df7ba824619021cb9da207f18499db58aa985b4ff541a73568`
+
+````javascript
+const bangkokCalendar = new Intl.DateTimeFormat('en-US', {
+  timeZone: 'Asia/Bangkok',
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+})
+
+export function getPatientAge(birthDate, asOf = new Date()) {
+  if (typeof birthDate !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(birthDate)) {
+    return null
+  }
+
+  const [birthYear, birthMonth, birthDay] = birthDate.split('-').map(Number)
+  const parsedBirthDate = new Date(`${birthDate}T00:00:00Z`)
+  if (
+    parsedBirthDate.getUTCFullYear() !== birthYear ||
+    parsedBirthDate.getUTCMonth() + 1 !== birthMonth ||
+    parsedBirthDate.getUTCDate() !== birthDay
+  ) {
+    return null
+  }
+
+  const today = Object.fromEntries(
+    bangkokCalendar
+      .formatToParts(asOf)
+      .filter((part) => ['year', 'month', 'day'].includes(part.type))
+      .map((part) => [part.type, Number(part.value)]),
+  )
+  const age =
+    today.year -
+    birthYear -
+    (today.month < birthMonth ||
+    (today.month === birthMonth && today.day < birthDay)
+      ? 1
+      : 0)
+
+  return age >= 0 ? age : null
+}
+
+export function formatPatientAge(birthDate) {
+  const age = getPatientAge(birthDate)
+  return age === null ? 'ไม่ระบุอายุ' : `อายุ ${age} ปี`
+}
+````
+
 ## frontend/src/lib/supabase.js
 
 SHA-256: `d2a1857e371d571d4ca10d86228cfa1309e1be6c4ef1477ec56edb1cf608fdb9`
@@ -8200,7 +8255,7 @@ export default CaregiverDashboard
 
 ## frontend/src/pages/EmployerDashboard.jsx
 
-SHA-256: `cea4587184724ca7719392a5caca129ca80e4cf8089be9143a1ef5c27414c6d4`
+SHA-256: `862c89f7563ad7b6b880b0ec9e621ff50e3082cdfe22699541c96347d9eb3dfe`
 
 ````jsx
 import { useEffect, useState } from 'react'
@@ -8211,6 +8266,7 @@ import locationIcon from '../assets/dashboard/location.svg'
 import patientIcon from '../assets/dashboard/patient.svg'
 import { supabase } from '../lib/supabase'
 import { formatJobDate, payUnitLabels } from '../lib/jobs'
+import { formatPatientAge } from '../lib/patients'
 
 const mobilityLabels = {
   bedridden: 'ผู้ป่วยติดเตียง',
@@ -8260,7 +8316,7 @@ function EmployerDashboard({ onNavigate }) {
       const { data, error: queryError } = await supabase
         .from('patients')
         .select(
-          'id, first_name, last_name, mobility_status, district, province',
+          'id, first_name, last_name, birth_date, mobility_status, district, province',
         )
         .eq('is_active', true)
         .order('created_at', { ascending: false })
@@ -8314,7 +8370,7 @@ function EmployerDashboard({ onNavigate }) {
                   <h3>
                     {patient.first_name} {patient.last_name}
                   </h3>
-                  <p>ผู้ป่วยในการดูแล</p>
+                  <p>ผู้ป่วยในการดูแล · {formatPatientAge(patient.birth_date)}</p>
                 </div>
               </div>
               <p className="dashboard-patient-detail">

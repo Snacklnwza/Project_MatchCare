@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { toLocalDateTime } from '../lib/jobs'
+import { formatPatientAge } from '../lib/patients'
 
 function JobForm({ job = null, onCancel, onSaved }) {
   const savingRef = useRef(false)
@@ -34,7 +35,7 @@ function JobForm({ job = null, onCancel, onSaved }) {
       const { data, error: queryError } = await supabase
         .from('patients')
         .select(
-          'id, first_name, last_name, province, district, subdistrict, address_detail',
+          'id, first_name, last_name, birth_date, province, district, subdistrict, address_detail',
         )
         .eq('is_active', true)
         .order('created_at', { ascending: false })
@@ -190,7 +191,7 @@ function JobForm({ job = null, onCancel, onSaved }) {
               <option value="">เลือกผู้ป่วย</option>
               {patients.map((patient) => (
                 <option key={patient.id} value={patient.id}>
-                  {patient.first_name} {patient.last_name}
+                  {patient.first_name} {patient.last_name} ({formatPatientAge(patient.birth_date)})
                 </option>
               ))}
             </select>

@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { formatPatientAge } from '../lib/patients'
 const PatientForm = lazy(() => import('./PatientForm'))
 
 const mobilityLabels = {
@@ -191,6 +192,8 @@ function PatientManager() {
             <h3>
               {patient.first_name} {patient.last_name}
             </h3>
+
+            <p>{formatPatientAge(patient.birth_date)}</p>
 
             <p>
               {mobilityLabels[patient.mobility_status] ??

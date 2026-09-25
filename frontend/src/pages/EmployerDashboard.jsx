@@ -6,6 +6,7 @@ import locationIcon from '../assets/dashboard/location.svg'
 import patientIcon from '../assets/dashboard/patient.svg'
 import { supabase } from '../lib/supabase'
 import { formatJobDate, payUnitLabels } from '../lib/jobs'
+import { formatPatientAge } from '../lib/patients'
 
 const mobilityLabels = {
   bedridden: 'ผู้ป่วยติดเตียง',
@@ -55,7 +56,7 @@ function EmployerDashboard({ onNavigate }) {
       const { data, error: queryError } = await supabase
         .from('patients')
         .select(
-          'id, first_name, last_name, mobility_status, district, province',
+          'id, first_name, last_name, birth_date, mobility_status, district, province',
         )
         .eq('is_active', true)
         .order('created_at', { ascending: false })
@@ -109,7 +110,7 @@ function EmployerDashboard({ onNavigate }) {
                   <h3>
                     {patient.first_name} {patient.last_name}
                   </h3>
-                  <p>ผู้ป่วยในการดูแล</p>
+                  <p>ผู้ป่วยในการดูแล · {formatPatientAge(patient.birth_date)}</p>
                 </div>
               </div>
               <p className="dashboard-patient-detail">

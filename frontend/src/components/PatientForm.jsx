@@ -298,7 +298,7 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
         required
       >
         <option value="">เลือกสถานะการเคลื่อนไหว</option>
-        <option value="ambulatory">เคลื่อนไหวได้ปกติ</option>
+        <option value="normal">เคลื่อนไหวได้ปกติ</option>
         <option value="bedridden">ผู้ป่วยติดเตียง</option>
         <option value="wheelchair">ใช้รถเข็น</option>
         <option value="walker">ใช้เครื่องช่วยเดิน</option>

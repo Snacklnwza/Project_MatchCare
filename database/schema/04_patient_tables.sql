@@ -60,6 +60,7 @@ create table public.patients (
   constraint patients_mobility_status_valid
     check (
       mobility_status in (
+        'normsl'
         'bedridden',
         'wheelchair',
         'walker',

@@ -9,6 +9,7 @@ import { formatJobDate, payUnitLabels } from '../lib/jobs'
 import { formatPatientAge } from '../lib/patients'
 
 const mobilityLabels = {
+  normal: 'เคลื่อนไหวได้ปกติ',
   bedridden: 'ผู้ป่วยติดเตียง',
   wheelchair: 'ใช้รถเข็น',
   walker: 'ใช้เครื่องช่วยเดิน',

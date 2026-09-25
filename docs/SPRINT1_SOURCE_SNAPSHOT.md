@@ -4008,7 +4008,7 @@ console.log(`Generated ${Object.keys(locations).length} provinces`)
 
 ## frontend/src/App.css
 
-SHA-256: `ee3bf9f53ae1226579c2867ea79cb99f00003d5c564eef51b011c36ff933ad81`
+SHA-256: `05342d9277448271af460ce617646db85f7ac86716886197854a38c74d58aa7c`
 
 ````css
 .app-shell {
@@ -5562,47 +5562,6 @@ SHA-256: `ee3bf9f53ae1226579c2867ea79cb99f00003d5c564eef51b011c36ff933ad81`
   resize: vertical;
 }
 
-.patient-province-picker input {
-  width: 100%;
-  min-height: 40px;
-  padding: 9px 12px;
-  border: 1px solid #bccac0;
-  border-radius: 6px;
-  background: #ffffff;
-  color: #1e293b;
-  font: inherit;
-}
-
-.patient-province-options {
-  display: grid;
-  max-height: 176px;
-  overflow-y: auto;
-  margin-top: 4px;
-  border: 1px solid #bccac0;
-  border-radius: 6px;
-  background: #ffffff;
-}
-
-.patient-province-options button {
-  padding: 9px 12px;
-  border: 0;
-  background: transparent;
-  color: #1e293b;
-  font: inherit;
-  text-align: left;
-}
-
-.patient-province-options button:hover,
-.patient-province-options button[aria-selected='true'] {
-  background: #e5f6ed;
-}
-
-.patient-province-options p {
-  margin: 0;
-  padding: 9px 12px;
-  color: #64748b;
-}
-
 .patient-option-group {
   display: grid;
   gap: 8px;
@@ -6861,7 +6820,7 @@ export default Navbar
 
 ## frontend/src/components/PatientForm.jsx
 
-SHA-256: `315a66275cda0783a2a52b2733a723affe2fdac608ca19fbbd47b390c3e1f833`
+SHA-256: `e1ef540f1c41b1b6be2e72b9bd82c63226e0c40a3c41e39550911859ef34509a`
 
 ````jsx
 import { useEffect, useRef, useState } from 'react'
@@ -6881,8 +6840,6 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
   )
   const [careNotes, setCareNotes] = useState(patient?.care_notes ?? '')
   const [province, setProvince] = useState(patient?.province ?? '')
-  const [provinceOptionsOpen, setProvinceOptionsOpen] = useState(false)
-  const [activeProvinceIndex, setActiveProvinceIndex] = useState(0)
   const [district, setDistrict] = useState(patient?.district ?? '')
   const [subdistrict, setSubdistrict] = useState(patient?.subdistrict ?? '')
   const [addressDetail, setAddressDetail] = useState(
@@ -6990,18 +6947,6 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
 
   const districts = Object.keys(geography[province] ?? {})
   const subdistricts = geography[province]?.[district] ?? []
-  const matchingProvinces = provinces
-    .filter((provinceName) => provinceName.includes(province.trim()))
-    .slice(0, 10)
-
-  function chooseProvince(provinceName) {
-    setProvince(provinceName)
-    setDistrict('')
-    setSubdistrict('')
-    setProvinceOptionsOpen(false)
-    formRef.current?.elements['patient-province'].setCustomValidity('')
-    setFieldErrors((errors) => ({ ...errors, 'patient-province': '' }))
-  }
 
   async function handleSubmit(event) {
     event.preventDefault()
@@ -7013,15 +6958,6 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
       field.setCustomValidity(
         field.value.trim() ? '' : 'กรุณากรอกข้อมูลช่องนี้',
       )
-    }
-    if (province && !Object.hasOwn(geography, province)) {
-      form.elements['patient-province'].setCustomValidity(
-        'กรุณาเลือกจังหวัดจากรายการ',
-      )
-      setFieldErrors((errors) => ({
-        ...errors,
-        'patient-province': 'กรุณาเลือกจังหวัดจากรายการ',
-      }))
     }
     if (!form.reportValidity()) return
     submitting.current = true
@@ -7087,6 +7023,7 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
         }))
       }}
       onInput={(event) => {
+        if (event.target.tagName === 'SELECT') return
         event.target.setCustomValidity?.('')
         setFieldErrors((errors) => ({ ...errors, [event.target.id]: '' }))
       }}
@@ -7175,7 +7112,14 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
             : undefined
         }
         value={mobilityStatus}
-        onChange={(event) => setMobilityStatus(event.target.value)}
+        onChange={(event) => {
+          event.target.setCustomValidity('')
+          setMobilityStatus(event.target.value)
+          setFieldErrors((errors) => ({
+            ...errors,
+            'patient-mobility-status': '',
+          }))
+        }}
         required
       >
         <option value="">เลือกสถานะการเคลื่อนไหว</option>
@@ -7231,94 +7175,29 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
       </fieldset>
 
       <label htmlFor="patient-province">จังหวัด</label>
-      <div className="patient-province-picker">
-        <input
-          id="patient-province"
-          type="text"
-          autoComplete="off"
-          role="combobox"
-          aria-autocomplete="list"
-          aria-controls="patient-province-options"
-          aria-expanded={provinceOptionsOpen}
-          aria-activedescendant={
-            provinceOptionsOpen && matchingProvinces.length
-              ? `patient-province-option-${activeProvinceIndex}`
-              : undefined
-          }
-          placeholder="พิมพ์ค้นหาจังหวัด เช่น เชียงใหม่"
-          aria-invalid={Boolean(fieldErrors['patient-province'])}
-          aria-describedby={
-            fieldErrors['patient-province'] ? 'patient-province-error' : undefined
-          }
-          value={province}
-          onFocus={() => setProvinceOptionsOpen(true)}
-          onChange={(event) => {
-            setProvince(event.target.value)
-            setDistrict('')
-            setSubdistrict('')
-            setActiveProvinceIndex(0)
-            setProvinceOptionsOpen(true)
-          }}
-          onKeyDown={(event) => {
-            if (event.key === 'Escape' && provinceOptionsOpen) {
-              event.stopPropagation()
-              setProvinceOptionsOpen(false)
-            } else if (event.key === 'ArrowDown' && matchingProvinces.length) {
-              event.preventDefault()
-              setActiveProvinceIndex((index) =>
-                Math.min(index + 1, matchingProvinces.length - 1),
-              )
-            } else if (event.key === 'ArrowUp' && matchingProvinces.length) {
-              event.preventDefault()
-              setActiveProvinceIndex((index) => Math.max(index - 1, 0))
-            } else if (
-              event.key === 'Enter' &&
-              provinceOptionsOpen &&
-              matchingProvinces.length
-            ) {
-              event.preventDefault()
-              chooseProvince(matchingProvinces[activeProvinceIndex])
-            }
-          }}
-          onBlur={(event) => {
-            setProvinceOptionsOpen(false)
-            if (province && !Object.hasOwn(geography, province)) {
-              event.target.setCustomValidity('กรุณาเลือกจังหวัดจากรายการ')
-              setFieldErrors((errors) => ({
-                ...errors,
-                'patient-province': 'กรุณาเลือกจังหวัดจากรายการ',
-              }))
-            }
-          }}
-          required
-        />
-        {provinceOptionsOpen && (
-          <div
-            id="patient-province-options"
-            role="listbox"
-            aria-label="จังหวัด"
-            className="patient-province-options"
-          >
-            {matchingProvinces.length ? (
-              matchingProvinces.map((provinceName, index) => (
-                <button
-                  key={provinceName}
-                  id={`patient-province-option-${index}`}
-                  type="button"
-                  role="option"
-                  aria-selected={index === activeProvinceIndex}
-                  onPointerDown={(event) => event.preventDefault()}
-                  onClick={() => chooseProvince(provinceName)}
-                >
-                  {provinceName}
-                </button>
-              ))
-            ) : (
-              <p>ไม่พบจังหวัด กรุณาตรวจชื่อที่พิมพ์</p>
-            )}
-          </div>
-        )}
-      </div>
+      <select
+        id="patient-province"
+        aria-invalid={Boolean(fieldErrors['patient-province'])}
+        aria-describedby={
+          fieldErrors['patient-province'] ? 'patient-province-error' : undefined
+        }
+        value={province}
+        onChange={(event) => {
+          event.target.setCustomValidity('')
+          setProvince(event.target.value)
+          setDistrict('')
+          setSubdistrict('')
+          setFieldErrors((errors) => ({ ...errors, 'patient-province': '' }))
+        }}
+        required
+      >
+        <option value="">เลือกจังหวัด</option>
+        {provinces.map((provinceName) => (
+          <option key={provinceName} value={provinceName}>
+            {provinceName}
+          </option>
+        ))}
+      </select>
       {fieldErrors['patient-province'] && (
         <small className="field-error" id="patient-province-error">
           {fieldErrors['patient-province']}
@@ -7334,10 +7213,12 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
         }
         value={district}
         onChange={(event) => {
+          event.target.setCustomValidity('')
           setDistrict(event.target.value)
           setSubdistrict('')
+          setFieldErrors((errors) => ({ ...errors, 'patient-district': '' }))
         }}
-        disabled={!Object.hasOwn(geography, province)}
+        disabled={!province}
         required
       >
         <option value="">เลือกอำเภอ/เขต</option>
@@ -7363,7 +7244,11 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
             : undefined
         }
         value={subdistrict}
-        onChange={(event) => setSubdistrict(event.target.value)}
+        onChange={(event) => {
+          event.target.setCustomValidity('')
+          setSubdistrict(event.target.value)
+          setFieldErrors((errors) => ({ ...errors, 'patient-subdistrict': '' }))
+        }}
         disabled={!district}
         required
       >

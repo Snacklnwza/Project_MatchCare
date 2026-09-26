@@ -61,8 +61,6 @@ function EmployerDashboard({ onNavigate }) {
         )
         .eq('is_active', true)
         .order('created_at', { ascending: false })
-        .limit(3)
-
       if (queryError) {
         setError('ไม่สามารถโหลดข้อมูลผู้ป่วยได้')
       } else {

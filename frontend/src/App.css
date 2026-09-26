@@ -1099,6 +1099,130 @@
   border: 1px solid #dce7e1;
   border-radius: 16px;
 }
+.caregiver-profile {
+  width: 100%;
+  max-width: 760px;
+  margin: 32px auto;
+}
+
+.caregiver-profile-form {
+  display: grid;
+  gap: 12px;
+}
+
+.caregiver-profile-form > label {
+  font-weight: 600;
+}
+
+.caregiver-profile-form textarea,
+.caregiver-profile-form input[type='number'] {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid #bdcfc5;
+  border-radius: 8px;
+  background: #fff;
+  font: inherit;
+}
+
+.caregiver-profile-form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+.caregiver-profile-form fieldset {
+  margin: 8px 0 0;
+  padding: 16px;
+  border: 1px solid #dce7e2;
+  border-radius: 12px;
+}
+
+.caregiver-profile-form legend {
+  font-weight: 600;
+}
+
+.caregiver-profile-form ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.caregiver-profile-form li label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.caregiver-profile-form input[type='checkbox'],
+.caregiver-profile-availability input {
+  accent-color: #006948;
+}
+
+.caregiver-profile-form button[type='submit'] {
+  justify-self: start;
+  min-height: 44px;
+  padding: 10px 20px;
+  border: 0;
+  border-radius: 8px;
+  background: #006948;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+}
+
+.caregiver-profile-availability {
+  margin-top: 24px;
+  padding: 16px;
+  border: 1px solid #dce7e2;
+  border-radius: 12px;
+  background: #f4fbf8;
+}
+
+.caregiver-profile-availability label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+}
+
+.caregiver-profile-availability p {
+  margin: 8px 0 0;
+  color: #64748b;
+}
+
+.caregiver-profile-availability input[role='switch'] {
+  appearance: none;
+  position: relative;
+  width: 44px;
+  height: 24px;
+  margin: 0;
+  border: 0;
+  border-radius: 999px;
+  background: #94a3b8;
+  cursor: pointer;
+}
+
+.caregiver-profile-availability input[role='switch']::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  transition: transform 0.2s;
+}
+
+.caregiver-profile-availability input[role='switch']:checked {
+  background: #006948;
+}
+
+.caregiver-profile-availability input[role='switch']:checked::before {
+  transform: translateX(20px);
+}
 
 .employer-dashboard {
   display: grid;
@@ -1130,6 +1254,9 @@
 .dashboard-patient-list {
   display: grid;
   gap: 12px;
+  max-height: 534px;
+  overflow-y: auto;
+  padding-right: 8px;
 }
 
 .dashboard-patient-card,

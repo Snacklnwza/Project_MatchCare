@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import AdminDashboard from './AdminDashboard'
 import CaregiverDashboard from './CaregiverDashboard'
+import CaregiverProfile from './CaregiverProfile'
 import EmployerDashboard from './EmployerDashboard'
 import PatientManager from '../components/PatientManager'
 import Footer from '../components/Footer'
@@ -83,6 +84,8 @@ function RoleDashboard({ profile, onSignOut }) {
         <PatientManager />
       ) : activePage === 'jobs' && profile.role === 'employer' ? (
         <JobManager />
+      ) : activePage === 'profile' && profile.role === 'caregiver' ? (
+        <CaregiverProfile profile={profile} />
       ) : (
         <section className="role-dashboard">
           <h2>{selectedPage?.title}</h2>

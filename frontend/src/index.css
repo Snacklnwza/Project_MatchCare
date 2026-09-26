@@ -1,4 +1,5 @@
 :root {
+  scrollbar-gutter: stable;
   font-family: 'Prompt', 'Noto Sans Thai', system-ui, sans-serif;
   line-height: 1.5;
   color: #24332c;

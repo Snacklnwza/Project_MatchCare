@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
-import './App.css'
+import './styles/App.css'
 import LoginForm from './components/LoginForm'
 import { supabase } from './lib/supabase'
 import RegisterForm from './components/RegisterForm'

@@ -1,4 +1,4 @@
--- Source: database/schema/07_caregiver_tables.sql
+-- ที่มา: database/schema/07_caregiver_tables.sql
 create table public.caregiver_profiles (
     caregiver_id uuid primary key references public.profiles(id) on delete cascade,
     bio text,
@@ -134,7 +134,7 @@ revoke all privileges
 on table public.caregiver_skills
 from anon, authenticated;
 
--- Source: database/schema/08_caregiver_policies.sql
+-- ที่มา: database/schema/08_caregiver_policies.sql
 -- ผู้ใช้ที่เข้าสู่ระบบอ่านข้อมูลผ่าน RLS ได้
 -- ไม่ให้สิทธิ์ลบโปรไฟล์ผู้ดูแล
 

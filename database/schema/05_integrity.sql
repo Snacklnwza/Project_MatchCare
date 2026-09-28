@@ -1,5 +1,5 @@
--- Source: database/schema/15_sprint1_integrity.sql
--- Shared-row locks keep concurrent skill changes and patient closure consistent.
+-- ที่มา: database/schema/15_sprint1_integrity.sql
+-- ล็อกแถวข้อมูลที่เกี่ยวข้อง เพื่อให้การแก้ทักษะพร้อมกันและการปิดข้อมูลผู้ป่วยไม่ขัดแย้งกัน
 create or replace function private.validate_job_post()
 returns trigger
 language plpgsql
@@ -15,7 +15,7 @@ begin
   end if;
 
   if v_check_patient and new.status in ('draft', 'open', 'matched', 'in_progress') then
-    -- Synchronize with patient deactivation; recheck is_active after acquiring lock.
+    -- ทำงานให้สอดคล้องกับการปิดใช้งานผู้ป่วย และตรวจ `is_active` อีกครั้งหลังได้ล็อก
     perform 1 from public.patients
     where id = new.patient_id and employer_id = new.employer_id and is_active
     for share;
@@ -68,15 +68,15 @@ for each row execute function private.lock_job_for_skill_change();
 
 alter table public.job_posts add constraint job_posts_title_length check (length(title) <= 120);
 alter table public.job_posts add constraint job_posts_finite_dates check (isfinite(starts_at) and isfinite(ends_at));
--- Honor the UI's maximum of 10 digits at the database boundary as well.
+-- จำกัดเบอร์โทรไม่เกิน 10 หลักในฐานข้อมูลให้ตรงกับ UI
 alter table public.profiles add constraint profiles_phone_digits check (phone ~ '^[0-9]{1,10}$') not valid;
 
--- Source: database/schema/16_sprint1_indexes_and_dates.sql
--- Full indexes support FK checks for both open and historical jobs.
+-- ที่มา: database/schema/16_sprint1_indexes_and_dates.sql
+-- ดัชนีช่วยตรวจ FK ของทั้งประกาศที่เปิดอยู่และประกาศย้อนหลัง
 create index job_posts_patient_owner_idx on public.job_posts(patient_id, employer_id);
 create index job_posts_cancelled_by_idx on public.job_posts(cancelled_by);
 
--- Match the Thai calendar day instead of the database server's UTC day.
+-- ใช้วันตามเวลาไทย แทนวันตามเวลา UTC ของเซิร์ฟเวอร์ฐานข้อมูล
 create or replace function private.validate_patient()
 returns trigger
 language plpgsql

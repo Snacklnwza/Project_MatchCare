@@ -1,4 +1,4 @@
--- Test 1: Caregiver สร้างและอ่านโปรไฟล์ของตัวเองได้
+-- ทดสอบ 1: Caregiver สร้างและอ่านโปรไฟล์ของตัวเองได้
 -- ข้อมูลทดสอบทั้งหมดจะถูกยกเลิกด้วย rollback
 
 begin;
@@ -101,7 +101,7 @@ where caregiver_id = (select auth.uid());
 
 rollback;
 
--- Test 2: Employer ต้องสร้างโปรไฟล์ผู้ดูแลไม่ได้
+-- ทดสอบ 2: Employer ต้องสร้างโปรไฟล์ผู้ดูแลไม่ได้
 
 begin;
 
@@ -181,7 +181,7 @@ select current_setting(
 
 rollback;
 
--- Test 3: Caregiver แก้โปรไฟล์ตัวเองได้
+-- ทดสอบ 3: Caregiver แก้โปรไฟล์ตัวเองได้
 -- และ updated_at ต้องเปลี่ยนอัตโนมัติ
 
 begin;
@@ -266,7 +266,7 @@ where caregiver_id = (select auth.uid());
 
 rollback;
 
--- Test 4: Caregiver ต้องยืนยันตัวเองไม่ได้
+-- ทดสอบ 4: Caregiver ต้องยืนยันตัวเองไม่ได้
 
 begin;
 
@@ -376,7 +376,7 @@ where caregiver_id = (select auth.uid());
 
 rollback;
 
--- Test 5: Employer อ่านและแก้โปรไฟล์ผู้ดูแลไม่ได้
+-- ทดสอบ 5: Employer อ่านและแก้โปรไฟล์ผู้ดูแลไม่ได้
 
 begin;
 
@@ -471,7 +471,7 @@ select
 
 rollback;
 
--- Test 6: Caregiver เพิ่ม อ่าน และลบทักษะของตัวเองได้
+-- ทดสอบ 6: Caregiver เพิ่ม อ่าน และลบทักษะของตัวเองได้
 
 begin;
 
@@ -614,7 +614,7 @@ select
 
 rollback;
 
--- Test 7: Employer จัดการทักษะของ Caregiver ไม่ได้
+-- ทดสอบ 7: Employer จัดการทักษะของ Caregiver ไม่ได้
 
 begin;
 

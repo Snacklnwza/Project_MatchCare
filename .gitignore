@@ -19,3 +19,4 @@ Thumbs.db
 # Local browser test artifacts (may contain test sessions)
 .playwright-cli/
 output/
+supabase/.temp/

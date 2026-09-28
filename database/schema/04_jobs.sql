@@ -1,4 +1,4 @@
--- Source: database/schema/10_job_posts.sql
+-- ที่มา: database/schema/10_job_posts.sql
 -- ID 4: ประกาศรับสมัครผู้ดูแลและทักษะที่ต้องการ
 -- เก็บที่อยู่ในประกาศเป็น snapshot; ห้ามเปิดเผยตารางนี้ทั้งแถวแก่ผู้ใช้ทั่วไป
 
@@ -180,7 +180,7 @@ after delete on public.job_required_skills
 deferrable initially deferred
 for each row execute function private.require_open_job_skill();
 
--- Source: database/schema/11_job_policies.sql
+-- ที่มา: database/schema/11_job_policies.sql
 -- เจ้าของอ่านและจัดการประกาศของตน; ยังไม่เปิดตารางที่มีที่อยู่ละเอียดให้ผู้อื่นอ่าน
 
 revoke all privileges on table public.job_posts from anon, authenticated;
@@ -269,7 +269,7 @@ using (
   )
 );
 
--- Source: database/schema/12_patient_open_job_guard.sql
+-- ที่มา: database/schema/12_patient_open_job_guard.sql
 -- ID 3 ข้อ 7: ผู้ป่วยที่ผูกกับประกาศ/งานที่ยังดำเนินอยู่ปิดใช้งานไม่ได้
 
 create or replace function private.prevent_patient_deactivation_with_job()
@@ -296,7 +296,7 @@ create trigger patients_prevent_deactivation_with_job
 before update of is_active on public.patients
 for each row execute function private.prevent_patient_deactivation_with_job();
 
--- Source: database/schema/13_job_atomic_save.sql
+-- ที่มา: database/schema/13_job_atomic_save.sql
 -- สร้างประกาศกับทักษะใน transaction เดียว ภายใต้สิทธิ์/RLS ของผู้เรียก
 create or replace function public.create_job_with_tags(
   p_patient_id bigint, p_title text, p_description text, p_care_summary text,
@@ -356,7 +356,7 @@ $$;
 revoke all on function public.create_job_with_tags(bigint,text,text,text,timestamptz,timestamptz,numeric,text,bigint[]) from public, anon;
 grant execute on function public.create_job_with_tags(bigint,text,text,text,timestamptz,timestamptz,numeric,text,bigint[]) to authenticated;
 
--- Source: database/schema/14_job_atomic_update.sql
+-- ที่มา: database/schema/14_job_atomic_update.sql
 create or replace function public.update_job_with_tags(
   p_job_id bigint,
   p_patient_id bigint,

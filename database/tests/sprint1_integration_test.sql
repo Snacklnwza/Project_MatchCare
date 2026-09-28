@@ -1,4 +1,4 @@
--- Repeatable integration checks. All fixture rows roll back; sequence gaps are expected.
+-- ชุดทดสอบการทำงานร่วมกันที่รันซ้ำได้ ข้อมูลทดสอบทั้งหมดถูก rollback และเลข sequence อาจข้ามได้
 begin;
 select set_config('test.owner', gen_random_uuid()::text, true);
 select set_config('test.other', gen_random_uuid()::text, true);
@@ -43,7 +43,7 @@ begin
   p := public.save_patient_with_tags(null,'ทดสอบ','ผู้ป่วย','1950-01-01','walker',null,
     'กรุงเทพมหานคร','พระนคร','พระบรมมหาราชวัง','ข้อมูลสมมติ','{}',skills);
   perform set_config('test.patient',p.id::text,true);
-  -- Use the same calendar as validate_patient, including UTC/Thai midnight overlap.
+  -- ใช้วันตามเวลาเดียวกับ `validate_patient` รวมถึงช่วงเที่ยงคืนที่วัน UTC และวันไทยต่างกัน
   update public.patients set birth_date=(now() at time zone 'Asia/Bangkok')::date where id=p.id;
   begin
     update public.patients set birth_date=(now() at time zone 'Asia/Bangkok')::date+1 where id=p.id;
@@ -57,7 +57,7 @@ begin
   perform public.update_job_with_tags(j,p.id,'แก้ไขประกาศ','รายละเอียดใหม่','สรุปใหม่',now()+interval '2 days',now()+interval '3 days',1500,'day',array[skills[2]]);
   if not exists(select 1 from public.job_posts where id=j and title='แก้ไขประกาศ' and pay_amount=1500)
     or (select count(*) from public.job_required_skills where job_post_id=j) <> 1 then raise exception 'update failed'; end if;
-  -- Invalid tags, zero pay, reversed dates, blank text must leave the existing job unchanged.
+  -- แท็กไม่ถูกต้อง ค่าตอบแทนเป็นศูนย์ วันเริ่มหลังวันสิ้นสุด หรือข้อความว่าง ต้องไม่เปลี่ยนประกาศเดิม
   for i in 1..4 loop
     rejected := false;
     begin
@@ -79,7 +79,7 @@ begin
     update public.patients set is_active=false where id=p.id;
     raise exception 'active patient deactivated';
   exception when check_violation then null; end;
-  -- Immediate constraint checks also prove at least one skill remains.
+  -- การตรวจ constraint ทันทีต้องยืนยันด้วยว่ายังเหลือทักษะอย่างน้อยหนึ่งรายการ
   begin
     delete from public.job_required_skills where job_post_id=j;
     set constraints all immediate;

@@ -1,4 +1,4 @@
--- Source: database/schema/04_patient_tables.sql
+-- ที่มา: database/schema/04_patient_tables.sql
 -- รายการสภาวะและความต้องการดูแลสำหรับเลือกให้ผู้ป่วย
 -- เป็นข้อมูลตัวอย่างสำหรับระบบ ไม่ใช่คำวินิจฉัยทางการแพทย์
 
@@ -180,7 +180,7 @@ on public.patient_required_skills (skill_id);
 alter table public.patient_required_skills
 enable row level security;
 
--- Source: database/schema/05_patient_policies.sql
+-- ที่มา: database/schema/05_patient_policies.sql
 -- สิทธิ์อ่านรายการสภาวะที่เปิดใช้งาน
 -- RLS Policy ด้านล่างจะกรองแถวที่อ่านได้อีกชั้น
 
@@ -410,7 +410,7 @@ using (
   )
 );
 
--- Source: database/schema/06_patient_seed.sql
+-- ที่มา: database/schema/06_patient_seed.sql
 -- ข้อมูลตัวอย่างสำหรับใช้พัฒนาและทดสอบ MatchCare
 -- ไม่ใช่มาตรฐานหรือคำวินิจฉัยทางการแพทย์
 
@@ -433,7 +433,7 @@ values
   )
 on conflict do nothing;
 
--- Source: database/schema/09_patient_atomic_save.sql
+-- ที่มา: database/schema/09_patient_atomic_save.sql
 -- บันทึกข้อมูลผู้ป่วยและแท็กในคำสั่งเดียว เพื่อให้ล้มเหลว/สำเร็จพร้อมกัน
 -- SECURITY INVOKER ใช้สิทธิ์และ RLS ของผู้เรียก ไม่ข้ามข้อจำกัดเจ้าของข้อมูล
 

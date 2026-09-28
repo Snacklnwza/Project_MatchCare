@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { formatJobDate, jobStatusLabels, payUnitLabels } from '../lib/jobs'
 import JobForm from './JobForm'
+import CaregiverMatches from './CaregiverMatches'
 
 function JobManager() {
   const [jobs, setJobs] = useState([])
@@ -14,6 +15,7 @@ function JobManager() {
   const [filter, setFilter] = useState('all')
   const [closingId, setClosingId] = useState(null)
   const closingRef = useRef(false)
+  const [matchingJob, setMatchingJob] = useState(null)
 
   useEffect(() => {
     let cancelled = false
@@ -79,6 +81,13 @@ function JobManager() {
     setError('')
     setShowForm(true)
   }
+
+  if (matchingJob) return (
+    <CaregiverMatches job={matchingJob} onBack={() => {
+      setMatchingJob(null)
+      setRefreshKey((value) => value + 1)
+    }} />
+  )
 
   if (showForm)
     return (
@@ -181,6 +190,12 @@ function JobManager() {
               </div>
               {['draft', 'open'].includes(job.status) && (
                 <div className="job-actions">
+                  {job.status === 'open' && (
+                    <button type="button" disabled={closingId !== null}
+                      onClick={() => setMatchingJob(job)}>
+                      หาผู้ดูแลสำหรับประกาศนี้
+                    </button>
+                  )}
                   <button
                     type="button"
                     disabled={closingId !== null}

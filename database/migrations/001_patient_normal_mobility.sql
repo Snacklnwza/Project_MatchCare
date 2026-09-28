@@ -1,5 +1,5 @@
--- Run once on an existing MatchCare database created before `normal` was added.
--- Fresh databases already include this value in schema/02_patients.sql.
+-- รันครั้งเดียวกับฐานข้อมูล MatchCare เดิมที่สร้างก่อนเพิ่มค่า `normal`
+-- ฐานข้อมูลที่ติดตั้งใหม่มีค่านี้อยู่แล้วใน schema/02_patients.sql
 begin;
 
 alter table public.patients

@@ -68,6 +68,27 @@ export default function Invitations({ profile }) {
       setBusyId(null)
     }
   }
+  async function requestCompletion(request) {
+    if (
+      busy.current ||
+      !window.confirm(`แจ้งผู้ว่าจ้างว่างาน “${request.title}” เสร็จแล้วใช่หรือไม่?`)
+    ) return
+    busy.current = true
+    setBusyId(request.request_id)
+    setActionError('')
+    setMessage('')
+    try {
+      await callWorkflow('request_job_completion', { p_job_id: request.job_post_id })
+      setMessage('ส่งคำขอจบงานแล้ว รอผู้ว่าจ้างยืนยัน')
+      reload()
+    } catch (issue) {
+      setActionError(workflowError(issue))
+      reload()
+    } finally {
+      busy.current = false
+      setBusyId(null)
+    }
+  }
   return (
     <section className="workflow-page">
       <header>
@@ -113,6 +134,10 @@ export default function Invitations({ profile }) {
                   สถานะงาน: {jobStatusLabels[request.job_status] ?? request.job_status}
                 </p>
               )}
+              {profile.role === 'caregiver' && request.status === 'accepted' &&
+                request.job_status === 'completion_pending' && (
+                  <p role="status">ส่งคำขอแล้ว กำลังรอผู้ว่าจ้างยืนยันจบงาน</p>
+                )}
               {profile.role === 'employer' && (
                 <p>ผู้ดูแล: {request.caregiver_name}</p>
               )}
@@ -158,6 +183,16 @@ export default function Invitations({ profile }) {
                   ดูข้อมูลติดต่อ
                 </button>
               )}
+              {profile.role === 'caregiver' && request.status === 'accepted' &&
+                request.job_status === 'in_progress' && (
+                  <button
+                    type="button"
+                    disabled={busyId !== null}
+                    onClick={() => requestCompletion(request)}
+                  >
+                    {busyId === request.request_id ? 'กำลังส่งคำขอ...' : 'แจ้งจบงาน'}
+                  </button>
+                )}
               {contact?.requestId === request.request_id && (
                 <section
                   className="workflow-contact"

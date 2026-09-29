@@ -48,6 +48,14 @@ Security advisors หลังติดตั้งเหลือคำเต�
 
 ทดสอบ SQL regression ในเครื่องทั้ง schema 01–08, matching, workflow และ Sprint 1 ผ่าน; `npm run lint` และ `npm run build` ผ่านหลังเพิ่มปุ่มในหน้าประกาศและแสดงสถานะในหน้าคำเชิญ Security advisor ยังมีเพียงคำเตือน Auth เดิม
 
+## แจ้งจบงานและผู้ว่าจ้างยืนยัน — 29 กันยายน 2026
+
+ติดตั้ง migration `20260929091418_caregiver_requests_job_completion` แล้ว การทดสอบ Supabase จริงด้วยบัญชี caregiver/employer/admin ยืนยันว่า: ผู้ดูแลของคู่ accepted ส่งคำขอจาก `in_progress` ได้ → งานเป็น `completion_pending` พร้อม `completion_requested_at` → ผู้ดูแลเห็นว่ารอการยืนยัน → ผู้ว่าจ้างยืนยันแล้วงานเป็น `completed` พร้อม `completed_at` → ทั้งสองฝ่ายเห็นสถานะเสร็จสิ้น
+
+แอดมินยืนยันแทนไม่ได้, ผู้ดูแลส่งคำขอซ้ำไม่ได้ และผู้ว่าจ้างยืนยันซ้ำไม่ได้ SQL regression ในเครื่อง, `npm run lint` และ `npm run build` ผ่านหลังเพิ่มหน้าจอสองฝ่าย
+
+Migration `20260929091935_protect_patient_during_completion_confirmation` เพิ่มสถานะ `completion_pending` ในดัชนี/กฎป้องกันการปิดใช้งานผู้ป่วย เพื่อไม่ให้ผู้ว่าจ้างปิดข้อมูลผู้ป่วยก่อนยืนยันการจบงาน
+
 ## ตำแหน่งไฟล์
 
 - `database/schema/` — SQL รวมตามระบบ สำหรับสร้างฐานใหม่

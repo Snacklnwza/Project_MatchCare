@@ -24,6 +24,7 @@ create table public.job_posts (
   cancelled_at timestamptz,
   cancelled_by uuid references public.profiles(id) on delete restrict,
   started_at timestamptz,
+  completion_requested_at timestamptz,
   completed_at timestamptz,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
@@ -47,7 +48,7 @@ create table public.job_posts (
   constraint job_posts_status_valid check (
     status in (
       'draft', 'open', 'closed', 'matched',
-      'in_progress', 'completed', 'cancelled'
+      'in_progress', 'completion_pending', 'completed', 'cancelled'
     )
   )
 );
@@ -57,7 +58,7 @@ on public.job_posts (employer_id, created_at desc);
 
 create index job_posts_patient_active_idx
 on public.job_posts (patient_id)
-where status in ('open', 'matched', 'in_progress');
+where status in ('open', 'matched', 'in_progress', 'completion_pending');
 
 create index job_posts_open_location_idx
 on public.job_posts (province, district, starts_at)
@@ -282,7 +283,7 @@ begin
   if old.is_active = true and new.is_active = false and exists (
     select 1 from public.job_posts
     where patient_id = old.id
-      and status in ('open', 'matched', 'in_progress')
+      and status in ('open', 'matched', 'in_progress', 'completion_pending')
   ) then
     raise exception using errcode = '23514',
       message = 'patient_has_active_job';

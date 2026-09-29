@@ -4,6 +4,7 @@ export const jobStatusLabels = {
   closed: 'ปิดรับสมัคร',
   matched: 'จับคู่สำเร็จ',
   in_progress: 'กำลังดำเนินงาน',
+  completion_pending: 'รอผู้ว่าจ้างยืนยันจบงาน',
   completed: 'เสร็จสิ้น',
   cancelled: 'ยกเลิก',
 }

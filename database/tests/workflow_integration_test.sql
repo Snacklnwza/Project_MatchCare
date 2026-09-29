@@ -149,6 +149,41 @@ do $$ begin
   if not exists(select 1 from public.job_posts where id=current_setting('test.job')::bigint and status='in_progress' and started_at is not null) then
     raise exception 'job did not enter in_progress';
   end if;
+  perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.second'),'role','authenticated')::text,true);
+  begin
+    perform public.request_job_completion(current_setting('test.job')::bigint);
+    raise exception 'unmatched caregiver requested completion';
+  exception when insufficient_privilege then null; end;
+  perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.caregiver'),'role','authenticated')::text,true);
+  if public.request_job_completion(current_setting('test.job')::bigint) <> current_setting('test.job')::bigint then
+    raise exception 'completion request did not return job id';
+  end if;
+  perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.employer'),'role','authenticated')::text,true);
+  if not exists(select 1 from public.job_posts where id=current_setting('test.job')::bigint and status='completion_pending' and completion_requested_at is not null) then
+    raise exception 'job did not enter completion_pending';
+  end if;
+  begin
+    update public.patients set is_active=false where id=(select patient_id from public.job_posts where id=current_setting('test.job')::bigint);
+    raise exception 'patient deactivation allowed while job awaits completion';
+  exception when check_violation then
+    if sqlerrm <> 'patient_has_active_job' then raise; end if;
+  end;
+  perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.caregiver'),'role','authenticated')::text,true);
+  begin
+    perform public.confirm_job_completion(current_setting('test.job')::bigint);
+    raise exception 'caregiver confirmed own completion request';
+  exception when insufficient_privilege then null; end;
+  perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.employer'),'role','authenticated')::text,true);
+  if public.confirm_job_completion(current_setting('test.job')::bigint) <> current_setting('test.job')::bigint then
+    raise exception 'employer confirmation did not return job id';
+  end if;
+  if not exists(select 1 from public.job_posts where id=current_setting('test.job')::bigint and status='completed' and completed_at is not null) then
+    raise exception 'job did not enter completed';
+  end if;
+  begin
+    perform public.confirm_job_completion(current_setting('test.job')::bigint);
+    raise exception 'duplicate completion confirmation allowed';
+  exception when raise_exception then if sqlerrm <> 'job_completion_not_pending' then raise; end if; end;
   begin
     perform public.start_matched_job(current_setting('test.job')::bigint);
     raise exception 'duplicate start allowed';

@@ -104,6 +104,35 @@ function JobManager() {
     }
   }
 
+  async function confirmCompletion(job) {
+    if (
+      closingRef.current ||
+      !window.confirm(`ผู้ดูแลแจ้งว่างาน “${job.title}” เสร็จแล้ว ยืนยันจบงานใช่หรือไม่?`)
+    ) return
+    closingRef.current = true
+    setClosingId(job.id)
+    setError('')
+    setSuccessMessage('')
+    try {
+      const { data, error: confirmError } = await supabase.rpc('confirm_job_completion', {
+        p_job_id: job.id,
+      })
+      if (confirmError) throw confirmError
+      if (!data) throw new Error('ไม่พบคำขอจบงานที่รอยืนยัน')
+      setJobs((current) => current.map((item) =>
+        item.id === job.id
+          ? { ...item, status: 'completed', completed_at: new Date().toISOString() }
+          : item,
+      ))
+      setSuccessMessage('ยืนยันจบงานแล้ว')
+    } catch {
+      setError('ยืนยันจบงานไม่สำเร็จ สถานะอาจเปลี่ยนแล้ว กรุณาโหลดรายการใหม่')
+    } finally {
+      closingRef.current = false
+      setClosingId(null)
+    }
+  }
+
   function openForm(job = null) {
     setEditingJob(job)
     setSuccessMessage('')
@@ -175,6 +204,8 @@ function JobManager() {
           <option value="open">เปิดรับสมัคร</option>
           <option value="matched">จับคู่สำเร็จ</option>
           <option value="in_progress">กำลังดำเนินงาน</option>
+          <option value="completion_pending">รอยืนยันจบงาน</option>
+          <option value="completed">เสร็จสิ้น</option>
           <option value="closed">ปิดรับสมัคร</option>
         </select>
       </label>
@@ -224,6 +255,14 @@ function JobManager() {
                   <button type="button" disabled={closingId !== null}
                     onClick={() => startJob(job)}>
                     {closingId === job.id ? 'กำลังเริ่มงาน...' : 'เริ่มงาน'}
+                  </button>
+                </div>
+              )}
+              {job.status === 'completion_pending' && (
+                <div className="job-actions">
+                  <button type="button" disabled={closingId !== null}
+                    onClick={() => confirmCompletion(job)}>
+                    {closingId === job.id ? 'กำลังยืนยัน...' : 'ยืนยันจบงาน'}
                   </button>
                 </div>
               )}

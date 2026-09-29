@@ -31,7 +31,7 @@ begin
       or new.status is distinct from old.status;
   end if;
 
-  if v_check_patient and new.status in ('draft', 'open', 'matched', 'in_progress') then
+  if v_check_patient and new.status in ('draft', 'open', 'matched', 'in_progress', 'completion_pending') then
     -- ทำงานให้สอดคล้องกับการปิดใช้งานผู้ป่วย และตรวจ `is_active` อีกครั้งหลังได้ล็อก
     perform 1 from public.patients
     where id = new.patient_id and employer_id = new.employer_id and is_active
@@ -54,6 +54,12 @@ begin
         select 1 from public.match_requests r where r.job_post_id=new.id and r.status='accepted'
       ))
       or (old.status = 'matched' and new.status = 'in_progress' and exists (
+        select 1 from public.match_requests r where r.job_post_id=new.id and r.status='accepted'
+      ))
+      or (old.status = 'in_progress' and new.status = 'completion_pending' and exists (
+        select 1 from public.match_requests r where r.job_post_id=new.id and r.status='accepted'
+      ))
+      or (old.status = 'completion_pending' and new.status = 'completed' and exists (
         select 1 from public.match_requests r where r.job_post_id=new.id and r.status='accepted'
       ))
     ) then
@@ -217,4 +223,53 @@ returns bigint language sql security invoker set search_path=pg_catalog
 as $fn$ select match_internal.start_matched_job(p_job_id); $fn$;
 revoke all on function public.start_matched_job(bigint) from public,anon,authenticated;
 grant execute on function public.start_matched_job(bigint) to authenticated;
+
+-- ผู้ดูแลแจ้งจบงานของคู่ที่ตอบรับแล้ว
+create or replace function match_internal.request_job_completion(p_job_id bigint)
+returns bigint language plpgsql security definer set search_path = '' as $fn$
+declare v_job public.job_posts;
+begin
+ if auth.uid() is null then raise exception using errcode='42501',message='login_required'; end if;
+ select * into v_job from public.job_posts where id=p_job_id for update;
+ if not found or not exists(select 1 from public.profiles where id=auth.uid() and role='caregiver')
+   or not exists(select 1 from public.match_requests where job_post_id=p_job_id and caregiver_id=auth.uid() and status='accepted') then
+   raise exception using errcode='42501',message='accepted_caregiver_required';
+ end if;
+ if v_job.status <> 'in_progress' then raise exception 'job_not_in_progress'; end if;
+ update public.job_posts set status='completion_pending',completion_requested_at=now() where id=p_job_id;
+ return p_job_id;
+end;
+$fn$;
+revoke all on function match_internal.request_job_completion(bigint) from public,anon,authenticated;
+grant execute on function match_internal.request_job_completion(bigint) to authenticated;
+create or replace function public.request_job_completion(p_job_id bigint)
+returns bigint language sql security invoker set search_path=pg_catalog
+as $fn$ select match_internal.request_job_completion(p_job_id); $fn$;
+revoke all on function public.request_job_completion(bigint) from public,anon,authenticated;
+grant execute on function public.request_job_completion(bigint) to authenticated;
+
+-- ผู้ว่าจ้างเจ้าของประกาศยืนยันปิดงาน
+create or replace function match_internal.confirm_job_completion(p_job_id bigint)
+returns bigint language plpgsql security definer set search_path = '' as $fn$
+declare v_job public.job_posts;
+begin
+ if auth.uid() is null then raise exception using errcode='42501',message='login_required'; end if;
+ select * into v_job from public.job_posts where id=p_job_id for update;
+ if not found or v_job.employer_id is distinct from auth.uid()
+   or not exists(select 1 from public.profiles where id=auth.uid() and role='employer') then
+   raise exception using errcode='42501',message='job_owner_required';
+ end if;
+ if v_job.status <> 'completion_pending' then raise exception 'job_completion_not_pending'; end if;
+ if v_job.completion_requested_at is null then raise exception using errcode='23514',message='completion_request_required'; end if;
+ update public.job_posts set status='completed',completed_at=now() where id=p_job_id;
+ return p_job_id;
+end;
+$fn$;
+revoke all on function match_internal.confirm_job_completion(bigint) from public,anon,authenticated;
+grant execute on function match_internal.confirm_job_completion(bigint) to authenticated;
+create or replace function public.confirm_job_completion(p_job_id bigint)
+returns bigint language sql security invoker set search_path=pg_catalog
+as $fn$ select match_internal.confirm_job_completion(p_job_id); $fn$;
+revoke all on function public.confirm_job_completion(bigint) from public,anon,authenticated;
+grant execute on function public.confirm_job_completion(bigint) to authenticated;
 commit;

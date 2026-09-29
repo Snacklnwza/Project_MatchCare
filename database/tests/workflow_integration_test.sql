@@ -119,6 +119,9 @@ end $$;
 select set_config('request.jwt.claims',json_build_object('sub',current_setting('test.caregiver'),'role','authenticated')::text,true);
 select public.respond_to_invitation(current_setting('test.request')::bigint,true);
 do $$ begin
+  if (select count(*) from public.match_requests where job_post_id=current_setting('test.job')::bigint and status='accepted') <> 1 then
+    raise exception 'expected exactly one accepted caregiver for a job';
+  end if;
   if not exists(select 1 from public.get_match_contact(current_setting('test.request')::bigint) where phone='0800000000') then raise exception 'accepted contact missing'; end if;
 end $$;
 select set_config('request.jwt.claims',json_build_object('sub',current_setting('test.second'),'role','authenticated')::text,true);

@@ -4620,7 +4620,7 @@ rollback;
 
 ## database/tests/workflow_integration_test.sql
 
-SHA-256: `ee058b930518cd81dffaa331803d28ada2421a32cd46d63b35f39aa6801a83dd`
+SHA-256: `21c9cae17bc95682dae037f1ee995fed567ade6784e24f57f8847c2ab408d5cf`
 
 ````sql
 -- ทดสอบด้วยข้อมูลสมมติเท่านั้น; รันหลัง schema 01–08 และ rollback ทุกแถว
@@ -4744,6 +4744,9 @@ end $$;
 select set_config('request.jwt.claims',json_build_object('sub',current_setting('test.caregiver'),'role','authenticated')::text,true);
 select public.respond_to_invitation(current_setting('test.request')::bigint,true);
 do $$ begin
+  if (select count(*) from public.match_requests where job_post_id=current_setting('test.job')::bigint and status='accepted') <> 1 then
+    raise exception 'expected exactly one accepted caregiver for a job';
+  end if;
   if not exists(select 1 from public.get_match_contact(current_setting('test.request')::bigint) where phone='0800000000') then raise exception 'accepted contact missing'; end if;
 end $$;
 select set_config('request.jwt.claims',json_build_object('sub',current_setting('test.second'),'role','authenticated')::text,true);

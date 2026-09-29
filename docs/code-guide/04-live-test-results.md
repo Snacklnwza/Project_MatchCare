@@ -42,6 +42,12 @@ Migration ที่ติดตั้งจริง: `20260928084433_caregiver_
 
 Security advisors หลังติดตั้งเหลือคำเตือนเดิมเรื่อง Auth leaked password protection ไม่พบคำเตือน RLS ของตารางเอกสารแล้ว
 
+## ทดสอบฟังก์ชันเริ่มงาน — 29 กันยายน 2026
+
+ติดตั้ง migration `20260929085921_start_matched_job` แล้ว ทดสอบด้วยประกาศสมมติที่จับคู่สำเร็จบน Supabase จริง: ผู้ว่าจ้างเจ้าของประกาศเปลี่ยนเป็น `in_progress` และบันทึก `started_at`; admin เริ่มแทนไม่ได้; กดเริ่มซ้ำถูกปฏิเสธ; ผู้ดูแลเห็นสถานะงาน `in_progress` ใน RPC รายการคำเชิญ
+
+ทดสอบ SQL regression ในเครื่องทั้ง schema 01–08, matching, workflow และ Sprint 1 ผ่าน; `npm run lint` และ `npm run build` ผ่านหลังเพิ่มปุ่มในหน้าประกาศและแสดงสถานะในหน้าคำเชิญ Security advisor ยังมีเพียงคำเตือน Auth เดิม
+
 ## ตำแหน่งไฟล์
 
 - `database/schema/` — SQL รวมตามระบบ สำหรับสร้างฐานใหม่

@@ -64,6 +64,15 @@ Trigger หลังประกาศถูกปิด เปลี่ยน p
 - `respond`: รับ/ปฏิเสธ แล้ว reload รายการเพื่อรับสถานะจากฐานข้อมูล
 - `showContact`: เรียก RPC เมื่อกดดูเท่านั้น; ไม่มีการโหลดข้อมูลติดต่อมาก่อนแล้วซ่อนด้วย CSS
 - เปลี่ยน role แล้ว RoleDashboard ถูก remount ตามบัญชีจาก App.jsx ป้องกัน state ของบัญชีเดิมปน
+- ผู้ว่าจ้างเริ่มงานจากบัตรประกาศที่จับคู่แล้ว ผ่าน `start_matched_job`; ผู้ดูแลเห็นสถานะงานปัจจุบันในหน้าคำเชิญ
+
+## เริ่มงานหลังจับคู่
+
+`public.start_matched_job(job_id)` ตรวจ session, บทบาท employer, เจ้าของประกาศ, สถานะ `matched` และคำเชิญ `accepted` ก่อนเปลี่ยนเป็น `in_progress` พร้อมบันทึก `started_at`
+
+ตัวตรวจสิทธิ์อยู่ใน `match_internal` แบบ `SECURITY DEFINER` เพื่อทำงานกับประกาศที่ owner RLS ปกติไม่ให้แก้ไขแล้ว ส่วน public RPC เป็น `SECURITY INVOKER` และจำกัด execute ให้ `authenticated` การล็อกแถวประกาศป้องกันคำขอซ้ำหรือพร้อมกัน; trigger อนุญาต transition นี้เมื่อมีผู้ดูแล accepted เท่านั้น
+
+migration `20260929085344_start_matched_job` ติดตั้งแล้วและทดสอบกับงานสมมติที่จับคู่ไว้: เจ้าของเริ่มได้, admin/role อื่นเริ่มไม่ได้, เริ่มซ้ำถูกปฏิเสธ และผู้ดูแลเห็นสถานะ `in_progress` ทดสอบเพิ่มเติมใน `workflow_integration_test.sql`
 
 ## ขอบเขต
 

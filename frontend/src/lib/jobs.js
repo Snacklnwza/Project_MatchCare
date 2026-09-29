@@ -2,7 +2,7 @@ export const jobStatusLabels = {
   draft: 'ฉบับร่าง',
   open: 'เปิดรับสมัคร',
   closed: 'ปิดรับสมัคร',
-  matched: 'เลือกผู้ดูแลแล้ว',
+  matched: 'จับคู่สำเร็จ',
   in_progress: 'กำลังดำเนินงาน',
   completed: 'เสร็จสิ้น',
   cancelled: 'ยกเลิก',

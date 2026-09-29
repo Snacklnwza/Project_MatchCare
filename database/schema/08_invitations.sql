@@ -53,6 +53,9 @@ begin
       or (old.status = 'open' and new.status = 'matched' and exists (
         select 1 from public.match_requests r where r.job_post_id=new.id and r.status='accepted'
       ))
+      or (old.status = 'matched' and new.status = 'in_progress' and exists (
+        select 1 from public.match_requests r where r.job_post_id=new.id and r.status='accepted'
+      ))
     ) then
       raise exception using errcode = '23514',
         message = 'job_status_transition_invalid';
@@ -187,4 +190,31 @@ begin
 end; $$;
 revoke all on function private.close_pending_invitations() from public,anon,authenticated;
 create trigger job_close_invitations after update of status on public.job_posts for each row execute function private.close_pending_invitations();
+
+-- เริ่มงานได้เมื่อเจ้าของประกาศมีผู้ดูแลตอบรับแล้ว
+create or replace function match_internal.start_matched_job(p_job_id bigint)
+returns bigint language plpgsql security definer set search_path = '' as $fn$
+declare v_job public.job_posts;
+begin
+ if auth.uid() is null then raise exception using errcode='42501',message='login_required'; end if;
+ select * into v_job from public.job_posts where id=p_job_id for update;
+ if not found or v_job.employer_id is distinct from auth.uid()
+   or not exists(select 1 from public.profiles where id=auth.uid() and role='employer') then
+   raise exception using errcode='42501',message='job_owner_required';
+ end if;
+ if v_job.status <> 'matched' then raise exception 'job_not_ready_to_start'; end if;
+ if not exists(select 1 from public.match_requests where job_post_id=p_job_id and status='accepted') then
+   raise exception using errcode='23514',message='accepted_match_required';
+ end if;
+ update public.job_posts set status='in_progress',started_at=now() where id=p_job_id;
+ return p_job_id;
+end;
+$fn$;
+revoke all on function match_internal.start_matched_job(bigint) from public,anon,authenticated;
+grant execute on function match_internal.start_matched_job(bigint) to authenticated;
+create or replace function public.start_matched_job(p_job_id bigint)
+returns bigint language sql security invoker set search_path=pg_catalog
+as $fn$ select match_internal.start_matched_job(p_job_id); $fn$;
+revoke all on function public.start_matched_job(bigint) from public,anon,authenticated;
+grant execute on function public.start_matched_job(bigint) to authenticated;
 commit;

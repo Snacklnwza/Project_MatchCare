@@ -137,6 +137,22 @@ select set_config('request.jwt.claims',json_build_object('sub',current_setting('
 do $$ begin
   if not exists(select 1 from public.job_posts where id=current_setting('test.job')::bigint and status='matched') then raise exception 'job not matched'; end if;
   if not exists(select 1 from public.get_match_contact(current_setting('test.request')::bigint)) then raise exception 'employer contact missing'; end if;
+  perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.other'),'role','authenticated')::text,true);
+  begin
+    perform public.start_matched_job(current_setting('test.job')::bigint);
+    raise exception 'another employer started the job';
+  exception when insufficient_privilege then null; end;
+  perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.employer'),'role','authenticated')::text,true);
+  if public.start_matched_job(current_setting('test.job')::bigint) <> current_setting('test.job')::bigint then
+    raise exception 'start did not return job id';
+  end if;
+  if not exists(select 1 from public.job_posts where id=current_setting('test.job')::bigint and status='in_progress' and started_at is not null) then
+    raise exception 'job did not enter in_progress';
+  end if;
+  begin
+    perform public.start_matched_job(current_setting('test.job')::bigint);
+    raise exception 'duplicate start allowed';
+  exception when raise_exception then if sqlerrm <> 'job_not_ready_to_start' then raise; end if; end;
 end $$;
 -- ทดสอบปฏิเสธคำเชิญและปิดประกาศอีกงานหนึ่ง
 do $$ declare j bigint; p bigint; tags bigint[];

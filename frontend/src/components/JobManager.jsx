@@ -75,6 +75,35 @@ function JobManager() {
     }
   }
 
+  async function startJob(job) {
+    if (
+      closingRef.current ||
+      !window.confirm(`เริ่มงานดูแลผู้ป่วยตามประกาศ “${job.title}” ใช่หรือไม่?`)
+    ) return
+    closingRef.current = true
+    setClosingId(job.id)
+    setError('')
+    setSuccessMessage('')
+    try {
+      const { data, error: startError } = await supabase.rpc('start_matched_job', {
+        p_job_id: job.id,
+      })
+      if (startError) throw startError
+      if (!data) throw new Error('ไม่พบประกาศที่พร้อมเริ่มงาน')
+      setJobs((current) => current.map((item) =>
+        item.id === job.id
+          ? { ...item, status: 'in_progress', started_at: new Date().toISOString() }
+          : item,
+      ))
+      setSuccessMessage('เริ่มงานแล้ว')
+    } catch {
+      setError('เริ่มงานไม่สำเร็จ สถานะอาจเปลี่ยนแล้ว กรุณาโหลดรายการใหม่')
+    } finally {
+      closingRef.current = false
+      setClosingId(null)
+    }
+  }
+
   function openForm(job = null) {
     setEditingJob(job)
     setSuccessMessage('')
@@ -144,6 +173,8 @@ function JobManager() {
         >
           <option value="all">ทั้งหมด</option>
           <option value="open">เปิดรับสมัคร</option>
+          <option value="matched">จับคู่สำเร็จ</option>
+          <option value="in_progress">กำลังดำเนินงาน</option>
           <option value="closed">ปิดรับสมัคร</option>
         </select>
       </label>
@@ -188,6 +219,14 @@ function JobManager() {
                   </span>
                 ))}
               </div>
+              {job.status === 'matched' && (
+                <div className="job-actions">
+                  <button type="button" disabled={closingId !== null}
+                    onClick={() => startJob(job)}>
+                    {closingId === job.id ? 'กำลังเริ่มงาน...' : 'เริ่มงาน'}
+                  </button>
+                </div>
+              )}
               {['draft', 'open'].includes(job.status) && (
                 <div className="job-actions">
                   {job.status === 'open' && (

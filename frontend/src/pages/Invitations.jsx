@@ -6,7 +6,7 @@ import {
   workflowError,
   invitationLabels,
 } from '../lib/workflow'
-import { formatJobDate, payUnitLabels } from '../lib/jobs'
+import { formatJobDate, jobStatusLabels, payUnitLabels } from '../lib/jobs'
 
 export default function Invitations({ profile }) {
   const { data, loading, error, reload } = useRemoteList(loadInvitations)
@@ -108,6 +108,11 @@ export default function Invitations({ profile }) {
                   {invitationLabels[request.status]}
                 </span>
               </div>
+              {request.status === 'accepted' && (
+                <p role="status">
+                  สถานะงาน: {jobStatusLabels[request.job_status] ?? request.job_status}
+                </p>
+              )}
               {profile.role === 'employer' && (
                 <p>ผู้ดูแล: {request.caregiver_name}</p>
               )}

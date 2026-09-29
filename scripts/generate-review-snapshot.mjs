@@ -7,6 +7,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const files = []
 async function collect(directory) {
   for (const entry of await readdir(resolve(root, directory), { withFileTypes: true })) {
+    if (entry.isDirectory() && (entry.name === 'node_modules' || entry.name.startsWith('.'))) continue
     const path = `${directory}/${entry.name}`
     if (entry.isDirectory()) await collect(path)
     else if (/\.(jsx?|css|mjs|sql)$/.test(entry.name)) files.push(path)

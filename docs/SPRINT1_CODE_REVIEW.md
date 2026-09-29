@@ -108,7 +108,7 @@
 | `schema/03_caregivers.sql` | caregiver_profiles/caregiver_skills, verification constraints และ RLS |
 | `schema/04_jobs.sql` | job_posts/job_required_skills, RLS, guard และ RPC สร้าง/แก้/ปิดงาน |
 | `schema/05_integrity.sql` | patient/skill locking, ข้อจำกัดข้อมูล, covering FK indexes และวันปัจจุบันแบบไทย |
-| `migrations/001_patient_normal_mobility.sql` | เพิ่มค่า `normal` สำหรับฐานเดิม; ฐานใหม่มีอยู่ใน `schema/02_patients.sql` แล้ว |
+| `archive/migrations/001_patient_normal_mobility.sql` | เพิ่มค่า `normal` สำหรับฐานเดิม; ฐานใหม่มีอยู่ใน `schema/02_patients.sql` แล้ว |
 
 ### กฎสำคัญที่ผู้รีวิวต้องตรวจ
 

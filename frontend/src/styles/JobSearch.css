@@ -217,6 +217,10 @@
   color: #5d7067;
 }
 
+.job-search-detail > button {
+  margin-top: 22px;
+}
+
 .job-search-message {
   padding: 28px;
   text-align: center;

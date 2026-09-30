@@ -4,6 +4,7 @@ create table public.match_requests (
  id bigint generated always as identity primary key,
  job_post_id bigint not null references public.job_posts(id) on delete restrict,
  caregiver_id uuid not null references public.caregiver_profiles(caregiver_id) on delete restrict,
+ request_type text not null default 'invitation' check(request_type in ('invitation','application')),
  status text not null default 'pending' check(status in ('pending','accepted','rejected','not_selected')),
  created_at timestamptz not null default now(), responded_at timestamptz,
  unique(job_post_id,caregiver_id)
@@ -96,7 +97,12 @@ begin
  if not found then raise exception 'caregiver_not_eligible'; end if;
  insert into public.match_requests(job_post_id,caregiver_id) values(p_job_id,p_caregiver_id)
  on conflict(job_post_id,caregiver_id) do nothing returning id into v_id;
- if v_id is null then raise exception 'invitation_already_exists'; end if;
+ if v_id is null then
+   if exists(select 1 from public.match_requests where job_post_id=p_job_id and caregiver_id=p_caregiver_id and request_type='application') then
+     raise exception 'application_already_exists';
+   end if;
+   raise exception 'invitation_already_exists';
+ end if;
  return v_id;
 end;
 $fn$;
@@ -121,7 +127,7 @@ begin
  -- ทุกคำตอบล็อกประกาศก่อนคำเชิญ เพื่อกันการตอบรับสองคนพร้อมกัน
  select * into v_job from public.job_posts where id=v_job_id for update;
  select * into v_request from public.match_requests where id=p_request_id for update;
- if v_request.status<>'pending' or v_job.status<>'open' then raise exception 'invitation_no_longer_open'; end if;
+ if v_request.request_type<>'invitation' or v_request.status<>'pending' or v_job.status<>'open' then raise exception 'invitation_no_longer_open'; end if;
  if not exists(select 1 from public.profiles where id=auth.uid() and role='caregiver') then raise exception using errcode='42501',message='caregiver_required'; end if;
  if p_accept then
    perform 1 from public.caregiver_profiles where caregiver_id=auth.uid() and verification_status='verified' and availability_status='available' for share;
@@ -151,8 +157,10 @@ begin
  if auth.uid() is null then raise exception using errcode='42501',message='login_required'; end if;
  return query select r.id,j.id,r.caregiver_id,j.title,j.description,j.province,j.district,j.starts_at,j.ends_at,j.pay_amount,j.pay_unit,r.status,j.status,concat_ws(' ',p.first_name,p.last_name)
  from public.match_requests r join public.job_posts j on j.id=r.job_post_id join public.profiles p on p.id=r.caregiver_id
- where (r.caregiver_id=auth.uid() and exists(select 1 from public.profiles me where me.id=auth.uid() and me.role='caregiver'))
- or (j.employer_id=auth.uid() and exists(select 1 from public.profiles me where me.id=auth.uid() and me.role='employer'))
+ where r.request_type='invitation' and (
+   (r.caregiver_id=auth.uid() and exists(select 1 from public.profiles me where me.id=auth.uid() and me.role='caregiver'))
+   or (j.employer_id=auth.uid() and exists(select 1 from public.profiles me where me.id=auth.uid() and me.role='employer'))
+ )
  order by r.created_at desc,r.id desc;
 end;
 $fn$;
@@ -163,6 +171,71 @@ returns table(request_id bigint, job_post_id bigint, caregiver_id uuid, title te
 as $fn$ select * from match_internal.list_my_invitations(); $fn$;
 revoke all on function public.list_my_invitations() from public, anon, authenticated;
 grant execute on function public.list_my_invitations() to authenticated;
+
+-- ผู้ดูแลสมัครงานได้เฉพาะประกาศเปิดรับและบัญชีที่ผ่านการตรวจสอบ
+create or replace function match_internal.submit_application(p_job_id bigint)
+returns bigint language plpgsql volatile security definer set search_path = ''
+as $fn$
+declare v_job public.job_posts; v_id bigint;
+begin
+ if auth.uid() is null or not exists(
+   select 1 from public.profiles where id=auth.uid() and role='caregiver'
+ ) then
+   raise exception using errcode='42501',message='caregiver_required';
+ end if;
+ select * into v_job from public.job_posts where id=p_job_id for update;
+ if v_job.status is distinct from 'open' then raise exception 'job_not_open'; end if;
+ perform 1 from public.caregiver_profiles
+ where caregiver_id=auth.uid() and verification_status='verified'
+   and availability_status='available' for share;
+ if not found then raise exception 'caregiver_not_eligible'; end if;
+ insert into public.match_requests(job_post_id,caregiver_id,request_type)
+ values(p_job_id,auth.uid(),'application')
+ on conflict(job_post_id,caregiver_id) do nothing returning id into v_id;
+ if v_id is null then raise exception 'request_already_exists'; end if;
+ return v_id;
+end;
+$fn$;
+revoke all on function match_internal.submit_application(bigint) from public,anon,authenticated;
+grant execute on function match_internal.submit_application(bigint) to authenticated;
+create or replace function public.submit_application(p_job_id bigint)
+returns bigint language sql volatile security invoker set search_path = ''
+as $fn$ select match_internal.submit_application(p_job_id); $fn$;
+revoke all on function public.submit_application(bigint) from public,anon,authenticated;
+grant execute on function public.submit_application(bigint) to authenticated;
+
+-- รายการใบสมัครของผู้ดูแล แสดงข้อมูลประกาศเท่าที่จำเป็น
+create or replace function match_internal.list_my_applications()
+returns table(request_id bigint,job_post_id bigint,title text,province text,district text,
+ starts_at timestamptz,ends_at timestamptz,pay_amount numeric,pay_unit text,
+ status text,job_status text,created_at timestamptz)
+language plpgsql stable security definer set search_path = ''
+as $fn$
+begin
+ if auth.uid() is null or not exists(
+   select 1 from public.profiles where id=auth.uid() and role='caregiver'
+ ) then
+   raise exception using errcode='42501',message='caregiver_required';
+ end if;
+ return query
+ select r.id,j.id,j.title,j.province,j.district,j.starts_at,j.ends_at,
+   j.pay_amount,j.pay_unit,r.status,j.status,r.created_at
+ from public.match_requests r
+ join public.job_posts j on j.id=r.job_post_id
+ where r.caregiver_id=auth.uid() and r.request_type='application'
+ order by r.created_at desc,r.id desc;
+end;
+$fn$;
+revoke all on function match_internal.list_my_applications() from public,anon,authenticated;
+grant execute on function match_internal.list_my_applications() to authenticated;
+create or replace function public.list_my_applications()
+returns table(request_id bigint,job_post_id bigint,title text,province text,district text,
+ starts_at timestamptz,ends_at timestamptz,pay_amount numeric,pay_unit text,
+ status text,job_status text,created_at timestamptz)
+language sql stable security invoker set search_path = ''
+as $fn$ select * from match_internal.list_my_applications(); $fn$;
+revoke all on function public.list_my_applications() from public,anon,authenticated;
+grant execute on function public.list_my_applications() to authenticated;
 
 -- get_match_contact: ตรวจสิทธิ์ภายในก่อนอ่านหรือเปลี่ยนข้อมูล
 create or replace function match_internal.get_match_contact(p_request_id bigint)

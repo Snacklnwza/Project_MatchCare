@@ -16,8 +16,16 @@ export const invitationLabels = {
   rejected: 'ปฏิเสธแล้ว',
   not_selected: 'คำเชิญสิ้นสุดแล้ว',
 }
+export const applicationLabels = {
+  pending: 'รอผู้ว่าจ้างพิจารณา',
+  accepted: 'จับคู่สำเร็จ',
+  rejected: 'ไม่ผ่านการพิจารณา',
+  not_selected: 'ประกาศสิ้นสุดแล้ว',
+}
 const messages = {
   invitation_already_exists: 'ส่งคำเชิญให้ผู้ดูแลคนนี้แล้ว',
+  application_already_exists: 'ผู้ดูแลคนนี้สมัครงานไว้แล้ว',
+  request_already_exists: 'คุณสมัครงานนี้แล้ว หรือได้รับคำเชิญอยู่แล้ว',
   caregiver_not_eligible: 'ผู้ดูแลต้องผ่านการยืนยันและเปิดพร้อมรับงาน',
   job_not_open: 'ประกาศนี้ไม่ได้เปิดรับสมัครแล้ว',
   invitation_no_longer_open: 'คำเชิญนี้สิ้นสุดแล้ว กรุณาโหลดรายการใหม่',
@@ -39,6 +47,7 @@ export async function callWorkflow(name, args) {
   return data
 }
 export const loadInvitations = () => callWorkflow('list_my_invitations')
+export const loadMyApplications = () => callWorkflow('list_my_applications')
 export const loadVerificationQueue = () =>
   callWorkflow('list_verification_queue')
 export async function loadDocuments(caregiverId) {

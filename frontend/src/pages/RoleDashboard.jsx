@@ -11,6 +11,7 @@ import CaregiverDocuments from './CaregiverDocuments'
 import JobSearch from './JobSearch'
 import AdminVerifications from './AdminVerifications'
 import Invitations from './Invitations'
+import Applications from './Applications'
 import '../styles/Workflow.css'
 
 const pageDetails = {
@@ -91,6 +92,8 @@ function RoleDashboard({ profile, onSignOut }) {
     content = <CaregiverProfile profile={profile} />
   } else if (profile.role === 'caregiver' && activePage === 'documents') {
     content = <CaregiverDocuments profile={profile} />
+  } else if (profile.role === 'caregiver' && activePage === 'applications') {
+    content = <Applications />
   } else if (profile.role === 'admin' && activePage === 'verifications') {
     content = <AdminVerifications />
   } else if (

@@ -8,6 +8,7 @@ import {
   loadJobSkillOptions,
   searchOpenJobs,
 } from '../lib/openJobs'
+import { callWorkflow, loadMyApplications, workflowError } from '../lib/workflow'
 import '../styles/JobSearch.css'
 
 const provinces = Object.keys(geography).sort((a, b) => a.localeCompare(b, 'th'))
@@ -31,7 +32,11 @@ function JobSearch() {
   const [detail, setDetail] = useState(null)
   const [detailLoading, setDetailLoading] = useState(false)
   const [detailError, setDetailError] = useState('')
+  const [applyError, setApplyError] = useState('')
+  const [applying, setApplying] = useState(false)
+  const [submittedIds, setSubmittedIds] = useState(() => new Set())
   const detailRequest = useRef(0)
+  const applyBusy = useRef(false)
 
   const loadJobs = useCallback(
     () => searchOpenJobs(appliedFilters, page),
@@ -44,6 +49,7 @@ function JobSearch() {
     error: skillsError,
     reload: reloadSkills,
   } = useRemoteList(loadJobSkillOptions)
+  const { data: applications, reload: reloadApplications } = useRemoteList(loadMyApplications)
   const visibleJobs = jobs.slice(0, JOB_PAGE_SIZE)
   const districts = province ? Object.keys(geography[province] ?? {}) : []
 
@@ -52,6 +58,7 @@ function JobSearch() {
     setSelectedId(null)
     setDetail(null)
     setDetailError('')
+    setApplyError('')
     setDetailLoading(false)
   }
 
@@ -114,6 +121,28 @@ function JobSearch() {
       }
     } finally {
       if (request === detailRequest.current) setDetailLoading(false)
+    }
+  }
+
+  async function apply(jobId) {
+    if (applyBusy.current || !window.confirm('ยืนยันสมัครงานนี้?')) return
+    applyBusy.current = true
+    setApplying(true)
+    setApplyError('')
+    try {
+      await callWorkflow('submit_application', { p_job_id: jobId })
+      setSubmittedIds((current) => new Set(current).add(jobId))
+      reloadApplications()
+    } catch (issue) {
+      setApplyError(issue?.message === 'caregiver_not_eligible'
+        ? 'ต้องผ่านการยืนยันตัวตนและเปิดพร้อมรับงานก่อนสมัคร กรุณาไปที่โปรไฟล์ผู้ดูแลและเอกสารของฉัน'
+        : workflowError(issue))
+      if (issue?.message === 'job_not_open') {
+        reload()
+      }
+    } finally {
+      applyBusy.current = false
+      setApplying(false)
     }
   }
 
@@ -319,7 +348,14 @@ function JobSearch() {
                         <span key={skill.id}>{skill.name}</span>
                       ))}
                     </div>
-                    <p className="job-search-hint">ระบบจะเปิดการสมัครงานในขั้นถัดไป</p>
+                    {submittedIds.has(job.job_id) || applications.some((item) => item.job_post_id === job.job_id) ? (
+                      <p role="status" className="job-search-hint">สมัครงานนี้แล้ว ดูสถานะได้ที่เมนูงานที่สมัคร</p>
+                    ) : (
+                      <button type="button" disabled={applying} onClick={() => apply(job.job_id)}>
+                        {applying ? 'กำลังส่งใบสมัคร...' : 'สมัครงานนี้'}
+                      </button>
+                    )}
+                    {applyError && <p role="alert">{applyError}</p>}
                   </>
                 )}
               </div>

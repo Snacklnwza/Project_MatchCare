@@ -1,4 +1,4 @@
--- Source: database/prototypes/skills_setup.sql
+-- ที่มา: database/prototypes/skills_setup.sql
 -- ต้นแบบฐานข้อมูล MatchCare
 -- ข้อมูลทักษะหลักสำหรับผู้ดูแลและความต้องการของประกาศงาน
 create table
@@ -53,7 +53,7 @@ from
 order by
   id;
 
--- Source: database/schema/01_profiles.sql
+-- ที่มา: database/schema/01_profiles.sql
 -- ตารางข้อมูลผู้ใช้งานของ MatchCare
 -- ข้อมูลบัญชี อีเมล และรหัสผ่านจัดการโดย Supabase Auth
 
@@ -115,7 +115,7 @@ grant select, insert, update
 on table public.profiles
 to authenticated;
 
--- Source: database/schema/02_profiles_policies.sql
+-- ที่มา: database/schema/02_profiles_policies.sql
 -- จำกัดสิทธิ์ระดับคอลัมน์ของตาราง profiles
 -- ผู้ใช้ห้ามแก้ id, role, created_at และ updated_at ด้วยตนเอง
 
@@ -190,7 +190,7 @@ with check (
   (select auth.uid()) = id
 );
 
--- Source: database/schema/03_updated_at_trigger.sql
+-- ที่มา: database/schema/03_updated_at_trigger.sql
 -- Schema สำหรับเก็บฟังก์ชันภายในฐานข้อมูล
 -- Frontend ไม่ควรเรียกใช้ฟังก์ชันเหล่านี้โดยตรง
 create schema if not exists private;

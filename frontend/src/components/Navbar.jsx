@@ -8,13 +8,14 @@ const menuItemsByRole = {
     { id: 'patients', label: 'ผู้ป่วยของฉัน' },
     { id: 'jobs', label: 'ประกาศงาน' },
     { id: 'caregivers', label: 'ค้นหาผู้ดูแล' },
+    { id: 'invitations', label: 'คำเชิญที่ส่ง' },
     { id: 'history', label: 'ประวัติการจ้างงาน' },
   ],
   caregiver: [
     { id: 'dashboard', label: 'หน้าหลัก' },
-    { id: 'profile', label: 'โปรไฟล์ผู้ดูแล' },
     { id: 'jobs', label: 'ค้นหางาน' },
     { id: 'applications', label: 'งานที่สมัคร' },
+    { id: 'invitations', label: 'คำเชิญและงานของฉัน' },
   ],
   admin: [
     { id: 'dashboard', label: 'หน้าหลัก' },
@@ -77,8 +78,59 @@ function Navbar({ profile, activePage, onSelect, onSignOut }) {
               <span className="account-role">({roleLabel})</span>
               <img src={chevron} alt="" />
             </summary>
-            <div className="navbar-popover">
-              <button type="button" onClick={onSignOut}>
+            <div className="navbar-popover account-menu">
+              {role === 'caregiver' && (
+                <button
+                  type="button"
+                  aria-current={activePage === 'profile' ? 'page' : undefined}
+                  onClick={(event) => {
+                    event.currentTarget.closest('details').open = false
+                    onSelect('profile')
+                  }}
+                >
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                  >
+                    <circle cx="12" cy="8" r="3.5" />
+                    <path d="M5 21v-2a7 7 0 0 1 14 0v2" />
+                  </svg>
+                  โปรไฟล์ผู้ดูแล
+                </button>
+              )}
+              {role === 'caregiver' && (
+                <button
+                  type="button"
+                  aria-current={activePage === 'documents' ? 'page' : undefined}
+                  onClick={(event) => {
+                    event.currentTarget.closest('details').open = false
+                    onSelect('documents')
+                  }}
+                >
+                  เอกสารยืนยันตัวตน
+                </button>
+              )}
+              {role === 'caregiver' && <hr />}
+              <button
+                className="account-signout"
+                type="button"
+                onClick={onSignOut}
+              >
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M9 4H4v16h5M10 12h11m-4-4 4 4-4 4" />
+                </svg>
                 ออกจากระบบ
               </button>
             </div>

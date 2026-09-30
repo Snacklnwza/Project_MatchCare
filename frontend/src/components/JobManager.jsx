@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { formatJobDate, jobStatusLabels, payUnitLabels } from '../lib/jobs'
 import JobForm from './JobForm'
+import CaregiverMatches from './CaregiverMatches'
 
 function JobManager() {
   const [jobs, setJobs] = useState([])
@@ -14,6 +15,7 @@ function JobManager() {
   const [filter, setFilter] = useState('all')
   const [closingId, setClosingId] = useState(null)
   const closingRef = useRef(false)
+  const [matchingJob, setMatchingJob] = useState(null)
 
   useEffect(() => {
     let cancelled = false
@@ -73,12 +75,77 @@ function JobManager() {
     }
   }
 
+  async function startJob(job) {
+    if (
+      closingRef.current ||
+      !window.confirm(`เริ่มงานดูแลผู้ป่วยตามประกาศ “${job.title}” ใช่หรือไม่?`)
+    ) return
+    closingRef.current = true
+    setClosingId(job.id)
+    setError('')
+    setSuccessMessage('')
+    try {
+      const { data, error: startError } = await supabase.rpc('start_matched_job', {
+        p_job_id: job.id,
+      })
+      if (startError) throw startError
+      if (!data) throw new Error('ไม่พบประกาศที่พร้อมเริ่มงาน')
+      setJobs((current) => current.map((item) =>
+        item.id === job.id
+          ? { ...item, status: 'in_progress', started_at: new Date().toISOString() }
+          : item,
+      ))
+      setSuccessMessage('เริ่มงานแล้ว')
+    } catch {
+      setError('เริ่มงานไม่สำเร็จ สถานะอาจเปลี่ยนแล้ว กรุณาโหลดรายการใหม่')
+    } finally {
+      closingRef.current = false
+      setClosingId(null)
+    }
+  }
+
+  async function confirmCompletion(job) {
+    if (
+      closingRef.current ||
+      !window.confirm(`ผู้ดูแลแจ้งว่างาน “${job.title}” เสร็จแล้ว ยืนยันจบงานใช่หรือไม่?`)
+    ) return
+    closingRef.current = true
+    setClosingId(job.id)
+    setError('')
+    setSuccessMessage('')
+    try {
+      const { data, error: confirmError } = await supabase.rpc('confirm_job_completion', {
+        p_job_id: job.id,
+      })
+      if (confirmError) throw confirmError
+      if (!data) throw new Error('ไม่พบคำขอจบงานที่รอยืนยัน')
+      setJobs((current) => current.map((item) =>
+        item.id === job.id
+          ? { ...item, status: 'completed', completed_at: new Date().toISOString() }
+          : item,
+      ))
+      setSuccessMessage('ยืนยันจบงานแล้ว')
+    } catch {
+      setError('ยืนยันจบงานไม่สำเร็จ สถานะอาจเปลี่ยนแล้ว กรุณาโหลดรายการใหม่')
+    } finally {
+      closingRef.current = false
+      setClosingId(null)
+    }
+  }
+
   function openForm(job = null) {
     setEditingJob(job)
     setSuccessMessage('')
     setError('')
     setShowForm(true)
   }
+
+  if (matchingJob) return (
+    <CaregiverMatches job={matchingJob} onBack={() => {
+      setMatchingJob(null)
+      setRefreshKey((value) => value + 1)
+    }} />
+  )
 
   if (showForm)
     return (
@@ -135,6 +202,10 @@ function JobManager() {
         >
           <option value="all">ทั้งหมด</option>
           <option value="open">เปิดรับสมัคร</option>
+          <option value="matched">จับคู่สำเร็จ</option>
+          <option value="in_progress">กำลังดำเนินงาน</option>
+          <option value="completion_pending">รอยืนยันจบงาน</option>
+          <option value="completed">เสร็จสิ้น</option>
           <option value="closed">ปิดรับสมัคร</option>
         </select>
       </label>
@@ -179,8 +250,30 @@ function JobManager() {
                   </span>
                 ))}
               </div>
+              {job.status === 'matched' && (
+                <div className="job-actions">
+                  <button type="button" disabled={closingId !== null}
+                    onClick={() => startJob(job)}>
+                    {closingId === job.id ? 'กำลังเริ่มงาน...' : 'เริ่มงาน'}
+                  </button>
+                </div>
+              )}
+              {job.status === 'completion_pending' && (
+                <div className="job-actions">
+                  <button type="button" disabled={closingId !== null}
+                    onClick={() => confirmCompletion(job)}>
+                    {closingId === job.id ? 'กำลังยืนยัน...' : 'ยืนยันจบงาน'}
+                  </button>
+                </div>
+              )}
               {['draft', 'open'].includes(job.status) && (
                 <div className="job-actions">
+                  {job.status === 'open' && (
+                    <button type="button" disabled={closingId !== null}
+                      onClick={() => setMatchingJob(job)}>
+                      หาผู้ดูแลสำหรับประกาศนี้
+                    </button>
+                  )}
                   <button
                     type="button"
                     disabled={closingId !== null}

@@ -1,4 +1,4 @@
--- Test 1: ผู้ใช้ที่ล็อกอินสร้างและอ่านโปรไฟล์ของตัวเองได้
+-- ทดสอบ 1: ผู้ใช้ที่ล็อกอินสร้างและอ่านโปรไฟล์ของตัวเองได้
 -- ข้อมูลทั้งหมดอยู่ใน Transaction และจะถูกยกเลิกด้วย rollback
 
 begin;
@@ -60,7 +60,7 @@ from public.profiles;
 rollback;
 
 
--- Test 2: Employer ต้องมองไม่เห็นโปรไฟล์ของ Caregiver
+-- ทดสอบ 2: Employer ต้องมองไม่เห็นโปรไฟล์ของ Caregiver
 
 begin;
 
@@ -139,7 +139,7 @@ from public.profiles;
 
 rollback;
 
--- Test 3: Employer แก้โปรไฟล์ตัวเองได้ แต่แก้ Caregiver ไม่ได้
+-- ทดสอบ 3: Employer แก้โปรไฟล์ตัวเองได้ แต่แก้ Caregiver ไม่ได้
 
 begin;
 
@@ -241,7 +241,7 @@ from updated_other_profile;
 
 rollback;
 
--- Test 4: ผู้ใช้ทั่วไปต้องสร้างโปรไฟล์ role = admin ไม่ได้
+-- ทดสอบ 4: ผู้ใช้ทั่วไปต้องสร้างโปรไฟล์ role = admin ไม่ได้
 
 begin;
 
@@ -319,7 +319,7 @@ select
 
 rollback;
 
--- Test 5: ผู้ที่ยังไม่ล็อกอินต้องอ่าน profiles ไม่ได้
+-- ทดสอบ 5: ผู้ที่ยังไม่ล็อกอินต้องอ่าน profiles ไม่ได้
 
 begin;
 
@@ -389,7 +389,7 @@ select
 
 rollback;
 
--- Test 6: updated_at ต้องเปลี่ยนอัตโนมัติเมื่อแก้ไขโปรไฟล์
+-- ทดสอบ 6: updated_at ต้องเปลี่ยนอัตโนมัติเมื่อแก้ไขโปรไฟล์
 
 begin;
 

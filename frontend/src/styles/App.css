@@ -1039,6 +1039,40 @@
   font: inherit;
   cursor: pointer;
 }
+.caregiver-match-list {
+  display: grid;
+  gap: 16px;
+  padding: 0;
+  list-style: none;
+}
+.account-menu {
+  width: 224px;
+  padding: 6px;
+  border-color: #e6ece8;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgb(25 50 38 / 9%);
+}
+.account-menu button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 11px 12px;
+  text-align: left;
+  background: transparent;
+  color: #405149;
+  border-radius: 7px;
+  font-size: 14px;
+  font-weight: 400;
+}
+.account-menu button svg { width: 18px; height: 18px; flex-shrink: 0; }
+.account-menu button:hover, .account-menu button:focus-visible { background: #f2f7f4; }
+.account-menu button[aria-current='page'] { color: #006948; font-weight: 600; }
+.account-menu hr { border: 0; border-top: 1px solid #edf0ee; margin: 4px 10px; }
+.account-menu .account-signout:hover { color: #a13434; background: #fdf4f4; }
+.caregiver-match-list .job-heading {
+  flex-wrap: wrap;
+}
 .top-navbar :focus-visible {
   outline: 2px solid #059669;
   outline-offset: 4px;

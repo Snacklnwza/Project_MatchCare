@@ -7,6 +7,12 @@ import EmployerDashboard from './EmployerDashboard'
 import PatientManager from '../components/PatientManager'
 import Footer from '../components/Footer'
 import JobManager from '../components/JobManager'
+import CaregiverDocuments from './CaregiverDocuments'
+import JobSearch from './JobSearch'
+import AdminVerifications from './AdminVerifications'
+import Invitations from './Invitations'
+import Applications from './Applications'
+import '../styles/Workflow.css'
 
 const pageDetails = {
   employer: {
@@ -31,10 +37,6 @@ const pageDetails = {
     profile: {
       title: 'โปรไฟล์ผู้ดูแล',
       emptyMessage: 'ยังไม่มีข้อมูลโปรไฟล์ผู้ดูแล',
-    },
-    jobs: {
-      title: 'ค้นหางาน',
-      emptyMessage: 'ยังไม่มีประกาศงาน',
     },
     applications: {
       title: 'งานที่สมัคร',
@@ -61,7 +63,9 @@ function RoleDashboard({ profile, onSignOut }) {
   if (profile.role === 'employer') {
     dashboard = <EmployerDashboard onNavigate={setActivePage} />
   } else if (profile.role === 'caregiver') {
-    dashboard = <CaregiverDashboard profile={profile} />
+    dashboard = (
+      <CaregiverDashboard profile={profile} onNavigate={setActivePage} />
+    )
   } else if (profile.role === 'admin') {
     dashboard = <AdminDashboard profile={profile} />
   } else {
@@ -69,6 +73,35 @@ function RoleDashboard({ profile, onSignOut }) {
   }
 
   const selectedPage = pageDetails[profile.role]?.[activePage]
+  let content = (
+    <section className="role-dashboard">
+      <h2>{selectedPage?.title}</h2>
+      <p>{selectedPage?.emptyMessage}</p>
+    </section>
+  )
+
+  if (activePage === 'dashboard') {
+    content = dashboard
+  } else if (profile.role === 'employer' && activePage === 'patients') {
+    content = <PatientManager />
+  } else if (profile.role === 'employer' && activePage === 'jobs') {
+    content = <JobManager />
+  } else if (profile.role === 'caregiver' && activePage === 'jobs') {
+    content = <JobSearch />
+  } else if (profile.role === 'caregiver' && activePage === 'profile') {
+    content = <CaregiverProfile profile={profile} />
+  } else if (profile.role === 'caregiver' && activePage === 'documents') {
+    content = <CaregiverDocuments profile={profile} />
+  } else if (profile.role === 'caregiver' && activePage === 'applications') {
+    content = <Applications />
+  } else if (profile.role === 'admin' && activePage === 'verifications') {
+    content = <AdminVerifications />
+  } else if (
+    ['employer', 'caregiver'].includes(profile.role) &&
+    activePage === 'invitations'
+  ) {
+    content = <Invitations profile={profile} />
+  }
 
   return (
     <>
@@ -78,20 +111,7 @@ function RoleDashboard({ profile, onSignOut }) {
         activePage={activePage}
         onSelect={setActivePage}
       />
-      {activePage === 'dashboard' ? (
-        dashboard
-      ) : activePage === 'patients' && profile.role === 'employer' ? (
-        <PatientManager />
-      ) : activePage === 'jobs' && profile.role === 'employer' ? (
-        <JobManager />
-      ) : activePage === 'profile' && profile.role === 'caregiver' ? (
-        <CaregiverProfile profile={profile} />
-      ) : (
-        <section className="role-dashboard">
-          <h2>{selectedPage?.title}</h2>
-          <p>{selectedPage?.emptyMessage}</p>
-        </section>
-      )}
+      {content}
       <Footer />
     </>
   )

@@ -8,55 +8,71 @@
 
 ## รายการไฟล์
 
-1. [database/migrations/001_patient_normal_mobility.sql](../database/migrations/001_patient_normal_mobility.sql)
+1. [database/archive/migrations/001_patient_normal_mobility.sql](../database/archive/migrations/001_patient_normal_mobility.sql)
 2. [database/schema/01_core.sql](../database/schema/01_core.sql)
 3. [database/schema/02_patients.sql](../database/schema/02_patients.sql)
 4. [database/schema/03_caregivers.sql](../database/schema/03_caregivers.sql)
 5. [database/schema/04_jobs.sql](../database/schema/04_jobs.sql)
 6. [database/schema/05_integrity.sql](../database/schema/05_integrity.sql)
-7. [database/tests/caregiver_profiles_rls_test.sql](../database/tests/caregiver_profiles_rls_test.sql)
-8. [database/tests/job_posts_id4_test.sql](../database/tests/job_posts_id4_test.sql)
-9. [database/tests/patient_atomic_save_test.sql](../database/tests/patient_atomic_save_test.sql)
-10. [database/tests/patients_rls_test.sql](../database/tests/patients_rls_test.sql)
-11. [database/tests/profiles_rls_test.sql](../database/tests/profiles_rls_test.sql)
-12. [database/tests/skills_crud_test.sql](../database/tests/skills_crud_test.sql)
-13. [database/tests/skills_rls_test.sql](../database/tests/skills_rls_test.sql)
-14. [database/tests/sprint1_integration_test.sql](../database/tests/sprint1_integration_test.sql)
-15. [frontend/index.html](../frontend/index.html)
-16. [frontend/package.json](../frontend/package.json)
-17. [frontend/scripts/generate-geography.mjs](../frontend/scripts/generate-geography.mjs)
-18. [frontend/src/App.css](../frontend/src/App.css)
-19. [frontend/src/App.jsx](../frontend/src/App.jsx)
-20. [frontend/src/components/Footer.jsx](../frontend/src/components/Footer.jsx)
-21. [frontend/src/components/JobForm.jsx](../frontend/src/components/JobForm.jsx)
-22. [frontend/src/components/JobManager.jsx](../frontend/src/components/JobManager.jsx)
-23. [frontend/src/components/LandingNavbar.jsx](../frontend/src/components/LandingNavbar.jsx)
-24. [frontend/src/components/LoginForm.jsx](../frontend/src/components/LoginForm.jsx)
-25. [frontend/src/components/Navbar.jsx](../frontend/src/components/Navbar.jsx)
-26. [frontend/src/components/PatientForm.jsx](../frontend/src/components/PatientForm.jsx)
-27. [frontend/src/components/PatientManager.jsx](../frontend/src/components/PatientManager.jsx)
-28. [frontend/src/components/ProfileSetupForm.jsx](../frontend/src/components/ProfileSetupForm.jsx)
-29. [frontend/src/components/RegisterForm.jsx](../frontend/src/components/RegisterForm.jsx)
-30. [frontend/src/index.css](../frontend/src/index.css)
-31. [frontend/src/lib/jobs.js](../frontend/src/lib/jobs.js)
-32. [frontend/src/lib/patients.js](../frontend/src/lib/patients.js)
-33. [frontend/src/lib/supabase.js](../frontend/src/lib/supabase.js)
-34. [frontend/src/main.jsx](../frontend/src/main.jsx)
-35. [frontend/src/pages/AdminDashboard.jsx](../frontend/src/pages/AdminDashboard.jsx)
-36. [frontend/src/pages/CaregiverDashboard.jsx](../frontend/src/pages/CaregiverDashboard.jsx)
-37. [frontend/src/pages/EmployerDashboard.jsx](../frontend/src/pages/EmployerDashboard.jsx)
-38. [frontend/src/pages/LandingPage.jsx](../frontend/src/pages/LandingPage.jsx)
-39. [frontend/src/pages/RoleDashboard.jsx](../frontend/src/pages/RoleDashboard.jsx)
-40. [frontend/vite.config.js](../frontend/vite.config.js)
-41. [scripts/generate-review-snapshot.mjs](../scripts/generate-review-snapshot.mjs)
+7. [database/schema/06_matching.sql](../database/schema/06_matching.sql)
+8. [database/schema/07_caregiver_documents.sql](../database/schema/07_caregiver_documents.sql)
+9. [database/schema/08_invitations.sql](../database/schema/08_invitations.sql)
+10. [database/tests/caregiver_profiles_rls_test.sql](../database/tests/caregiver_profiles_rls_test.sql)
+11. [database/tests/job_posts_id4_test.sql](../database/tests/job_posts_id4_test.sql)
+12. [database/tests/matching_search_test.sql](../database/tests/matching_search_test.sql)
+13. [database/tests/patient_atomic_save_test.sql](../database/tests/patient_atomic_save_test.sql)
+14. [database/tests/patients_rls_test.sql](../database/tests/patients_rls_test.sql)
+15. [database/tests/profiles_rls_test.sql](../database/tests/profiles_rls_test.sql)
+16. [database/tests/run-local.mjs](../database/tests/run-local.mjs)
+17. [database/tests/skills_crud_test.sql](../database/tests/skills_crud_test.sql)
+18. [database/tests/skills_rls_test.sql](../database/tests/skills_rls_test.sql)
+19. [database/tests/sprint1_integration_test.sql](../database/tests/sprint1_integration_test.sql)
+20. [database/tests/workflow_integration_test.sql](../database/tests/workflow_integration_test.sql)
+21. [frontend/index.html](../frontend/index.html)
+22. [frontend/package.json](../frontend/package.json)
+23. [frontend/scripts/generate-geography.mjs](../frontend/scripts/generate-geography.mjs)
+24. [frontend/src/App.jsx](../frontend/src/App.jsx)
+25. [frontend/src/components/CaregiverMatches.jsx](../frontend/src/components/CaregiverMatches.jsx)
+26. [frontend/src/components/DocumentList.jsx](../frontend/src/components/DocumentList.jsx)
+27. [frontend/src/components/Footer.jsx](../frontend/src/components/Footer.jsx)
+28. [frontend/src/components/JobForm.jsx](../frontend/src/components/JobForm.jsx)
+29. [frontend/src/components/JobManager.jsx](../frontend/src/components/JobManager.jsx)
+30. [frontend/src/components/LandingNavbar.jsx](../frontend/src/components/LandingNavbar.jsx)
+31. [frontend/src/components/LoginForm.jsx](../frontend/src/components/LoginForm.jsx)
+32. [frontend/src/components/Navbar.jsx](../frontend/src/components/Navbar.jsx)
+33. [frontend/src/components/PatientForm.jsx](../frontend/src/components/PatientForm.jsx)
+34. [frontend/src/components/PatientManager.jsx](../frontend/src/components/PatientManager.jsx)
+35. [frontend/src/components/ProfileSetupForm.jsx](../frontend/src/components/ProfileSetupForm.jsx)
+36. [frontend/src/components/RegisterForm.jsx](../frontend/src/components/RegisterForm.jsx)
+37. [frontend/src/hooks/useRemoteList.js](../frontend/src/hooks/useRemoteList.js)
+38. [frontend/src/lib/jobs.js](../frontend/src/lib/jobs.js)
+39. [frontend/src/lib/patients.js](../frontend/src/lib/patients.js)
+40. [frontend/src/lib/supabase.js](../frontend/src/lib/supabase.js)
+41. [frontend/src/lib/workflow.js](../frontend/src/lib/workflow.js)
+42. [frontend/src/main.jsx](../frontend/src/main.jsx)
+43. [frontend/src/pages/AdminDashboard.jsx](../frontend/src/pages/AdminDashboard.jsx)
+44. [frontend/src/pages/AdminVerifications.jsx](../frontend/src/pages/AdminVerifications.jsx)
+45. [frontend/src/pages/CaregiverDashboard.jsx](../frontend/src/pages/CaregiverDashboard.jsx)
+46. [frontend/src/pages/CaregiverDocuments.jsx](../frontend/src/pages/CaregiverDocuments.jsx)
+47. [frontend/src/pages/CaregiverProfile.jsx](../frontend/src/pages/CaregiverProfile.jsx)
+48. [frontend/src/pages/EmployerDashboard.jsx](../frontend/src/pages/EmployerDashboard.jsx)
+49. [frontend/src/pages/Invitations.jsx](../frontend/src/pages/Invitations.jsx)
+50. [frontend/src/pages/LandingPage.jsx](../frontend/src/pages/LandingPage.jsx)
+51. [frontend/src/pages/RoleDashboard.jsx](../frontend/src/pages/RoleDashboard.jsx)
+52. [frontend/src/styles/App.css](../frontend/src/styles/App.css)
+53. [frontend/src/styles/CaregiverDashboard.css](../frontend/src/styles/CaregiverDashboard.css)
+54. [frontend/src/styles/Workflow.css](../frontend/src/styles/Workflow.css)
+55. [frontend/src/styles/index.css](../frontend/src/styles/index.css)
+56. [frontend/vite.config.js](../frontend/vite.config.js)
+57. [scripts/generate-review-snapshot.mjs](../scripts/generate-review-snapshot.mjs)
 
-## database/migrations/001_patient_normal_mobility.sql
+## database/archive/migrations/001_patient_normal_mobility.sql
 
-SHA-256: `e89b5e9b1ad069b04fa150a151ba18205811619c002b58c442ed4de689435842`
+SHA-256: `26bc0140c672b8fb58b31657c5edf6cdff02c1f146a244ccc4adac9bc0492494`
 
 ````sql
--- Run once on an existing MatchCare database created before `normal` was added.
--- Fresh databases already include this value in schema/02_patients.sql.
+-- รันครั้งเดียวกับฐานข้อมูล MatchCare เดิมที่สร้างก่อนเพิ่มค่า `normal`
+-- ฐานข้อมูลที่ติดตั้งใหม่มีค่านี้อยู่แล้วใน schema/02_patients.sql
 begin;
 
 alter table public.patients
@@ -71,10 +87,10 @@ commit;
 
 ## database/schema/01_core.sql
 
-SHA-256: `4a53b34167f38a4a3d6a96b6b3ea8f0e3848b94f1e16ec586768df13a22557b4`
+SHA-256: `615b399675799eb3194ccb099bc908cc9ba87b3f1b9d89ad4a638292be5b3071`
 
 ````sql
--- Source: database/prototypes/skills_setup.sql
+-- ที่มา: database/prototypes/skills_setup.sql
 -- ต้นแบบฐานข้อมูล MatchCare
 -- ข้อมูลทักษะหลักสำหรับผู้ดูแลและความต้องการของประกาศงาน
 create table
@@ -129,7 +145,7 @@ from
 order by
   id;
 
--- Source: database/schema/01_profiles.sql
+-- ที่มา: database/schema/01_profiles.sql
 -- ตารางข้อมูลผู้ใช้งานของ MatchCare
 -- ข้อมูลบัญชี อีเมล และรหัสผ่านจัดการโดย Supabase Auth
 
@@ -191,7 +207,7 @@ grant select, insert, update
 on table public.profiles
 to authenticated;
 
--- Source: database/schema/02_profiles_policies.sql
+-- ที่มา: database/schema/02_profiles_policies.sql
 -- จำกัดสิทธิ์ระดับคอลัมน์ของตาราง profiles
 -- ผู้ใช้ห้ามแก้ id, role, created_at และ updated_at ด้วยตนเอง
 
@@ -266,7 +282,7 @@ with check (
   (select auth.uid()) = id
 );
 
--- Source: database/schema/03_updated_at_trigger.sql
+-- ที่มา: database/schema/03_updated_at_trigger.sql
 -- Schema สำหรับเก็บฟังก์ชันภายในฐานข้อมูล
 -- Frontend ไม่ควรเรียกใช้ฟังก์ชันเหล่านี้โดยตรง
 create schema if not exists private;
@@ -303,10 +319,10 @@ execute function private.set_updated_at();
 
 ## database/schema/02_patients.sql
 
-SHA-256: `71454078592fb1f4a2b2dc36a5e1c898336cc1273707894d9d3da3b3a68c704f`
+SHA-256: `c618d7b0fc5986c351db0670ccfc738545e7cbaa04f119e0e6404602b93fb5f1`
 
 ````sql
--- Source: database/schema/04_patient_tables.sql
+-- ที่มา: database/schema/04_patient_tables.sql
 -- รายการสภาวะและความต้องการดูแลสำหรับเลือกให้ผู้ป่วย
 -- เป็นข้อมูลตัวอย่างสำหรับระบบ ไม่ใช่คำวินิจฉัยทางการแพทย์
 
@@ -488,7 +504,7 @@ on public.patient_required_skills (skill_id);
 alter table public.patient_required_skills
 enable row level security;
 
--- Source: database/schema/05_patient_policies.sql
+-- ที่มา: database/schema/05_patient_policies.sql
 -- สิทธิ์อ่านรายการสภาวะที่เปิดใช้งาน
 -- RLS Policy ด้านล่างจะกรองแถวที่อ่านได้อีกชั้น
 
@@ -718,7 +734,7 @@ using (
   )
 );
 
--- Source: database/schema/06_patient_seed.sql
+-- ที่มา: database/schema/06_patient_seed.sql
 -- ข้อมูลตัวอย่างสำหรับใช้พัฒนาและทดสอบ MatchCare
 -- ไม่ใช่มาตรฐานหรือคำวินิจฉัยทางการแพทย์
 
@@ -741,7 +757,7 @@ values
   )
 on conflict do nothing;
 
--- Source: database/schema/09_patient_atomic_save.sql
+-- ที่มา: database/schema/09_patient_atomic_save.sql
 -- บันทึกข้อมูลผู้ป่วยและแท็กในคำสั่งเดียว เพื่อให้ล้มเหลว/สำเร็จพร้อมกัน
 -- SECURITY INVOKER ใช้สิทธิ์และ RLS ของผู้เรียก ไม่ข้ามข้อจำกัดเจ้าของข้อมูล
 
@@ -840,10 +856,10 @@ grant execute on function public.save_patient_with_tags(
 
 ## database/schema/03_caregivers.sql
 
-SHA-256: `429f5389a95b1c03089cce479b629096db2438ed51c870009c6340814f0a8508`
+SHA-256: `5f9bceab1536f010367f73fd7923fa1dbfe95d35484c427c1c5fec079b68be59`
 
 ````sql
--- Source: database/schema/07_caregiver_tables.sql
+-- ที่มา: database/schema/07_caregiver_tables.sql
 create table public.caregiver_profiles (
     caregiver_id uuid primary key references public.profiles(id) on delete cascade,
     bio text,
@@ -979,7 +995,7 @@ revoke all privileges
 on table public.caregiver_skills
 from anon, authenticated;
 
--- Source: database/schema/08_caregiver_policies.sql
+-- ที่มา: database/schema/08_caregiver_policies.sql
 -- ผู้ใช้ที่เข้าสู่ระบบอ่านข้อมูลผ่าน RLS ได้
 -- ไม่ให้สิทธิ์ลบโปรไฟล์ผู้ดูแล
 
@@ -1111,10 +1127,10 @@ using (
 
 ## database/schema/04_jobs.sql
 
-SHA-256: `05e074edba53477f386a0b5fe1af2b0ddcada8d8423ec60b77bc97baa4647437`
+SHA-256: `837b779a4ce05bc426e13c79249ce9f402c01cd0cd9c11c2c431f7c1048b9d5a`
 
 ````sql
--- Source: database/schema/10_job_posts.sql
+-- ที่มา: database/schema/10_job_posts.sql
 -- ID 4: ประกาศรับสมัครผู้ดูแลและทักษะที่ต้องการ
 -- เก็บที่อยู่ในประกาศเป็น snapshot; ห้ามเปิดเผยตารางนี้ทั้งแถวแก่ผู้ใช้ทั่วไป
 
@@ -1140,6 +1156,7 @@ create table public.job_posts (
   cancelled_at timestamptz,
   cancelled_by uuid references public.profiles(id) on delete restrict,
   started_at timestamptz,
+  completion_requested_at timestamptz,
   completed_at timestamptz,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
@@ -1163,7 +1180,7 @@ create table public.job_posts (
   constraint job_posts_status_valid check (
     status in (
       'draft', 'open', 'closed', 'matched',
-      'in_progress', 'completed', 'cancelled'
+      'in_progress', 'completion_pending', 'completed', 'cancelled'
     )
   )
 );
@@ -1173,7 +1190,7 @@ on public.job_posts (employer_id, created_at desc);
 
 create index job_posts_patient_active_idx
 on public.job_posts (patient_id)
-where status in ('open', 'matched', 'in_progress');
+where status in ('open', 'matched', 'in_progress', 'completion_pending');
 
 create index job_posts_open_location_idx
 on public.job_posts (province, district, starts_at)
@@ -1296,7 +1313,7 @@ after delete on public.job_required_skills
 deferrable initially deferred
 for each row execute function private.require_open_job_skill();
 
--- Source: database/schema/11_job_policies.sql
+-- ที่มา: database/schema/11_job_policies.sql
 -- เจ้าของอ่านและจัดการประกาศของตน; ยังไม่เปิดตารางที่มีที่อยู่ละเอียดให้ผู้อื่นอ่าน
 
 revoke all privileges on table public.job_posts from anon, authenticated;
@@ -1385,7 +1402,7 @@ using (
   )
 );
 
--- Source: database/schema/12_patient_open_job_guard.sql
+-- ที่มา: database/schema/12_patient_open_job_guard.sql
 -- ID 3 ข้อ 7: ผู้ป่วยที่ผูกกับประกาศ/งานที่ยังดำเนินอยู่ปิดใช้งานไม่ได้
 
 create or replace function private.prevent_patient_deactivation_with_job()
@@ -1398,7 +1415,7 @@ begin
   if old.is_active = true and new.is_active = false and exists (
     select 1 from public.job_posts
     where patient_id = old.id
-      and status in ('open', 'matched', 'in_progress')
+      and status in ('open', 'matched', 'in_progress', 'completion_pending')
   ) then
     raise exception using errcode = '23514',
       message = 'patient_has_active_job';
@@ -1412,7 +1429,7 @@ create trigger patients_prevent_deactivation_with_job
 before update of is_active on public.patients
 for each row execute function private.prevent_patient_deactivation_with_job();
 
--- Source: database/schema/13_job_atomic_save.sql
+-- ที่มา: database/schema/13_job_atomic_save.sql
 -- สร้างประกาศกับทักษะใน transaction เดียว ภายใต้สิทธิ์/RLS ของผู้เรียก
 create or replace function public.create_job_with_tags(
   p_patient_id bigint, p_title text, p_description text, p_care_summary text,
@@ -1472,7 +1489,7 @@ $$;
 revoke all on function public.create_job_with_tags(bigint,text,text,text,timestamptz,timestamptz,numeric,text,bigint[]) from public, anon;
 grant execute on function public.create_job_with_tags(bigint,text,text,text,timestamptz,timestamptz,numeric,text,bigint[]) to authenticated;
 
--- Source: database/schema/14_job_atomic_update.sql
+-- ที่มา: database/schema/14_job_atomic_update.sql
 create or replace function public.update_job_with_tags(
   p_job_id bigint,
   p_patient_id bigint,
@@ -1557,11 +1574,11 @@ grant execute on function public.close_job(bigint) to authenticated;
 
 ## database/schema/05_integrity.sql
 
-SHA-256: `b4f5a3bd830423a07a5d909988131cd87ec8c5f7893fe6937ebedd7b47a86558`
+SHA-256: `def9762fc691a611f04b91872be5eb9720cc499707e10ac2b721783d8a4024b7`
 
 ````sql
--- Source: database/schema/15_sprint1_integrity.sql
--- Shared-row locks keep concurrent skill changes and patient closure consistent.
+-- ที่มา: database/schema/15_sprint1_integrity.sql
+-- ล็อกแถวข้อมูลที่เกี่ยวข้อง เพื่อให้การแก้ทักษะพร้อมกันและการปิดข้อมูลผู้ป่วยไม่ขัดแย้งกัน
 create or replace function private.validate_job_post()
 returns trigger
 language plpgsql
@@ -1577,7 +1594,7 @@ begin
   end if;
 
   if v_check_patient and new.status in ('draft', 'open', 'matched', 'in_progress') then
-    -- Synchronize with patient deactivation; recheck is_active after acquiring lock.
+    -- ทำงานให้สอดคล้องกับการปิดใช้งานผู้ป่วย และตรวจ `is_active` อีกครั้งหลังได้ล็อก
     perform 1 from public.patients
     where id = new.patient_id and employer_id = new.employer_id and is_active
     for share;
@@ -1630,15 +1647,15 @@ for each row execute function private.lock_job_for_skill_change();
 
 alter table public.job_posts add constraint job_posts_title_length check (length(title) <= 120);
 alter table public.job_posts add constraint job_posts_finite_dates check (isfinite(starts_at) and isfinite(ends_at));
--- Honor the UI's maximum of 10 digits at the database boundary as well.
+-- จำกัดเบอร์โทรไม่เกิน 10 หลักในฐานข้อมูลให้ตรงกับ UI
 alter table public.profiles add constraint profiles_phone_digits check (phone ~ '^[0-9]{1,10}$') not valid;
 
--- Source: database/schema/16_sprint1_indexes_and_dates.sql
--- Full indexes support FK checks for both open and historical jobs.
+-- ที่มา: database/schema/16_sprint1_indexes_and_dates.sql
+-- ดัชนีช่วยตรวจ FK ของทั้งประกาศที่เปิดอยู่และประกาศย้อนหลัง
 create index job_posts_patient_owner_idx on public.job_posts(patient_id, employer_id);
 create index job_posts_cancelled_by_idx on public.job_posts(cancelled_by);
 
--- Match the Thai calendar day instead of the database server's UTC day.
+-- ใช้วันตามเวลาไทย แทนวันตามเวลา UTC ของเซิร์ฟเวอร์ฐานข้อมูล
 create or replace function private.validate_patient()
 returns trigger
 language plpgsql
@@ -1668,12 +1685,564 @@ end;
 $$;
 ````
 
-## database/tests/caregiver_profiles_rls_test.sql
+## database/schema/06_matching.sql
 
-SHA-256: `e314e5d43dbef46517b73265ea4f4565f7e149139408c85c8884e7a44547ef7f`
+SHA-256: `a80bc675338a67ff055eff4a82c0136b424afa86ccf9d0538d9cef51a9a41c3d`
 
 ````sql
--- Test 1: Caregiver สร้างและอ่านโปรไฟล์ของตัวเองได้
+-- ค้นหาผู้ดูแลสำหรับประกาศที่ผู้เรียกเป็นเจ้าของ
+-- match_internal ต้องไม่อยู่ใน Exposed schemas ของ Data API
+begin;
+
+create schema if not exists match_internal;
+revoke all on schema match_internal from public, anon, authenticated;
+grant usage on schema match_internal to authenticated;
+
+create or replace function match_internal.search_caregivers_for_job(p_job_id bigint)
+returns table (
+  caregiver_id uuid,
+  display_name text,
+  province text,
+  district text,
+  experience_years smallint,
+  matched_skills bigint,
+  required_skills bigint
+)
+language plpgsql
+stable
+security definer
+set search_path = ''
+as $$
+declare
+  v_caller uuid := auth.uid();
+begin
+  -- ตรวจทั้งบทบาท เจ้าของประกาศ และสถานะ ก่อนอ่านข้อมูลข้าม RLS
+  if v_caller is null or not exists (
+    select 1
+    from public.profiles p
+    join public.job_posts j on j.employer_id = p.id
+    where p.id = v_caller and p.role = 'employer'
+      and j.id = p_job_id and j.status = 'open'
+  ) then
+    raise exception using errcode = '42501',
+      message = 'matching_requires_owned_open_job';
+  end if;
+
+  return query
+  with required as (
+    select jrs.skill_id
+    from public.job_required_skills jrs
+    where jrs.job_post_id = p_job_id
+  )
+  select cp.caregiver_id,
+    pg_catalog.concat_ws(' ', p.first_name, p.last_name),
+    p.province, p.district, cp.experience_years,
+    count(r.skill_id), (select count(*) from required)
+  from public.caregiver_profiles cp
+  join public.profiles p on p.id = cp.caregiver_id and p.role = 'caregiver'
+  left join public.caregiver_skills cs on cs.caregiver_id = cp.caregiver_id
+  left join required r on r.skill_id = cs.skill_id
+  where cp.verification_status = 'verified'
+    and cp.availability_status = 'available'
+  group by cp.caregiver_id, p.first_name, p.last_name, p.province, p.district,
+    cp.experience_years
+  order by count(r.skill_id) desc, cp.experience_years desc, cp.caregiver_id;
+end;
+$$;
+
+revoke all on function match_internal.search_caregivers_for_job(bigint)
+from public, anon, authenticated;
+grant execute on function match_internal.search_caregivers_for_job(bigint)
+to authenticated;
+
+-- จุดเรียกผ่าน RPC คืนเฉพาะข้อมูลสำหรับการเลือกผู้ดูแล ไม่คืนข้อมูลติดต่อ
+create or replace function public.search_caregivers_for_job(p_job_id bigint)
+returns table (
+  caregiver_id uuid,
+  display_name text,
+  province text,
+  district text,
+  experience_years smallint,
+  matched_skills bigint,
+  required_skills bigint
+)
+language sql
+stable
+security invoker
+set search_path = ''
+as $$
+  select * from match_internal.search_caregivers_for_job(p_job_id)
+  order by matched_skills desc, experience_years desc, caregiver_id;
+$$;
+
+revoke all on function public.search_caregivers_for_job(bigint)
+from public, anon, authenticated;
+grant execute on function public.search_caregivers_for_job(bigint)
+to authenticated;
+
+commit;
+````
+
+## database/schema/07_caregiver_documents.sql
+
+SHA-256: `07298f593ca3b6e1991f4f9de5d2f4a3589fe94839bd37b73949b0af8c432e39`
+
+````sql
+-- เอกสารและ Storage ส่วนตัว พร้อม RPC ส่งเอกสารและตรวจอนุมัติ
+-- ไม่ให้เขียน metadata หรือผลตรวจโดยตรง
+begin;
+
+create table if not exists public.caregiver_documents (
+  id bigint generated always as identity primary key,
+  caregiver_id uuid not null references public.caregiver_profiles(caregiver_id) on delete cascade,
+  document_type text not null check (document_type in ('identity', 'care_certificate', 'other')),
+  storage_path text not null unique check (btrim(storage_path) <> ''),
+  original_file_name text not null check (btrim(original_file_name) <> ''),
+  mime_type text not null check (mime_type in ('image/jpeg', 'image/png', 'application/pdf')),
+  review_status text not null default 'pending' check (review_status in ('pending', 'approved', 'rejected')),
+  reviewed_by uuid references public.profiles(id) on delete set null,
+  reviewed_at timestamptz,
+  rejection_reason text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  constraint caregiver_documents_review_fields_valid check (
+    (review_status = 'pending' and reviewed_by is null and reviewed_at is null and rejection_reason is null)
+    or (review_status = 'approved' and reviewed_by is not null and reviewed_at is not null and rejection_reason is null)
+    or (review_status = 'rejected' and reviewed_by is not null and reviewed_at is not null
+      and rejection_reason is not null and btrim(rejection_reason) <> '')
+  )
+);
+
+create index if not exists caregiver_documents_caregiver_idx
+on public.caregiver_documents(caregiver_id, created_at desc);
+create index if not exists caregiver_documents_reviewer_idx
+on public.caregiver_documents(reviewed_by);
+
+alter table public.caregiver_documents enable row level security;
+revoke all on public.caregiver_documents from public, anon, authenticated;
+grant select on public.caregiver_documents to authenticated;
+
+create policy caregiver_documents_read on public.caregiver_documents
+for select to authenticated using (
+  caregiver_id = (select auth.uid())
+  or exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role = 'admin')
+);
+
+create trigger caregiver_documents_updated_at
+before update on public.caregiver_documents
+for each row execute function private.set_updated_at();
+
+-- เก็บไฟล์ไม่เกิน 5 MB ต่อไฟล์ ใช้ชื่อ path เป็น UUIDผู้ใช้/UUIDไฟล์.นามสกุล
+insert into storage.buckets(id, name, public, file_size_limit, allowed_mime_types)
+values ('caregiver-documents', 'caregiver-documents', false, 5242880,
+  array['image/jpeg', 'image/png', 'application/pdf']);
+
+-- ผู้ดูแลอัปโหลดในโฟลเดอร์ตนเองได้ เมื่อมี caregiver_profiles แล้ว
+create policy caregiver_documents_upload on storage.objects
+for insert to authenticated with check (
+  bucket_id = 'caregiver-documents'
+  and (storage.foldername(name))[1] = (select auth.uid())::text
+  and owner_id = (select auth.uid())::text
+  and exists (
+    select 1 from public.profiles p
+    join public.caregiver_profiles cp on cp.caregiver_id = p.id
+    where p.id = (select auth.uid()) and p.role = 'caregiver'
+  )
+);
+
+-- เจ้าของอ่านไฟล์ตนเอง; แอดมินอ่านเฉพาะไฟล์ที่มีรายการเอกสารส่งเข้าระบบแล้ว
+create policy caregiver_documents_download on storage.objects
+for select to authenticated using (
+  bucket_id = 'caregiver-documents'
+  and (
+    (owner_id = (select auth.uid())::text
+      and (storage.foldername(name))[1] = (select auth.uid())::text)
+    or (
+      exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.role = 'admin')
+      and exists (select 1 from public.caregiver_documents d where d.storage_path = name)
+    )
+  )
+);
+
+-- ไม่ให้ overwrite หรือลบไฟล์ที่ส่งตรวจ ป้องกันเปลี่ยนเนื้อหาหลังอนุมัติ
+
+-- submit_caregiver_document: ตรวจสิทธิ์ภายในก่อนอ่านหรือเปลี่ยนข้อมูล
+create or replace function match_internal.submit_caregiver_document(p_path text, p_type text, p_name text, p_mime text)
+returns bigint language plpgsql volatile security definer set search_path = ''
+as $fn$
+
+declare v_id bigint; v_status text;
+begin
+ if auth.uid() is null or not exists(select 1 from public.profiles where id=auth.uid() and role='caregiver') then
+   raise exception using errcode='42501', message='caregiver_required'; end if;
+ select verification_status into v_status from public.caregiver_profiles where caregiver_id=auth.uid() for update;
+ if not found or v_status='verified' then raise exception 'profile_missing_or_already_verified'; end if;
+ if p_type not in ('identity','care_certificate','other') or p_type is null or p_name is null or length(btrim(p_name)) not between 1 and 255 then
+   raise exception 'invalid_document'; end if;
+ if not exists(select 1 from storage.objects o where o.bucket_id='caregiver-documents' and o.name=p_path
+   and o.owner_id=auth.uid()::text and split_part(o.name,'/',1)=auth.uid()::text
+   and o.metadata->>'mimetype'=p_mime and (o.metadata->>'size')::bigint between 1 and 5242880) then
+   raise exception 'uploaded_file_not_found'; end if;
+ insert into public.caregiver_documents(caregiver_id,document_type,storage_path,original_file_name,mime_type)
+ values(auth.uid(),p_type,p_path,p_name,p_mime) returning id into v_id;
+ update public.caregiver_profiles set verification_status='pending',verified_by=null,verified_at=null,rejection_reason=null where caregiver_id=auth.uid();
+ return v_id;
+end;
+$fn$;
+revoke all on function match_internal.submit_caregiver_document(text,text,text,text) from public, anon, authenticated;
+grant execute on function match_internal.submit_caregiver_document(text,text,text,text) to authenticated;
+create or replace function public.submit_caregiver_document(p_path text, p_type text, p_name text, p_mime text)
+returns bigint language sql volatile security invoker set search_path = ''
+as $fn$ select * from match_internal.submit_caregiver_document(p_path, p_type, p_name, p_mime); $fn$;
+revoke all on function public.submit_caregiver_document(text,text,text,text) from public, anon, authenticated;
+grant execute on function public.submit_caregiver_document(text,text,text,text) to authenticated;
+
+-- list_verification_queue: ตรวจสิทธิ์ภายในก่อนอ่านหรือเปลี่ยนข้อมูล
+create or replace function match_internal.list_verification_queue()
+returns table(caregiver_id uuid, display_name text, verification_status text) language plpgsql stable security definer set search_path = ''
+as $fn$
+
+begin
+ if auth.uid() is null or not exists(select 1 from public.profiles where id=auth.uid() and role='admin') then
+   raise exception using errcode='42501',message='admin_required'; end if;
+ return query select cp.caregiver_id,concat_ws(' ',p.first_name,p.last_name),cp.verification_status
+ from public.caregiver_profiles cp join public.profiles p on p.id=cp.caregiver_id
+ where cp.verification_status='pending' order by cp.updated_at,cp.caregiver_id;
+end;
+$fn$;
+revoke all on function match_internal.list_verification_queue() from public, anon, authenticated;
+grant execute on function match_internal.list_verification_queue() to authenticated;
+create or replace function public.list_verification_queue()
+returns table(caregiver_id uuid, display_name text, verification_status text) language sql stable security invoker set search_path = ''
+as $fn$ select * from match_internal.list_verification_queue(); $fn$;
+revoke all on function public.list_verification_queue() from public, anon, authenticated;
+grant execute on function public.list_verification_queue() to authenticated;
+
+-- review_caregiver: ตรวจสิทธิ์ภายในก่อนอ่านหรือเปลี่ยนข้อมูล
+create or replace function match_internal.review_caregiver(p_caregiver_id uuid, p_approve boolean, p_reason text)
+returns void language plpgsql volatile security definer set search_path = ''
+as $fn$
+
+declare v_status text;
+begin
+ if auth.uid() is null or not exists(select 1 from public.profiles where id=auth.uid() and role='admin') then
+   raise exception using errcode='42501',message='admin_required'; end if;
+ if p_caregiver_id=auth.uid() or p_approve is null then raise exception 'invalid_review'; end if;
+ select verification_status into v_status from public.caregiver_profiles where caregiver_id=p_caregiver_id for update;
+ if v_status is distinct from 'pending' then raise exception 'review_no_longer_pending'; end if;
+ if not p_approve and (p_reason is null or length(btrim(p_reason)) not between 1 and 1000) then raise exception 'rejection_reason_required'; end if;
+ if p_approve and not exists(select 1 from public.caregiver_documents d join storage.objects o
+   on o.bucket_id='caregiver-documents' and o.name=d.storage_path
+   where d.caregiver_id=p_caregiver_id and d.document_type='identity' and d.review_status='pending') then
+   raise exception 'identity_document_required'; end if;
+ update public.caregiver_documents set review_status=case when p_approve then 'approved' else 'rejected' end,
+ reviewed_by=auth.uid(),reviewed_at=now(),rejection_reason=case when p_approve then null else btrim(p_reason) end
+ where caregiver_id=p_caregiver_id and review_status='pending';
+ update public.caregiver_profiles set verification_status=case when p_approve then 'verified' else 'rejected' end,
+ verified_by=case when p_approve then auth.uid() else null end,
+ verified_at=case when p_approve then now() else null end,
+ rejection_reason=case when p_approve then null else btrim(p_reason) end where caregiver_id=p_caregiver_id;
+end;
+$fn$;
+revoke all on function match_internal.review_caregiver(uuid,boolean,text) from public, anon, authenticated;
+grant execute on function match_internal.review_caregiver(uuid,boolean,text) to authenticated;
+create or replace function public.review_caregiver(p_caregiver_id uuid, p_approve boolean, p_reason text)
+returns void language sql volatile security invoker set search_path = ''
+as $fn$ select * from match_internal.review_caregiver(p_caregiver_id, p_approve, p_reason); $fn$;
+revoke all on function public.review_caregiver(uuid,boolean,text) from public, anon, authenticated;
+grant execute on function public.review_caregiver(uuid,boolean,text) to authenticated;
+
+commit;
+````
+
+## database/schema/08_invitations.sql
+
+SHA-256: `13107ec94ca7c5365e9ae696b42699e2a8b50bd2dd9819cdea72954e9e4fa17a`
+
+````sql
+-- ระบบคำเชิญ: สิทธิ์เปลี่ยนสถานะอยู่ใน RPC เท่านั้น
+begin;
+create table public.match_requests (
+ id bigint generated always as identity primary key,
+ job_post_id bigint not null references public.job_posts(id) on delete restrict,
+ caregiver_id uuid not null references public.caregiver_profiles(caregiver_id) on delete restrict,
+ status text not null default 'pending' check(status in ('pending','accepted','rejected','not_selected')),
+ created_at timestamptz not null default now(), responded_at timestamptz,
+ unique(job_post_id,caregiver_id)
+);
+create unique index match_requests_one_accepted on public.match_requests(job_post_id) where status='accepted';
+create index match_requests_caregiver_idx on public.match_requests(caregiver_id,created_at desc);
+alter table public.match_requests enable row level security;
+revoke all on public.match_requests from public,anon,authenticated;
+grant select on public.match_requests to authenticated;
+create policy match_requests_read on public.match_requests for select to authenticated using (
+ caregiver_id=(select auth.uid()) or exists(select 1 from public.job_posts j where j.id=job_post_id and j.employer_id=(select auth.uid()))
+);
+
+create or replace function private.validate_job_post()
+returns trigger
+language plpgsql
+security invoker
+set search_path = pg_catalog
+as $$
+declare
+  v_check_patient boolean := true;
+begin
+  if tg_op = 'UPDATE' then
+    v_check_patient := new.patient_id is distinct from old.patient_id
+      or new.status is distinct from old.status;
+  end if;
+
+  if v_check_patient and new.status in ('draft', 'open', 'matched', 'in_progress', 'completion_pending') then
+    -- ทำงานให้สอดคล้องกับการปิดใช้งานผู้ป่วย และตรวจ `is_active` อีกครั้งหลังได้ล็อก
+    perform 1 from public.patients
+    where id = new.patient_id and employer_id = new.employer_id and is_active
+    for share;
+    if not found then
+      raise exception using errcode = '23514', message = 'job_patient_must_be_active_and_owned';
+    end if;
+  end if;
+
+  if tg_op = 'INSERT' then
+    if new.status not in ('draft', 'open') then
+      raise exception using errcode = '23514',
+        message = 'job_initial_status_invalid';
+    end if;
+  elsif new.status is distinct from old.status then
+    if not (
+      (old.status = 'draft' and new.status in ('open', 'closed'))
+      or (old.status = 'open' and new.status = 'closed')
+      or (old.status = 'open' and new.status = 'matched' and exists (
+        select 1 from public.match_requests r where r.job_post_id=new.id and r.status='accepted'
+      ))
+      or (old.status = 'matched' and new.status = 'in_progress' and exists (
+        select 1 from public.match_requests r where r.job_post_id=new.id and r.status='accepted'
+      ))
+      or (old.status = 'in_progress' and new.status = 'completion_pending' and exists (
+        select 1 from public.match_requests r where r.job_post_id=new.id and r.status='accepted'
+      ))
+      or (old.status = 'completion_pending' and new.status = 'completed' and exists (
+        select 1 from public.match_requests r where r.job_post_id=new.id and r.status='accepted'
+      ))
+    ) then
+      raise exception using errcode = '23514',
+        message = 'job_status_transition_invalid';
+    end if;
+  end if;
+
+  if new.status = 'open' and new.published_at is null then
+    new.published_at := now();
+  end if;
+
+  if new.status = 'closed' and new.closed_at is null then
+    new.closed_at := now();
+  end if;
+
+  return new;
+end;
+$$;
+
+-- invite_caregiver: ตรวจสิทธิ์ภายในก่อนอ่านหรือเปลี่ยนข้อมูล
+create or replace function match_internal.invite_caregiver(p_job_id bigint, p_caregiver_id uuid)
+returns bigint language plpgsql volatile security definer set search_path = ''
+as $fn$
+
+declare v_job public.job_posts; v_id bigint;
+begin
+ select * into v_job from public.job_posts where id=p_job_id for update;
+ if auth.uid() is null or v_job.employer_id is distinct from auth.uid() or not exists(select 1 from public.profiles where id=auth.uid() and role='employer') then
+ raise exception using errcode='42501',message='job_owner_required'; end if;
+ if v_job.status<>'open' then raise exception 'job_not_open'; end if;
+ perform 1 from public.caregiver_profiles cp join public.profiles p on p.id=cp.caregiver_id
+ where cp.caregiver_id=p_caregiver_id and p.role='caregiver' and cp.verification_status='verified' and cp.availability_status='available' for share of cp;
+ if not found then raise exception 'caregiver_not_eligible'; end if;
+ insert into public.match_requests(job_post_id,caregiver_id) values(p_job_id,p_caregiver_id)
+ on conflict(job_post_id,caregiver_id) do nothing returning id into v_id;
+ if v_id is null then raise exception 'invitation_already_exists'; end if;
+ return v_id;
+end;
+$fn$;
+revoke all on function match_internal.invite_caregiver(bigint,uuid) from public, anon, authenticated;
+grant execute on function match_internal.invite_caregiver(bigint,uuid) to authenticated;
+create or replace function public.invite_caregiver(p_job_id bigint, p_caregiver_id uuid)
+returns bigint language sql volatile security invoker set search_path = ''
+as $fn$ select * from match_internal.invite_caregiver(p_job_id, p_caregiver_id); $fn$;
+revoke all on function public.invite_caregiver(bigint,uuid) from public, anon, authenticated;
+grant execute on function public.invite_caregiver(bigint,uuid) to authenticated;
+
+-- respond_to_invitation: ตรวจสิทธิ์ภายในก่อนอ่านหรือเปลี่ยนข้อมูล
+create or replace function match_internal.respond_to_invitation(p_request_id bigint, p_accept boolean)
+returns void language plpgsql volatile security definer set search_path = ''
+as $fn$
+
+declare v_request public.match_requests; v_job public.job_posts; v_job_id bigint;
+begin
+ if auth.uid() is null or p_accept is null then raise exception using errcode='42501',message='caregiver_required'; end if;
+ select job_post_id into v_job_id from public.match_requests where id=p_request_id and caregiver_id=auth.uid();
+ if v_job_id is null then raise exception using errcode='42501',message='invitation_owner_required'; end if;
+ -- ทุกคำตอบล็อกประกาศก่อนคำเชิญ เพื่อกันการตอบรับสองคนพร้อมกัน
+ select * into v_job from public.job_posts where id=v_job_id for update;
+ select * into v_request from public.match_requests where id=p_request_id for update;
+ if v_request.status<>'pending' or v_job.status<>'open' then raise exception 'invitation_no_longer_open'; end if;
+ if not exists(select 1 from public.profiles where id=auth.uid() and role='caregiver') then raise exception using errcode='42501',message='caregiver_required'; end if;
+ if p_accept then
+   perform 1 from public.caregiver_profiles where caregiver_id=auth.uid() and verification_status='verified' and availability_status='available' for share;
+   if not found then raise exception 'caregiver_not_eligible'; end if;
+ end if;
+ update public.match_requests set status=case when p_accept then 'accepted' else 'rejected' end,responded_at=now() where id=p_request_id;
+ if p_accept then
+   update public.job_posts set status='matched' where id=v_job_id;
+   update public.match_requests set status='not_selected',responded_at=now() where job_post_id=v_job_id and status='pending';
+ end if;
+end;
+$fn$;
+revoke all on function match_internal.respond_to_invitation(bigint,boolean) from public, anon, authenticated;
+grant execute on function match_internal.respond_to_invitation(bigint,boolean) to authenticated;
+create or replace function public.respond_to_invitation(p_request_id bigint, p_accept boolean)
+returns void language sql volatile security invoker set search_path = ''
+as $fn$ select * from match_internal.respond_to_invitation(p_request_id, p_accept); $fn$;
+revoke all on function public.respond_to_invitation(bigint,boolean) from public, anon, authenticated;
+grant execute on function public.respond_to_invitation(bigint,boolean) to authenticated;
+
+-- list_my_invitations: ตรวจสิทธิ์ภายในก่อนอ่านหรือเปลี่ยนข้อมูล
+create or replace function match_internal.list_my_invitations()
+returns table(request_id bigint, job_post_id bigint, caregiver_id uuid, title text, description text, province text, district text, starts_at timestamptz, ends_at timestamptz, pay_amount numeric, pay_unit text, status text, job_status text, caregiver_name text) language plpgsql stable security definer set search_path = ''
+as $fn$
+
+begin
+ if auth.uid() is null then raise exception using errcode='42501',message='login_required'; end if;
+ return query select r.id,j.id,r.caregiver_id,j.title,j.description,j.province,j.district,j.starts_at,j.ends_at,j.pay_amount,j.pay_unit,r.status,j.status,concat_ws(' ',p.first_name,p.last_name)
+ from public.match_requests r join public.job_posts j on j.id=r.job_post_id join public.profiles p on p.id=r.caregiver_id
+ where (r.caregiver_id=auth.uid() and exists(select 1 from public.profiles me where me.id=auth.uid() and me.role='caregiver'))
+ or (j.employer_id=auth.uid() and exists(select 1 from public.profiles me where me.id=auth.uid() and me.role='employer'))
+ order by r.created_at desc,r.id desc;
+end;
+$fn$;
+revoke all on function match_internal.list_my_invitations() from public, anon, authenticated;
+grant execute on function match_internal.list_my_invitations() to authenticated;
+create or replace function public.list_my_invitations()
+returns table(request_id bigint, job_post_id bigint, caregiver_id uuid, title text, description text, province text, district text, starts_at timestamptz, ends_at timestamptz, pay_amount numeric, pay_unit text, status text, job_status text, caregiver_name text) language sql stable security invoker set search_path = ''
+as $fn$ select * from match_internal.list_my_invitations(); $fn$;
+revoke all on function public.list_my_invitations() from public, anon, authenticated;
+grant execute on function public.list_my_invitations() to authenticated;
+
+-- get_match_contact: ตรวจสิทธิ์ภายในก่อนอ่านหรือเปลี่ยนข้อมูล
+create or replace function match_internal.get_match_contact(p_request_id bigint)
+returns table(display_name text, phone text, line_id text, province text, district text, subdistrict text, address_detail text) language plpgsql stable security definer set search_path = ''
+as $fn$
+
+declare v_request public.match_requests; v_job public.job_posts; v_other uuid;
+begin
+ select * into v_request from public.match_requests where id=p_request_id;
+ select * into v_job from public.job_posts where id=v_request.job_post_id;
+ if auth.uid() is null or v_request.status is distinct from 'accepted' or (auth.uid() is distinct from v_request.caregiver_id and auth.uid() is distinct from v_job.employer_id) then
+ raise exception using errcode='42501',message='accepted_match_required'; end if;
+ v_other:=case when auth.uid()=v_request.caregiver_id then v_job.employer_id else v_request.caregiver_id end;
+ return query select concat_ws(' ',p.first_name,p.last_name),p.phone,p.line_id,v_job.province,v_job.district,v_job.subdistrict,v_job.address_detail from public.profiles p where p.id=v_other;
+end;
+$fn$;
+revoke all on function match_internal.get_match_contact(bigint) from public, anon, authenticated;
+grant execute on function match_internal.get_match_contact(bigint) to authenticated;
+create or replace function public.get_match_contact(p_request_id bigint)
+returns table(display_name text, phone text, line_id text, province text, district text, subdistrict text, address_detail text) language sql stable security invoker set search_path = ''
+as $fn$ select * from match_internal.get_match_contact(p_request_id); $fn$;
+revoke all on function public.get_match_contact(bigint) from public, anon, authenticated;
+grant execute on function public.get_match_contact(bigint) to authenticated;
+
+-- เมื่อปิดประกาศ ยุติคำเชิญค้างด้วย
+create or replace function private.close_pending_invitations() returns trigger language plpgsql security definer set search_path='' as $$
+begin
+ if new.status='closed' and old.status is distinct from new.status then
+ update public.match_requests set status='not_selected',responded_at=now() where job_post_id=new.id and status='pending';
+ end if; return new;
+end; $$;
+revoke all on function private.close_pending_invitations() from public,anon,authenticated;
+create trigger job_close_invitations after update of status on public.job_posts for each row execute function private.close_pending_invitations();
+
+-- เริ่มงานได้เมื่อเจ้าของประกาศมีผู้ดูแลตอบรับแล้ว
+create or replace function match_internal.start_matched_job(p_job_id bigint)
+returns bigint language plpgsql security definer set search_path = '' as $fn$
+declare v_job public.job_posts;
+begin
+ if auth.uid() is null then raise exception using errcode='42501',message='login_required'; end if;
+ select * into v_job from public.job_posts where id=p_job_id for update;
+ if not found or v_job.employer_id is distinct from auth.uid()
+   or not exists(select 1 from public.profiles where id=auth.uid() and role='employer') then
+   raise exception using errcode='42501',message='job_owner_required';
+ end if;
+ if v_job.status <> 'matched' then raise exception 'job_not_ready_to_start'; end if;
+ if not exists(select 1 from public.match_requests where job_post_id=p_job_id and status='accepted') then
+   raise exception using errcode='23514',message='accepted_match_required';
+ end if;
+ update public.job_posts set status='in_progress',started_at=now() where id=p_job_id;
+ return p_job_id;
+end;
+$fn$;
+revoke all on function match_internal.start_matched_job(bigint) from public,anon,authenticated;
+grant execute on function match_internal.start_matched_job(bigint) to authenticated;
+create or replace function public.start_matched_job(p_job_id bigint)
+returns bigint language sql security invoker set search_path=pg_catalog
+as $fn$ select match_internal.start_matched_job(p_job_id); $fn$;
+revoke all on function public.start_matched_job(bigint) from public,anon,authenticated;
+grant execute on function public.start_matched_job(bigint) to authenticated;
+
+-- ผู้ดูแลแจ้งจบงานของคู่ที่ตอบรับแล้ว
+create or replace function match_internal.request_job_completion(p_job_id bigint)
+returns bigint language plpgsql security definer set search_path = '' as $fn$
+declare v_job public.job_posts;
+begin
+ if auth.uid() is null then raise exception using errcode='42501',message='login_required'; end if;
+ select * into v_job from public.job_posts where id=p_job_id for update;
+ if not found or not exists(select 1 from public.profiles where id=auth.uid() and role='caregiver')
+   or not exists(select 1 from public.match_requests where job_post_id=p_job_id and caregiver_id=auth.uid() and status='accepted') then
+   raise exception using errcode='42501',message='accepted_caregiver_required';
+ end if;
+ if v_job.status <> 'in_progress' then raise exception 'job_not_in_progress'; end if;
+ update public.job_posts set status='completion_pending',completion_requested_at=now() where id=p_job_id;
+ return p_job_id;
+end;
+$fn$;
+revoke all on function match_internal.request_job_completion(bigint) from public,anon,authenticated;
+grant execute on function match_internal.request_job_completion(bigint) to authenticated;
+create or replace function public.request_job_completion(p_job_id bigint)
+returns bigint language sql security invoker set search_path=pg_catalog
+as $fn$ select match_internal.request_job_completion(p_job_id); $fn$;
+revoke all on function public.request_job_completion(bigint) from public,anon,authenticated;
+grant execute on function public.request_job_completion(bigint) to authenticated;
+
+-- ผู้ว่าจ้างเจ้าของประกาศยืนยันปิดงาน
+create or replace function match_internal.confirm_job_completion(p_job_id bigint)
+returns bigint language plpgsql security definer set search_path = '' as $fn$
+declare v_job public.job_posts;
+begin
+ if auth.uid() is null then raise exception using errcode='42501',message='login_required'; end if;
+ select * into v_job from public.job_posts where id=p_job_id for update;
+ if not found or v_job.employer_id is distinct from auth.uid()
+   or not exists(select 1 from public.profiles where id=auth.uid() and role='employer') then
+   raise exception using errcode='42501',message='job_owner_required';
+ end if;
+ if v_job.status <> 'completion_pending' then raise exception 'job_completion_not_pending'; end if;
+ if v_job.completion_requested_at is null then raise exception using errcode='23514',message='completion_request_required'; end if;
+ update public.job_posts set status='completed',completed_at=now() where id=p_job_id;
+ return p_job_id;
+end;
+$fn$;
+revoke all on function match_internal.confirm_job_completion(bigint) from public,anon,authenticated;
+grant execute on function match_internal.confirm_job_completion(bigint) to authenticated;
+create or replace function public.confirm_job_completion(p_job_id bigint)
+returns bigint language sql security invoker set search_path=pg_catalog
+as $fn$ select match_internal.confirm_job_completion(p_job_id); $fn$;
+revoke all on function public.confirm_job_completion(bigint) from public,anon,authenticated;
+grant execute on function public.confirm_job_completion(bigint) to authenticated;
+commit;
+````
+
+## database/tests/caregiver_profiles_rls_test.sql
+
+SHA-256: `9a4f04936ea389d098720c3d94dfde763a71fd5fbc7206ef5f8d61037efb0261`
+
+````sql
+-- ทดสอบ 1: Caregiver สร้างและอ่านโปรไฟล์ของตัวเองได้
 -- ข้อมูลทดสอบทั้งหมดจะถูกยกเลิกด้วย rollback
 
 begin;
@@ -1776,7 +2345,7 @@ where caregiver_id = (select auth.uid());
 
 rollback;
 
--- Test 2: Employer ต้องสร้างโปรไฟล์ผู้ดูแลไม่ได้
+-- ทดสอบ 2: Employer ต้องสร้างโปรไฟล์ผู้ดูแลไม่ได้
 
 begin;
 
@@ -1856,7 +2425,7 @@ select current_setting(
 
 rollback;
 
--- Test 3: Caregiver แก้โปรไฟล์ตัวเองได้
+-- ทดสอบ 3: Caregiver แก้โปรไฟล์ตัวเองได้
 -- และ updated_at ต้องเปลี่ยนอัตโนมัติ
 
 begin;
@@ -1941,7 +2510,7 @@ where caregiver_id = (select auth.uid());
 
 rollback;
 
--- Test 4: Caregiver ต้องยืนยันตัวเองไม่ได้
+-- ทดสอบ 4: Caregiver ต้องยืนยันตัวเองไม่ได้
 
 begin;
 
@@ -2051,7 +2620,7 @@ where caregiver_id = (select auth.uid());
 
 rollback;
 
--- Test 5: Employer อ่านและแก้โปรไฟล์ผู้ดูแลไม่ได้
+-- ทดสอบ 5: Employer อ่านและแก้โปรไฟล์ผู้ดูแลไม่ได้
 
 begin;
 
@@ -2146,7 +2715,7 @@ select
 
 rollback;
 
--- Test 6: Caregiver เพิ่ม อ่าน และลบทักษะของตัวเองได้
+-- ทดสอบ 6: Caregiver เพิ่ม อ่าน และลบทักษะของตัวเองได้
 
 begin;
 
@@ -2289,7 +2858,7 @@ select
 
 rollback;
 
--- Test 7: Employer จัดการทักษะของ Caregiver ไม่ได้
+-- ทดสอบ 7: Employer จัดการทักษะของ Caregiver ไม่ได้
 
 begin;
 
@@ -2644,6 +3213,102 @@ select
 rollback;
 ````
 
+## database/tests/matching_search_test.sql
+
+SHA-256: `e20ddd1cf42f7e7d2f99dc8a8733fa729b12918e0f95e252391819aa22a61103`
+
+````sql
+-- รันหลังติดตั้ง 06_matching.sql; ข้อมูลสมมติทั้งหมดถูก rollback
+begin;
+select set_config('test.owner', gen_random_uuid()::text, true);
+select set_config('test.other', gen_random_uuid()::text, true);
+select set_config('test.full', gen_random_uuid()::text, true);
+select set_config('test.partial', gen_random_uuid()::text, true);
+select set_config('test.unverified', gen_random_uuid()::text, true);
+select set_config('test.unavailable', gen_random_uuid()::text, true);
+insert into auth.users(id, email)
+select current_setting(k)::uuid, current_setting(k) || '@example.com'
+from unnest(array['test.owner','test.other','test.full','test.partial','test.unverified','test.unavailable']) k;
+insert into public.profiles(id, role, first_name, last_name, phone, province, district, subdistrict, address_detail)
+select current_setting(k)::uuid,
+  case when k in ('test.owner','test.other') then 'employer' else 'caregiver' end,
+  'ทดสอบ', k, '0800000000', 'กรุงเทพมหานคร', 'พระนคร', 'พระบรมมหาราชวัง', 'ข้อมูลสมมติ'
+from unnest(array['test.owner','test.other','test.full','test.partial','test.unverified','test.unavailable']) k;
+insert into public.caregiver_profiles(caregiver_id, availability_status, verification_status, verified_by, verified_at)
+select current_setting(k)::uuid,
+  case when k = 'test.unavailable' then 'unavailable' else 'available' end,
+  case when k = 'test.unverified' then 'not_submitted' else 'verified' end,
+  case when k <> 'test.unverified' then current_setting('test.owner')::uuid end,
+  case when k <> 'test.unverified' then now() end
+from unnest(array['test.full','test.partial','test.unverified','test.unavailable']) k;
+
+-- สร้างประกาศด้วยสิทธิ์ผู้ว่าจ้างจริง
+select set_config('request.jwt.claims', json_build_object('sub',current_setting('test.owner'),'role','authenticated')::text,true);
+set local role authenticated;
+do $$
+declare p public.patients; j bigint; tags bigint[];
+begin
+  select array_agg(id order by id) into tags from (select id from public.skills where is_active order by id limit 2) s;
+  if cardinality(tags) is distinct from 2 then raise exception 'ต้องมีทักษะที่เปิดใช้งานสองรายการ'; end if;
+  perform set_config('test.tags', tags::text, true);
+  p := public.save_patient_with_tags(null,'ทดสอบ','จับคู่','1950-01-01','walker',null,
+    'กรุงเทพมหานคร','พระนคร','พระบรมมหาราชวัง','ข้อมูลสมมติ','{}',tags);
+  j := public.create_job_with_tags(p.id,'ทดสอบจับคู่','รายละเอียด','การดูแล',now()+interval '1 day',now()+interval '2 days',1000,'day',tags);
+  perform set_config('test.job',j::text,true);
+end $$;
+reset role;
+insert into public.caregiver_skills(caregiver_id, skill_id)
+select current_setting(k)::uuid, tag
+from unnest(array['test.full','test.partial','test.unverified','test.unavailable']) k
+cross join unnest(current_setting('test.tags')::bigint[]) tag
+where k <> 'test.partial' or tag = (current_setting('test.tags')::bigint[])[1];
+set local role authenticated;
+do $$
+declare counts bigint[];
+begin
+  select array_agg(s.matched_skills order by s.matched_skills desc) into counts
+  from public.search_caregivers_for_job(current_setting('test.job')::bigint) s
+  where s.caregiver_id in (current_setting('test.full')::uuid,current_setting('test.partial')::uuid);
+  if counts is distinct from array[2,1]::bigint[] then raise exception 'คะแนนทักษะผิด'; end if;
+  if exists(select 1 from public.search_caregivers_for_job(current_setting('test.job')::bigint) s
+    where s.caregiver_id in (current_setting('test.unverified')::uuid,current_setting('test.unavailable')::uuid))
+  then raise exception 'พบผู้ดูแลที่ไม่ผ่านเงื่อนไข'; end if;
+  if exists(select 1 from public.search_caregivers_for_job(current_setting('test.job')::bigint) s where s.required_skills <> 2)
+  then raise exception 'จำนวนทักษะประกาศผิด'; end if;
+end $$;
+
+-- ผู้ว่าจ้างอื่น ผู้ดูแล และผู้ไม่มี session ต้องถูกปฏิเสธ
+do $$
+declare k text;
+begin
+  foreach k in array array['test.other','test.full'] loop
+    perform set_config('request.jwt.claims',json_build_object('sub',current_setting(k),'role','authenticated')::text,true);
+    begin
+      perform public.search_caregivers_for_job(current_setting('test.job')::bigint);
+      raise exception 'ผู้ไม่มีสิทธิ์ค้นหาได้';
+    exception when insufficient_privilege then null; end;
+  end loop;
+  perform set_config('request.jwt.claims','{}',true);
+  begin
+    perform public.search_caregivers_for_job(current_setting('test.job')::bigint);
+    raise exception 'ไม่มี session แต่ค้นหาได้';
+  exception when insufficient_privilege then null; end;
+end $$;
+select set_config('request.jwt.claims',json_build_object('sub',current_setting('test.owner'),'role','authenticated')::text,true);
+select public.close_job(current_setting('test.job')::bigint);
+do $$ begin
+  begin
+    perform public.search_caregivers_for_job(current_setting('test.job')::bigint);
+    raise exception 'ประกาศปิดแล้วแต่ค้นหาได้';
+  exception when insufficient_privilege then null; end;
+  if has_function_privilege('anon','public.search_caregivers_for_job(bigint)','EXECUTE')
+    or has_function_privilege('anon','match_internal.search_caregivers_for_job(bigint)','EXECUTE')
+  then raise exception 'anon เรียกฟังก์ชันได้'; end if;
+end $$;
+select 'matching_search_tests_passed' as result;
+rollback;
+````
+
 ## database/tests/patient_atomic_save_test.sql
 
 SHA-256: `03741d172a6fb3a911f2c96cb49d3cb55d943d829e85c3e2c106ef354c42685f`
@@ -2758,10 +3423,10 @@ rollback;
 
 ## database/tests/patients_rls_test.sql
 
-SHA-256: `a0f28f281e956505be8df3c262eee15662dbdf9826a508d94845919185b38e0a`
+SHA-256: `16d658d81ef50c631cf03ddbe5147d26e7274c266be0a7f77764c8a745e9ea1a`
 
 ````sql
--- Test 1: Employer เพิ่มและอ่านผู้ป่วยของตนเองได้
+-- ทดสอบ 1: Employer เพิ่มและอ่านผู้ป่วยของตนเองได้
 -- ข้อมูลทดสอบจะถูกยกเลิกด้วย rollback
 
 begin;
@@ -2820,7 +3485,7 @@ where employer_id = (select auth.uid())
 rollback;
 
 
--- Test 2: Caregiver ต้องไม่สามารถเพิ่มผู้ป่วยได้
+-- ทดสอบ 2: Caregiver ต้องไม่สามารถเพิ่มผู้ป่วยได้
 
 begin;
 
@@ -2884,7 +3549,7 @@ $$;
 rollback;
 
 
--- Test 3: ผู้ใช้บัญชีอื่นต้องอ่านหรือแก้ผู้ป่วยของ Employer ไม่ได้
+-- ทดสอบ 3: ผู้ใช้บัญชีอื่นต้องอ่านหรือแก้ผู้ป่วยของ Employer ไม่ได้
 
 begin;
 
@@ -2951,7 +3616,7 @@ from updated_other_patient;
 
 rollback;
 
--- Test 4: ระบบต้องปฏิเสธวันเกิดในอนาคต
+-- ทดสอบ 4: ระบบต้องปฏิเสธวันเกิดในอนาคต
 
 begin;
 
@@ -3015,7 +3680,7 @@ $$;
 rollback;
 
 
--- Test 5: Employer เชื่อมสภาวะและทักษะกับผู้ป่วยของตนเองได้
+-- ทดสอบ 5: Employer เชื่อมสภาวะและทักษะกับผู้ป่วยของตนเองได้
 
 begin;
 
@@ -3101,7 +3766,7 @@ select
 
 rollback;
 
--- Test 6: Employer แก้ไขและปิดใช้งานผู้ป่วยของตนเองได้
+-- ทดสอบ 6: Employer แก้ไขและปิดใช้งานผู้ป่วยของตนเองได้
 
 begin;
 
@@ -3173,10 +3838,10 @@ rollback;
 
 ## database/tests/profiles_rls_test.sql
 
-SHA-256: `30d52ccdf7560885225b5d842ded74a08cb5e069d6dc503dec68f504f0dc7e87`
+SHA-256: `1d163fc2d5e87f68ee29002605cedf9d93c13f852f80983d804ae70647b27797`
 
 ````sql
--- Test 1: ผู้ใช้ที่ล็อกอินสร้างและอ่านโปรไฟล์ของตัวเองได้
+-- ทดสอบ 1: ผู้ใช้ที่ล็อกอินสร้างและอ่านโปรไฟล์ของตัวเองได้
 -- ข้อมูลทั้งหมดอยู่ใน Transaction และจะถูกยกเลิกด้วย rollback
 
 begin;
@@ -3238,7 +3903,7 @@ from public.profiles;
 rollback;
 
 
--- Test 2: Employer ต้องมองไม่เห็นโปรไฟล์ของ Caregiver
+-- ทดสอบ 2: Employer ต้องมองไม่เห็นโปรไฟล์ของ Caregiver
 
 begin;
 
@@ -3317,7 +3982,7 @@ from public.profiles;
 
 rollback;
 
--- Test 3: Employer แก้โปรไฟล์ตัวเองได้ แต่แก้ Caregiver ไม่ได้
+-- ทดสอบ 3: Employer แก้โปรไฟล์ตัวเองได้ แต่แก้ Caregiver ไม่ได้
 
 begin;
 
@@ -3419,7 +4084,7 @@ from updated_other_profile;
 
 rollback;
 
--- Test 4: ผู้ใช้ทั่วไปต้องสร้างโปรไฟล์ role = admin ไม่ได้
+-- ทดสอบ 4: ผู้ใช้ทั่วไปต้องสร้างโปรไฟล์ role = admin ไม่ได้
 
 begin;
 
@@ -3497,7 +4162,7 @@ select
 
 rollback;
 
--- Test 5: ผู้ที่ยังไม่ล็อกอินต้องอ่าน profiles ไม่ได้
+-- ทดสอบ 5: ผู้ที่ยังไม่ล็อกอินต้องอ่าน profiles ไม่ได้
 
 begin;
 
@@ -3567,7 +4232,7 @@ select
 
 rollback;
 
--- Test 6: updated_at ต้องเปลี่ยนอัตโนมัติเมื่อแก้ไขโปรไฟล์
+-- ทดสอบ 6: updated_at ต้องเปลี่ยนอัตโนมัติเมื่อแก้ไขโปรไฟล์
 
 begin;
 
@@ -3639,6 +4304,74 @@ where id = (select auth.uid());
 
 -- คืนฐานข้อมูลกลับสู่สภาพก่อนทดสอบ
 rollback;
+````
+
+## database/tests/run-local.mjs
+
+SHA-256: `9ee5e4d7ad47967b78a6b593373073c8ac492a6ba3d8df76481d5b1d116e881c`
+
+````javascript
+import { PGlite } from '@electric-sql/pglite'
+import fs from 'node:fs'
+import { fileURLToPath } from 'node:url'
+
+process.chdir(fileURLToPath(new URL('../../', import.meta.url)))
+const db = new PGlite()
+
+// จำลองเฉพาะโครงสร้างที่ SQL ใช้ ไม่ใช่บริการ Auth/Storage HTTP จริง
+const testEnvironment = `
+  create role anon;
+  create role authenticated;
+  create schema auth;
+  create table auth.users (id uuid primary key, email text);
+  create function auth.uid() returns uuid language sql stable as $$
+    select (nullif(current_setting('request.jwt.claims', true), '')::jsonb->>'sub')::uuid
+  $$;
+  grant usage on schema auth to anon, authenticated;
+
+  create schema storage;
+  create table storage.buckets (
+    id text primary key, name text, public boolean,
+    file_size_limit bigint, allowed_mime_types text[]
+  );
+  create table storage.objects (
+    id uuid primary key default gen_random_uuid(),
+    bucket_id text references storage.buckets(id), name text,
+    owner_id text, metadata jsonb, unique (bucket_id, name)
+  );
+  alter table storage.objects enable row level security;
+  grant usage on schema storage to authenticated, anon;
+  grant select, insert, update, delete on storage.objects to authenticated;
+  create function storage.foldername(name text) returns text[]
+  language sql immutable as $$
+    select (string_to_array(name, '/'))[1:array_length(string_to_array(name, '/'), 1)-1]
+  $$;
+`
+
+async function runFile(folder, file) {
+  await db.exec(fs.readFileSync(`${folder}/${file}`, 'utf8'))
+  console.log('PASS', `${folder}/${file}`)
+}
+
+try {
+  await db.exec(testEnvironment)
+  const schemas = fs.readdirSync('database/schema')
+    .filter((file) => file.endsWith('.sql'))
+    .sort()
+  for (const file of schemas) await runFile('database/schema', file)
+
+  const tests = [
+    'matching_search_test.sql',
+    'workflow_integration_test.sql',
+    'sprint1_integration_test.sql',
+  ]
+  for (const file of tests) await runFile('database/tests', file)
+} catch (error) {
+  console.error('FAIL', error.message, error.detail ?? '')
+  process.exitCode = 1
+} finally {
+  await db.close()
+}
 ````
 
 ## database/tests/skills_crud_test.sql
@@ -3753,10 +4486,10 @@ select
 
 ## database/tests/sprint1_integration_test.sql
 
-SHA-256: `13cdaf5f88fb32650d3b1334d1212ff00ef22e27e13b534c5270562b4add2439`
+SHA-256: `4fe1d4b5ce3c7c187bc631b0a1d4d36f69a211cb1d33bd8b56f9fccffd956b7b`
 
 ````sql
--- Repeatable integration checks. All fixture rows roll back; sequence gaps are expected.
+-- ชุดทดสอบการทำงานร่วมกันที่รันซ้ำได้ ข้อมูลทดสอบทั้งหมดถูก rollback และเลข sequence อาจข้ามได้
 begin;
 select set_config('test.owner', gen_random_uuid()::text, true);
 select set_config('test.other', gen_random_uuid()::text, true);
@@ -3801,7 +4534,7 @@ begin
   p := public.save_patient_with_tags(null,'ทดสอบ','ผู้ป่วย','1950-01-01','walker',null,
     'กรุงเทพมหานคร','พระนคร','พระบรมมหาราชวัง','ข้อมูลสมมติ','{}',skills);
   perform set_config('test.patient',p.id::text,true);
-  -- Use the same calendar as validate_patient, including UTC/Thai midnight overlap.
+  -- ใช้วันตามเวลาเดียวกับ `validate_patient` รวมถึงช่วงเที่ยงคืนที่วัน UTC และวันไทยต่างกัน
   update public.patients set birth_date=(now() at time zone 'Asia/Bangkok')::date where id=p.id;
   begin
     update public.patients set birth_date=(now() at time zone 'Asia/Bangkok')::date+1 where id=p.id;
@@ -3815,7 +4548,7 @@ begin
   perform public.update_job_with_tags(j,p.id,'แก้ไขประกาศ','รายละเอียดใหม่','สรุปใหม่',now()+interval '2 days',now()+interval '3 days',1500,'day',array[skills[2]]);
   if not exists(select 1 from public.job_posts where id=j and title='แก้ไขประกาศ' and pay_amount=1500)
     or (select count(*) from public.job_required_skills where job_post_id=j) <> 1 then raise exception 'update failed'; end if;
-  -- Invalid tags, zero pay, reversed dates, blank text must leave the existing job unchanged.
+  -- แท็กไม่ถูกต้อง ค่าตอบแทนเป็นศูนย์ วันเริ่มหลังวันสิ้นสุด หรือข้อความว่าง ต้องไม่เปลี่ยนประกาศเดิม
   for i in 1..4 loop
     rejected := false;
     begin
@@ -3837,7 +4570,7 @@ begin
     update public.patients set is_active=false where id=p.id;
     raise exception 'active patient deactivated';
   exception when check_violation then null; end;
-  -- Immediate constraint checks also prove at least one skill remains.
+  -- การตรวจ constraint ทันทีต้องยืนยันด้วยว่ายังเหลือทักษะอย่างน้อยหนึ่งรายการ
   begin
     delete from public.job_required_skills where job_post_id=j;
     set constraints all immediate;
@@ -3882,6 +4615,244 @@ reset role;
 select true as profiles_and_roles_passed, true as patient_guard_passed,
  true as job_create_update_close_passed, true as atomic_rollback_passed,
  true as cross_account_passed, true as anon_denied;
+rollback;
+````
+
+## database/tests/workflow_integration_test.sql
+
+SHA-256: `21c9cae17bc95682dae037f1ee995fed567ade6784e24f57f8847c2ab408d5cf`
+
+````sql
+-- ทดสอบด้วยข้อมูลสมมติเท่านั้น; รันหลัง schema 01–08 และ rollback ทุกแถว
+-- storage.objects ด้านล่างเป็น metadata จำลอง ไม่ใช่การอัปโหลดไฟล์ผ่าน Storage API
+begin;
+select set_config('test.employer',gen_random_uuid()::text,true);
+select set_config('test.other',gen_random_uuid()::text,true);
+select set_config('test.caregiver',gen_random_uuid()::text,true);
+select set_config('test.second',gen_random_uuid()::text,true);
+select set_config('test.admin',gen_random_uuid()::text,true);
+insert into auth.users(id,email)
+select current_setting(k)::uuid,current_setting(k)||'@example.com'
+from unnest(array['test.employer','test.other','test.caregiver','test.second','test.admin']) k;
+insert into public.profiles(id,role,first_name,last_name,phone,province,district,subdistrict,address_detail)
+select current_setting(k)::uuid,case when k='test.admin' then 'admin' when k in ('test.caregiver','test.second') then 'caregiver' else 'employer' end,
+'ทดสอบ',k,'0800000000','กรุงเทพมหานคร','พระนคร','พระบรมมหาราชวัง','ข้อมูลสมมติ'
+from unnest(array['test.employer','test.other','test.caregiver','test.second','test.admin']) k;
+insert into public.caregiver_profiles(caregiver_id,availability_status)
+values(current_setting('test.caregiver')::uuid,'available'),(current_setting('test.second')::uuid,'available');
+
+select set_config('request.jwt.claims',json_build_object('sub',current_setting('test.caregiver'),'role','authenticated')::text,true);
+set local role authenticated;
+-- ห้ามอัปโหลดเข้าโฟลเดอร์คนอื่น และห้ามยืนยันตนเอง
+do $$ begin
+  begin
+    insert into storage.objects(bucket_id,name,owner_id,metadata)
+    values('caregiver-documents',current_setting('test.second')||'/fake.pdf',auth.uid()::text,'{"mimetype":"application/pdf","size":100}');
+    raise exception 'cross-owner upload allowed';
+  exception when insufficient_privilege then null; end;
+  begin
+    perform public.review_caregiver(auth.uid(),true,null);
+    raise exception 'self approval allowed';
+  exception when insufficient_privilege then null; end;
+end $$;
+insert into storage.objects(bucket_id,name,owner_id,metadata)
+values('caregiver-documents',auth.uid()::text||'/identity.pdf',auth.uid()::text,'{"mimetype":"application/pdf","size":100}');
+select public.submit_caregiver_document(auth.uid()::text||'/identity.pdf','identity','เอกสารสมมติ.pdf','application/pdf');
+do $$ begin
+  if not exists(select 1 from public.caregiver_profiles where verification_status='pending') then raise exception 'submission not pending'; end if;
+  begin
+    update public.caregiver_documents set review_status='approved';
+    raise exception 'direct document approval allowed';
+  exception when insufficient_privilege then null; end;
+end $$;
+
+-- ผู้ว่าจ้างดูเอกสารไม่ได้ และส่งไฟล์เองไม่ได้
+select set_config('request.jwt.claims',json_build_object('sub',current_setting('test.employer'),'role','authenticated')::text,true);
+do $$ begin
+  if exists(select 1 from public.caregiver_documents) then raise exception 'employer sees documents'; end if;
+  if exists(select 1 from storage.objects where bucket_id='caregiver-documents') then raise exception 'employer sees private files'; end if;
+  begin
+    insert into storage.objects(bucket_id,name,owner_id,metadata)
+    values('caregiver-documents',auth.uid()::text||'/employer.pdf',auth.uid()::text,'{}');
+    raise exception 'employer upload allowed';
+  exception when insufficient_privilege then null; end;
+end $$;
+
+-- แอดมินเห็นคิวและไฟล์ที่ส่งแล้ว; ทดสอบปฏิเสธและส่งใหม่
+select set_config('request.jwt.claims',json_build_object('sub',current_setting('test.admin'),'role','authenticated')::text,true);
+do $$ begin
+  if not exists(select 1 from public.list_verification_queue() where caregiver_id=current_setting('test.caregiver')::uuid) then raise exception 'queue missing'; end if;
+  if not exists(select 1 from storage.objects where name=current_setting('test.caregiver')||'/identity.pdf') then raise exception 'admin cannot read submitted file'; end if;
+  begin
+    perform public.review_caregiver(current_setting('test.caregiver')::uuid,false,' ');
+    raise exception 'empty rejection reason allowed';
+  exception when raise_exception then
+    if sqlerrm <> 'rejection_reason_required' then raise; end if;
+  end;
+end $$;
+select public.review_caregiver(current_setting('test.caregiver')::uuid,false,'กรุณาส่งภาพที่ชัดขึ้น');
+select set_config('request.jwt.claims',json_build_object('sub',current_setting('test.caregiver'),'role','authenticated')::text,true);
+insert into storage.objects(bucket_id,name,owner_id,metadata)
+values('caregiver-documents',auth.uid()::text||'/identity-new.pdf',auth.uid()::text,'{"mimetype":"application/pdf","size":100}');
+select public.submit_caregiver_document(auth.uid()::text||'/identity-new.pdf','identity','เอกสารใหม่.pdf','application/pdf');
+select set_config('request.jwt.claims',json_build_object('sub',current_setting('test.admin'),'role','authenticated')::text,true);
+select public.review_caregiver(current_setting('test.caregiver')::uuid,true,null);
+
+-- ผู้ดูแลคนที่สองส่งเอกสารและได้รับอนุมัติ
+select set_config('request.jwt.claims',json_build_object('sub',current_setting('test.second'),'role','authenticated')::text,true);
+insert into storage.objects(bucket_id,name,owner_id,metadata)
+values('caregiver-documents',auth.uid()::text||'/identity.pdf',auth.uid()::text,'{"mimetype":"application/pdf","size":100}');
+select public.submit_caregiver_document(auth.uid()::text||'/identity.pdf','identity','ทดสอบสอง.pdf','application/pdf');
+select set_config('request.jwt.claims',json_build_object('sub',current_setting('test.admin'),'role','authenticated')::text,true);
+select public.review_caregiver(current_setting('test.second')::uuid,true,null);
+
+select set_config('request.jwt.claims',json_build_object('sub',current_setting('test.employer'),'role','authenticated')::text,true);
+do $$ declare p public.patients; j bigint; tags bigint[]; r bigint;
+begin
+  select array_agg(id) into tags from (select id from public.skills where is_active order by id limit 2) s;
+  p:=public.save_patient_with_tags(null,'ทดสอบ','ผู้ป่วย','1950-01-01','walker',null,'กรุงเทพมหานคร','พระนคร','พระบรมมหาราชวัง','ข้อมูลสมมติ','{}',tags);
+  j:=public.create_job_with_tags(p.id,'งานทดสอบจับคู่','รายละเอียด','ดูแล',now()+interval '1 day',now()+interval '2 days',1000,'day',tags);
+  perform set_config('test.job',j::text,true);
+  if not exists(select 1 from public.search_caregivers_for_job(j) where caregiver_id=current_setting('test.caregiver')::uuid) then raise exception 'approved caregiver missing from search'; end if;
+  r:=public.invite_caregiver(j,current_setting('test.caregiver')::uuid);
+  perform set_config('test.request',r::text,true);
+  r:=public.invite_caregiver(j,current_setting('test.second')::uuid);
+  perform set_config('test.second_request',r::text,true);
+  begin
+    perform public.invite_caregiver(j,current_setting('test.caregiver')::uuid);
+    raise exception 'duplicate invite allowed';
+  exception when raise_exception then if sqlerrm <> 'invitation_already_exists' then raise; end if; end;
+  begin
+    perform public.get_match_contact(current_setting('test.request')::bigint);
+    raise exception 'contact visible before acceptance';
+  exception when insufficient_privilege then null; end;
+end $$;
+
+-- คนอื่นเชิญแทนเจ้าของหรือตอบรับแทนไม่ได้
+select set_config('request.jwt.claims',json_build_object('sub',current_setting('test.other'),'role','authenticated')::text,true);
+do $$ begin
+  begin
+    perform public.invite_caregiver(current_setting('test.job')::bigint,current_setting('test.caregiver')::uuid);
+    raise exception 'foreign job invite allowed';
+  exception when insufficient_privilege then null; end;
+  begin
+    perform public.respond_to_invitation(current_setting('test.request')::bigint,true);
+    raise exception 'foreign invitation acceptance allowed';
+  exception when insufficient_privilege then null; end;
+end $$;
+
+select set_config('request.jwt.claims',json_build_object('sub',current_setting('test.caregiver'),'role','authenticated')::text,true);
+select public.respond_to_invitation(current_setting('test.request')::bigint,true);
+do $$ begin
+  if (select count(*) from public.match_requests where job_post_id=current_setting('test.job')::bigint and status='accepted') <> 1 then
+    raise exception 'expected exactly one accepted caregiver for a job';
+  end if;
+  if not exists(select 1 from public.get_match_contact(current_setting('test.request')::bigint) where phone='0800000000') then raise exception 'accepted contact missing'; end if;
+end $$;
+select set_config('request.jwt.claims',json_build_object('sub',current_setting('test.second'),'role','authenticated')::text,true);
+do $$ begin
+  if not exists(select 1 from public.list_my_invitations() where request_id=current_setting('test.second_request')::bigint and status='not_selected') then raise exception 'other invite still pending'; end if;
+  begin
+    perform public.respond_to_invitation(current_setting('test.second_request')::bigint,true);
+    raise exception 'second acceptance allowed';
+  exception when raise_exception then if sqlerrm <> 'invitation_no_longer_open' then raise; end if; end;
+  begin
+    perform public.get_match_contact(current_setting('test.request')::bigint);
+    raise exception 'third party contact visible';
+  exception when insufficient_privilege then null; end;
+end $$;
+select set_config('request.jwt.claims',json_build_object('sub',current_setting('test.employer'),'role','authenticated')::text,true);
+do $$ begin
+  if not exists(select 1 from public.job_posts where id=current_setting('test.job')::bigint and status='matched') then raise exception 'job not matched'; end if;
+  if not exists(select 1 from public.get_match_contact(current_setting('test.request')::bigint)) then raise exception 'employer contact missing'; end if;
+  perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.other'),'role','authenticated')::text,true);
+  begin
+    perform public.start_matched_job(current_setting('test.job')::bigint);
+    raise exception 'another employer started the job';
+  exception when insufficient_privilege then null; end;
+  perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.employer'),'role','authenticated')::text,true);
+  if public.start_matched_job(current_setting('test.job')::bigint) <> current_setting('test.job')::bigint then
+    raise exception 'start did not return job id';
+  end if;
+  if not exists(select 1 from public.job_posts where id=current_setting('test.job')::bigint and status='in_progress' and started_at is not null) then
+    raise exception 'job did not enter in_progress';
+  end if;
+  perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.second'),'role','authenticated')::text,true);
+  begin
+    perform public.request_job_completion(current_setting('test.job')::bigint);
+    raise exception 'unmatched caregiver requested completion';
+  exception when insufficient_privilege then null; end;
+  perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.caregiver'),'role','authenticated')::text,true);
+  if public.request_job_completion(current_setting('test.job')::bigint) <> current_setting('test.job')::bigint then
+    raise exception 'completion request did not return job id';
+  end if;
+  perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.employer'),'role','authenticated')::text,true);
+  if not exists(select 1 from public.job_posts where id=current_setting('test.job')::bigint and status='completion_pending' and completion_requested_at is not null) then
+    raise exception 'job did not enter completion_pending';
+  end if;
+  begin
+    update public.patients set is_active=false where id=(select patient_id from public.job_posts where id=current_setting('test.job')::bigint);
+    raise exception 'patient deactivation allowed while job awaits completion';
+  exception when check_violation then
+    if sqlerrm <> 'patient_has_active_job' then raise; end if;
+  end;
+  perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.caregiver'),'role','authenticated')::text,true);
+  begin
+    perform public.confirm_job_completion(current_setting('test.job')::bigint);
+    raise exception 'caregiver confirmed own completion request';
+  exception when insufficient_privilege then null; end;
+  perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.employer'),'role','authenticated')::text,true);
+  if public.confirm_job_completion(current_setting('test.job')::bigint) <> current_setting('test.job')::bigint then
+    raise exception 'employer confirmation did not return job id';
+  end if;
+  if not exists(select 1 from public.job_posts where id=current_setting('test.job')::bigint and status='completed' and completed_at is not null) then
+    raise exception 'job did not enter completed';
+  end if;
+  begin
+    perform public.confirm_job_completion(current_setting('test.job')::bigint);
+    raise exception 'duplicate completion confirmation allowed';
+  exception when raise_exception then if sqlerrm <> 'job_completion_not_pending' then raise; end if; end;
+  begin
+    perform public.start_matched_job(current_setting('test.job')::bigint);
+    raise exception 'duplicate start allowed';
+  exception when raise_exception then if sqlerrm <> 'job_not_ready_to_start' then raise; end if; end;
+end $$;
+-- ทดสอบปฏิเสธคำเชิญและปิดประกาศอีกงานหนึ่ง
+do $$ declare j bigint; p bigint; tags bigint[];
+begin
+  select patient_id into p from public.job_posts where id=current_setting('test.job')::bigint;
+  select array_agg(id) into tags from (select id from public.skills where is_active order by id limit 2) s;
+  j:=public.create_job_with_tags(p,'งานทดสอบปิด','รายละเอียด','ดูแล',now()+interval '3 days',now()+interval '4 days',1000,'day',tags);
+  perform set_config('test.closed_job',j::text,true);
+  perform set_config('test.decline',public.invite_caregiver(j,current_setting('test.caregiver')::uuid)::text,true);
+  perform set_config('test.close_pending',public.invite_caregiver(j,current_setting('test.second')::uuid)::text,true);
+end $$;
+select set_config('request.jwt.claims',json_build_object('sub',current_setting('test.caregiver'),'role','authenticated')::text,true);
+select public.respond_to_invitation(current_setting('test.decline')::bigint,false);
+do $$ begin
+  if not exists(select 1 from public.list_my_invitations() where request_id=current_setting('test.decline')::bigint and status='rejected') then raise exception 'decline failed'; end if;
+  begin
+    perform public.get_match_contact(current_setting('test.decline')::bigint);
+    raise exception 'rejected contact visible';
+  exception when insufficient_privilege then null; end;
+end $$;
+select set_config('request.jwt.claims',json_build_object('sub',current_setting('test.employer'),'role','authenticated')::text,true);
+select public.close_job(current_setting('test.closed_job')::bigint);
+do $$ begin
+  if not exists(select 1 from public.match_requests where id=current_setting('test.close_pending')::bigint and status='not_selected') then raise exception 'closing left pending invitations'; end if;
+end $$;
+-- ไม่มี session ต้องไม่ได้รับข้อมูล แม้เรียกด้วย role authenticated
+select set_config('request.jwt.claims','{}',true);
+do $$ begin
+  begin
+    perform public.list_my_invitations();
+    raise exception 'anonymous invitation read allowed';
+  exception when insufficient_privilege then null; end;
+  if has_function_privilege('anon','public.review_caregiver(uuid,boolean,text)','execute')
+    or has_function_privilege('anon','public.respond_to_invitation(bigint,boolean)','execute') then raise exception 'anon execute granted'; end if;
+end $$;
+reset role;
+select 'workflow_integration_passed' as result;
 rollback;
 ````
 
@@ -3964,1819 +4935,13 @@ writeFileSync(output, JSON.stringify(locations) + '\n')
 console.log(`Generated ${Object.keys(locations).length} provinces`)
 ````
 
-## frontend/src/App.css
-
-SHA-256: `05342d9277448271af460ce617646db85f7ac86716886197854a38c74d58aa7c`
-
-````css
-.app-shell {
-  width: min(calc(100% - 64px), 1480px);
-  margin: 0 auto;
-  padding: 48px 0;
-}
-
-.app-shell-landing {
-  width: 100%;
-  max-width: none;
-  padding: 0;
-}
-
-.landing-page {
-  min-height: 100vh;
-  overflow: hidden;
-  background: #ffffff;
-  color: #171d19;
-  font-family: 'Prompt', 'Noto Sans Thai', system-ui, sans-serif;
-}
-
-.landing-navbar {
-  position: relative;
-  z-index: 10;
-  border-bottom: 1px solid #eef2ef;
-  background: #ffffff;
-  box-shadow: 0 1px 1px rgb(0 0 0 / 5%);
-}
-
-.landing-navbar-inner {
-  box-sizing: border-box;
-  width: min(calc(100% - 48px), 1480px);
-  min-height: 71px;
-  margin: 0 auto;
-  padding: 16px 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-}
-
-.landing-auth-actions {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.landing-auth-actions button,
-.landing-hero-actions button {
-  min-height: 40px;
-  padding: 8px 16px;
-  border-radius: 9999px;
-  font: 600 14px/20px inherit;
-  cursor: pointer;
-}
-
-.landing-login-button {
-  border: 1px solid #6d7a72;
-  background: #ffffff;
-  color: #006948;
-}
-
-.landing-register-button {
-  border: 1px solid #006948;
-  background: #006948;
-  color: #ffffff;
-  box-shadow: 0 1px 1px rgb(0 0 0 / 5%);
-}
-
-.landing-hero {
-  background: linear-gradient(180deg, rgb(220 252 231 / 30%) 0%, #ffffff 100%);
-}
-
-.landing-hero-inner {
-  box-sizing: border-box;
-  width: min(calc(100% - 48px), 1480px);
-  min-height: 638px;
-  margin: 0 auto;
-  padding: 86px 0;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: center;
-  justify-content: center;
-  gap: 40px;
-}
-
-.landing-hero-copy h1 {
-  margin: 0;
-  color: #171d19;
-  font-size: clamp(40px, 4.4vw, 56px);
-  line-height: 1.2;
-  letter-spacing: -1.1px;
-}
-
-.landing-hero-copy > p {
-  max-width: 576px;
-  margin: 24px 0 0;
-  color: #64748b;
-  font-size: 18px;
-  line-height: 1.5;
-}
-
-.landing-hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-top: 40px;
-}
-
-.landing-hero-actions button {
-  min-height: 48px;
-  padding: 12px 24px;
-  font-size: 16px;
-  line-height: 24px;
-}
-
-.landing-primary-button {
-  border: 1px solid #006948;
-  background: #006948;
-  color: #ffffff;
-  box-shadow: 0 1px 1px rgb(0 0 0 / 5%);
-}
-
-.landing-caregiver-button {
-  border: 1px solid #cce5ff;
-  background: #cce5ff;
-  color: #006398;
-}
-
-.landing-hero-visual {
-  position: relative;
-  display: grid;
-  place-items: center;
-  min-width: 0;
-}
-
-.landing-glow {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(32px);
-}
-
-.landing-glow-green {
-  top: -30px;
-  right: -40px;
-  width: 128px;
-  height: 128px;
-  background: #85f8c4;
-  opacity: 0.5;
-}
-
-.landing-glow-blue {
-  bottom: -30px;
-  left: -32px;
-  width: 160px;
-  height: 160px;
-  background: #5bb8fe;
-  opacity: 0.3;
-}
-
-.landing-image-frame {
-  position: relative;
-  z-index: 1;
-  box-sizing: border-box;
-  width: 100%;
-  padding: 9px;
-  overflow: hidden;
-  border: 1px solid #e4eae4;
-  border-radius: 32px;
-  background: #ffffff;
-  box-shadow:
-    0 20px 25px -5px rgb(0 0 0 / 10%),
-    0 8px 10px -6px rgb(0 0 0 / 10%);
-  transform: rotate(2deg);
-}
-
-.landing-image-frame img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 574 / 428.25;
-  border-radius: 12px;
-  object-fit: cover;
-}
-
-.landing-how-it-works {
-  box-sizing: border-box;
-  width: min(calc(100% - 48px), 1480px);
-  min-height: 566px;
-  margin: 0 auto;
-  padding: 80px 0;
-}
-
-.landing-section-heading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-}
-
-.landing-section-heading h2 {
-  margin: 0;
-  font-size: 40px;
-  line-height: 1.5;
-  text-align: center;
-}
-
-.landing-section-heading span {
-  width: 96px;
-  height: 4px;
-  border-radius: 9999px;
-  background: #006948;
-}
-
-.landing-step-list {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 26px;
-  margin-top: 64px;
-}
-
-.landing-step-card {
-  box-sizing: border-box;
-  min-height: 262px;
-  padding: 32px 16px 24px;
-  border: 1px solid #e4eae4;
-  border-radius: 16px;
-  background: #ffffff;
-  box-shadow: 0 1px 1px rgb(0 0 0 / 5%);
-  text-align: center;
-}
-
-.landing-step-icon {
-  display: grid;
-  place-items: center;
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 24px;
-  border-radius: 50%;
-}
-
-.landing-step-icon img {
-  max-width: 30px;
-  max-height: 30px;
-}
-.landing-step-search {
-  background: #cce5ff;
-}
-.landing-step-document {
-  background: #dcfce7;
-}
-.landing-step-heart {
-  background: #ffdad7;
-}
-
-.landing-step-card h3 {
-  margin: 0 0 12px;
-  font-size: 18px;
-  line-height: 1.6;
-}
-
-.landing-step-card p {
-  margin: 0 auto;
-  color: #64748b;
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-.landing-page .app-footer {
-  margin: 0;
-}
-
-.landing-page .app-footer-inner {
-  width: min(calc(100% - 48px), 1480px);
-}
-
-.landing-page button:hover {
-  filter: brightness(0.96);
-}
-.landing-page button:focus-visible {
-  outline: 3px solid #5bb8fe;
-  outline-offset: 3px;
-}
-
-@media (max-width: 980px) {
-  .landing-hero-inner {
-    grid-template-columns: 1fr;
-    padding-top: 64px;
-  }
-
-  .landing-hero-copy {
-    text-align: center;
-  }
-
-  .landing-hero-copy > p {
-    margin-right: auto;
-    margin-left: auto;
-  }
-  .landing-hero-actions {
-    justify-content: center;
-  }
-  .landing-hero-visual {
-    width: min(100%, 640px);
-    margin: 12px auto 0;
-  }
-  .landing-step-list {
-    grid-template-columns: 1fr;
-  }
-  .landing-how-it-works {
-    padding-top: 64px;
-    padding-bottom: 64px;
-  }
-}
-
-@media (max-width: 600px) {
-  .landing-navbar-inner {
-    width: 100%;
-    padding: 12px 16px;
-  }
-  .landing-auth-actions {
-    gap: 8px;
-  }
-  .landing-auth-actions button {
-    padding: 8px 12px;
-  }
-  .landing-hero-inner {
-    width: 100%;
-    padding: 48px 20px 64px;
-  }
-  .landing-hero-copy h1 {
-    font-size: 38px;
-  }
-  .landing-hero-copy > p {
-    font-size: 16px;
-  }
-  .landing-hero-actions {
-    flex-direction: column;
-  }
-  .landing-hero-actions button {
-    width: 100%;
-  }
-  .landing-how-it-works {
-    width: 100%;
-    padding: 56px 16px;
-  }
-  .landing-section-heading h2 {
-    font-size: 32px;
-  }
-}
-
-.auth-panel {
-  width: min(100%, 576px);
-  margin: 0 auto;
-  font-family: 'Prompt', 'Noto Sans Thai', system-ui, sans-serif;
-}
-
-.app-header {
-  margin-bottom: 32px;
-  text-align: center;
-}
-
-.app-header h1 {
-  margin: 0 0 8px;
-  color: #176b42;
-}
-
-.app-header p {
-  margin: 0;
-  color: #52645b;
-}
-
-.auth-form {
-  display: grid;
-  gap: 12px;
-  padding: 24px;
-  margin-bottom: 24px;
-  border: 1px solid #dbe7e2;
-  border-radius: 16px;
-  background: #ffffff;
-  box-shadow: 0 8px 24px rgb(22 101 52 / 8%);
-}
-
-.auth-form input,
-.auth-form button {
-  box-sizing: border-box;
-  min-height: 44px;
-  padding: 10px 12px;
-  border-radius: 8px;
-  font: inherit;
-}
-
-.auth-form input {
-  border: 1px solid #b8c9c1;
-}
-
-.auth-form button {
-  border: 0;
-  color: #ffffff;
-  background: #20a85b;
-  cursor: pointer;
-}
-
-.auth-form button:disabled {
-  cursor: wait;
-  opacity: 0.65;
-}
-
-.auth-card {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  box-sizing: border-box;
-  padding: 32px;
-  margin: 0;
-  border: 1px solid #f1f5f9;
-  border-radius: 12px;
-  box-shadow: 0 1px 2px rgb(15 23 42 / 5%);
-}
-
-.auth-card .auth-back-button {
-  align-self: flex-start;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 32px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: #64748b;
-  font-size: 14px;
-  font-weight: 400;
-}
-
-.auth-back-button span {
-  font-size: 24px;
-  line-height: 1;
-}
-
-.auth-card-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 8px 0 16px;
-  text-align: center;
-}
-
-.auth-card-logo {
-  position: relative;
-  display: block;
-  width: 72px;
-  height: 72px;
-  margin-bottom: 16px;
-  overflow: hidden;
-  border: 1px solid #f1f5f9;
-  border-radius: 8px;
-  background: #ffffff;
-  box-shadow: 0 1px 2px rgb(15 23 42 / 5%);
-}
-
-.auth-card-logo img {
-  position: absolute;
-  width: 191.66%;
-  height: 191.66%;
-  left: -45.83%;
-  top: -27.22%;
-}
-
-.auth-card-header h2 {
-  margin: 0;
-  color: #1e293b;
-  font-size: 24px;
-  line-height: 1.5;
-}
-
-.auth-card-header p {
-  margin: 4px 0 0;
-  color: #64748b;
-  font-size: 14px;
-}
-
-.auth-card > label:not(.auth-terms) {
-  margin: 14px 0 6px;
-  color: #1e293b;
-  font-size: 14px;
-}
-
-.auth-card > input {
-  min-height: 48px;
-  border-color: #bccac0;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #1e293b;
-  font-size: 16px;
-  box-shadow: 0 1px 2px rgb(15 23 42 / 5%);
-}
-
-.auth-card > input::placeholder {
-  color: #94a3b8;
-}
-
-.auth-card > input:focus {
-  border-color: #078c67;
-  outline: 3px solid rgb(7 140 103 / 16%);
-}
-
-.auth-info-notice {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin: 22px 0 0;
-  padding: 13px;
-  border: 1px solid #cce5ff;
-  border-radius: 8px;
-  background: rgb(204 229 255 / 50%);
-  color: #006398;
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-.auth-info-notice span {
-  flex-shrink: 0;
-}
-
-.auth-terms {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin: 14px 0 0;
-  color: #64748b;
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-.auth-terms input {
-  flex: 0 0 18px;
-  width: 18px;
-  min-height: 18px;
-  margin: 2px 0 0;
-  padding: 0;
-  accent-color: #006948;
-}
-
-.auth-terms strong {
-  color: #006948;
-  font-weight: 500;
-}
-
-.auth-card > button[type='submit'] {
-  min-height: 48px;
-  margin-top: 20px;
-  border-radius: 8px;
-  background: #006948;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.auth-card > button[type='submit']:hover:not(:disabled) {
-  background: #00543e;
-}
-
-.auth-switch-copy {
-  margin: 16px 0 0;
-  color: #64748b;
-  font-size: 14px;
-  text-align: center;
-}
-
-.auth-switch-copy button {
-  min-height: auto;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: #006948;
-  font: inherit;
-  font-weight: 600;
-}
-
-.auth-card button:focus-visible,
-.auth-switch-copy button:focus-visible {
-  outline: 3px solid rgb(7 140 103 / 25%);
-  outline-offset: 3px;
-}
-
-.auth-card [role='alert'],
-.auth-card [role='status'] {
-  margin: 14px 0 0;
-}
-
-@media (max-width: 600px) {
-  .auth-card {
-    padding: 20px;
-  }
-
-  .auth-card-logo {
-    width: 64px;
-    height: 64px;
-  }
-
-  .auth-card-header h2 {
-    font-size: 22px;
-  }
-}
-
-.profile-setup-form {
-  box-sizing: border-box;
-  width: min(100%, 760px);
-  margin: 0 auto;
-  padding: 32px;
-  border: 1px solid #f1f5f9;
-  border-radius: 12px;
-  background: #ffffff;
-  box-shadow: 0 4px 14px rgb(23 43 36 / 6%);
-  font-family: 'Prompt', 'Noto Sans Thai', system-ui, sans-serif;
-}
-
-.profile-setup-header {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  margin-bottom: 24px;
-}
-
-.profile-setup-header .auth-card-logo {
-  flex: 0 0 64px;
-  width: 64px;
-  height: 64px;
-  margin: 0;
-}
-
-.profile-setup-header h2 {
-  margin: 0;
-  color: #1e293b;
-  font-size: 26px;
-  line-height: 1.4;
-}
-
-.profile-setup-header p {
-  margin: 4px 0 0;
-  color: #64748b;
-  font-size: 14px;
-}
-
-.profile-account-notice {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 24px;
-  padding: 12px 14px;
-  border: 1px solid #cce5ff;
-  border-radius: 8px;
-  background: rgb(204 229 255 / 38%);
-  color: #475569;
-  font-size: 14px;
-}
-
-.profile-account-notice strong {
-  color: #1e293b;
-  font-weight: 600;
-}
-
-.profile-account-notice button {
-  flex-shrink: 0;
-  min-height: 36px;
-  padding: 6px 12px;
-  border: 1px solid #bccac0;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #006948;
-  font: 600 13px/1.5 inherit;
-  cursor: pointer;
-}
-
-.profile-role-options {
-  margin: 0 0 24px;
-  padding: 0;
-  border: 0;
-}
-
-.profile-role-options legend,
-.profile-field > label {
-  margin-bottom: 7px;
-  color: #1e293b;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.profile-role-options legend span,
-.profile-field > label > span {
-  color: #ef4444;
-}
-
-.profile-field > label small {
-  color: #64748b;
-  font: inherit;
-  font-weight: 400;
-}
-
-.profile-role-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.profile-role-grid > label {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-height: 72px;
-  padding: 12px 16px;
-  border: 1px solid #dce7e2;
-  border-radius: 10px;
-  background: #ffffff;
-  cursor: pointer;
-}
-
-.profile-role-grid > label.selected {
-  border-color: #078c67;
-  background: #ecfdf5;
-  box-shadow: 0 0 0 1px #078c67;
-}
-
-.profile-role-grid input {
-  width: 18px;
-  height: 18px;
-  margin: 0;
-  accent-color: #006948;
-}
-
-.profile-role-grid label > span {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.profile-role-grid strong {
-  color: #1e293b;
-  font-size: 15px;
-}
-
-.profile-role-grid small {
-  color: #64748b;
-  font-size: 13px;
-}
-
-.profile-form-row,
-.profile-location-grid {
-  display: grid;
-  gap: 16px;
-}
-
-.profile-form-row {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin-bottom: 18px;
-}
-
-.profile-location-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin-bottom: 18px;
-}
-
-.profile-field {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.profile-field input,
-.profile-field select,
-.profile-field textarea {
-  box-sizing: border-box;
-  width: 100%;
-  min-height: 46px;
-  padding: 10px 12px;
-  border: 1px solid #bccac0;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #1e293b;
-  font: 400 15px/1.5 inherit;
-  box-shadow: 0 1px 2px rgb(15 23 42 / 5%);
-}
-
-.profile-field textarea {
-  min-height: 88px;
-  resize: vertical;
-}
-
-.profile-field input::placeholder,
-.profile-field textarea::placeholder {
-  color: #94a3b8;
-}
-
-.profile-field input:focus,
-.profile-field select:focus,
-.profile-field textarea:focus {
-  border-color: #078c67;
-  outline: 3px solid rgb(7 140 103 / 16%);
-}
-
-.profile-field select:disabled {
-  cursor: not-allowed;
-  background: #f1f5f3;
-  color: #718079;
-}
-
-.profile-address-section {
-  margin-top: 6px;
-  padding-top: 22px;
-  border-top: 1px solid #eaf0ed;
-}
-
-.profile-address-section h3 {
-  margin: 0 0 16px;
-  color: #1e293b;
-  font-size: 17px;
-}
-
-.profile-setup-form > [role='alert'] {
-  margin: 16px 0 0;
-}
-
-.profile-submit-button {
-  width: 100%;
-  min-height: 48px;
-  margin-top: 24px;
-  padding: 11px 18px;
-  border: 0;
-  border-radius: 8px;
-  background: #006948;
-  color: #ffffff;
-  font: 600 15px/1.5 inherit;
-  cursor: pointer;
-}
-
-.profile-submit-button:hover:not(:disabled) {
-  background: #00543e;
-}
-
-.profile-submit-button:disabled {
-  cursor: wait;
-  opacity: 0.65;
-}
-
-.profile-setup-form button:focus-visible,
-.profile-role-grid input:focus-visible {
-  outline: 3px solid rgb(7 140 103 / 25%);
-  outline-offset: 3px;
-}
-
-@media (max-width: 720px) {
-  .profile-setup-form {
-    padding: 20px;
-  }
-
-  .profile-setup-header {
-    align-items: flex-start;
-  }
-
-  .profile-role-grid,
-  .profile-form-row,
-  .profile-location-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .profile-account-notice {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-}
-
-[role='alert'] {
-  color: #b42318;
-}
-
-.app-shell-dashboard {
-  padding-top: 96px;
-}
-
-.app-shell-dashboard .auth-status {
-  min-height: calc(100vh - 144px);
-  display: flex;
-  flex-direction: column;
-}
-
-.app-shell-dashboard .app-footer {
-  margin-top: auto;
-}
-
-.top-navbar {
-  position: absolute;
-  inset: 0 0 auto;
-  z-index: 20;
-  background: #fff;
-  border-bottom: 1px solid #dee4de;
-  box-shadow: 0 1px 1px rgb(0 0 0 / 5%);
-  font-family: 'Prompt', 'Noto Sans Thai', system-ui, sans-serif;
-}
-
-.top-navbar-inner {
-  width: min(calc(100% - 64px), 1480px);
-  min-height: 64px;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-}
-
-.navbar-brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-shrink: 0;
-  border: 0;
-  padding: 0;
-  background: transparent;
-  color: #006948;
-  font:
-    700 20px/32px 'Prompt',
-    system-ui,
-    sans-serif;
-  cursor: pointer;
-}
-
-.navbar-logo {
-  position: relative;
-  display: block;
-  width: 39px;
-  height: 39px;
-  overflow: hidden;
-}
-
-.navbar-logo img {
-  position: absolute;
-  width: 191.66%;
-  height: 191.66%;
-  left: -45.83%;
-  top: -27.22%;
-}
-
-.role-navigation {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.role-navigation button {
-  padding: 0;
-  background: transparent;
-  color: #64748b;
-  border: 0;
-  border-bottom: 2px solid transparent;
-  font: inherit;
-  font-size: 16px;
-  line-height: 24px;
-  white-space: nowrap;
-  cursor: pointer;
-}
-
-.role-navigation button.active {
-  color: #059669;
-  border-bottom-color: #059669;
-  font-weight: 700;
-}
-
-.role-navigation button:hover {
-  color: #059669;
-}
-
-.navbar-account,
-.account-toggle {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.navbar-account {
-  flex-shrink: 0;
-}
-.navbar-dropdown {
-  position: relative;
-}
-.navbar-dropdown summary {
-  list-style: none;
-  cursor: pointer;
-}
-.navbar-dropdown summary::-webkit-details-marker {
-  display: none;
-}
-.notification-toggle {
-  padding: 10px;
-  display: flex;
-}
-.notification-toggle img {
-  width: 16px;
-  height: 20px;
-}
-.account-toggle {
-  min-height: 44px;
-  color: #171d19;
-}
-.account-toggle img {
-  width: 12px;
-  height: 8px;
-  margin-left: 4px;
-}
-.account-name {
-  max-width: 130px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.account-role {
-  font-size: 14px;
-  white-space: nowrap;
-}
-.navbar-popover {
-  position: absolute;
-  right: 0;
-  top: calc(100% + 8px);
-  width: 240px;
-  padding: 16px;
-  box-sizing: border-box;
-  background: #fff;
-  border: 1px solid #dee4de;
-  border-radius: 8px;
-  box-shadow: 0 8px 24px rgb(15 23 42 / 12%);
-}
-.navbar-popover p {
-  margin: 8px 0 0;
-  font-size: 14px;
-  color: #64748b;
-}
-.navbar-popover button {
-  width: 100%;
-  padding: 10px;
-  border: 0;
-  border-radius: 4px;
-  background: #f4fbf8;
-  color: #006948;
-  font: inherit;
-  cursor: pointer;
-}
-.top-navbar :focus-visible {
-  outline: 2px solid #059669;
-  outline-offset: 4px;
-}
-
-@media (max-width: 1150px) {
-  .top-navbar-inner {
-    flex-wrap: wrap;
-    gap: 0 16px;
-  }
-  .role-navigation {
-    order: 3;
-    width: 100%;
-    overflow-x: auto;
-    padding: 12px 0;
-  }
-  .navbar-brand,
-  .navbar-account {
-    min-height: 64px;
-  }
-  .app-shell-dashboard {
-    padding-top: 140px;
-  }
-}
-
-@media (max-width: 600px) {
-  .top-navbar-inner {
-    width: calc(100% - 32px);
-  }
-  .navbar-brand {
-    gap: 6px;
-    font-size: 18px;
-  }
-  .navbar-account {
-    gap: 0;
-  }
-  .account-role {
-    display: none;
-  }
-  .account-name {
-    max-width: 85px;
-    font-size: 14px;
-  }
-  .account-toggle {
-    gap: 6px;
-  }
-  .role-navigation {
-    gap: 20px;
-  }
-  .role-navigation button {
-    font-size: 14px;
-  }
-}
-
-.role-dashboard {
-  padding: 24px;
-  background: #ffffff;
-  border: 1px solid #dce7e1;
-  border-radius: 16px;
-}
-
-.employer-dashboard {
-  display: grid;
-  grid-template-columns: minmax(280px, 1fr) minmax(0, 2fr);
-  gap: 32px;
-  min-height: 500px;
-  padding-top: 0;
-}
-
-.dashboard-patients,
-.dashboard-jobs {
-  min-width: 0;
-}
-
-.dashboard-section-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.employer-dashboard h2 {
-  margin: 0 0 12px;
-  color: #1e293b;
-  font-size: 24px;
-  line-height: 1.2;
-}
-
-.dashboard-patient-list {
-  display: grid;
-  gap: 12px;
-}
-
-.dashboard-patient-card,
-.dashboard-state,
-.dashboard-empty-jobs {
-  box-sizing: border-box;
-  border: 1px solid #f1f5f9;
-  border-radius: 12px;
-  background: #ffffff;
-  box-shadow: 0 1px 2px rgb(15 23 42 / 5%);
-}
-
-.dashboard-patient-card {
-  padding: 24px;
-}
-
-.dashboard-patient-header {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 20px;
-}
-
-.dashboard-patient-avatar {
-  display: grid;
-  place-items: center;
-  flex: 0 0 48px;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: #cce5ff;
-}
-
-.dashboard-patient-avatar img {
-  width: 14px;
-  height: 22px;
-}
-
-.dashboard-patient-header h3 {
-  margin: 0;
-  color: #1e293b;
-  font-size: 18px;
-  line-height: 29px;
-}
-
-.dashboard-patient-header p {
-  margin: 0;
-  color: #64748b;
-  font-size: 14px;
-}
-
-.dashboard-patient-detail {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 8px 0 0;
-  color: #3d4a42;
-  font-size: 14px;
-}
-
-.dashboard-patient-detail img {
-  width: 15px;
-  height: 15px;
-  object-fit: contain;
-}
-
-.dashboard-state {
-  margin: 0;
-  padding: 24px;
-  color: #64748b;
-}
-
-.dashboard-empty-patients button {
-  padding: 8px 14px;
-  border: 1px solid #bae6fd;
-  border-radius: 8px;
-  background: #f0f9ff;
-  color: #0369a1;
-  font: inherit;
-  cursor: pointer;
-}
-
-.dashboard-empty-jobs {
-  min-height: 347px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  text-align: center;
-}
-
-.dashboard-empty-icon {
-  display: grid;
-  place-items: center;
-  width: 80px;
-  height: 56px;
-  margin-bottom: 24px;
-  border-radius: 50%;
-  background: #f8fafc;
-}
-
-.dashboard-empty-icon img {
-  width: 40px;
-  height: 38px;
-}
-
-.dashboard-empty-title {
-  margin: 0 0 24px;
-  color: #1e293b;
-  font-size: 14px;
-}
-
-.dashboard-empty-description {
-  margin: 0 0 24px;
-  color: #64748b;
-  font-size: 14px;
-  line-height: 22px;
-}
-
-.dashboard-empty-jobs button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: min(310px, 100%);
-  min-height: 48px;
-  padding: 10px 20px;
-  border: 1px solid #bae6fd;
-  border-radius: 8px;
-  background: #f0f9ff;
-  color: #0369a1;
-  font: inherit;
-  cursor: pointer;
-}
-
-.dashboard-empty-jobs button img {
-  width: 15px;
-  height: 15px;
-  margin-right: 8px;
-}
-
-.app-footer {
-  width: 100vw;
-  margin: 72px 0 -48px calc(50% - 50vw);
-  border-top: 1px solid #bccac0;
-  background: #ffffff;
-}
-
-.app-footer-inner {
-  box-sizing: border-box;
-  width: min(calc(100% - 64px), 1480px);
-  min-height: 104px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  color: #171d19;
-  font-size: 14px;
-}
-
-.footer-brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: #006948;
-  font:
-    700 20px/32px 'Prompt',
-    system-ui,
-    sans-serif;
-}
-
-.app-footer-inner > p {
-  margin: 0;
-}
-
-.app-footer nav {
-  display: flex;
-  gap: 24px;
-  color: #475569;
-}
-
-@media (max-width: 900px) {
-  .employer-dashboard {
-    grid-template-columns: 1fr;
-  }
-
-  .app-footer-inner {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 24px 0;
-  }
-
-  .app-footer nav {
-    flex-wrap: wrap;
-  }
-}
-
-@media (max-width: 600px) {
-  .app-shell:not(.app-shell-landing) {
-    width: calc(100% - 32px);
-  }
-
-  .employer-dashboard h2 {
-    font-size: 20px;
-  }
-
-  .dashboard-patient-card {
-    padding: 20px;
-  }
-
-  .app-footer-inner {
-    width: calc(100% - 32px);
-  }
-}
-
-.patient-manager {
-  width: 100%;
-}
-
-.patient-manager h2 {
-  margin: 24px 0 18px;
-  color: #1e293b;
-  font-size: 24px;
-}
-
-.patient-feedback {
-  position: fixed;
-  z-index: 1100;
-  top: 88px;
-  right: 24px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  width: min(360px, calc(100vw - 48px));
-  box-sizing: border-box;
-  padding: 14px 16px;
-  border: 1px solid;
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgb(15 23 42 / 14%);
-  font-size: 14px;
-}
-
-.patient-feedback-success {
-  border-color: #86efac;
-  background: #f0fdf4;
-  color: #166534;
-}
-
-.patient-feedback-error {
-  border-color: #fecaca;
-  background: #fef2f2;
-  color: #b91c1c;
-}
-
-.patient-feedback span {
-  flex: 1;
-}
-
-.patient-feedback button {
-  border: 0;
-  padding: 0;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  cursor: pointer;
-}
-
-.patient-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 24px;
-}
-
-.patient-card,
-.add-patient-card {
-  box-sizing: border-box;
-  min-height: 188px;
-  border-radius: 12px;
-}
-
-.patient-card {
-  padding: 24px;
-  border: 1px solid #bccac0;
-  background: #ffffff;
-  box-shadow: 0 1px 2px rgb(15 23 42 / 5%);
-}
-
-.patient-card h3 {
-  margin: 0 0 18px;
-  color: #171d19;
-  font-size: 18px;
-}
-
-.patient-card p {
-  margin: 10px 0;
-  color: #3d4a42;
-  font-size: 14px;
-}
-
-.patient-card-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 18px;
-}
-
-.patient-card-actions button,
-.patient-form-actions button {
-  min-height: 38px;
-  padding: 8px 16px;
-  border: 1px solid #bccac0;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #006948;
-  font: inherit;
-  cursor: pointer;
-}
-
-.patient-card-actions button:first-child,
-.patient-form-actions button[type='submit'] {
-  border-color: #059669;
-  background: #059669;
-  color: #ffffff;
-}
-
-.add-patient-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 24px;
-  border: 2px dashed #bccac0;
-  background: transparent;
-  color: #64748b;
-  font: inherit;
-  cursor: pointer;
-}
-
-.add-patient-card span {
-  font-size: 28px;
-  line-height: 1;
-}
-
-.patient-form-overlay {
-  position: fixed;
-  z-index: 1000;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  box-sizing: border-box;
-  padding: 24px;
-  background: rgb(30 41 59 / 68%);
-}
-
-.patient-form-dialog {
-  width: min(672px, 100%);
-  max-height: calc(100vh - 48px);
-  overflow-y: auto;
-}
-
-.patient-form {
-  display: grid;
-  gap: 12px;
-  box-sizing: border-box;
-  padding: 32px;
-  border: 1px solid #f1f5f9;
-  border-radius: 12px;
-  background: #ffffff;
-  box-shadow: 0 20px 45px rgb(15 23 42 / 18%);
-}
-
-.patient-form-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 4px;
-}
-
-.patient-form-header h3 {
-  margin: 0;
-  color: #1e293b;
-  font-size: 24px;
-}
-
-.patient-form-header button {
-  border: 0;
-  background: transparent;
-  color: #087443;
-  font-size: 24px;
-  cursor: pointer;
-}
-
-.patient-form label,
-.patient-form legend {
-  color: #1e293b;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.patient-form > input,
-.patient-form > select,
-.patient-form > textarea {
-  box-sizing: border-box;
-  width: 100%;
-  min-height: 40px;
-  padding: 9px 12px;
-  border: 1px solid #bccac0;
-  border-radius: 6px;
-  background: #ffffff;
-  color: #1e293b;
-  font: inherit;
-}
-
-.patient-form > textarea {
-  min-height: 72px;
-  resize: vertical;
-}
-
-.patient-option-group {
-  display: grid;
-  gap: 8px;
-  margin: 4px 0;
-  padding: 12px;
-  border: 1px solid #dce7e1;
-  border-radius: 8px;
-}
-
-.patient-option-group label {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  font-weight: 400;
-}
-
-.patient-form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 12px;
-  padding-top: 16px;
-  border-top: 1px solid #f1f5f9;
-}
-
-.patient-form-actions button:disabled {
-  cursor: wait;
-  opacity: 0.6;
-}
-
-@media (max-width: 720px) {
-  .patient-feedback {
-    top: 152px;
-    right: 16px;
-    width: calc(100vw - 32px);
-  }
-
-  .patient-manager {
-    width: calc(100vw - 32px);
-  }
-
-  .patient-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .patient-form {
-    padding: 20px;
-  }
-
-  .patient-form-actions {
-    flex-direction: column-reverse;
-  }
-}
-
-/* Sprint 1: shared job form/list, responsive and keyboard-visible controls */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-button,
-input,
-select,
-textarea {
-  font-family: inherit;
-}
-button {
-  cursor: pointer;
-}
-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.65;
-}
-:focus-visible {
-  outline: 3px solid #008fa8;
-  outline-offset: 3px;
-}
-.job-manager,
-.job-form {
-  width: 100%;
-  margin: 32px 0;
-  min-width: 0;
-}
-.job-form {
-  max-width: 900px;
-  margin-inline: auto;
-  padding: 32px;
-  border: 1px solid #dce7e2;
-  border-radius: 20px;
-  background: white;
-}
-.job-form h2,
-.job-heading h2,
-.job-heading h3 {
-  margin: 0;
-}
-.job-form > p,
-.job-heading p {
-  color: #64748b;
-}
-.job-form-fields {
-  display: grid;
-  gap: 12px;
-  border: 0;
-  padding: 0;
-  min-width: 0;
-}
-.job-form-fields > label {
-  font-weight: 500;
-  margin-top: 8px;
-}
-.job-form input:not([type='checkbox']),
-.job-form select,
-.job-form textarea,
-.job-filter select {
-  width: 100%;
-  min-height: 46px;
-  padding: 10px 12px;
-  border: 1px solid #bdcfc5;
-  border-radius: 8px;
-  background: #fff;
-  color: #24332c;
-  font-size: 16px;
-}
-.job-form textarea {
-  resize: vertical;
-}
-.job-form-fields > fieldset {
-  display: grid;
-  gap: 12px;
-  padding: 16px;
-  border: 1px solid #dce7e2;
-  border-radius: 12px;
-  min-width: 0;
-}
-.job-form input[type='checkbox'] {
-  width: 18px;
-  height: 18px;
-  margin-right: 10px;
-  accent-color: #006948;
-}
-.job-heading,
-.job-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-.job-actions {
-  justify-content: flex-start;
-  margin-top: 24px;
-}
-.job-manager button,
-.job-form button,
-.job-card button {
-  border: 1px solid #006948;
-  border-radius: 8px;
-  padding: 11px 18px;
-  background: #006948;
-  color: white;
-  font-size: 15px;
-}
-.job-manager .secondary-button,
-.job-form .secondary-button {
-  background: white;
-  color: #006948;
-}
-.job-filter {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  margin: 24px 0;
-}
-.job-filter select {
-  width: auto;
-}
-.job-list {
-  display: grid;
-  gap: 20px;
-}
-.job-card,
-.job-empty {
-  padding: 24px;
-  border: 1px solid #dce7e2;
-  border-radius: 16px;
-  background: white;
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-.job-description {
-  white-space: pre-wrap;
-}
-.job-status {
-  padding: 5px 12px;
-  border-radius: 30px;
-  font-size: 14px;
-  background: #edf1f5;
-  color: #475569;
-}
-.job-status-open {
-  background: #e0f6e9;
-  color: #006948;
-}
-.job-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.job-tags span {
-  padding: 5px 10px;
-  border-radius: 6px;
-  background: #edf6ff;
-  color: #006398;
-  font-size: 14px;
-}
-.success-notice {
-  padding: 14px;
-  background: #e0f6e9;
-  border-radius: 8px;
-  color: #006948;
-}
-.form-error,
-.field-error {
-  color: #a61b1b;
-}
-.field-error {
-  display: block;
-  font-size: 14px;
-  margin: 4px 0 12px;
-}
-[aria-invalid='true'] {
-  border-color: #a61b1b !important;
-}
-@media (max-width: 600px) {
-  .job-form {
-    padding: 20px 16px;
-  }
-  .job-card {
-    padding: 18px;
-  }
-  .job-heading {
-    align-items: flex-start;
-  }
-  .job-actions button {
-    flex: 1;
-  }
-}
-````
-
 ## frontend/src/App.jsx
 
-SHA-256: `dfd4e91884ae4fcc414ea36dfcee6af3c5cc519c8a5621697262b191d4bedc99`
+SHA-256: `0ed09349a3f74781ce63196c3d72d26c74742038b0b21414ecc6cb62be66d8a3`
 
 ````jsx
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
-import './App.css'
+import './styles/App.css'
 import LoginForm from './components/LoginForm'
 import { supabase } from './lib/supabase'
 import RegisterForm from './components/RegisterForm'
@@ -5952,6 +5117,231 @@ function App() {
 }
 
 export default App
+````
+
+## frontend/src/components/CaregiverMatches.jsx
+
+SHA-256: `3536fd7f11762af63a55cf05642171a88c163139c443d7b9a94e618067d4cf49`
+
+````jsx
+import { useEffect, useRef, useState } from 'react'
+import { supabase } from '../lib/supabase'
+import { callWorkflow, workflowError } from '../lib/workflow'
+
+export default function CaregiverMatches({ job, onBack }) {
+  const [results, setResults] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [retry, setRetry] = useState(0)
+  const [sendingId, setSendingId] = useState(null)
+  const [sentIds, setSentIds] = useState([])
+  const [notice, setNotice] = useState('')
+  const [inviteError, setInviteError] = useState('')
+  const sending = useRef(false)
+
+  async function invite(caregiver) {
+    if (
+      sending.current ||
+      !window.confirm(
+        `ส่งคำเชิญสำหรับ “${job.title}” ให้ ${caregiver.display_name}?`,
+      )
+    )
+      return
+    sending.current = true
+    setSendingId(caregiver.caregiver_id)
+    setNotice('')
+    setInviteError('')
+    try {
+      await callWorkflow('invite_caregiver', {
+        p_job_id: job.id,
+        p_caregiver_id: caregiver.caregiver_id,
+      })
+      setSentIds((ids) => [...ids, caregiver.caregiver_id])
+      setNotice('ส่งคำเชิญแล้ว ติดตามได้ที่เมนูคำเชิญที่ส่ง')
+    } catch (issue) {
+      setInviteError(workflowError(issue))
+      if (issue.message === 'invitation_already_exists')
+        setSentIds((ids) => [...ids, caregiver.caregiver_id])
+    } finally {
+      sending.current = false
+      setSendingId(null)
+    }
+  }
+
+  useEffect(() => {
+    let cancelled = false
+    async function search() {
+      setLoading(true)
+      setError('')
+      setResults([])
+      try {
+        const { data, error: queryError } = await supabase.rpc(
+          'search_caregivers_for_job',
+          { p_job_id: job.id },
+        )
+        if (queryError) throw queryError
+        if (!cancelled) setResults(data ?? [])
+      } catch (queryError) {
+        if (!cancelled)
+          setError(
+            queryError.code === '42501'
+              ? 'ค้นหาได้เฉพาะประกาศของคุณที่ยังเปิดรับสมัคร กรุณากลับไปตรวจสอบประกาศ'
+              : 'ไม่สามารถค้นหาผู้ดูแลได้ กรุณาลองอีกครั้ง',
+          )
+      } finally {
+        if (!cancelled) setLoading(false)
+      }
+    }
+    search()
+    return () => {
+      cancelled = true
+    }
+  }, [job.id, retry])
+
+  return (
+    <section className="job-manager" aria-labelledby="matches-heading">
+      <button type="button" className="secondary-button" onClick={onBack}>
+        ← กลับไปประกาศงาน
+      </button>
+      <h2 id="matches-heading">ผู้ดูแลสำหรับ “{job.title}”</h2>
+      {notice && <p role="status">{notice}</p>}
+      {inviteError && <p role="alert">{inviteError}</p>}
+      <p>
+        ผู้ดูแลที่ยืนยันแล้วและพร้อมรับงาน เรียงตามทักษะที่ตรงกับประกาศมากที่สุด
+      </p>
+      {loading ? (
+        <p role="status">กำลังค้นหาผู้ดูแล...</p>
+      ) : error ? (
+        <div className="form-error" role="alert">
+          <p>{error}</p>
+          <button type="button" onClick={() => setRetry((value) => value + 1)}>
+            ลองอีกครั้ง
+          </button>
+        </div>
+      ) : results.length === 0 ? (
+        <div className="job-empty" role="status">
+          <h3>ยังไม่พบผู้ดูแลที่พร้อมรับงาน</h3>
+          <p>
+            ขณะนี้ยังไม่มีผู้ดูแลที่ผ่านการยืนยันและเปิดรับงาน
+            ลองค้นหาอีกครั้งภายหลัง
+          </p>
+          <button type="button" onClick={() => setRetry((value) => value + 1)}>
+            ค้นหาอีกครั้ง
+          </button>
+        </div>
+      ) : (
+        <>
+          <p role="status">พบผู้ดูแล {results.length} คน</p>
+          <ol className="caregiver-match-list">
+            {results.map((caregiver) => (
+              <li className="job-card" key={caregiver.caregiver_id}>
+                <div className="job-heading">
+                  <h3>{caregiver.display_name}</h3>
+                  <span className="job-status job-status-open">
+                    ตรง {caregiver.matched_skills} จาก{' '}
+                    {caregiver.required_skills} ทักษะ
+                  </span>
+                </div>
+                <p>
+                  อ.{caregiver.district} จ.{caregiver.province}
+                </p>
+                <p>ประสบการณ์ดูแล {caregiver.experience_years} ปี</p>
+                <p>ยืนยันแล้ว · พร้อมรับงาน</p>
+                <button
+                  type="button"
+                  disabled={
+                    sendingId !== null ||
+                    sentIds.includes(caregiver.caregiver_id)
+                  }
+                  onClick={() => invite(caregiver)}
+                >
+                  {sentIds.includes(caregiver.caregiver_id)
+                    ? 'ส่งคำเชิญแล้ว'
+                    : sendingId === caregiver.caregiver_id
+                      ? 'กำลังส่ง...'
+                      : 'เชิญให้ดูแลงานนี้'}
+                </button>
+              </li>
+            ))}
+          </ol>
+        </>
+      )}
+    </section>
+  )
+}
+````
+
+## frontend/src/components/DocumentList.jsx
+
+SHA-256: `f1c4c3e935fb92c38ce3118d1427768f19e2b380581dffdf0dc511edc631bc3f`
+
+````jsx
+import { useCallback, useState } from 'react'
+import useRemoteList from '../hooks/useRemoteList'
+import {
+  loadDocuments,
+  downloadDocument,
+  documentLabels,
+  reviewLabels,
+} from '../lib/workflow'
+
+export default function DocumentList({ caregiverId }) {
+  const loader = useCallback(() => loadDocuments(caregiverId), [caregiverId])
+  const { data, loading, error, reload } = useRemoteList(loader)
+  const [downloadError, setDownloadError] = useState('')
+  const [downloading, setDownloading] = useState(null)
+  async function download(document) {
+    setDownloading(document.id)
+    setDownloadError('')
+    try {
+      await downloadDocument(document)
+    } catch {
+      setDownloadError('ดาวน์โหลดไม่สำเร็จ กรุณาลองใหม่')
+    } finally {
+      setDownloading(null)
+    }
+  }
+  if (loading) return <p role="status">กำลังโหลดเอกสาร...</p>
+  if (error)
+    return (
+      <div role="alert">
+        <p>{error}</p>
+        <button type="button" onClick={reload}>
+          ลองอีกครั้ง
+        </button>
+      </div>
+    )
+  return (
+    <div>
+      {downloadError && <p role="alert">{downloadError}</p>}
+      {!data.length && <p>ยังไม่มีเอกสารที่ส่งตรวจ</p>}
+      <ul className="workflow-list">
+        {data.map((document) => (
+          <li key={document.id}>
+            <div>
+              <strong>{documentLabels[document.document_type]}</strong>
+              <p>{document.original_file_name}</p>
+              <span className="workflow-badge">
+                {reviewLabels[document.review_status]}
+              </span>
+              {document.rejection_reason && (
+                <p>เหตุผล: {document.rejection_reason}</p>
+              )}
+            </div>
+            <button
+              type="button"
+              className="secondary-button"
+              disabled={downloading !== null}
+              onClick={() => download(document)}
+            >
+              {downloading === document.id ? 'กำลังดาวน์โหลด...' : 'ดาวน์โหลด'}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
 ````
 
 ## frontend/src/components/Footer.jsx
@@ -6324,13 +5714,14 @@ export default JobForm
 
 ## frontend/src/components/JobManager.jsx
 
-SHA-256: `9af0765c6bf7e39746acb3e7f184cbf5fc4d15338a26c98573aed9f50973cce1`
+SHA-256: `f98d866d39c2a63dccdb9e192206638e6a5ac331917b871add187321dc124d35`
 
 ````jsx
 import { useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { formatJobDate, jobStatusLabels, payUnitLabels } from '../lib/jobs'
 import JobForm from './JobForm'
+import CaregiverMatches from './CaregiverMatches'
 
 function JobManager() {
   const [jobs, setJobs] = useState([])
@@ -6343,6 +5734,7 @@ function JobManager() {
   const [filter, setFilter] = useState('all')
   const [closingId, setClosingId] = useState(null)
   const closingRef = useRef(false)
+  const [matchingJob, setMatchingJob] = useState(null)
 
   useEffect(() => {
     let cancelled = false
@@ -6402,12 +5794,77 @@ function JobManager() {
     }
   }
 
+  async function startJob(job) {
+    if (
+      closingRef.current ||
+      !window.confirm(`เริ่มงานดูแลผู้ป่วยตามประกาศ “${job.title}” ใช่หรือไม่?`)
+    ) return
+    closingRef.current = true
+    setClosingId(job.id)
+    setError('')
+    setSuccessMessage('')
+    try {
+      const { data, error: startError } = await supabase.rpc('start_matched_job', {
+        p_job_id: job.id,
+      })
+      if (startError) throw startError
+      if (!data) throw new Error('ไม่พบประกาศที่พร้อมเริ่มงาน')
+      setJobs((current) => current.map((item) =>
+        item.id === job.id
+          ? { ...item, status: 'in_progress', started_at: new Date().toISOString() }
+          : item,
+      ))
+      setSuccessMessage('เริ่มงานแล้ว')
+    } catch {
+      setError('เริ่มงานไม่สำเร็จ สถานะอาจเปลี่ยนแล้ว กรุณาโหลดรายการใหม่')
+    } finally {
+      closingRef.current = false
+      setClosingId(null)
+    }
+  }
+
+  async function confirmCompletion(job) {
+    if (
+      closingRef.current ||
+      !window.confirm(`ผู้ดูแลแจ้งว่างาน “${job.title}” เสร็จแล้ว ยืนยันจบงานใช่หรือไม่?`)
+    ) return
+    closingRef.current = true
+    setClosingId(job.id)
+    setError('')
+    setSuccessMessage('')
+    try {
+      const { data, error: confirmError } = await supabase.rpc('confirm_job_completion', {
+        p_job_id: job.id,
+      })
+      if (confirmError) throw confirmError
+      if (!data) throw new Error('ไม่พบคำขอจบงานที่รอยืนยัน')
+      setJobs((current) => current.map((item) =>
+        item.id === job.id
+          ? { ...item, status: 'completed', completed_at: new Date().toISOString() }
+          : item,
+      ))
+      setSuccessMessage('ยืนยันจบงานแล้ว')
+    } catch {
+      setError('ยืนยันจบงานไม่สำเร็จ สถานะอาจเปลี่ยนแล้ว กรุณาโหลดรายการใหม่')
+    } finally {
+      closingRef.current = false
+      setClosingId(null)
+    }
+  }
+
   function openForm(job = null) {
     setEditingJob(job)
     setSuccessMessage('')
     setError('')
     setShowForm(true)
   }
+
+  if (matchingJob) return (
+    <CaregiverMatches job={matchingJob} onBack={() => {
+      setMatchingJob(null)
+      setRefreshKey((value) => value + 1)
+    }} />
+  )
 
   if (showForm)
     return (
@@ -6464,6 +5921,10 @@ function JobManager() {
         >
           <option value="all">ทั้งหมด</option>
           <option value="open">เปิดรับสมัคร</option>
+          <option value="matched">จับคู่สำเร็จ</option>
+          <option value="in_progress">กำลังดำเนินงาน</option>
+          <option value="completion_pending">รอยืนยันจบงาน</option>
+          <option value="completed">เสร็จสิ้น</option>
           <option value="closed">ปิดรับสมัคร</option>
         </select>
       </label>
@@ -6508,8 +5969,30 @@ function JobManager() {
                   </span>
                 ))}
               </div>
+              {job.status === 'matched' && (
+                <div className="job-actions">
+                  <button type="button" disabled={closingId !== null}
+                    onClick={() => startJob(job)}>
+                    {closingId === job.id ? 'กำลังเริ่มงาน...' : 'เริ่มงาน'}
+                  </button>
+                </div>
+              )}
+              {job.status === 'completion_pending' && (
+                <div className="job-actions">
+                  <button type="button" disabled={closingId !== null}
+                    onClick={() => confirmCompletion(job)}>
+                    {closingId === job.id ? 'กำลังยืนยัน...' : 'ยืนยันจบงาน'}
+                  </button>
+                </div>
+              )}
               {['draft', 'open'].includes(job.status) && (
                 <div className="job-actions">
+                  {job.status === 'open' && (
+                    <button type="button" disabled={closingId !== null}
+                      onClick={() => setMatchingJob(job)}>
+                      หาผู้ดูแลสำหรับประกาศนี้
+                    </button>
+                  )}
                   <button
                     type="button"
                     disabled={closingId !== null}
@@ -6680,7 +6163,7 @@ export default LoginForm
 
 ## frontend/src/components/Navbar.jsx
 
-SHA-256: `207c0d3ae745745680d6dbdc98e559768f9bb52788eeef4b09eb2a17e8d57b6f`
+SHA-256: `fb6ee09ee0c73a3310da69fcaa96909e32dcbc82e6a6fec02ba09d0b8e6a21c9`
 
 ````jsx
 import logo from '../assets/navbar/logo.png'
@@ -6693,13 +6176,14 @@ const menuItemsByRole = {
     { id: 'patients', label: 'ผู้ป่วยของฉัน' },
     { id: 'jobs', label: 'ประกาศงาน' },
     { id: 'caregivers', label: 'ค้นหาผู้ดูแล' },
+    { id: 'invitations', label: 'คำเชิญที่ส่ง' },
     { id: 'history', label: 'ประวัติการจ้างงาน' },
   ],
   caregiver: [
     { id: 'dashboard', label: 'หน้าหลัก' },
-    { id: 'profile', label: 'โปรไฟล์ผู้ดูแล' },
     { id: 'jobs', label: 'ค้นหางาน' },
     { id: 'applications', label: 'งานที่สมัคร' },
+    { id: 'invitations', label: 'คำเชิญและงานของฉัน' },
   ],
   admin: [
     { id: 'dashboard', label: 'หน้าหลัก' },
@@ -6762,8 +6246,59 @@ function Navbar({ profile, activePage, onSelect, onSignOut }) {
               <span className="account-role">({roleLabel})</span>
               <img src={chevron} alt="" />
             </summary>
-            <div className="navbar-popover">
-              <button type="button" onClick={onSignOut}>
+            <div className="navbar-popover account-menu">
+              {role === 'caregiver' && (
+                <button
+                  type="button"
+                  aria-current={activePage === 'profile' ? 'page' : undefined}
+                  onClick={(event) => {
+                    event.currentTarget.closest('details').open = false
+                    onSelect('profile')
+                  }}
+                >
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                  >
+                    <circle cx="12" cy="8" r="3.5" />
+                    <path d="M5 21v-2a7 7 0 0 1 14 0v2" />
+                  </svg>
+                  โปรไฟล์ผู้ดูแล
+                </button>
+              )}
+              {role === 'caregiver' && (
+                <button
+                  type="button"
+                  aria-current={activePage === 'documents' ? 'page' : undefined}
+                  onClick={(event) => {
+                    event.currentTarget.closest('details').open = false
+                    onSelect('documents')
+                  }}
+                >
+                  เอกสารยืนยันตัวตน
+                </button>
+              )}
+              {role === 'caregiver' && <hr />}
+              <button
+                className="account-signout"
+                type="button"
+                onClick={onSignOut}
+              >
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M9 4H4v16h5M10 12h11m-4-4 4 4-4 4" />
+                </svg>
                 ออกจากระบบ
               </button>
             </div>
@@ -8018,44 +7553,56 @@ function RegisterForm({ onBack, onLogin }) {
 export default RegisterForm
 ````
 
-## frontend/src/index.css
+## frontend/src/hooks/useRemoteList.js
 
-SHA-256: `c540209e77b4f2d37e58929bdd1f96c78bb7c5e0666ced3f0d0ffc9af29e9943`
+SHA-256: `12a9ebd158a85951dc78f4e1860f02eba0cf36cd72db00a04b5014ff83a0d887`
 
-````css
-:root {
-  font-family: 'Prompt', 'Noto Sans Thai', system-ui, sans-serif;
-  line-height: 1.5;
-  color: #24332c;
-  background: #f4fbf8;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+````javascript
+import { useEffect, useState, useCallback } from 'react'
 
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-#root {
-  min-height: 100vh;
+// loader ต้องมี reference คงที่ (ประกาศนอก component หรือใช้ useCallback)
+export default function useRemoteList(loader) {
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [version, setVersion] = useState(0)
+  const reload = useCallback(() => {
+    setLoading(true)
+    setError('')
+    setVersion((value) => value + 1)
+  }, [])
+  useEffect(() => {
+    let active = true
+    loader()
+      .then((rows) => {
+        if (active) setData(rows ?? [])
+      })
+      .catch(() => {
+        if (active) setError('โหลดข้อมูลไม่สำเร็จ กรุณาลองใหม่')
+      })
+      .finally(() => {
+        if (active) setLoading(false)
+      })
+    return () => {
+      active = false
+    }
+  }, [loader, version])
+  return { data, loading, error, reload }
 }
 ````
 
 ## frontend/src/lib/jobs.js
 
-SHA-256: `8c3035ed7bebb49dbecd9813ccc9ada65fdac5cbd0a7c51e004f3028684b5778`
+SHA-256: `73b1c4b4077153996a5c3916569fd4e5fd3498d15e27b12ef5192790aa986eb6`
 
 ````javascript
 export const jobStatusLabels = {
   draft: 'ฉบับร่าง',
   open: 'เปิดรับสมัคร',
   closed: 'ปิดรับสมัคร',
-  matched: 'เลือกผู้ดูแลแล้ว',
+  matched: 'จับคู่สำเร็จ',
   in_progress: 'กำลังดำเนินงาน',
+  completion_pending: 'รอผู้ว่าจ้างยืนยันจบงาน',
   completed: 'เสร็จสิ้น',
   cancelled: 'ยกเลิก',
 }
@@ -8151,14 +7698,113 @@ if (!supabaseUrl || !supabaseKey) {
 export const supabase = createClient(supabaseUrl, supabaseKey)
 ````
 
+## frontend/src/lib/workflow.js
+
+SHA-256: `25401bb6ce86e5fdcfb0d720514c99cc296f3b3d65e8a8a06e2ec23aedb1cb7b`
+
+````javascript
+import { supabase } from './supabase'
+
+export const documentLabels = {
+  identity: 'เอกสารยืนยันตัวตน',
+  care_certificate: 'ใบรับรองการดูแล',
+  other: 'เอกสารอื่น ๆ',
+}
+export const reviewLabels = {
+  pending: 'รอตรวจสอบ',
+  approved: 'อนุมัติแล้ว',
+  rejected: 'ไม่ผ่านการตรวจสอบ',
+}
+export const invitationLabels = {
+  pending: 'รอคำตอบ',
+  accepted: 'จับคู่สำเร็จ',
+  rejected: 'ปฏิเสธแล้ว',
+  not_selected: 'คำเชิญสิ้นสุดแล้ว',
+}
+const messages = {
+  invitation_already_exists: 'ส่งคำเชิญให้ผู้ดูแลคนนี้แล้ว',
+  caregiver_not_eligible: 'ผู้ดูแลต้องผ่านการยืนยันและเปิดพร้อมรับงาน',
+  job_not_open: 'ประกาศนี้ไม่ได้เปิดรับสมัครแล้ว',
+  invitation_no_longer_open: 'คำเชิญนี้สิ้นสุดแล้ว กรุณาโหลดรายการใหม่',
+  identity_document_required: 'ต้องมีเอกสารยืนยันตัวตนที่ส่งตรวจในรอบนี้',
+  rejection_reason_required: 'กรุณาระบุเหตุผลที่ไม่อนุมัติ',
+  review_no_longer_pending: 'รายการนี้ถูกตรวจสอบแล้ว กรุณาโหลดใหม่',
+  profile_missing_or_already_verified:
+    'ต้องบันทึกโปรไฟล์ก่อนส่งเอกสาร และส่งได้เฉพาะบัญชีที่ยังไม่อนุมัติ',
+  uploaded_file_not_found: 'ไม่พบไฟล์อัปโหลดที่ถูกต้อง กรุณาส่งใหม่',
+}
+export function workflowError(error) {
+  if (error?.code === '42501')
+    return 'คุณไม่มีสิทธิ์ดำเนินการนี้ หรือสถานะรายการเปลี่ยนไปแล้ว'
+  return messages[error?.message] ?? 'ดำเนินการไม่สำเร็จ กรุณาลองใหม่'
+}
+export async function callWorkflow(name, args) {
+  const { data, error } = await supabase.rpc(name, args)
+  if (error) throw error
+  return data
+}
+export const loadInvitations = () => callWorkflow('list_my_invitations')
+export const loadVerificationQueue = () =>
+  callWorkflow('list_verification_queue')
+export async function loadDocuments(caregiverId) {
+  const { data, error } = await supabase
+    .from('caregiver_documents')
+    .select(
+      'id, document_type, storage_path, original_file_name, review_status, rejection_reason, created_at',
+    )
+    .eq('caregiver_id', caregiverId)
+    .order('created_at', { ascending: false })
+  if (error) throw error
+  return data
+}
+export async function uploadDocument(userId, file, type) {
+  const extensions = {
+    'image/jpeg': 'jpg',
+    'image/png': 'png',
+    'application/pdf': 'pdf',
+  }
+  if (
+    !file ||
+    !extensions[file.type] ||
+    file.size < 1 ||
+    file.size > 5 * 1024 * 1024
+  ) {
+    throw new Error('เลือกไฟล์ JPG, PNG หรือ PDF ขนาดไม่เกิน 5 MB')
+  }
+  const path = userId + '/' + crypto.randomUUID() + '.' + extensions[file.type]
+  const { error } = await supabase.storage
+    .from('caregiver-documents')
+    .upload(path, file, { upsert: false, contentType: file.type })
+  if (error) throw error
+  await callWorkflow('submit_caregiver_document', {
+    p_path: path,
+    p_type: type,
+    p_name: file.name,
+    p_mime: file.type,
+  })
+}
+export async function downloadDocument(document) {
+  const { data, error } = await supabase.storage
+    .from('caregiver-documents')
+    .download(document.storage_path)
+  if (error) throw error
+  const url = URL.createObjectURL(data)
+  const link = window.document.createElement('a')
+  link.href = url
+  link.download = document.original_file_name
+  link.click()
+  setTimeout(() => URL.revokeObjectURL(url), 1000)
+}
+````
+
 ## frontend/src/main.jsx
 
-SHA-256: `4b4b864dbe45253425d0c925337180ec07e204295179f80f59551216f466f618`
+SHA-256: `e77ba0e014b48b9a73253e51fcaae0f21888574a1b59a5f31ae34c04f22ada97`
 
 ````jsx
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'
+import './styles/index.css'
 import App from './App.jsx'
 
 createRoot(document.getElementById('root')).render(
@@ -8190,21 +7836,373 @@ function AdminDashboard({ profile }) {
 export default AdminDashboard
 ````
 
-## frontend/src/pages/CaregiverDashboard.jsx
+## frontend/src/pages/AdminVerifications.jsx
 
-SHA-256: `e9777397327883c166f3632bf3e9620733538e7a8e7f9395b8ee7324bd942daf`
+SHA-256: `06652478b5775d5e525264b27911f426208375ff86297bfae9a2c888482265c1`
 
 ````jsx
-function CaregiverDashboard({ profile }) {
+import { useRef, useState } from 'react'
+import useRemoteList from '../hooks/useRemoteList'
+import DocumentList from '../components/DocumentList'
+import {
+  loadVerificationQueue,
+  callWorkflow,
+  workflowError,
+} from '../lib/workflow'
+
+export default function AdminVerifications() {
+  const { data, loading, error, reload } = useRemoteList(loadVerificationQueue)
+  const [selected, setSelected] = useState(null)
+  const [reason, setReason] = useState('')
+  const [saving, setSaving] = useState(false)
+  const [message, setMessage] = useState('')
+  const [actionError, setActionError] = useState('')
+  const busy = useRef(false)
+  async function review(approve) {
+    if (busy.current) return
+    setActionError('')
+    setMessage('')
+    if (!approve && !reason.trim()) {
+      setActionError('กรุณาระบุเหตุผลที่ไม่อนุมัติ')
+      return
+    }
+    if (
+      !window.confirm(
+        approve
+          ? 'ยืนยันว่าได้ตรวจเอกสารและอนุมัติผู้ดูแลคนนี้?'
+          : 'ส่งผลไม่อนุมัติพร้อมเหตุผลให้ผู้ดูแล?',
+      )
+    )
+      return
+    busy.current = true
+    setSaving(true)
+    try {
+      await callWorkflow('review_caregiver', {
+        p_caregiver_id: selected.caregiver_id,
+        p_approve: approve,
+        p_reason: reason.trim(),
+      })
+      setMessage(approve ? 'อนุมัติผู้ดูแลแล้ว' : 'ส่งผลตรวจพร้อมเหตุผลแล้ว')
+      setSelected(null)
+      setReason('')
+      reload()
+    } catch (issue) {
+      setActionError(workflowError(issue))
+    } finally {
+      busy.current = false
+      setSaving(false)
+    }
+  }
   return (
-    <section className="role-dashboard">
-      <h2>หน้าหลักผู้ดูแล</h2>
+    <section className="workflow-page">
+      <header>
+        <p className="workflow-eyebrow">พื้นที่แอดมิน</p>
+        <h1>ตรวจสอบผู้ดูแล</h1>
+        <p>ตรวจเอกสารยืนยันตัวตนก่อนอนุมัติให้ผู้ดูแลปรากฏในผลค้นหา</p>
+      </header>
+      {message && <p role="status">{message}</p>}
+      {actionError && <p role="alert">{actionError}</p>}
+      {loading && <p role="status">กำลังโหลดคิวตรวจสอบ...</p>}
+      {error && (
+        <div role="alert">
+          <p>{error}</p>
+          <button type="button" onClick={reload}>
+            ลองใหม่
+          </button>
+        </div>
+      )}
+      {!loading && !error && !data.length && (
+        <div className="workflow-card">
+          <h2>ตรวจสอบครบแล้ว</h2>
+          <p>ขณะนี้ไม่มีผู้ดูแลรอตรวจสอบ</p>
+        </div>
+      )}
+      {!loading && !error && (
+        <div className="workflow-columns">
+          <ul className="workflow-list">
+            {data.map((person) => (
+              <li key={person.caregiver_id}>
+                <div>
+                  <strong>{person.display_name}</strong>
+                  <p>รอการตรวจสอบ</p>
+                </div>
+                <button
+                  type="button"
+                  disabled={saving}
+                  onClick={() => {
+                    setSelected(person)
+                    setReason('')
+                    setActionError('')
+                  }}
+                >
+                  ตรวจเอกสาร
+                </button>
+              </li>
+            ))}
+          </ul>
+          {selected && (
+            <section className="workflow-card">
+              <h2>{selected.display_name}</h2>
+              <DocumentList
+                key={selected.caregiver_id}
+                caregiverId={selected.caregiver_id}
+              />
+              <label htmlFor="review-reason">เหตุผลกรณีไม่อนุมัติ</label>
+              <textarea
+                id="review-reason"
+                maxLength={1000}
+                value={reason}
+                disabled={saving}
+                onChange={(event) => setReason(event.target.value)}
+              />
+              <div className="workflow-actions">
+                <button
+                  type="button"
+                  disabled={saving}
+                  onClick={() => review(true)}
+                >
+                  อนุมัติผู้ดูแล
+                </button>
+                <button
+                  type="button"
+                  className="secondary-button"
+                  disabled={saving}
+                  onClick={() => review(false)}
+                >
+                  ไม่อนุมัติ
+                </button>
+              </div>
+            </section>
+          )}
+        </div>
+      )}
+    </section>
+  )
+}
+````
 
-      <p>
-        ยินดีต้อนรับ คุณ{profile.first_name} {profile.last_name}
-      </p>
+## frontend/src/pages/CaregiverDashboard.jsx
 
-      <p>คุณสามารถจัดการโปรไฟล์ ทักษะ และค้นหาประกาศงานได้จากหน้านี้</p>
+SHA-256: `76a308b88e0a870fa5b33bc252f9bfda7487ee9c7e002f0f32502dfa3bff37c0`
+
+````jsx
+import profileIllustration from '../assets/dashboard/caregiver-profile.svg'
+import { useEffect, useState } from 'react'
+import { supabase } from '../lib/supabase'
+import '../styles/CaregiverDashboard.css'
+
+const verificationLabels = {
+  not_submitted: 'ยังไม่ได้ส่งยืนยัน',
+  pending: 'รอการตรวจสอบ',
+  verified: 'ยืนยันแล้ว',
+  rejected: 'ต้องแก้ไขเอกสาร',
+}
+
+function CaregiverDashboard({ profile, onNavigate }) {
+  const [info, setInfo] = useState(null)
+  const [skills, setSkills] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
+  const [retry, setRetry] = useState(0)
+  useEffect(() => {
+    let active = true
+    async function load() {
+      setLoading(true)
+      setError(false)
+      try {
+        const [details, tags] = await Promise.all([
+          supabase
+            .from('caregiver_profiles')
+            .select('bio, availability_status, verification_status')
+            .eq('caregiver_id', profile.id)
+            .maybeSingle(),
+          supabase
+            .from('caregiver_skills')
+            .select('skill_id, skills(name)')
+            .eq('caregiver_id', profile.id),
+        ])
+        if (details.error || tags.error) throw new Error('load_failed')
+        if (active) {
+          setInfo(details.data)
+          setSkills(tags.data ?? [])
+        }
+      } catch {
+        if (active) setError(true)
+      } finally {
+        if (active) setLoading(false)
+      }
+    }
+    load()
+    return () => {
+      active = false
+    }
+  }, [profile.id, retry])
+  function openProfile() {
+    onNavigate('profile')
+  }
+
+  const verified = info?.verification_status === 'verified'
+  const available = info?.availability_status === 'available'
+  const steps = [
+    {
+      done: Boolean(info?.bio?.trim()),
+      title: 'แนะนำตัวให้ผู้ว่าจ้างรู้จัก',
+      text: 'เพิ่มประสบการณ์และแนวทางการดูแลของคุณ',
+    },
+    {
+      done: skills.length > 0,
+      title: 'เพิ่มทักษะการดูแล',
+      text: 'ช่วยให้ผู้ว่าจ้างพบคุณจากทักษะที่ตรงกับงาน',
+    },
+    {
+      done: verified,
+      title: 'ยืนยันตัวตนผู้ดูแล',
+      text: 'ต้องผ่านการตรวจสอบก่อนปรากฏในผลค้นหา',
+    },
+  ]
+  return (
+    <section className="care-home" aria-labelledby="care-home-title">
+      <header className="care-home-heading">
+        <div>
+          <p className="care-eyebrow">พื้นที่ของผู้ดูแล</p>
+          <h1 id="care-home-title">สวัสดี คุณ{profile.first_name}</h1>
+          <p>ดูแลโปรไฟล์ให้พร้อม สำหรับโอกาสดูแลครั้งต่อไป</p>
+        </div>
+        <button type="button" className="care-outline" onClick={openProfile}>
+          ดูโปรไฟล์ของฉัน ↗
+        </button>
+      </header>
+      <div className="care-welcome">
+        <div>
+          <span className="care-eyebrow">เริ่มต้นจากความใส่ใจ</span>
+          <h2>
+            ให้ทักษะของคุณ
+            <br />
+            ได้พบกับคนที่ต้องการการดูแล
+          </h2>
+          <p>แนะนำตัวและเพิ่มทักษะ เพื่อให้ผู้ว่าจ้างรู้จักคุณมากขึ้น</p>
+          <button type="button" onClick={openProfile}>
+            จัดการโปรไฟล์ <span aria-hidden="true">→</span>
+          </button>
+        </div>
+        <img className="care-art" src={profileIllustration} alt="" />
+      </div>
+      {loading && <p role="status">กำลังโหลดภาพรวมของคุณ...</p>}
+      {!loading && error && (
+        <div className="care-panel" role="alert">
+          <p>โหลดภาพรวมไม่สำเร็จ</p>
+          <button
+            className="care-outline"
+            type="button"
+            onClick={() => setRetry((value) => value + 1)}
+          >
+            ลองอีกครั้ง
+          </button>
+        </div>
+      )}
+      {!loading && !error && (
+        <>
+          <div className="care-summary" aria-label="ภาพรวมโปรไฟล์">
+            <article className="care-stat">
+              <span>สถานะรับงาน</span>
+              <strong>
+                <i className={available ? 'care-dot ready' : 'care-dot'} />
+                {available ? 'พร้อมรับงาน' : 'ยังไม่พร้อมรับงาน'}
+              </strong>
+              <small>ปรับสถานะได้ในหน้าโปรไฟล์</small>
+            </article>
+            <article className="care-stat">
+              <span>การยืนยันตัวตน</span>
+              <strong>
+                {verificationLabels[
+                  info?.verification_status ?? 'not_submitted'
+                ] ?? 'ไม่ทราบสถานะ'}
+              </strong>
+              <small>
+                {verified
+                  ? 'ผ่านการตรวจสอบแล้ว'
+                  : 'ยืนยันเพื่อให้ผู้ว่าจ้างค้นพบคุณ'}
+              </small>
+            </article>
+            <article className="care-stat">
+              <span>ทักษะในโปรไฟล์</span>
+              <strong>{skills.length} ทักษะ</strong>
+              <small>ใช้ประกอบการจับคู่กับประกาศงาน</small>
+            </article>
+          </div>
+          <div className="care-columns">
+            <section className="care-panel">
+              <div className="care-panel-heading">
+                <h2>เตรียมตัวให้พร้อมรับโอกาส</h2>
+                <span>
+                  {steps.filter((step) => step.done).length}/3 ขั้นตอน
+                </span>
+              </div>
+              <ol className="care-checklist">
+                {steps.map((step, index) => (
+                  <li key={step.title}>
+                    <span
+                      className={step.done ? 'care-step complete' : 'care-step'}
+                      aria-label={step.done ? 'เสร็จแล้ว' : 'ยังไม่เสร็จ'}
+                    >
+                      {step.done ? '✓' : index + 1}
+                    </span>
+                    <div>
+                      <h3>{step.title}</h3>
+                      <p>{step.text}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+              {!verified && (
+                <button
+                  type="button"
+                  className="care-outline"
+                  onClick={() => onNavigate('documents')}
+                >
+                  ส่งเอกสารยืนยันตัวตน
+                </button>
+              )}
+            </section>
+            <section className="care-panel">
+              <div className="care-panel-heading">
+                <h2>ทักษะของคุณ</h2>
+                <button
+                  className="care-text"
+                  type="button"
+                  onClick={openProfile}
+                >
+                  แก้ไข
+                </button>
+              </div>
+              <p className="care-muted">
+                สิ่งที่คุณถนัด ช่วยให้เราเชื่อมคุณกับงานที่เหมาะสม
+              </p>
+              {skills.length ? (
+                <ul className="care-tags">
+                  {skills.map((skill) => (
+                    <li key={skill.skill_id}>
+                      {skill.skills?.name ?? 'ทักษะการดูแล'}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="care-empty">
+                  <strong>คุณถนัดดูแลด้านไหนบ้าง?</strong>
+                  <p>เพิ่มทักษะแรกเพื่อเริ่มเตรียมโปรไฟล์ของคุณ</p>
+                  <button
+                    type="button"
+                    className="care-outline"
+                    onClick={openProfile}
+                  >
+                    + เพิ่มทักษะการดูแล
+                  </button>
+                </div>
+              )}
+            </section>
+          </div>
+        </>
+      )}
     </section>
   )
 }
@@ -8212,9 +8210,451 @@ function CaregiverDashboard({ profile }) {
 export default CaregiverDashboard
 ````
 
+## frontend/src/pages/CaregiverDocuments.jsx
+
+SHA-256: `2165d4eed05620a7cd0149c7654ddfc9135414b1870f6c249c6b0309a9c6d10f`
+
+````jsx
+import { useRef, useState } from 'react'
+import DocumentList from '../components/DocumentList'
+import { documentLabels, uploadDocument, workflowError } from '../lib/workflow'
+
+export default function CaregiverDocuments({ profile }) {
+  const [type, setType] = useState('identity')
+  const [file, setFile] = useState(null)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
+  const [version, setVersion] = useState(0)
+  const busy = useRef(false)
+  async function submit(event) {
+    event.preventDefault()
+    if (busy.current) return
+    setError('')
+    setSuccess('')
+    if (
+      !file ||
+      !['image/jpeg', 'image/png', 'application/pdf'].includes(file.type) ||
+      file.size < 1 ||
+      file.size > 5242880 ||
+      file.name.length > 255
+    ) {
+      setError(
+        'เลือกไฟล์ JPG, PNG หรือ PDF ขนาดไม่เกิน 5 MB และชื่อไม่เกิน 255 ตัวอักษร',
+      )
+      return
+    }
+    busy.current = true
+    setSaving(true)
+    try {
+      await uploadDocument(profile.id, file, type)
+      setSuccess('ส่งเอกสารแล้ว แอดมินจะตรวจสอบข้อมูลของคุณ')
+      setVersion((value) => value + 1)
+      setFile(null)
+      setType('identity')
+      event.target.reset()
+    } catch (issue) {
+      setError(workflowError(issue))
+    } finally {
+      setSaving(false)
+      busy.current = false
+    }
+  }
+  return (
+    <section className="workflow-page">
+      <header>
+        <p className="workflow-eyebrow">
+          เตรียมพร้อมรับงาน · ขั้นตอนยืนยันตัวตน
+        </p>
+        <h1>เอกสารของฉัน</h1>
+        <p>
+          ส่งเอกสารยืนยันตัวตนก่อน
+          เพื่อให้แอดมินตรวจสอบและเปิดการค้นพบโปรไฟล์ของคุณ
+        </p>
+      </header>
+      <div className="workflow-columns">
+        <form className="workflow-card" onSubmit={submit}>
+          <h2>ส่งเอกสารตรวจสอบ</h2>
+          <p>
+            บันทึกโปรไฟล์ผู้ดูแลก่อนส่งเอกสาร
+            ใช้ข้อมูลสมมติสำหรับการทดสอบโครงการ
+          </p>
+          <label htmlFor="document-type">ประเภทเอกสาร</label>
+          <select
+            id="document-type"
+            value={type}
+            disabled={saving}
+            onChange={(event) => setType(event.target.value)}
+          >
+            {Object.entries(documentLabels).map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+          <label htmlFor="document-file">เลือกไฟล์</label>
+          <input
+            id="document-file"
+            type="file"
+            accept="image/jpeg,image/png,application/pdf"
+            disabled={saving}
+            required
+            onChange={(event) => setFile(event.target.files[0] ?? null)}
+          />
+          <p className="workflow-hint">
+            JPG, PNG หรือ PDF · สูงสุด 5 MB ต่อไฟล์
+            <br />
+            เอกสารเปิดดูได้เฉพาะคุณและแอดมินที่ตรวจสอบ
+          </p>
+          {error && <p role="alert">{error}</p>}
+          {success && <p role="status">{success}</p>}
+          <button type="submit" disabled={saving}>
+            {saving ? 'กำลังส่งเอกสาร...' : 'ส่งให้แอดมินตรวจสอบ'}
+          </button>
+        </form>
+        <section className="workflow-card">
+          <h2>เอกสารที่ส่งแล้ว</h2>
+          <DocumentList key={version} caregiverId={profile.id} />
+        </section>
+      </div>
+    </section>
+  )
+}
+````
+
+## frontend/src/pages/CaregiverProfile.jsx
+
+SHA-256: `348ddbc1f4b043b06ee5f4ecdd314fb88def9c46a215d2d60895b74b3a4dde9a`
+
+````jsx
+import { useEffect, useState } from 'react'
+import { supabase } from '../lib/supabase'
+
+function CaregiverProfile({ profile }) {
+    const [caregiverData, setCaregiverData] = useState(null)
+    const [bio, setBio] = useState('')
+    const [experienceYears, setExperienceYears] = useState('0')
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState('')
+    const [retryKey, setRetryKey] = useState(0)
+    const [saving, setSaving] = useState(false)
+    const [saveError, setSaveError] = useState('')
+    const [saveSuccess, setSaveSuccess] = useState('')
+    const [skills, setSkills] = useState([])
+    const [selectedSkillIds, setSelectedSkillIds] = useState([])
+    const [skillsLoading, setSkillsLoading] = useState(true)
+    const [skillsError, setSkillsError] = useState('')
+    const [skillsRetry, setSkillsRetry] = useState(0)
+    const [availabilitySaving, setAvailabilitySaving] = useState(false)
+    const [availabilityError, setAvailabilityError] = useState('')
+
+    useEffect(() => {
+        let active = true
+
+        async function loadCaregiverData() {
+            setLoading(true)
+            setError('')
+
+            const { data, error: loadError } = await supabase
+                .from('caregiver_profiles')
+                .select('bio, experience_years, availability_status, verification_status')
+                .eq('caregiver_id', profile.id)
+                .maybeSingle()
+
+            if (!active) return
+
+            if (loadError) {
+                setError('โหลดข้อมูลผู้ดูแลไม่สำเร็จ')
+            } else {
+                setCaregiverData(data)
+                setBio(data?.bio ?? '')
+                setExperienceYears(String(data?.experience_years ?? 0))
+            }
+            setLoading(false)
+        }
+
+        loadCaregiverData()
+
+        return () => {
+            active = false
+        }
+    }, [profile.id, retryKey])
+    useEffect(() => {
+        let active = true
+
+        async function loadSkills() {
+            setSkillsLoading(true)
+            setSkillsError('')
+
+            const [skillsResult, selectedResult] = await Promise.all([
+                supabase
+                    .from('skills')
+                    .select('id, name')
+                    .eq('is_active', true)
+                    .order('name'),
+                supabase
+                    .from('caregiver_skills')
+                    .select('skill_id')
+                    .eq('caregiver_id', profile.id),
+            ])
+
+            if (!active) return
+
+            if (skillsResult.error || selectedResult.error) {
+                setSkillsError('โหลดรายการทักษะไม่สำเร็จ')
+            } else {
+                setSkills(skillsResult.data ?? [])
+                setSelectedSkillIds(
+                    (selectedResult.data ?? []).map((item) => item.skill_id),
+                )
+            }
+            setSkillsLoading(false)
+        }
+
+        loadSkills()
+
+        return () => {
+            active = false
+        }
+    }, [profile.id, skillsRetry])
+
+    async function handleSubmit(event) {
+        event.preventDefault()
+        setSaveError('')
+        setSaveSuccess('')
+
+        const years = Number(experienceYears)
+
+        if (!bio.trim()) {
+            setSaveError('กรุณากรอกคำแนะนำตัว')
+            return
+        }
+
+        if (
+            experienceYears.trim() === '' ||
+            !Number.isInteger(years) ||
+            years < 0 ||
+            years > 80
+        ) {
+            setSaveError('ประสบการณ์ต้องเป็นจำนวนเต็ม 0–80 ปี')
+            return
+        }
+        if (skillsLoading || skillsError) {
+            setSaveError('กรุณารอให้โหลดทักษะสำเร็จก่อน')
+            return
+        }
+        setSaving(true)
+
+        try {
+            const values = {
+                bio: bio.trim(),
+                experience_years: years,
+            }
+
+            const query = caregiverData
+                ? supabase
+                    .from('caregiver_profiles')
+                    .update(values)
+                    .eq('caregiver_id', profile.id)
+                : supabase
+                    .from('caregiver_profiles')
+                    .insert({ caregiver_id: profile.id, ...values })
+
+            const { data, error: saveFailure } = await query
+                .select('bio, experience_years, availability_status, verification_status')
+                .single()
+
+            if (saveFailure) throw saveFailure
+
+            setCaregiverData(data)
+            const { data: savedSkills, error: readError } = await supabase
+                .from('caregiver_skills')
+                .select('skill_id')
+                .eq('caregiver_id', profile.id)
+
+            if (readError) throw readError
+
+            const savedIds = new Set((savedSkills ?? []).map((item) => item.skill_id))
+            const toAdd = selectedSkillIds.filter((id) => !savedIds.has(id))
+            const toRemove = [...savedIds].filter(
+                (id) => !selectedSkillIds.includes(id),
+            )
+
+            if (toAdd.length > 0) {
+                const { error: addError } = await supabase
+                    .from('caregiver_skills')
+                    .insert(
+                        toAdd.map((skillId) => ({
+                            caregiver_id: profile.id,
+                            skill_id: skillId,
+                        })),
+                    )
+                if (addError) throw addError
+            }
+
+            if (toRemove.length > 0) {
+                const { error: removeError } = await supabase
+                    .from('caregiver_skills')
+                    .delete()
+                    .eq('caregiver_id', profile.id)
+                    .in('skill_id', toRemove)
+                if (removeError) throw removeError
+            }
+            setSaveSuccess('บันทึกโปรไฟล์แล้ว')
+        } catch {
+            setSaveError('บันทึกข้อมูลไม่ครบ กรุณาลองใหม่')
+        } finally {
+            setSaving(false)
+        }
+    }
+    async function handleAvailabilityToggle() {
+        if (!caregiverData || saving || availabilitySaving) return
+
+        const previousStatus = caregiverData.availability_status
+        const nextStatus =
+            previousStatus === 'available' ? 'unavailable' : 'available'
+
+        setAvailabilityError('')
+        setAvailabilitySaving(true)
+        setCaregiverData((current) => ({
+            ...current,
+            availability_status: nextStatus,
+        }))
+
+        try {
+            const { data, error: updateError } = await supabase
+                .from('caregiver_profiles')
+                .update({ availability_status: nextStatus })
+                .eq('caregiver_id', profile.id)
+                .select('availability_status')
+                .single()
+
+            if (updateError) throw updateError
+
+            setCaregiverData((current) => ({
+                ...current,
+                availability_status: data.availability_status,
+            }))
+        } catch {
+            setCaregiverData((current) => ({
+                ...current,
+                availability_status: previousStatus,
+            }))
+            setAvailabilityError('เปลี่ยนสถานะไม่สำเร็จ กรุณาลองใหม่')
+        } finally {
+            setAvailabilitySaving(false)
+        }
+    }
+    return (
+
+        <section className="role-dashboard caregiver-profile">
+            <h2>โปรไฟล์ผู้ดูแล</h2>
+            <p>คุณ{profile.first_name} {profile.last_name}</p>
+            {loading && <p>กำลังโหลดข้อมูลผู้ดูแล...</p>}
+            {error && (
+                <div role="alert">
+                    <p>{error}</p>
+                    <button type="button" onClick={() => setRetryKey((key) => key + 1)}>
+                        ลองใหม่
+                    </button>
+                </div>
+            )}
+            {!loading && !error && (
+                <form className="caregiver-profile-form" onSubmit={handleSubmit}>
+                    <p>{caregiverData ? 'แก้ไขโปรไฟล์ผู้ดูแล' : 'สร้างโปรไฟล์ผู้ดูแล'}</p>
+                    <label htmlFor="caregiver-bio">แนะนำตัว</label>
+                    <textarea
+                        id="caregiver-bio"
+                        value={bio}
+                        onChange={(event) => setBio(event.target.value)}
+                    />
+
+                    <label htmlFor="caregiver-experience">ประสบการณ์ดูแล (ปี)</label>
+                    <input
+                        id="caregiver-experience"
+                        type="number"
+                        min="0"
+                        max="80"
+                        step="1"
+                        value={experienceYears}
+                        onChange={(event) => setExperienceYears(event.target.value)}
+                    />
+                    <fieldset>
+                        <legend>ทักษะการดูแล</legend>
+                        {skillsLoading && <p>กำลังโหลดทักษะ...</p>}
+                        {skillsError && (
+                            <div role="alert">
+                                <p>{skillsError}</p>
+                                <button type="button" onClick={() => setSkillsRetry((key) => key + 1)}>
+                                    ลองใหม่
+                                </button>
+                            </div>
+                        )}
+                        {!skillsLoading && !skillsError && (
+                            <ul>
+                                {skills.map((skill) => (
+                                    <li key={skill.id}>
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedSkillIds.includes(skill.id)}
+                                                onChange={() =>
+                                                    setSelectedSkillIds((current) =>
+                                                        current.includes(skill.id)
+                                                            ? current.filter((id) => id !== skill.id)
+                                                            : [...current, skill.id],
+                                                    )
+                                                }
+                                            />
+                                            {skill.name}
+                                        </label>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </fieldset>
+                    {saveError && <p role="alert">{saveError}</p>}
+                    {saveSuccess && <p role="status">{saveSuccess}</p>}
+                    <button
+                        type="submit"
+                        disabled={saving || availabilitySaving || skillsLoading || Boolean(skillsError)}
+                    >
+                        {saving ? 'กำลังบันทึก...' : 'บันทึกโปรไฟล์'}
+                    </button>
+                </form>
+            )}
+            {!loading && !error && (
+                <div className="caregiver-profile-availability">
+                    <label>
+                        <input
+                            type="checkbox"
+                            role="switch"
+                            checked={caregiverData?.availability_status === 'available'}
+                            onChange={handleAvailabilityToggle}
+                            disabled={!caregiverData || saving || availabilitySaving}
+                        />
+                        พร้อมรับงาน
+                    </label>
+                    <p>
+                        {caregiverData
+                            ? caregiverData.availability_status === 'available'
+                                ? 'สถานะ: พร้อมรับงาน'
+                                : 'สถานะ: ยังไม่พร้อมรับงาน'
+                            : 'บันทึกโปรไฟล์ก่อนเปลี่ยนสถานะ'}
+                    </p>
+                    {availabilityError && <p role="alert">{availabilityError}</p>}
+                </div>
+            )}
+        </section>
+    )
+}
+
+export default CaregiverProfile
+````
+
 ## frontend/src/pages/EmployerDashboard.jsx
 
-SHA-256: `5b087ef48678c64f2c5984544eaa8c7a9035a538403f907da6f266ea68a373e3`
+SHA-256: `707b806e38b5e49e3744b84bb726748915b9519765f8149dbaf51b10e5711ddc`
 
 ````jsx
 import { useEffect, useState } from 'react'
@@ -8280,8 +8720,6 @@ function EmployerDashboard({ onNavigate }) {
         )
         .eq('is_active', true)
         .order('created_at', { ascending: false })
-        .limit(3)
-
       if (queryError) {
         setError('ไม่สามารถโหลดข้อมูลผู้ป่วยได้')
       } else {
@@ -8399,6 +8837,236 @@ function EmployerDashboard({ onNavigate }) {
 export default EmployerDashboard
 ````
 
+## frontend/src/pages/Invitations.jsx
+
+SHA-256: `ac1517c67ef583306bbc36453fe4658e7b19fdcd3095307bbb2065d38f9745eb`
+
+````jsx
+import { useRef, useState } from 'react'
+import useRemoteList from '../hooks/useRemoteList'
+import {
+  loadInvitations,
+  callWorkflow,
+  workflowError,
+  invitationLabels,
+} from '../lib/workflow'
+import { formatJobDate, jobStatusLabels, payUnitLabels } from '../lib/jobs'
+
+export default function Invitations({ profile }) {
+  const { data, loading, error, reload } = useRemoteList(loadInvitations)
+  const [busyId, setBusyId] = useState(null)
+  const [actionError, setActionError] = useState('')
+  const [message, setMessage] = useState('')
+  const [contact, setContact] = useState(null)
+  const busy = useRef(false)
+  async function respond(request, accept) {
+    if (
+      busy.current ||
+      !window.confirm(
+        accept
+          ? 'ยืนยันรับงานนี้? ประกาศจะจับคู่กับคุณทันที'
+          : 'ยืนยันปฏิเสธคำเชิญนี้?',
+      )
+    )
+      return
+    busy.current = true
+    setBusyId(request.request_id)
+    setActionError('')
+    setMessage('')
+    setContact(null)
+    try {
+      await callWorkflow('respond_to_invitation', {
+        p_request_id: request.request_id,
+        p_accept: accept,
+      })
+      setMessage(
+        accept
+          ? 'จับคู่สำเร็จแล้ว คุณสามารถเปิดข้อมูลติดต่อเพื่อนัดหมายได้'
+          : 'ปฏิเสธคำเชิญแล้ว',
+      )
+      reload()
+    } catch (issue) {
+      setActionError(workflowError(issue))
+      reload()
+    } finally {
+      busy.current = false
+      setBusyId(null)
+    }
+  }
+  async function showContact(requestId) {
+    if (busy.current) return
+    busy.current = true
+    setBusyId(requestId)
+    setActionError('')
+    setContact(null)
+    try {
+      const rows = await callWorkflow('get_match_contact', {
+        p_request_id: requestId,
+      })
+      if (!rows?.length) throw new Error('missing_contact')
+      setContact({ requestId, ...rows[0] })
+    } catch (issue) {
+      setActionError(workflowError(issue))
+    } finally {
+      busy.current = false
+      setBusyId(null)
+    }
+  }
+  async function requestCompletion(request) {
+    if (
+      busy.current ||
+      !window.confirm(`แจ้งผู้ว่าจ้างว่างาน “${request.title}” เสร็จแล้วใช่หรือไม่?`)
+    ) return
+    busy.current = true
+    setBusyId(request.request_id)
+    setActionError('')
+    setMessage('')
+    try {
+      await callWorkflow('request_job_completion', { p_job_id: request.job_post_id })
+      setMessage('ส่งคำขอจบงานแล้ว รอผู้ว่าจ้างยืนยัน')
+      reload()
+    } catch (issue) {
+      setActionError(workflowError(issue))
+      reload()
+    } finally {
+      busy.current = false
+      setBusyId(null)
+    }
+  }
+  return (
+    <section className="workflow-page">
+      <header>
+        <p className="workflow-eyebrow">การจับคู่งาน</p>
+        <h1>
+          {profile.role === 'caregiver' ? 'คำเชิญและงานของฉัน' : 'คำเชิญที่ส่ง'}
+        </h1>
+        <p>ข้อมูลติดต่อจะแสดงให้ทั้งสองฝ่ายเมื่อผู้ดูแลตอบรับงานแล้วเท่านั้น</p>
+      </header>
+      {message && <p role="status">{message}</p>}
+      {actionError && <p role="alert">{actionError}</p>}
+      {loading && <p role="status">กำลังโหลดคำเชิญ...</p>}
+      {error && (
+        <div role="alert">
+          <p>{error}</p>
+          <button type="button" onClick={reload}>
+            ลองใหม่
+          </button>
+        </div>
+      )}
+      {!loading && !error && !data.length && (
+        <div className="workflow-card">
+          <h2>ยังไม่มีคำเชิญ</h2>
+          <p>
+            {profile.role === 'caregiver'
+              ? 'เมื่อผู้ว่าจ้างส่งคำเชิญมา คุณจะเห็นรายละเอียดและตอบรับได้ที่นี่'
+              : 'ไปที่ประกาศงาน แล้วเลือกหาผู้ดูแลเพื่อส่งคำเชิญ'}
+          </p>
+        </div>
+      )}
+      {!loading && !error && (
+        <div className="workflow-stack">
+          {data.map((request) => (
+            <article className="workflow-card" key={request.request_id}>
+              <div className="workflow-heading">
+                <h2>{request.title}</h2>
+                <span className="workflow-badge">
+                  {invitationLabels[request.status]}
+                </span>
+              </div>
+              {request.status === 'accepted' && (
+                <p role="status">
+                  สถานะงาน: {jobStatusLabels[request.job_status] ?? request.job_status}
+                </p>
+              )}
+              {profile.role === 'caregiver' && request.status === 'accepted' &&
+                request.job_status === 'completion_pending' && (
+                  <p role="status">ส่งคำขอแล้ว กำลังรอผู้ว่าจ้างยืนยันจบงาน</p>
+                )}
+              {profile.role === 'employer' && (
+                <p>ผู้ดูแล: {request.caregiver_name}</p>
+              )}
+              <p>{request.description}</p>
+              <p>
+                อ.{request.district} จ.{request.province}
+              </p>
+              <p>
+                {formatJobDate(request.starts_at)} –{' '}
+                {formatJobDate(request.ends_at)}
+              </p>
+              <p>
+                {Number(request.pay_amount).toLocaleString('th-TH')} บาท{' '}
+                {payUnitLabels[request.pay_unit]}
+              </p>
+              {profile.role === 'caregiver' &&
+                request.status === 'pending' &&
+                request.job_status === 'open' && (
+                  <div className="workflow-actions">
+                    <button
+                      type="button"
+                      disabled={busyId !== null}
+                      onClick={() => respond(request, true)}
+                    >
+                      ตอบรับงาน
+                    </button>
+                    <button
+                      type="button"
+                      className="secondary-button"
+                      disabled={busyId !== null}
+                      onClick={() => respond(request, false)}
+                    >
+                      ปฏิเสธ
+                    </button>
+                  </div>
+                )}
+              {request.status === 'accepted' && (
+                <button
+                  type="button"
+                  disabled={busyId !== null}
+                  onClick={() => showContact(request.request_id)}
+                >
+                  ดูข้อมูลติดต่อ
+                </button>
+              )}
+              {profile.role === 'caregiver' && request.status === 'accepted' &&
+                request.job_status === 'in_progress' && (
+                  <button
+                    type="button"
+                    disabled={busyId !== null}
+                    onClick={() => requestCompletion(request)}
+                  >
+                    {busyId === request.request_id ? 'กำลังส่งคำขอ...' : 'แจ้งจบงาน'}
+                  </button>
+                )}
+              {contact?.requestId === request.request_id && (
+                <section
+                  className="workflow-contact"
+                  aria-label="ข้อมูลติดต่อคู่ที่จับสำเร็จ"
+                >
+                  <h3>{contact.display_name}</h3>
+                  <p>โทร: {contact.phone || 'ไม่ได้ระบุ'}</p>
+                  <p>LINE: {contact.line_id || 'ไม่ได้ระบุ'}</p>
+                  <p>
+                    สถานที่ดูแล: {contact.address_detail} {contact.subdistrict}{' '}
+                    {contact.district} {contact.province}
+                  </p>
+                  <button
+                    type="button"
+                    className="secondary-button"
+                    onClick={() => setContact(null)}
+                  >
+                    ซ่อนข้อมูลติดต่อ
+                  </button>
+                </section>
+              )}
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
+  )
+}
+````
+
 ## frontend/src/pages/LandingPage.jsx
 
 SHA-256: `46c87b4051081385ad800cf3c6b4ba030109d8e08e50308791719b49cd5a91dd`
@@ -8508,17 +9176,22 @@ export default LandingPage
 
 ## frontend/src/pages/RoleDashboard.jsx
 
-SHA-256: `2b1a26fc199625cceddc00ec7b7e6df8df423d29a221f031bc8c39c69f6058a7`
+SHA-256: `7b4361fbcc15557b3272f25094423a32329f7ecf534430477e031e353fb497ec`
 
 ````jsx
 import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import AdminDashboard from './AdminDashboard'
 import CaregiverDashboard from './CaregiverDashboard'
+import CaregiverProfile from './CaregiverProfile'
 import EmployerDashboard from './EmployerDashboard'
 import PatientManager from '../components/PatientManager'
 import Footer from '../components/Footer'
 import JobManager from '../components/JobManager'
+import CaregiverDocuments from './CaregiverDocuments'
+import AdminVerifications from './AdminVerifications'
+import Invitations from './Invitations'
+import '../styles/Workflow.css'
 
 const pageDetails = {
   employer: {
@@ -8573,7 +9246,9 @@ function RoleDashboard({ profile, onSignOut }) {
   if (profile.role === 'employer') {
     dashboard = <EmployerDashboard onNavigate={setActivePage} />
   } else if (profile.role === 'caregiver') {
-    dashboard = <CaregiverDashboard profile={profile} />
+    dashboard = (
+      <CaregiverDashboard profile={profile} onNavigate={setActivePage} />
+    )
   } else if (profile.role === 'admin') {
     dashboard = <AdminDashboard profile={profile} />
   } else {
@@ -8581,6 +9256,31 @@ function RoleDashboard({ profile, onSignOut }) {
   }
 
   const selectedPage = pageDetails[profile.role]?.[activePage]
+  let content = (
+    <section className="role-dashboard">
+      <h2>{selectedPage?.title}</h2>
+      <p>{selectedPage?.emptyMessage}</p>
+    </section>
+  )
+
+  if (activePage === 'dashboard') {
+    content = dashboard
+  } else if (profile.role === 'employer' && activePage === 'patients') {
+    content = <PatientManager />
+  } else if (profile.role === 'employer' && activePage === 'jobs') {
+    content = <JobManager />
+  } else if (profile.role === 'caregiver' && activePage === 'profile') {
+    content = <CaregiverProfile profile={profile} />
+  } else if (profile.role === 'caregiver' && activePage === 'documents') {
+    content = <CaregiverDocuments profile={profile} />
+  } else if (profile.role === 'admin' && activePage === 'verifications') {
+    content = <AdminVerifications />
+  } else if (
+    ['employer', 'caregiver'].includes(profile.role) &&
+    activePage === 'invitations'
+  ) {
+    content = <Invitations profile={profile} />
+  }
 
   return (
     <>
@@ -8590,24 +9290,2511 @@ function RoleDashboard({ profile, onSignOut }) {
         activePage={activePage}
         onSelect={setActivePage}
       />
-      {activePage === 'dashboard' ? (
-        dashboard
-      ) : activePage === 'patients' && profile.role === 'employer' ? (
-        <PatientManager />
-      ) : activePage === 'jobs' && profile.role === 'employer' ? (
-        <JobManager />
-      ) : (
-        <section className="role-dashboard">
-          <h2>{selectedPage?.title}</h2>
-          <p>{selectedPage?.emptyMessage}</p>
-        </section>
-      )}
+      {content}
       <Footer />
     </>
   )
 }
 
 export default RoleDashboard
+````
+
+## frontend/src/styles/App.css
+
+SHA-256: `a7a520be4947d3d7cea65b3e1c8330c296844d4415b60b146ff8b09861244d2d`
+
+````css
+.app-shell {
+  width: min(calc(100% - 64px), 1480px);
+  margin: 0 auto;
+  padding: 48px 0;
+}
+
+.app-shell-landing {
+  width: 100%;
+  max-width: none;
+  padding: 0;
+}
+
+.landing-page {
+  min-height: 100vh;
+  overflow: hidden;
+  background: #ffffff;
+  color: #171d19;
+  font-family: 'Prompt', 'Noto Sans Thai', system-ui, sans-serif;
+}
+
+.landing-navbar {
+  position: relative;
+  z-index: 10;
+  border-bottom: 1px solid #eef2ef;
+  background: #ffffff;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 5%);
+}
+
+.landing-navbar-inner {
+  box-sizing: border-box;
+  width: min(calc(100% - 48px), 1480px);
+  min-height: 71px;
+  margin: 0 auto;
+  padding: 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.landing-auth-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.landing-auth-actions button,
+.landing-hero-actions button {
+  min-height: 40px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font: 600 14px/20px inherit;
+  cursor: pointer;
+}
+
+.landing-login-button {
+  border: 1px solid #6d7a72;
+  background: #ffffff;
+  color: #006948;
+}
+
+.landing-register-button {
+  border: 1px solid #006948;
+  background: #006948;
+  color: #ffffff;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 5%);
+}
+
+.landing-hero {
+  background: linear-gradient(180deg, rgb(220 252 231 / 30%) 0%, #ffffff 100%);
+}
+
+.landing-hero-inner {
+  box-sizing: border-box;
+  width: min(calc(100% - 48px), 1480px);
+  min-height: 638px;
+  margin: 0 auto;
+  padding: 86px 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+.landing-hero-copy h1 {
+  margin: 0;
+  color: #171d19;
+  font-size: clamp(40px, 4.4vw, 56px);
+  line-height: 1.2;
+  letter-spacing: -1.1px;
+}
+
+.landing-hero-copy > p {
+  max-width: 576px;
+  margin: 24px 0 0;
+  color: #64748b;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.landing-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.landing-hero-actions button {
+  min-height: 48px;
+  padding: 12px 24px;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.landing-primary-button {
+  border: 1px solid #006948;
+  background: #006948;
+  color: #ffffff;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 5%);
+}
+
+.landing-caregiver-button {
+  border: 1px solid #cce5ff;
+  background: #cce5ff;
+  color: #006398;
+}
+
+.landing-hero-visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+}
+
+.landing-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(32px);
+}
+
+.landing-glow-green {
+  top: -30px;
+  right: -40px;
+  width: 128px;
+  height: 128px;
+  background: #85f8c4;
+  opacity: 0.5;
+}
+
+.landing-glow-blue {
+  bottom: -30px;
+  left: -32px;
+  width: 160px;
+  height: 160px;
+  background: #5bb8fe;
+  opacity: 0.3;
+}
+
+.landing-image-frame {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 9px;
+  overflow: hidden;
+  border: 1px solid #e4eae4;
+  border-radius: 32px;
+  background: #ffffff;
+  box-shadow:
+    0 20px 25px -5px rgb(0 0 0 / 10%),
+    0 8px 10px -6px rgb(0 0 0 / 10%);
+  transform: rotate(2deg);
+}
+
+.landing-image-frame img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 574 / 428.25;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.landing-how-it-works {
+  box-sizing: border-box;
+  width: min(calc(100% - 48px), 1480px);
+  min-height: 566px;
+  margin: 0 auto;
+  padding: 80px 0;
+}
+
+.landing-section-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.landing-section-heading h2 {
+  margin: 0;
+  font-size: 40px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.landing-section-heading span {
+  width: 96px;
+  height: 4px;
+  border-radius: 9999px;
+  background: #006948;
+}
+
+.landing-step-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 26px;
+  margin-top: 64px;
+}
+
+.landing-step-card {
+  box-sizing: border-box;
+  min-height: 262px;
+  padding: 32px 16px 24px;
+  border: 1px solid #e4eae4;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 5%);
+  text-align: center;
+}
+
+.landing-step-icon {
+  display: grid;
+  place-items: center;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 24px;
+  border-radius: 50%;
+}
+
+.landing-step-icon img {
+  max-width: 30px;
+  max-height: 30px;
+}
+.landing-step-search {
+  background: #cce5ff;
+}
+.landing-step-document {
+  background: #dcfce7;
+}
+.landing-step-heart {
+  background: #ffdad7;
+}
+
+.landing-step-card h3 {
+  margin: 0 0 12px;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.landing-step-card p {
+  margin: 0 auto;
+  color: #64748b;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.landing-page .app-footer {
+  margin: 0;
+}
+
+.landing-page .app-footer-inner {
+  width: min(calc(100% - 48px), 1480px);
+}
+
+.landing-page button:hover {
+  filter: brightness(0.96);
+}
+.landing-page button:focus-visible {
+  outline: 3px solid #5bb8fe;
+  outline-offset: 3px;
+}
+
+@media (max-width: 980px) {
+  .landing-hero-inner {
+    grid-template-columns: 1fr;
+    padding-top: 64px;
+  }
+
+  .landing-hero-copy {
+    text-align: center;
+  }
+
+  .landing-hero-copy > p {
+    margin-right: auto;
+    margin-left: auto;
+  }
+  .landing-hero-actions {
+    justify-content: center;
+  }
+  .landing-hero-visual {
+    width: min(100%, 640px);
+    margin: 12px auto 0;
+  }
+  .landing-step-list {
+    grid-template-columns: 1fr;
+  }
+  .landing-how-it-works {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+}
+
+@media (max-width: 600px) {
+  .landing-navbar-inner {
+    width: 100%;
+    padding: 12px 16px;
+  }
+  .landing-auth-actions {
+    gap: 8px;
+  }
+  .landing-auth-actions button {
+    padding: 8px 12px;
+  }
+  .landing-hero-inner {
+    width: 100%;
+    padding: 48px 20px 64px;
+  }
+  .landing-hero-copy h1 {
+    font-size: 38px;
+  }
+  .landing-hero-copy > p {
+    font-size: 16px;
+  }
+  .landing-hero-actions {
+    flex-direction: column;
+  }
+  .landing-hero-actions button {
+    width: 100%;
+  }
+  .landing-how-it-works {
+    width: 100%;
+    padding: 56px 16px;
+  }
+  .landing-section-heading h2 {
+    font-size: 32px;
+  }
+}
+
+.auth-panel {
+  width: min(100%, 576px);
+  margin: 0 auto;
+  font-family: 'Prompt', 'Noto Sans Thai', system-ui, sans-serif;
+}
+
+.app-header {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.app-header h1 {
+  margin: 0 0 8px;
+  color: #176b42;
+}
+
+.app-header p {
+  margin: 0;
+  color: #52645b;
+}
+
+.auth-form {
+  display: grid;
+  gap: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  border: 1px solid #dbe7e2;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgb(22 101 52 / 8%);
+}
+
+.auth-form input,
+.auth-form button {
+  box-sizing: border-box;
+  min-height: 44px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font: inherit;
+}
+
+.auth-form input {
+  border: 1px solid #b8c9c1;
+}
+
+.auth-form button {
+  border: 0;
+  color: #ffffff;
+  background: #20a85b;
+  cursor: pointer;
+}
+
+.auth-form button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.auth-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  box-sizing: border-box;
+  padding: 32px;
+  margin: 0;
+  border: 1px solid #f1f5f9;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 5%);
+}
+
+.auth-card .auth-back-button {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.auth-back-button span {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.auth-card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 8px 0 16px;
+  text-align: center;
+}
+
+.auth-card-logo {
+  position: relative;
+  display: block;
+  width: 72px;
+  height: 72px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  border: 1px solid #f1f5f9;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 5%);
+}
+
+.auth-card-logo img {
+  position: absolute;
+  width: 191.66%;
+  height: 191.66%;
+  left: -45.83%;
+  top: -27.22%;
+}
+
+.auth-card-header h2 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 24px;
+  line-height: 1.5;
+}
+
+.auth-card-header p {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.auth-card > label:not(.auth-terms) {
+  margin: 14px 0 6px;
+  color: #1e293b;
+  font-size: 14px;
+}
+
+.auth-card > input {
+  min-height: 48px;
+  border-color: #bccac0;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1e293b;
+  font-size: 16px;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 5%);
+}
+
+.auth-card > input::placeholder {
+  color: #94a3b8;
+}
+
+.auth-card > input:focus {
+  border-color: #078c67;
+  outline: 3px solid rgb(7 140 103 / 16%);
+}
+
+.auth-info-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 22px 0 0;
+  padding: 13px;
+  border: 1px solid #cce5ff;
+  border-radius: 8px;
+  background: rgb(204 229 255 / 50%);
+  color: #006398;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.auth-info-notice span {
+  flex-shrink: 0;
+}
+
+.auth-terms {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 14px 0 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.auth-terms input {
+  flex: 0 0 18px;
+  width: 18px;
+  min-height: 18px;
+  margin: 2px 0 0;
+  padding: 0;
+  accent-color: #006948;
+}
+
+.auth-terms strong {
+  color: #006948;
+  font-weight: 500;
+}
+
+.auth-card > button[type='submit'] {
+  min-height: 48px;
+  margin-top: 20px;
+  border-radius: 8px;
+  background: #006948;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.auth-card > button[type='submit']:hover:not(:disabled) {
+  background: #00543e;
+}
+
+.auth-switch-copy {
+  margin: 16px 0 0;
+  color: #64748b;
+  font-size: 14px;
+  text-align: center;
+}
+
+.auth-switch-copy button {
+  min-height: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #006948;
+  font: inherit;
+  font-weight: 600;
+}
+
+.auth-card button:focus-visible,
+.auth-switch-copy button:focus-visible {
+  outline: 3px solid rgb(7 140 103 / 25%);
+  outline-offset: 3px;
+}
+
+.auth-card [role='alert'],
+.auth-card [role='status'] {
+  margin: 14px 0 0;
+}
+
+@media (max-width: 600px) {
+  .auth-card {
+    padding: 20px;
+  }
+
+  .auth-card-logo {
+    width: 64px;
+    height: 64px;
+  }
+
+  .auth-card-header h2 {
+    font-size: 22px;
+  }
+}
+
+.profile-setup-form {
+  box-sizing: border-box;
+  width: min(100%, 760px);
+  margin: 0 auto;
+  padding: 32px;
+  border: 1px solid #f1f5f9;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 4px 14px rgb(23 43 36 / 6%);
+  font-family: 'Prompt', 'Noto Sans Thai', system-ui, sans-serif;
+}
+
+.profile-setup-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.profile-setup-header .auth-card-logo {
+  flex: 0 0 64px;
+  width: 64px;
+  height: 64px;
+  margin: 0;
+}
+
+.profile-setup-header h2 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 26px;
+  line-height: 1.4;
+}
+
+.profile-setup-header p {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.profile-account-notice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 12px 14px;
+  border: 1px solid #cce5ff;
+  border-radius: 8px;
+  background: rgb(204 229 255 / 38%);
+  color: #475569;
+  font-size: 14px;
+}
+
+.profile-account-notice strong {
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.profile-account-notice button {
+  flex-shrink: 0;
+  min-height: 36px;
+  padding: 6px 12px;
+  border: 1px solid #bccac0;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #006948;
+  font: 600 13px/1.5 inherit;
+  cursor: pointer;
+}
+
+.profile-role-options {
+  margin: 0 0 24px;
+  padding: 0;
+  border: 0;
+}
+
+.profile-role-options legend,
+.profile-field > label {
+  margin-bottom: 7px;
+  color: #1e293b;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.profile-role-options legend span,
+.profile-field > label > span {
+  color: #ef4444;
+}
+
+.profile-field > label small {
+  color: #64748b;
+  font: inherit;
+  font-weight: 400;
+}
+
+.profile-role-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.profile-role-grid > label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 72px;
+  padding: 12px 16px;
+  border: 1px solid #dce7e2;
+  border-radius: 10px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.profile-role-grid > label.selected {
+  border-color: #078c67;
+  background: #ecfdf5;
+  box-shadow: 0 0 0 1px #078c67;
+}
+
+.profile-role-grid input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: #006948;
+}
+
+.profile-role-grid label > span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.profile-role-grid strong {
+  color: #1e293b;
+  font-size: 15px;
+}
+
+.profile-role-grid small {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.profile-form-row,
+.profile-location-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.profile-form-row {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 18px;
+}
+
+.profile-location-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 18px;
+}
+
+.profile-field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.profile-field input,
+.profile-field select,
+.profile-field textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid #bccac0;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1e293b;
+  font: 400 15px/1.5 inherit;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 5%);
+}
+
+.profile-field textarea {
+  min-height: 88px;
+  resize: vertical;
+}
+
+.profile-field input::placeholder,
+.profile-field textarea::placeholder {
+  color: #94a3b8;
+}
+
+.profile-field input:focus,
+.profile-field select:focus,
+.profile-field textarea:focus {
+  border-color: #078c67;
+  outline: 3px solid rgb(7 140 103 / 16%);
+}
+
+.profile-field select:disabled {
+  cursor: not-allowed;
+  background: #f1f5f3;
+  color: #718079;
+}
+
+.profile-address-section {
+  margin-top: 6px;
+  padding-top: 22px;
+  border-top: 1px solid #eaf0ed;
+}
+
+.profile-address-section h3 {
+  margin: 0 0 16px;
+  color: #1e293b;
+  font-size: 17px;
+}
+
+.profile-setup-form > [role='alert'] {
+  margin: 16px 0 0;
+}
+
+.profile-submit-button {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 24px;
+  padding: 11px 18px;
+  border: 0;
+  border-radius: 8px;
+  background: #006948;
+  color: #ffffff;
+  font: 600 15px/1.5 inherit;
+  cursor: pointer;
+}
+
+.profile-submit-button:hover:not(:disabled) {
+  background: #00543e;
+}
+
+.profile-submit-button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.profile-setup-form button:focus-visible,
+.profile-role-grid input:focus-visible {
+  outline: 3px solid rgb(7 140 103 / 25%);
+  outline-offset: 3px;
+}
+
+@media (max-width: 720px) {
+  .profile-setup-form {
+    padding: 20px;
+  }
+
+  .profile-setup-header {
+    align-items: flex-start;
+  }
+
+  .profile-role-grid,
+  .profile-form-row,
+  .profile-location-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-account-notice {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+[role='alert'] {
+  color: #b42318;
+}
+
+.app-shell-dashboard {
+  padding-top: 96px;
+}
+
+.app-shell-dashboard .auth-status {
+  min-height: calc(100vh - 144px);
+  display: flex;
+  flex-direction: column;
+}
+
+.app-shell-dashboard .app-footer {
+  margin-top: auto;
+}
+
+.top-navbar {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 20;
+  background: #fff;
+  border-bottom: 1px solid #dee4de;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 5%);
+  font-family: 'Prompt', 'Noto Sans Thai', system-ui, sans-serif;
+}
+
+.top-navbar-inner {
+  width: min(calc(100% - 64px), 1480px);
+  min-height: 64px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #006948;
+  font:
+    700 20px/32px 'Prompt',
+    system-ui,
+    sans-serif;
+  cursor: pointer;
+}
+
+.navbar-logo {
+  position: relative;
+  display: block;
+  width: 39px;
+  height: 39px;
+  overflow: hidden;
+}
+
+.navbar-logo img {
+  position: absolute;
+  width: 191.66%;
+  height: 191.66%;
+  left: -45.83%;
+  top: -27.22%;
+}
+
+.role-navigation {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.role-navigation button {
+  padding: 0;
+  background: transparent;
+  color: #64748b;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  font: inherit;
+  font-size: 16px;
+  line-height: 24px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.role-navigation button.active {
+  color: #059669;
+  border-bottom-color: #059669;
+  font-weight: 700;
+}
+
+.role-navigation button:hover {
+  color: #059669;
+}
+
+.navbar-account,
+.account-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navbar-account {
+  flex-shrink: 0;
+}
+.navbar-dropdown {
+  position: relative;
+}
+.navbar-dropdown summary {
+  list-style: none;
+  cursor: pointer;
+}
+.navbar-dropdown summary::-webkit-details-marker {
+  display: none;
+}
+.notification-toggle {
+  padding: 10px;
+  display: flex;
+}
+.notification-toggle img {
+  width: 16px;
+  height: 20px;
+}
+.account-toggle {
+  min-height: 44px;
+  color: #171d19;
+}
+.account-toggle img {
+  width: 12px;
+  height: 8px;
+  margin-left: 4px;
+}
+.account-name {
+  max-width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.account-role {
+  font-size: 14px;
+  white-space: nowrap;
+}
+.navbar-popover {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  width: 240px;
+  padding: 16px;
+  box-sizing: border-box;
+  background: #fff;
+  border: 1px solid #dee4de;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgb(15 23 42 / 12%);
+}
+.navbar-popover p {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: #64748b;
+}
+.navbar-popover button {
+  width: 100%;
+  padding: 10px;
+  border: 0;
+  border-radius: 4px;
+  background: #f4fbf8;
+  color: #006948;
+  font: inherit;
+  cursor: pointer;
+}
+.caregiver-match-list {
+  display: grid;
+  gap: 16px;
+  padding: 0;
+  list-style: none;
+}
+.account-menu {
+  width: 224px;
+  padding: 6px;
+  border-color: #e6ece8;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgb(25 50 38 / 9%);
+}
+.account-menu button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 11px 12px;
+  text-align: left;
+  background: transparent;
+  color: #405149;
+  border-radius: 7px;
+  font-size: 14px;
+  font-weight: 400;
+}
+.account-menu button svg { width: 18px; height: 18px; flex-shrink: 0; }
+.account-menu button:hover, .account-menu button:focus-visible { background: #f2f7f4; }
+.account-menu button[aria-current='page'] { color: #006948; font-weight: 600; }
+.account-menu hr { border: 0; border-top: 1px solid #edf0ee; margin: 4px 10px; }
+.account-menu .account-signout:hover { color: #a13434; background: #fdf4f4; }
+.caregiver-match-list .job-heading {
+  flex-wrap: wrap;
+}
+.top-navbar :focus-visible {
+  outline: 2px solid #059669;
+  outline-offset: 4px;
+}
+
+@media (max-width: 1150px) {
+  .top-navbar-inner {
+    flex-wrap: wrap;
+    gap: 0 16px;
+  }
+  .role-navigation {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    padding: 12px 0;
+  }
+  .navbar-brand,
+  .navbar-account {
+    min-height: 64px;
+  }
+  .app-shell-dashboard {
+    padding-top: 140px;
+  }
+}
+
+@media (max-width: 600px) {
+  .top-navbar-inner {
+    width: calc(100% - 32px);
+  }
+  .navbar-brand {
+    gap: 6px;
+    font-size: 18px;
+  }
+  .navbar-account {
+    gap: 0;
+  }
+  .account-role {
+    display: none;
+  }
+  .account-name {
+    max-width: 85px;
+    font-size: 14px;
+  }
+  .account-toggle {
+    gap: 6px;
+  }
+  .role-navigation {
+    gap: 20px;
+  }
+  .role-navigation button {
+    font-size: 14px;
+  }
+}
+
+.role-dashboard {
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #dce7e1;
+  border-radius: 16px;
+}
+.caregiver-profile {
+  width: 100%;
+  max-width: 760px;
+  margin: 32px auto;
+}
+
+.caregiver-profile-form {
+  display: grid;
+  gap: 12px;
+}
+
+.caregiver-profile-form > label {
+  font-weight: 600;
+}
+
+.caregiver-profile-form textarea,
+.caregiver-profile-form input[type='number'] {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid #bdcfc5;
+  border-radius: 8px;
+  background: #fff;
+  font: inherit;
+}
+
+.caregiver-profile-form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+.caregiver-profile-form fieldset {
+  margin: 8px 0 0;
+  padding: 16px;
+  border: 1px solid #dce7e2;
+  border-radius: 12px;
+}
+
+.caregiver-profile-form legend {
+  font-weight: 600;
+}
+
+.caregiver-profile-form ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.caregiver-profile-form li label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.caregiver-profile-form input[type='checkbox'],
+.caregiver-profile-availability input {
+  accent-color: #006948;
+}
+
+.caregiver-profile-form button[type='submit'] {
+  justify-self: start;
+  min-height: 44px;
+  padding: 10px 20px;
+  border: 0;
+  border-radius: 8px;
+  background: #006948;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+}
+
+.caregiver-profile-availability {
+  margin-top: 24px;
+  padding: 16px;
+  border: 1px solid #dce7e2;
+  border-radius: 12px;
+  background: #f4fbf8;
+}
+
+.caregiver-profile-availability label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+}
+
+.caregiver-profile-availability p {
+  margin: 8px 0 0;
+  color: #64748b;
+}
+
+.caregiver-profile-availability input[role='switch'] {
+  appearance: none;
+  position: relative;
+  width: 44px;
+  height: 24px;
+  margin: 0;
+  border: 0;
+  border-radius: 999px;
+  background: #94a3b8;
+  cursor: pointer;
+}
+
+.caregiver-profile-availability input[role='switch']::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  transition: transform 0.2s;
+}
+
+.caregiver-profile-availability input[role='switch']:checked {
+  background: #006948;
+}
+
+.caregiver-profile-availability input[role='switch']:checked::before {
+  transform: translateX(20px);
+}
+
+.employer-dashboard {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(0, 2fr);
+  gap: 32px;
+  min-height: 500px;
+  padding-top: 0;
+}
+
+.dashboard-patients,
+.dashboard-jobs {
+  min-width: 0;
+}
+
+.dashboard-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.employer-dashboard h2 {
+  margin: 0 0 12px;
+  color: #1e293b;
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.dashboard-patient-list {
+  display: grid;
+  gap: 12px;
+  max-height: 534px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.dashboard-patient-card,
+.dashboard-state,
+.dashboard-empty-jobs {
+  box-sizing: border-box;
+  border: 1px solid #f1f5f9;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 5%);
+}
+
+.dashboard-patient-card {
+  padding: 24px;
+}
+
+.dashboard-patient-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.dashboard-patient-avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #cce5ff;
+}
+
+.dashboard-patient-avatar img {
+  width: 14px;
+  height: 22px;
+}
+
+.dashboard-patient-header h3 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 18px;
+  line-height: 29px;
+}
+
+.dashboard-patient-header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.dashboard-patient-detail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 0;
+  color: #3d4a42;
+  font-size: 14px;
+}
+
+.dashboard-patient-detail img {
+  width: 15px;
+  height: 15px;
+  object-fit: contain;
+}
+
+.dashboard-state {
+  margin: 0;
+  padding: 24px;
+  color: #64748b;
+}
+
+.dashboard-empty-patients button {
+  padding: 8px 14px;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  background: #f0f9ff;
+  color: #0369a1;
+  font: inherit;
+  cursor: pointer;
+}
+
+.dashboard-empty-jobs {
+  min-height: 347px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+}
+
+.dashboard-empty-icon {
+  display: grid;
+  place-items: center;
+  width: 80px;
+  height: 56px;
+  margin-bottom: 24px;
+  border-radius: 50%;
+  background: #f8fafc;
+}
+
+.dashboard-empty-icon img {
+  width: 40px;
+  height: 38px;
+}
+
+.dashboard-empty-title {
+  margin: 0 0 24px;
+  color: #1e293b;
+  font-size: 14px;
+}
+
+.dashboard-empty-description {
+  margin: 0 0 24px;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.dashboard-empty-jobs button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(310px, 100%);
+  min-height: 48px;
+  padding: 10px 20px;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  background: #f0f9ff;
+  color: #0369a1;
+  font: inherit;
+  cursor: pointer;
+}
+
+.dashboard-empty-jobs button img {
+  width: 15px;
+  height: 15px;
+  margin-right: 8px;
+}
+
+.app-footer {
+  width: 100vw;
+  margin: 72px 0 -48px calc(50% - 50vw);
+  border-top: 1px solid #bccac0;
+  background: #ffffff;
+}
+
+.app-footer-inner {
+  box-sizing: border-box;
+  width: min(calc(100% - 64px), 1480px);
+  min-height: 104px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  color: #171d19;
+  font-size: 14px;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #006948;
+  font:
+    700 20px/32px 'Prompt',
+    system-ui,
+    sans-serif;
+}
+
+.app-footer-inner > p {
+  margin: 0;
+}
+
+.app-footer nav {
+  display: flex;
+  gap: 24px;
+  color: #475569;
+}
+
+@media (max-width: 900px) {
+  .employer-dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .app-footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px 0;
+  }
+
+  .app-footer nav {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .app-shell:not(.app-shell-landing) {
+    width: calc(100% - 32px);
+  }
+
+  .employer-dashboard h2 {
+    font-size: 20px;
+  }
+
+  .dashboard-patient-card {
+    padding: 20px;
+  }
+
+  .app-footer-inner {
+    width: calc(100% - 32px);
+  }
+}
+
+.patient-manager {
+  width: 100%;
+}
+
+.patient-manager h2 {
+  margin: 24px 0 18px;
+  color: #1e293b;
+  font-size: 24px;
+}
+
+.patient-feedback {
+  position: fixed;
+  z-index: 1100;
+  top: 88px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: min(360px, calc(100vw - 48px));
+  box-sizing: border-box;
+  padding: 14px 16px;
+  border: 1px solid;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgb(15 23 42 / 14%);
+  font-size: 14px;
+}
+
+.patient-feedback-success {
+  border-color: #86efac;
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.patient-feedback-error {
+  border-color: #fecaca;
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.patient-feedback span {
+  flex: 1;
+}
+
+.patient-feedback button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.patient-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 24px;
+}
+
+.patient-card,
+.add-patient-card {
+  box-sizing: border-box;
+  min-height: 188px;
+  border-radius: 12px;
+}
+
+.patient-card {
+  padding: 24px;
+  border: 1px solid #bccac0;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 5%);
+}
+
+.patient-card h3 {
+  margin: 0 0 18px;
+  color: #171d19;
+  font-size: 18px;
+}
+
+.patient-card p {
+  margin: 10px 0;
+  color: #3d4a42;
+  font-size: 14px;
+}
+
+.patient-card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.patient-card-actions button,
+.patient-form-actions button {
+  min-height: 38px;
+  padding: 8px 16px;
+  border: 1px solid #bccac0;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #006948;
+  font: inherit;
+  cursor: pointer;
+}
+
+.patient-card-actions button:first-child,
+.patient-form-actions button[type='submit'] {
+  border-color: #059669;
+  background: #059669;
+  color: #ffffff;
+}
+
+.add-patient-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px;
+  border: 2px dashed #bccac0;
+  background: transparent;
+  color: #64748b;
+  font: inherit;
+  cursor: pointer;
+}
+
+.add-patient-card span {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.patient-form-overlay {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  padding: 24px;
+  background: rgb(30 41 59 / 68%);
+}
+
+.patient-form-dialog {
+  width: min(672px, 100%);
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+
+.patient-form {
+  display: grid;
+  gap: 12px;
+  box-sizing: border-box;
+  padding: 32px;
+  border: 1px solid #f1f5f9;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 20px 45px rgb(15 23 42 / 18%);
+}
+
+.patient-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.patient-form-header h3 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 24px;
+}
+
+.patient-form-header button {
+  border: 0;
+  background: transparent;
+  color: #087443;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.patient-form label,
+.patient-form legend {
+  color: #1e293b;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.patient-form > input,
+.patient-form > select,
+.patient-form > textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 40px;
+  padding: 9px 12px;
+  border: 1px solid #bccac0;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #1e293b;
+  font: inherit;
+}
+
+.patient-form > textarea {
+  min-height: 72px;
+  resize: vertical;
+}
+
+.patient-option-group {
+  display: grid;
+  gap: 8px;
+  margin: 4px 0;
+  padding: 12px;
+  border: 1px solid #dce7e1;
+  border-radius: 8px;
+}
+
+.patient-option-group label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-weight: 400;
+}
+
+.patient-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.patient-form-actions button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+@media (max-width: 720px) {
+  .patient-feedback {
+    top: 152px;
+    right: 16px;
+    width: calc(100vw - 32px);
+  }
+
+  .patient-manager {
+    width: calc(100vw - 32px);
+  }
+
+  .patient-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .patient-form {
+    padding: 20px;
+  }
+
+  .patient-form-actions {
+    flex-direction: column-reverse;
+  }
+}
+
+/* Sprint 1: shared job form/list, responsive and keyboard-visible controls */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+button {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+:focus-visible {
+  outline: 3px solid #008fa8;
+  outline-offset: 3px;
+}
+.job-manager,
+.job-form {
+  width: 100%;
+  margin: 32px 0;
+  min-width: 0;
+}
+.job-form {
+  max-width: 900px;
+  margin-inline: auto;
+  padding: 32px;
+  border: 1px solid #dce7e2;
+  border-radius: 20px;
+  background: white;
+}
+.job-form h2,
+.job-heading h2,
+.job-heading h3 {
+  margin: 0;
+}
+.job-form > p,
+.job-heading p {
+  color: #64748b;
+}
+.job-form-fields {
+  display: grid;
+  gap: 12px;
+  border: 0;
+  padding: 0;
+  min-width: 0;
+}
+.job-form-fields > label {
+  font-weight: 500;
+  margin-top: 8px;
+}
+.job-form input:not([type='checkbox']),
+.job-form select,
+.job-form textarea,
+.job-filter select {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid #bdcfc5;
+  border-radius: 8px;
+  background: #fff;
+  color: #24332c;
+  font-size: 16px;
+}
+.job-form textarea {
+  resize: vertical;
+}
+.job-form-fields > fieldset {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #dce7e2;
+  border-radius: 12px;
+  min-width: 0;
+}
+.job-form input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+  accent-color: #006948;
+}
+.job-heading,
+.job-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.job-actions {
+  justify-content: flex-start;
+  margin-top: 24px;
+}
+.job-manager button,
+.job-form button,
+.job-card button {
+  border: 1px solid #006948;
+  border-radius: 8px;
+  padding: 11px 18px;
+  background: #006948;
+  color: white;
+  font-size: 15px;
+}
+.job-manager .secondary-button,
+.job-form .secondary-button {
+  background: white;
+  color: #006948;
+}
+.job-filter {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 24px 0;
+}
+.job-filter select {
+  width: auto;
+}
+.job-list {
+  display: grid;
+  gap: 20px;
+}
+.job-card,
+.job-empty {
+  padding: 24px;
+  border: 1px solid #dce7e2;
+  border-radius: 16px;
+  background: white;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.job-description {
+  white-space: pre-wrap;
+}
+.job-status {
+  padding: 5px 12px;
+  border-radius: 30px;
+  font-size: 14px;
+  background: #edf1f5;
+  color: #475569;
+}
+.job-status-open {
+  background: #e0f6e9;
+  color: #006948;
+}
+.job-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.job-tags span {
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: #edf6ff;
+  color: #006398;
+  font-size: 14px;
+}
+.success-notice {
+  padding: 14px;
+  background: #e0f6e9;
+  border-radius: 8px;
+  color: #006948;
+}
+.form-error,
+.field-error {
+  color: #a61b1b;
+}
+.field-error {
+  display: block;
+  font-size: 14px;
+  margin: 4px 0 12px;
+}
+[aria-invalid='true'] {
+  border-color: #a61b1b !important;
+}
+@media (max-width: 600px) {
+  .job-form {
+    padding: 20px 16px;
+  }
+  .job-card {
+    padding: 18px;
+  }
+  .job-heading {
+    align-items: flex-start;
+  }
+  .job-actions button {
+    flex: 1;
+  }
+}
+````
+
+## frontend/src/styles/CaregiverDashboard.css
+
+SHA-256: `da81e783bb36a4138e1ceab7d33f91bda7fcc238a6fd8205a3d0c587e85a726d`
+
+````css
+.care-home {
+  width: min(calc(100% - 64px), 1480px);
+  margin: 36px auto 56px;
+  color: #243b33;
+}
+
+.care-home * {
+  box-sizing: border-box;
+}
+
+.care-home-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.care-home-heading h1 {
+  font-size: clamp(24px, 2.5vw, 32px);
+  margin: 4px 0 8px;
+  letter-spacing: -0.6px;
+}
+
+.care-home-heading p {
+  margin: 0;
+  color: #63766d;
+}
+
+.care-home .care-eyebrow {
+  color: #007453;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.care-home button {
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 9px;
+  padding: 12px 18px;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.care-home button:focus-visible {
+  outline: 3px solid #42a98b;
+  outline-offset: 4px;
+}
+
+.care-home .care-outline {
+  border: 1px solid #c4d8ce;
+  color: #006948;
+  background: white;
+}
+
+.care-home .care-outline:hover {
+  background: #edf8f2;
+}
+
+.care-welcome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 32px 40px;
+  background: #e3f3eb;
+  border: 1px solid #d2e9dd;
+  border-radius: 20px;
+}
+
+.care-welcome h2 {
+  font-size: clamp(23px, 2.3vw, 31px);
+  line-height: 1.5;
+  letter-spacing: -0.5px;
+  margin: 10px 0;
+  color: #174d37;
+}
+
+.care-welcome p {
+  color: #526e5f;
+  margin: 8px 0 22px;
+}
+
+.care-welcome button {
+  background: #006948;
+  color: white;
+  border: 1px solid #006948;
+}
+
+.care-welcome button:hover {
+  background: #00563b;
+}
+
+.care-welcome button span {
+  margin-left: 18px;
+}
+
+.care-art {
+  width: 240px;
+  flex: 0 0 240px;
+  margin-right: 4%;
+}
+
+.care-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin: 24px 0;
+}
+
+.care-stat,
+.care-panel {
+  background: white;
+  border: 1px solid #deebe4;
+  border-radius: 14px;
+  padding: 24px;
+  min-width: 0;
+}
+
+.care-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.care-stat > span {
+  color: #5e7167;
+  font-size: 14px;
+}
+
+.care-stat strong {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 21px;
+}
+
+.care-stat small {
+  color: #728178;
+  font-size: 12px;
+}
+
+.care-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #98a7a0;
+  flex-shrink: 0;
+}
+
+.care-dot.ready {
+  background: #098a5c;
+  box-shadow: 0 0 0 4px #e1f3e9;
+}
+
+.care-columns {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 24px;
+}
+
+.care-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.care-panel h2 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.care-panel-heading > span {
+  color: #738478;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.care-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0 0;
+}
+
+.care-checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding-bottom: 22px;
+}
+
+.care-checklist li:last-child {
+  padding-bottom: 0;
+}
+
+.care-step {
+  display: grid;
+  place-items: center;
+  flex: 0 0 30px;
+  height: 30px;
+  border: 1px solid #dae4de;
+  border-radius: 50%;
+  color: #7b8980;
+  font-size: 13px;
+}
+
+.care-step.complete {
+  background: #e2f5eb;
+  color: #00704b;
+  border-color: #e2f5eb;
+}
+
+.care-checklist h3 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 5px;
+}
+
+.care-checklist p,
+.care-muted {
+  font-size: 13px;
+  color: #6a7c71;
+  margin: 0;
+  line-height: 1.7;
+}
+
+.care-note {
+  color: #68796f;
+  font-size: 12px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #f5f8f6;
+  margin: 22px 0 0;
+}
+
+.care-home .care-text {
+  background: none;
+  border: 0;
+  color: #00704b;
+  padding: 8px;
+}
+
+.care-tags {
+  padding: 0;
+  margin: 22px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+}
+
+.care-tags li {
+  background: #eef7f2;
+  color: #32664b;
+  border: 1px solid #deeee4;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+.care-empty {
+  padding: 28px 0 12px;
+}
+
+.care-empty strong {
+  font-size: 15px;
+}
+
+.care-empty p {
+  color: #6a7c71;
+  font-size: 13px;
+  margin: 10px 0 18px;
+}
+
+@media (max-width: 800px) {
+  .care-home {
+    width: calc(100% - 32px);
+    margin-top: 24px;
+  }
+
+  .care-columns {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .care-welcome {
+    padding: 24px;
+  }
+
+  .care-art {
+    width: 150px;
+    flex-basis: 150px;
+    margin: 0;
+  }
+
+  .care-summary {
+    gap: 10px;
+  }
+
+  .care-stat {
+    padding: 16px;
+  }
+
+  .care-stat strong {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 560px) {
+  .care-home-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .care-art {
+    display: none;
+  }
+
+  .care-summary {
+    grid-template-columns: 1fr;
+    margin: 16px 0;
+  }
+
+  .care-stat {
+    gap: 8px;
+  }
+
+  .care-panel {
+    padding: 20px;
+  }
+
+  .care-panel h2 {
+    font-size: 16px;
+  }
+}
+````
+
+## frontend/src/styles/Workflow.css
+
+SHA-256: `8c36b4ea4255bed09aae41d62d0c84d33478786109f219c122b5982092786170`
+
+````css
+.workflow-page {
+  width: min(calc(100% - 64px), 1480px);
+  margin: 32px auto 48px;
+}
+.workflow-page header {
+  margin-bottom: 24px;
+}
+.workflow-page h1 {
+  margin: 6px 0 12px;
+  font-size: clamp(24px, 3vw, 32px);
+}
+.workflow-eyebrow {
+  color: #00704b;
+  font-size: 13px;
+}
+.workflow-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+.workflow-card {
+  padding: 24px;
+  background: white;
+  border: 1px solid #dce9e1;
+  border-radius: 16px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.workflow-card h2 {
+  font-size: 20px;
+  margin-top: 0;
+}
+.workflow-card label {
+  display: block;
+  font-weight: 600;
+  margin: 18px 0 8px;
+}
+.workflow-card input,
+.workflow-card select,
+.workflow-card textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px;
+  font: inherit;
+  border: 1px solid #cbdcd2;
+  border-radius: 8px;
+  background: white;
+}
+.workflow-card textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+.workflow-page button {
+  font: inherit;
+  padding: 11px 16px;
+  border: 1px solid #006948;
+  border-radius: 8px;
+  background: #006948;
+  color: white;
+  cursor: pointer;
+  min-height: 44px;
+}
+.workflow-page button.secondary-button {
+  color: #006948;
+  background: white;
+}
+.workflow-page button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.workflow-page :focus-visible {
+  outline: 3px solid #73bda1;
+  outline-offset: 3px;
+}
+.workflow-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.workflow-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 0;
+  border-bottom: 1px solid #e9eeeb;
+  overflow-wrap: anywhere;
+}
+.workflow-list li > div {
+  min-width: 0;
+}
+.workflow-list li > button {
+  flex-shrink: 0;
+}
+.workflow-hint,
+.workflow-list p {
+  color: #64776d;
+  font-size: 14px;
+}
+.workflow-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  background: #edf6f0;
+  color: #286348;
+  border-radius: 20px;
+  font-size: 13px;
+}
+.workflow-actions,
+.workflow-heading {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 16px 0;
+}
+.workflow-heading {
+  justify-content: space-between;
+}
+.workflow-heading h2 {
+  margin: 0;
+}
+.workflow-stack {
+  display: grid;
+  gap: 20px;
+}
+.workflow-contact {
+  border-top: 1px solid #dce9e1;
+  margin-top: 24px;
+  padding-top: 16px;
+}
+.workflow-page [role='alert'] {
+  color: #a12c2c;
+}
+@media (max-width: 800px) {
+  .workflow-page {
+    width: calc(100% - 32px);
+  }
+  .workflow-columns {
+    grid-template-columns: 1fr;
+  }
+  .workflow-card {
+    padding: 20px;
+  }
+}
+@media (max-width: 480px) {
+  .workflow-list li {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+````
+
+## frontend/src/styles/index.css
+
+SHA-256: `bc366b275a3bfe972bbae96e54fdd5a4aa9daa45b33357dfdff140815cf7bb26`
+
+````css
+:root {
+  scrollbar-gutter: stable;
+  font-family: 'Prompt', 'Noto Sans Thai', system-ui, sans-serif;
+  line-height: 1.5;
+  color: #24332c;
+  background: #f4fbf8;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
 ````
 
 ## frontend/vite.config.js
@@ -8626,7 +11813,7 @@ export default defineConfig({
 
 ## scripts/generate-review-snapshot.mjs
 
-SHA-256: `0d43690a06e83b6e52997efb2a0bba788f9da64b3bd8630bd195409cc1ad341f`
+SHA-256: `c8ac696505c40b1b5f9d93d5fc07709bf28b0e231a7c75ccd8b72215f377d203`
 
 ````javascript
 import { createHash } from 'node:crypto'
@@ -8638,6 +11825,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const files = []
 async function collect(directory) {
   for (const entry of await readdir(resolve(root, directory), { withFileTypes: true })) {
+    if (entry.isDirectory() && (entry.name === 'node_modules' || entry.name.startsWith('.'))) continue
     const path = `${directory}/${entry.name}`
     if (entry.isDirectory()) await collect(path)
     else if (/\.(jsx?|css|mjs|sql)$/.test(entry.name)) files.push(path)

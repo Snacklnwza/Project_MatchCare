@@ -78,6 +78,7 @@ begin
     raise exception 'รายละเอียดงานไม่ถูกต้องหรือมีข้อมูลส่วนตัว';
   end if;
   if exists(select 1 from public.search_open_jobs(p_min_pay => 1200, p_pay_unit => 'day'))
+    or exists(select 1 from public.search_open_jobs(p_max_pay => 999, p_pay_unit => 'day'))
     or exists(select 1 from public.search_open_jobs(p_province => 'พะเยา'))
     or exists(select 1 from public.search_open_jobs(p_work_date => '2030-01-05'))
     or exists(select 1 from public.search_open_jobs(p_offset => 1, p_limit => 1)) then
@@ -101,7 +102,7 @@ do $$ begin
     raise exception 'ประกาศปิดแล้วยังเปิดรายละเอียดได้';
   end if;
   if has_function_privilege('anon',
-    'public.search_open_jobs(text,text,date,text,numeric,bigint,integer,integer)',
+    'public.search_open_jobs(text,text,date,text,numeric,numeric,bigint,integer,integer)',
     'execute') then
     raise exception 'ผู้ไม่เข้าสู่ระบบเรียก RPC ได้';
   end if;

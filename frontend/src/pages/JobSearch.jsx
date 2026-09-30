@@ -11,6 +11,10 @@ import {
 import '../styles/JobSearch.css'
 
 const provinces = Object.keys(geography).sort((a, b) => a.localeCompare(b, 'th'))
+const emptyFilters = {
+  province: '', district: '', workDate: '', skillId: '',
+  payUnit: '', minimumPay: '', maximumPay: '',
+}
 
 function JobSearch() {
   const [province, setProvince] = useState('')
@@ -19,6 +23,9 @@ function JobSearch() {
   const [skillId, setSkillId] = useState('')
   const [payUnit, setPayUnit] = useState('')
   const [minimumPay, setMinimumPay] = useState('')
+  const [maximumPay, setMaximumPay] = useState('')
+  const [appliedFilters, setAppliedFilters] = useState(emptyFilters)
+  const [filterError, setFilterError] = useState('')
   const [page, setPage] = useState(0)
   const [selectedId, setSelectedId] = useState(null)
   const [detail, setDetail] = useState(null)
@@ -27,11 +34,8 @@ function JobSearch() {
   const detailRequest = useRef(0)
 
   const loadJobs = useCallback(
-    () => searchOpenJobs(
-      { province, district, workDate, skillId, payUnit, minimumPay },
-      page,
-    ),
-    [province, district, workDate, skillId, payUnit, minimumPay, page],
+    () => searchOpenJobs(appliedFilters, page),
+    [appliedFilters, page],
   )
   const { data: jobs, loading, error, reload } = useRemoteList(loadJobs)
   const {
@@ -53,6 +57,20 @@ function JobSearch() {
 
   function changeFilter(setter, value) {
     setter(value)
+    setFilterError('')
+  }
+
+  function handleSearch(event) {
+    event.preventDefault()
+    if (minimumPay !== '' && maximumPay !== '' &&
+      Number(minimumPay) > Number(maximumPay)) {
+      setFilterError('ค่าตอบแทนสูงสุดต้องไม่น้อยกว่าค่าต่ำสุด')
+      return
+    }
+    setFilterError('')
+    setAppliedFilters({
+      province, district, workDate, skillId, payUnit, minimumPay, maximumPay,
+    })
     setPage(0)
     clearDetail()
   }
@@ -64,6 +82,9 @@ function JobSearch() {
     setSkillId('')
     setPayUnit('')
     setMinimumPay('')
+    setMaximumPay('')
+    setAppliedFilters(emptyFilters)
+    setFilterError('')
     setPage(0)
     clearDetail()
   }
@@ -118,6 +139,7 @@ function JobSearch() {
             ล้างตัวกรอง
           </button>
         </div>
+        <form onSubmit={handleSearch}>
         <div className="job-search-filter-grid">
           <label>
             จังหวัด
@@ -174,6 +196,7 @@ function JobSearch() {
               value={payUnit}
               onChange={(event) => {
                 setMinimumPay('')
+                setMaximumPay('')
                 changeFilter(setPayUnit, event.target.value)
               }}
             >
@@ -199,7 +222,28 @@ function JobSearch() {
               }}
             />
           </label>
+          <label>
+            ค่าตอบแทนสูงสุด (บาท)
+            <input
+              type="number"
+              min="0"
+              step="0.01"
+              value={maximumPay}
+              disabled={!payUnit}
+              onChange={(event) => {
+                const value = event.target.value
+                if (value === '' || Number(value) >= 0) {
+                  changeFilter(setMaximumPay, value)
+                }
+              }}
+            />
+          </label>
         </div>
+        {filterError && <p role="alert">{filterError}</p>}
+        <div className="job-search-search-actions">
+          <button type="submit">ค้นหา</button>
+        </div>
+        </form>
         {skillsError && (
           <p role="alert">
             โหลดทักษะไม่สำเร็จ{' '}
@@ -223,7 +267,7 @@ function JobSearch() {
         {!loading && !error && visibleJobs.length === 0 && (
           <div className="job-search-message">
             <p>{page === 0
-              ? 'ไม่พบประกาศงานตามตัวกรอง ลองเปลี่ยนเงื่อนไขค้นหา'
+              ? 'ไม่พบประกาศที่ตรงกับเงื่อนไข ลองเปลี่ยนตัวกรองแล้วกดค้นหาอีกครั้ง'
               : 'ไม่พบประกาศในหน้านี้ กรุณากลับหน้าก่อน'}</p>
           </div>
         )}

@@ -60,6 +60,12 @@
   margin-top: 18px;
 }
 
+.job-search-search-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
 .job-search-filter-grid label {
   display: grid;
   gap: 8px;

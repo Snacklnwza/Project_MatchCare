@@ -9,6 +9,7 @@ export async function searchOpenJobs(filters, page) {
     p_work_date: filters.workDate || null,
     p_pay_unit: filters.payUnit || null,
     p_min_pay: filters.minimumPay === '' ? null : Number(filters.minimumPay),
+    p_max_pay: filters.maximumPay === '' ? null : Number(filters.maximumPay),
     p_skill_id: filters.skillId === '' ? null : Number(filters.skillId),
     p_offset: page * JOB_PAGE_SIZE,
     p_limit: JOB_PAGE_SIZE + 1,

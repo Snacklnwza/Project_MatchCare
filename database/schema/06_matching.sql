@@ -96,6 +96,7 @@ create or replace function match_internal.search_open_jobs(
   p_work_date date default null,
   p_pay_unit text default null,
   p_min_pay numeric default null,
+  p_max_pay numeric default null,
   p_skill_id bigint default null,
   p_offset integer default 0,
   p_limit integer default 21
@@ -128,7 +129,9 @@ begin
 
   if p_offset < 0 or p_limit not between 1 and 51
     or (p_pay_unit is not null and p_pay_unit not in ('hour', 'day', 'month', 'total'))
-    or (p_min_pay is not null and (p_min_pay < 0 or p_pay_unit is null)) then
+    or (p_min_pay is not null and (p_min_pay < 0 or p_pay_unit is null))
+    or (p_max_pay is not null and (p_max_pay < 0 or p_pay_unit is null))
+    or (p_min_pay is not null and p_max_pay is not null and p_min_pay > p_max_pay) then
     raise exception using errcode = '22023', message = 'invalid_job_search_filter';
   end if;
 
@@ -154,6 +157,7 @@ begin
     ))
     and (p_pay_unit is null or j.pay_unit = p_pay_unit)
     and (p_min_pay is null or j.pay_amount >= p_min_pay)
+    and (p_max_pay is null or j.pay_amount <= p_max_pay)
     and (p_skill_id is null or exists (
       select 1 from public.job_required_skills jrs
       where jrs.job_post_id = j.id and jrs.skill_id = p_skill_id
@@ -163,9 +167,9 @@ begin
 end;
 $$;
 
-revoke all on function match_internal.search_open_jobs(text,text,date,text,numeric,bigint,integer,integer)
+revoke all on function match_internal.search_open_jobs(text,text,date,text,numeric,numeric,bigint,integer,integer)
 from public, anon, authenticated;
-grant execute on function match_internal.search_open_jobs(text,text,date,text,numeric,bigint,integer,integer)
+grant execute on function match_internal.search_open_jobs(text,text,date,text,numeric,numeric,bigint,integer,integer)
 to authenticated;
 
 -- หน้าเว็บเรียก RPC ชั้นนี้; ชั้นในตรวจบทบาทก่อนอ่านข้อมูลข้าม RLS
@@ -175,6 +179,7 @@ create or replace function public.search_open_jobs(
   p_work_date date default null,
   p_pay_unit text default null,
   p_min_pay numeric default null,
+  p_max_pay numeric default null,
   p_skill_id bigint default null,
   p_offset integer default 0,
   p_limit integer default 21
@@ -199,13 +204,13 @@ set search_path = ''
 as $$
   select * from match_internal.search_open_jobs(
     p_province, p_district, p_work_date, p_pay_unit,
-    p_min_pay, p_skill_id, p_offset, p_limit
+    p_min_pay, p_max_pay, p_skill_id, p_offset, p_limit
   );
 $$;
 
-revoke all on function public.search_open_jobs(text,text,date,text,numeric,bigint,integer,integer)
+revoke all on function public.search_open_jobs(text,text,date,text,numeric,numeric,bigint,integer,integer)
 from public, anon, authenticated;
-grant execute on function public.search_open_jobs(text,text,date,text,numeric,bigint,integer,integer)
+grant execute on function public.search_open_jobs(text,text,date,text,numeric,numeric,bigint,integer,integer)
 to authenticated;
 
 -- เปิดรายละเอียดเฉพาะประกาศที่ยัง open; ถ้าปิดระหว่างดูรายการจะคืน null

@@ -43,6 +43,7 @@ Migration คือไฟล์ SQL ที่บันทึกการเป�
 | `20260929091935_protect_patient_during_completion_confirmation.sql` | ป้องกันการปิดใช้งานผู้ป่วยในช่วงรอยืนยันจบงาน |
 
 วันที่ 30 ก.ย. เพิ่ม `caregiver_search_open_jobs` และ `caregiver_open_job_details` ลงในประวัติฐาน Supabase โดยตรงตามที่ตกลงกันว่าไม่สร้างไฟล์ migration ในโปรเจกต์ SQL สำหรับสร้างฐานใหม่และรีวิวอยู่ใน `schema/06_matching.sql` ส่วน `list_open_jobs()` รุ่นแรกสร้างผ่าน SQL Editor เพื่อทดลองและหน้าเว็บไม่เรียกแล้ว
+จากนั้นเพิ่ม `job_search_pay_range` เพื่อให้ค้นหาตามช่วงค่าตอบแทนได้ โดยใช้ SQL ฉบับล่าสุดใน `schema/06_matching.sql`
 
 ไฟล์สองรายการท้ายถูกติดตั้งบน Supabase แล้ว เลขรุ่นในชื่อไฟล์จึงต้องตรงกับประวัติบนระบบ ห้ามเปลี่ยนชื่อหรือรัน SQL ซ้ำเพื่อแก้ปัญหาไม่ตรงรุ่นโดยไม่ตรวจ migration history ก่อน
 

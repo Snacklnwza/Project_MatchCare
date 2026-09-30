@@ -8,6 +8,7 @@ import PatientManager from '../components/PatientManager'
 import Footer from '../components/Footer'
 import JobManager from '../components/JobManager'
 import CaregiverDocuments from './CaregiverDocuments'
+import JobSearch from './JobSearch'
 import AdminVerifications from './AdminVerifications'
 import Invitations from './Invitations'
 import '../styles/Workflow.css'
@@ -35,10 +36,6 @@ const pageDetails = {
     profile: {
       title: 'โปรไฟล์ผู้ดูแล',
       emptyMessage: 'ยังไม่มีข้อมูลโปรไฟล์ผู้ดูแล',
-    },
-    jobs: {
-      title: 'ค้นหางาน',
-      emptyMessage: 'ยังไม่มีประกาศงาน',
     },
     applications: {
       title: 'งานที่สมัคร',
@@ -88,6 +85,8 @@ function RoleDashboard({ profile, onSignOut }) {
     content = <PatientManager />
   } else if (profile.role === 'employer' && activePage === 'jobs') {
     content = <JobManager />
+  } else if (profile.role === 'caregiver' && activePage === 'jobs') {
+    content = <JobSearch />
   } else if (profile.role === 'caregiver' && activePage === 'profile') {
     content = <CaregiverProfile profile={profile} />
   } else if (profile.role === 'caregiver' && activePage === 'documents') {

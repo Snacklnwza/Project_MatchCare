@@ -1,0 +1,258 @@
+.job-search {
+  box-sizing: border-box;
+  width: min(calc(100% - 64px), 1200px);
+  margin: 32px auto 64px;
+  color: #173128;
+}
+
+.job-search-heading {
+  margin-bottom: 24px;
+}
+
+.job-search-eyebrow {
+  margin: 0 0 6px;
+  color: #00704b;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.job-search-heading h1 {
+  margin: 0 0 8px;
+  font-size: clamp(26px, 3vw, 34px);
+}
+
+.job-search-heading p:last-child {
+  margin: 0;
+  color: #5d7067;
+}
+
+.job-search-filters,
+.job-search-card,
+.job-search-message {
+  background: #fff;
+  border: 1px solid #dce9e1;
+  border-radius: 16px;
+}
+
+.job-search-filters {
+  padding: 24px;
+  margin-bottom: 28px;
+}
+
+.job-search-filter-heading,
+.job-search-results-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.job-search-filter-heading h2,
+.job-search-results-heading h2 {
+  margin: 0;
+  font-size: 21px;
+}
+
+.job-search-filter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px 20px;
+  margin-top: 18px;
+}
+
+.job-search-filter-grid label {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  font-weight: 600;
+}
+
+.job-search-filter-grid select,
+.job-search-filter-grid input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  padding: 9px 12px;
+  border: 1px solid #cbdcd2;
+  border-radius: 8px;
+  background: #fff;
+  color: #173128;
+  font: inherit;
+}
+
+.job-search-filter-grid :disabled {
+  background: #f3f6f4;
+  color: #718078;
+}
+
+.job-search button {
+  min-height: 44px;
+  padding: 9px 16px;
+  border: 1px solid #006948;
+  border-radius: 8px;
+  background: #006948;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.job-search button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.job-search button.job-search-text-button,
+.job-search-pagination button {
+  background: #fff;
+  color: #006948;
+}
+
+.job-search :focus-visible {
+  outline: 3px solid #73bda1;
+  outline-offset: 2px;
+}
+
+.job-search-results-heading {
+  margin-bottom: 16px;
+}
+
+.job-search-results-heading span {
+  color: #5d7067;
+}
+
+.job-search-card {
+  margin-bottom: 16px;
+  padding: 24px;
+}
+
+.job-search-card-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.job-search-card-main > div {
+  min-width: 0;
+}
+
+.job-search-card h3 {
+  margin: 12px 0 8px;
+  font-size: 21px;
+}
+
+.job-search-card p {
+  margin: 0 0 14px;
+  overflow-wrap: anywhere;
+}
+
+.job-search-card-main > button {
+  flex-shrink: 0;
+}
+
+.job-search-status,
+.job-search-tags span {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #edf6f0;
+  color: #126844;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.job-search-meta,
+.job-search-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  color: #51675b;
+}
+
+.job-search-tags {
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.job-search-detail {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid #e3ebe6;
+}
+
+.job-search-detail h4 {
+  margin: 18px 0 8px;
+  font-size: 16px;
+}
+
+.job-search-detail dl {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.job-search-detail dl > div {
+  display: flex;
+  gap: 8px;
+}
+
+.job-search-detail dt {
+  min-width: 135px;
+  font-weight: 600;
+}
+
+.job-search-detail dd {
+  margin: 0;
+}
+
+.job-search-hint {
+  margin-top: 22px !important;
+  color: #5d7067;
+}
+
+.job-search-message {
+  padding: 28px;
+  text-align: center;
+}
+
+.job-search-message p {
+  margin: 0 0 16px;
+}
+
+.job-search-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+@media (max-width: 850px) {
+  .job-search-filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .job-search {
+    width: calc(100% - 32px);
+  }
+
+  .job-search-filter-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .job-search-card-main {
+    flex-direction: column;
+  }
+
+  .job-search-card-main > button {
+    width: 100%;
+  }
+
+  .job-search-detail dl > div {
+    flex-direction: column;
+    gap: 2px;
+  }
+}

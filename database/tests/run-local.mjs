@@ -49,6 +49,7 @@ try {
 
   const tests = [
     'matching_search_test.sql',
+    'job_search_test.sql',
     'workflow_integration_test.sql',
     'sprint1_integration_test.sql',
   ]

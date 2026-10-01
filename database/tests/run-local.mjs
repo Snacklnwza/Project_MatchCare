@@ -48,6 +48,7 @@ try {
   for (const file of schemas) await runFile('database/schema', file)
 
   const tests = [
+    'catalog_test.sql',
     'matching_search_test.sql',
     'job_search_test.sql',
     'job_application_test.sql',

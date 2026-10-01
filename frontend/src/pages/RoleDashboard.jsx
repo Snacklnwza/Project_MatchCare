@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import AdminDashboard from './AdminDashboard'
+import AdminCatalog from './AdminCatalog'
 import CaregiverDashboard from './CaregiverDashboard'
 import CaregiverProfile from './CaregiverProfile'
 import EmployerDashboard from './EmployerDashboard'
@@ -99,6 +100,8 @@ function RoleDashboard({ profile, onSignOut }) {
     content = <Applications />
   } else if (profile.role === 'admin' && activePage === 'verifications') {
     content = <AdminVerifications />
+  } else if (profile.role === 'admin' && activePage === 'catalog') {
+    content = <AdminCatalog />
   } else if (
     ['employer', 'caregiver'].includes(profile.role) &&
     activePage === 'invitations'

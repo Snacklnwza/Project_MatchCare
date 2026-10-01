@@ -60,8 +60,7 @@ function CaregiverProfile({ profile }) {
             const [skillsResult, selectedResult] = await Promise.all([
                 supabase
                     .from('skills')
-                    .select('id, name')
-                    .eq('is_active', true)
+                    .select('id, name, is_active')
                     .order('name'),
                 supabase
                     .from('caregiver_skills')
@@ -263,12 +262,13 @@ function CaregiverProfile({ profile }) {
                         )}
                         {!skillsLoading && !skillsError && (
                             <ul>
-                                {skills.map((skill) => (
+                                {skills.filter(skill => skill.is_active || selectedSkillIds.includes(skill.id)).map((skill) => (
                                     <li key={skill.id}>
                                         <label>
                                             <input
                                                 type="checkbox"
                                                 checked={selectedSkillIds.includes(skill.id)}
+                                                disabled={!skill.is_active}
                                                 onChange={() =>
                                                     setSelectedSkillIds((current) =>
                                                         current.includes(skill.id)
@@ -277,7 +277,7 @@ function CaregiverProfile({ profile }) {
                                                     )
                                                 }
                                             />
-                                            {skill.name}
+                                            {skill.name}{!skill.is_active && ' (ปิดใช้งานแล้ว · เก็บข้อมูลเดิม)'}
                                         </label>
                                     </li>
                                 ))}

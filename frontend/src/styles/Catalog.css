@@ -1,0 +1,13 @@
+.catalog-tabs { margin-bottom: 24px; }
+.catalog-layout { display: grid; grid-template-columns: minmax(260px, 1fr) minmax(0, 2fr); gap: 24px; align-items: start; }
+.catalog-fields { border: 0; padding: 0; margin: 0; min-width: 0; }
+.catalog-fields .workflow-actions { margin-top: 20px; }
+.catalog-filters { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
+.catalog-list { list-style: none; padding: 0; margin: 0; }
+.catalog-list li { display: flex; justify-content: space-between; align-items: start; gap: 16px; padding: 20px 0; border-top: 1px solid #e2ebe5; }
+.catalog-list li > div { min-width: 0; }
+.catalog-list p { color: #64746a; white-space: pre-wrap; }
+.catalog-list .workflow-badge { display: inline-block; margin: 6px 0 6px 12px; }
+.catalog-list .workflow-actions { flex-shrink: 0; }
+@media (max-width: 960px) { .catalog-layout { grid-template-columns: 1fr; } }
+@media (max-width: 600px) { .catalog-list li { flex-direction: column; } .catalog-filters { grid-template-columns: 1fr; gap: 0; } }

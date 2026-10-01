@@ -504,6 +504,10 @@ begin
   from (
     select distinct unnest(coalesce(p_condition_ids, '{}'::bigint[])) as condition_id
   ) as selected
+  where not exists (
+    select 1 from public.patient_conditions existing
+    where existing.patient_id=v_patient.id and existing.condition_id=selected.condition_id
+  )
   on conflict do nothing;
 
   delete from public.patient_required_skills
@@ -515,6 +519,10 @@ begin
   from (
     select distinct unnest(coalesce(p_skill_ids, '{}'::bigint[])) as skill_id
   ) as selected
+  where not exists (
+    select 1 from public.patient_required_skills existing
+    where existing.patient_id=v_patient.id and existing.skill_id=selected.skill_id
+  )
   on conflict do nothing;
 
   return v_patient;

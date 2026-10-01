@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import useRemoteList from '../hooks/useRemoteList'
+import MatchContact from '../components/MatchContact'
 import {
   loadInvitations,
   callWorkflow,
@@ -194,25 +195,7 @@ export default function Invitations({ profile }) {
                   </button>
                 )}
               {contact?.requestId === request.request_id && (
-                <section
-                  className="workflow-contact"
-                  aria-label="ข้อมูลติดต่อคู่ที่จับสำเร็จ"
-                >
-                  <h3>{contact.display_name}</h3>
-                  <p>โทร: {contact.phone || 'ไม่ได้ระบุ'}</p>
-                  <p>LINE: {contact.line_id || 'ไม่ได้ระบุ'}</p>
-                  <p>
-                    สถานที่ดูแล: {contact.address_detail} {contact.subdistrict}{' '}
-                    {contact.district} {contact.province}
-                  </p>
-                  <button
-                    type="button"
-                    className="secondary-button"
-                    onClick={() => setContact(null)}
-                  >
-                    ซ่อนข้อมูลติดต่อ
-                  </button>
-                </section>
+                <MatchContact contact={contact} onHide={() => setContact(null)} />
               )}
             </article>
           ))}

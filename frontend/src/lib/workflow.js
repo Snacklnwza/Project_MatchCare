@@ -20,7 +20,7 @@ export const applicationLabels = {
   pending: 'รอผู้ว่าจ้างพิจารณา',
   accepted: 'จับคู่สำเร็จ',
   rejected: 'ไม่ผ่านการพิจารณา',
-  not_selected: 'ประกาศสิ้นสุดแล้ว',
+  not_selected: 'ไม่ได้รับเลือกหรือประกาศสิ้นสุดแล้ว',
 }
 const messages = {
   invitation_already_exists: 'ส่งคำเชิญให้ผู้ดูแลคนนี้แล้ว',
@@ -29,6 +29,7 @@ const messages = {
   caregiver_not_eligible: 'ผู้ดูแลต้องผ่านการยืนยันและเปิดพร้อมรับงาน',
   job_not_open: 'ประกาศนี้ไม่ได้เปิดรับสมัครแล้ว',
   invitation_no_longer_open: 'คำเชิญนี้สิ้นสุดแล้ว กรุณาโหลดรายการใหม่',
+  application_no_longer_open: 'ใบสมัครนี้สิ้นสุดแล้ว กรุณาโหลดรายการใหม่',
   identity_document_required: 'ต้องมีเอกสารยืนยันตัวตนที่ส่งตรวจในรอบนี้',
   rejection_reason_required: 'กรุณาระบุเหตุผลที่ไม่อนุมัติ',
   review_no_longer_pending: 'รายการนี้ถูกตรวจสอบแล้ว กรุณาโหลดใหม่',
@@ -48,6 +49,7 @@ export async function callWorkflow(name, args) {
 }
 export const loadInvitations = () => callWorkflow('list_my_invitations')
 export const loadMyApplications = () => callWorkflow('list_my_applications')
+export const loadReceivedApplications = () => callWorkflow('list_received_applications')
 export const loadVerificationQueue = () =>
   callWorkflow('list_verification_queue')
 export async function loadDocuments(caregiverId) {

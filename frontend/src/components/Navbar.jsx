@@ -7,6 +7,7 @@ const menuItemsByRole = {
     { id: 'dashboard', label: 'หน้าหลัก' },
     { id: 'patients', label: 'ผู้ป่วยของฉัน' },
     { id: 'jobs', label: 'ประกาศงาน' },
+    { id: 'receivedApplications', label: 'ใบสมัครที่ได้รับ' },
     { id: 'caregivers', label: 'ค้นหาผู้ดูแล' },
     { id: 'invitations', label: 'คำเชิญที่ส่ง' },
     { id: 'history', label: 'ประวัติการจ้างงาน' },

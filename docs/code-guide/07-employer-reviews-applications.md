@@ -15,4 +15,27 @@
 
 `npm --prefix database test`, lint และ production build ผ่าน ติดตั้ง RPC ใน Supabase ด้วย migration `employer_reviews_job_applications` แล้ว และทดสอบ SQL ที่ rollback ข้อมูลสมมติบนฐานจริงผ่าน ผู้ใช้ `authenticated` เรียก public RPC ได้ ส่วน `anon` เรียกไม่ได้
 
-งานอยู่ใน [Draft PR #17](https://github.com/Snacklnwza/Project_MatchCare/pull/17) และ Vercel รายงานว่า Preview พร้อมแล้ว แต่ Preview ต้องผ่าน Vercel SSO และตัวควบคุม Chrome ถูกส่วนขยายอื่นบัง จึงยังต้องทดสอบหน้าจอแบบสองบัญชีบน Vercel และการตอบรับพร้อมกันจากคนละ connection ก่อนถือว่า Definition of Done ของ ID 11 ครบ
+งานอยู่ใน [Draft PR #17](https://github.com/Snacklnwza/Project_MatchCare/pull/17) และ Vercel รายงานว่า Preview พร้อมแล้ว การตอบรับพร้อมกันจากสอง connection ผ่านตามรายละเอียดด้านล่าง ส่วนการทดสอบหน้าจอสองบัญชีบน Preview ยังติดหน้าต่างส่วนขยาย Chrome บังการควบคุม จึงยังไม่ถือว่า Definition of Done ของ ID 11 ครบ
+
+## การตอบรับพร้อมกันจากสอง connection
+
+ทดสอบบน Supabase จริงวันที่ 1 ตุลาคม 2569 ด้วยผู้ว่าจ้างสมมติหนึ่งคน ผู้ดูแลสมมติสองคน และประกาศใหม่หนึ่งงาน แต่ละ connection เรียก public RPC ด้วย role `authenticated` และ JWT claims ของผู้ว่าจ้างเจ้าของประกาศ
+
+1. Connection A ตอบรับใบสมัครแรกใน transaction แล้วเรียก `pg_sleep(25)` ก่อน commit เพื่อถือ row lock ไว้ให้ตรวจได้
+2. เมื่อเห็น A อยู่ที่ `PgSleep` จึงเริ่ม connection B ให้ตอบรับใบสมัครอีกใบของประกาศเดียวกัน
+3. ใช้ connection ที่สามอ่าน `pg_stat_activity` และ `pg_blocking_pids(pid)` เพื่อพิสูจน์ว่าทั้งสองทำงานทับช่วงเวลากันจริง
+4. หลัง A commit ตรวจผลจาก B และสถานะที่บันทึกในตาราง
+
+| สิ่งที่ตรวจ | ผลที่ได้ |
+| --- | --- |
+| Connection A | PID `2699954`, ตอบรับสำเร็จ |
+| Connection B | PID `2699956`, รอ `Lock / transactionid` โดยมี A เป็นผู้ถือ lock |
+| ผลของ B หลัง A commit | `application_no_longer_open`, ใช้เวลารอและเรียกฟังก์ชันรวม `11.910785` วินาที |
+| ประกาศ | `matched` |
+| ใบสมัครที่รับ | `accepted` จำนวน 1 ใบ |
+| อีกใบสมัคร | `not_selected` จำนวน 1 ใบ |
+| ใบสมัครค้าง | `pending` จำนวน 0 ใบ |
+
+การหน่วงเวลาใช้เฉพาะคำสั่งทดสอบ ไม่ได้เพิ่มใน RPC ของระบบ ผลนี้ยืนยันกรณีผู้ว่าจ้างรับคนละใบสมัครของงานเดียวกันพร้อมกัน ยังไม่ได้อ้างว่าครอบคลุมทุกคู่คำสั่ง เช่น ตอบรับใบสมัครชนกับการยกเลิกงาน
+
+ล้างข้อมูลสมมติของรอบนี้แล้ว และตรวจว่าประกาศ ผู้ป่วย และบัญชีที่สร้างเพิ่มเหลือศูนย์ การล้างครั้งแรกถูก trigger ห้ามแก้ทักษะของงานที่จับคู่แล้วปฏิเสธและ transaction ย้อนกลับทั้งหมด จากนั้นล้างเฉพาะ fixture ที่ตรวจ ID และชื่อแล้ว โดยพัก trigger เฉพาะ session ระหว่างลบความสัมพันธ์ของประกาศ และคืน `session_replication_role` เป็น `origin` ก่อนล้างผู้ป่วยและบัญชี ไม่มีการแก้ trigger ของระบบ

@@ -15,4 +15,4 @@
 
 `npm --prefix database test`, lint และ production build ผ่าน ติดตั้ง RPC ใน Supabase ด้วย migration `employer_reviews_job_applications` แล้ว และทดสอบ SQL ที่ rollback ข้อมูลสมมติบนฐานจริงผ่าน ผู้ใช้ `authenticated` เรียก public RPC ได้ ส่วน `anon` เรียกไม่ได้
 
-ยังต้องทดสอบหน้าจอแบบสองบัญชีบน Vercel หลัง push/merge และทดสอบการตอบรับพร้อมกันจากคนละ connection ก่อนถือว่า Definition of Done ของ ID 11 ครบ
+งานอยู่ใน [Draft PR #17](https://github.com/Snacklnwza/Project_MatchCare/pull/17) และ Vercel รายงานว่า Preview พร้อมแล้ว แต่ Preview ต้องผ่าน Vercel SSO และตัวควบคุม Chrome ถูกส่วนขยายอื่นบัง จึงยังต้องทดสอบหน้าจอแบบสองบัญชีบน Vercel และการตอบรับพร้อมกันจากคนละ connection ก่อนถือว่า Definition of Done ของ ID 11 ครบ

@@ -7,8 +7,9 @@ create unique index skills_name_normalized_unique on public.skills (lower(btrim(
 create or replace function private.normalize_catalog_item()
 returns trigger language plpgsql security invoker set search_path = '' as $$
 begin
-  new.name := btrim(new.name);
-  new.description := nullif(btrim(new.description), '');
+  -- รวม Tab และขึ้นบรรทัดใหม่ด้วย เพื่อให้ API ตรวจชื่อว่างเหมือนหน้าเว็บ
+  new.name := regexp_replace(new.name, '^\s+|\s+$', '', 'g');
+  new.description := nullif(regexp_replace(new.description, '^\s+|\s+$', '', 'g'), '');
   if new.name is null or length(new.name) not between 1 and 120 then
     raise exception using errcode='23514', message='catalog_name_invalid';
   end if;

@@ -27,6 +27,10 @@ begin
    raise exception 'blank allowed';
   exception when check_violation then null; end;
   begin
+   execute format('insert into public.%I(name) values($1)',kind) using E'\t\n ';
+   raise exception 'whitespace name allowed';
+  exception when check_violation then null; end;
+  begin
    execute format('insert into public.%I(name) values($1)',kind) using case kind when 'skills' then ' qa CATALOG skill ' else ' qa CATALOG condition ' end;
    raise exception 'duplicate allowed';
   exception when unique_violation then null; end;

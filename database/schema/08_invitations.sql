@@ -255,7 +255,8 @@ begin
  return query
  select r.id,j.id,r.caregiver_id,j.title,j.description,j.province,j.district,
    j.starts_at,j.ends_at,j.pay_amount,j.pay_unit,r.status,j.status,
-   concat_ws(' ',p.first_name,p.last_name),cp.bio,cp.experience_years,
+   -- ข้อความอิสระอาจมีเบอร์หรือ LINE ใช้ RPC ข้อมูลติดต่อหลังจับคู่แทน
+   concat_ws(' ',p.first_name,p.last_name),null::text,cp.experience_years,
    coalesce((select jsonb_agg(s.name order by s.name)
      from public.caregiver_skills cs join public.skills s on s.id=cs.skill_id
      where cs.caregiver_id=r.caregiver_id),'[]'::jsonb),r.created_at

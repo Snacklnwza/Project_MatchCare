@@ -88,7 +88,6 @@ export default function EmployerApplications() {
               </div>
               <p><strong>ผู้สมัคร:</strong> {application.caregiver_name}</p>
               <p><strong>ประสบการณ์:</strong> {application.experience_years} ปี</p>
-              {application.bio && <p><strong>แนะนำตัว:</strong> {application.bio}</p>}
               <p><strong>ทักษะ:</strong> {application.caregiver_skills?.length
                 ? application.caregiver_skills.join(', ') : 'ยังไม่ได้ระบุ'}</p>
               <p>งาน: อ.{application.district} จ.{application.province} · {formatJobDate(application.starts_at)} – {formatJobDate(application.ends_at)}</p>

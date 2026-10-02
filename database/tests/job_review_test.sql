@@ -21,6 +21,9 @@ from unnest(array['test.review_employer','test.review_other_employer',
 insert into public.caregiver_profiles(caregiver_id,availability_status,verification_status,verified_by,verified_at)
 select current_setting(k)::uuid,'available','verified',current_setting('test.review_admin')::uuid,now()
 from unnest(array['test.review_caregiver_a','test.review_caregiver_b','test.review_caregiver_c']) k;
+update public.caregiver_profiles set bio='ติดต่อ 0812345678 LINE: private-test'
+where caregiver_id in (current_setting('test.review_caregiver_a')::uuid,
+ current_setting('test.review_caregiver_b')::uuid,current_setting('test.review_caregiver_c')::uuid);
 
 select set_config('request.jwt.claims',json_build_object('sub',current_setting('test.review_employer'),'role','authenticated')::text,true);
 set local role authenticated;
@@ -78,6 +81,9 @@ do $$ begin
  if exists(select 1 from public.list_received_applications() a
    where to_jsonb(a) ?| array['phone','line_id','address_detail','document_type']) then
    raise exception 'private data leaked before matching';
+ end if;
+ if exists(select 1 from public.list_received_applications() a where a.bio is not null) then
+   raise exception 'free text contact leaked in application list';
  end if;
  perform public.respond_to_application(current_setting('test.review_rejected_application')::bigint,false);
  if not exists(select 1 from public.list_received_applications()

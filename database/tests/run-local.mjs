@@ -1,6 +1,7 @@
 import { PGlite } from '@electric-sql/pglite'
 import fs from 'node:fs'
 import { fileURLToPath } from 'node:url'
+import { execFileSync } from 'node:child_process'
 
 process.chdir(fileURLToPath(new URL('../../', import.meta.url)))
 const db = new PGlite()
@@ -42,10 +43,23 @@ async function runFile(folder, file) {
 
 try {
   await db.exec(testEnvironment)
-  const schemas = fs.readdirSync('database/schema')
-    .filter((file) => file.endsWith('.sql'))
-    .sort()
-  for (const file of schemas) await runFile('database/schema', file)
+  const upgradeFrom = process.argv.find(arg => arg.startsWith('--upgrade-from='))?.split('=')[1]
+  if (upgradeFrom) {
+    // จำลองฐานก่อนหน้า แล้วใช้เฉพาะ migration ใหม่ เพื่อตรวจว่าฐานเดิมอัปเกรดได้จริง
+    const git = (...args) => execFileSync('git', args, { encoding: 'utf8' }).trim()
+    const oldSchemas = git('ls-tree', '-r', '--name-only', upgradeFrom, 'database/schema')
+      .split('\n').filter(file => file.endsWith('.sql')).sort()
+    if (!oldSchemas.length) throw new Error('ไม่พบ schema ใน commit ที่ระบุ')
+    for (const file of oldSchemas) await db.exec(git('show', `${upgradeFrom}:${file}`))
+    const oldMigrations = new Set(git('ls-tree', '-r', '--name-only', upgradeFrom, 'supabase/migrations').split('\n'))
+    const migrations = fs.readdirSync('supabase/migrations').filter(file =>
+      file.endsWith('.sql') && !oldMigrations.has(`supabase/migrations/${file}`)).sort()
+    for (const file of migrations) await runFile('supabase/migrations', file)
+  } else {
+    const schemas = fs.readdirSync('database/schema')
+      .filter((file) => file.endsWith('.sql')).sort()
+    for (const file of schemas) await runFile('database/schema', file)
+  }
 
   const tests = [
     'matching_search_test.sql',

@@ -14,6 +14,7 @@ import AdminVerifications from './AdminVerifications'
 import Invitations from './Invitations'
 import Applications from './Applications'
 import EmployerApplications from './EmployerApplications'
+import CaregiverSearch from './CaregiverSearch'
 import '../styles/Workflow.css'
 
 const pageDetails = {
@@ -88,6 +89,8 @@ function RoleDashboard({ profile, onSignOut }) {
     content = <PatientManager />
   } else if (profile.role === 'employer' && activePage === 'jobs') {
     content = <JobManager />
+  } else if (profile.role === 'employer' && activePage === 'caregivers') {
+    content = <CaregiverSearch onNavigate={setActivePage} />
   } else if (profile.role === 'employer' && activePage === 'receivedApplications') {
     content = <EmployerApplications />
   } else if (profile.role === 'caregiver' && activePage === 'jobs') {

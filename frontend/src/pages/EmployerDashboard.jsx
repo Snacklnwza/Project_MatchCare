@@ -133,7 +133,12 @@ function EmployerDashboard({ onNavigate }) {
         ) : jobsError ? (
           <p role="alert">{jobsError}</p>
         ) : jobs.length > 0 ? (
-          <div className="job-list">
+          <div
+            className="job-list dashboard-job-list"
+            role="region"
+            aria-label="รายการประกาศงานที่เปิดรับ"
+            tabIndex={0}
+          >
             {jobs.map((job) => (
               <article className="job-card" key={job.id}>
                 <h3>{job.title}</h3>

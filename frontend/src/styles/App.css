@@ -1347,14 +1347,11 @@
 .employer-dashboard {
   display: grid;
   grid-template-columns: minmax(280px, 1fr) minmax(0, 2fr);
-  gap: 32px;
+  gap: 24px 32px;
   min-height: 500px;
-  padding-top: 0;
   align-content: start;
 }
-.employer-dashboard-heading { grid-column: 1 / -1; margin-bottom: -8px; }
-.employer-dashboard-heading h1 { margin: 4px 0 6px; font-size: clamp(26px, 3vw, 34px); color: #173128; }
-.employer-dashboard-heading > p:last-child { margin: 0; color: #53675c; }
+.employer-dashboard-heading { grid-column: 1 / -1; }
 
 .dashboard-patients,
 .dashboard-jobs {
@@ -1611,18 +1608,11 @@
 }
 
 .patient-manager {
-  width: min(100%, 1160px);
-  margin: 0 auto;
+  min-width: 0;
 }
 .patient-manager-heading {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 24px;
-  margin-bottom: 24px;
+  min-width: 0;
 }
-.patient-manager-heading h1 { margin: 4px 0 8px; font-size: clamp(26px, 3vw, 34px); color: #173128; }
-.patient-manager-heading p:last-child { margin: 0; color: #53675c; }
 .patient-manager .patient-add-button,
 .patient-manager-empty button {
   min-height: 44px;
@@ -1707,7 +1697,7 @@
   border-radius: 12px;
 }
 @media (max-width: 600px) {
-  .patient-manager-heading { align-items: stretch; flex-direction: column; gap: 16px; }
+  .patient-manager-heading { align-items: stretch; flex-direction: column; }
   .patient-manager .patient-add-button { width: 100%; }
 }
 
@@ -1867,10 +1857,6 @@
     width: calc(100vw - 32px);
   }
 
-  .patient-manager {
-    width: calc(100vw - 32px);
-  }
-
   .patient-grid {
     grid-template-columns: 1fr;
   }
@@ -1913,7 +1899,6 @@ button:disabled {
   margin: 32px 0;
   min-width: 0;
 }
-.job-manager { max-width: 1160px; margin-inline: auto; }
 .job-form {
   max-width: 900px;
   margin-inline: auto;

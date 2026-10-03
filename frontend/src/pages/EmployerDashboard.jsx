@@ -75,10 +75,12 @@ function EmployerDashboard({ onNavigate }) {
 
   return (
     <section className="employer-dashboard" aria-label="ภาพรวมผู้ว่าจ้าง">
-      <header className="employer-dashboard-heading">
-        <p className="workflow-eyebrow">พื้นที่ของผู้ว่าจ้าง</p>
-        <h1>ภาพรวมการดูแล</h1>
-        <p>ดูข้อมูลผู้ป่วยและประกาศที่เปิดรับ แล้วไปจัดการงานต่อได้จากรายการด้านล่าง</p>
+      <header className="employer-dashboard-heading page-intro">
+        <div>
+          <p className="workflow-eyebrow">พื้นที่ของผู้ว่าจ้าง</p>
+          <h1>ภาพรวมการดูแล</h1>
+          <p>ดูข้อมูลผู้ป่วยและประกาศที่เปิดรับ แล้วไปจัดการงานต่อได้จากรายการด้านล่าง</p>
+        </div>
       </header>
       <aside className="dashboard-patients">
         <div className="dashboard-section-heading">

@@ -152,37 +152,40 @@ function PatientManager() {
     }
   }
 
-  if (loading) {
-    return <p>กำลังโหลดข้อมูลผู้ป่วย...</p>
-  }
-
-  if (loadError) {
-    return (
-      <div role="alert">
-        <p>ไม่สามารถโหลดข้อมูลผู้ป่วย: {loadError}</p>
-        <button type="button" onClick={() => setRetry((key) => key + 1)}>
-          ลองใหม่
-        </button>
-      </div>
-    )
-  }
-
   function openCreateForm() {
     setFeedback(null)
     setEditingPatient(null)
     setShowForm(true)
   }
 
+  const pageHeader = (
+    <header className="patient-manager-heading page-intro">
+      <div>
+        <p className="workflow-eyebrow">ข้อมูลสำหรับสร้างประกาศ</p>
+        <h1>ผู้ป่วยของฉัน</h1>
+        <p>เพิ่มหรือแก้ไขข้อมูลผู้ป่วย เพื่อใช้ระบุความต้องการในประกาศงาน</p>
+      </div>
+      <button type="button" className="patient-add-button" disabled={loading || Boolean(loadError)} onClick={openCreateForm}>+ เพิ่มผู้ป่วย</button>
+    </header>
+  )
+
+  if (loading || loadError) {
+    return (
+      <section className="patient-manager">
+        {pageHeader}
+        {loading ? <p role="status">กำลังโหลดข้อมูลผู้ป่วย...</p> : (
+          <div role="alert">
+            <p>ไม่สามารถโหลดข้อมูลผู้ป่วย: {loadError}</p>
+            <button type="button" onClick={() => setRetry((key) => key + 1)}>ลองใหม่</button>
+          </div>
+        )}
+      </section>
+    )
+  }
+
   return (
     <section className="patient-manager">
-      <header className="patient-manager-heading">
-        <div>
-          <p className="workflow-eyebrow">ข้อมูลสำหรับสร้างประกาศ</p>
-          <h1>ผู้ป่วยของฉัน</h1>
-          <p>เพิ่มหรือแก้ไขข้อมูลผู้ป่วย เพื่อใช้ระบุความต้องการในประกาศงาน</p>
-        </div>
-        <button type="button" className="patient-add-button" onClick={openCreateForm}>+ เพิ่มผู้ป่วย</button>
-      </header>
+      {pageHeader}
 
       {feedback && (
         <div

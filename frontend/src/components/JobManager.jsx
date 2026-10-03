@@ -168,9 +168,10 @@ function JobManager() {
   )
   return (
     <section className="job-manager" aria-labelledby="jobs-heading">
-      <div className="job-heading">
+      <header className="job-heading page-intro">
         <div>
-          <h2 id="jobs-heading">ประกาศงานของฉัน</h2>
+          <p className="workflow-eyebrow">จัดการงานดูแล</p>
+          <h1 id="jobs-heading">ประกาศงานของฉัน</h1>
           <p>จัดการประกาศและความต้องการดูแลของคุณ</p>
         </div>
         <button
@@ -180,7 +181,7 @@ function JobManager() {
         >
           + สร้างประกาศ
         </button>
-      </div>
+      </header>
       {successMessage && (
         <p className="success-notice" role="status">
           {successMessage}

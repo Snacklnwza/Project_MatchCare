@@ -189,10 +189,11 @@ export default function Invitations({ profile, onNavigate }) {
                   {profile.role === 'caregiver' && request.job_status === 'in_progress' && (
                     <button
                       type="button"
-                      className="secondary-button"
+                      className="workflow-complete-button"
                       disabled={busyId !== null}
                       onClick={() => requestCompletion(request)}
                     >
+                      <span className="workflow-complete-icon" aria-hidden="true">✓</span>
                       {busyId === request.request_id ? 'กำลังส่งคำขอ...' : 'แจ้งจบงาน'}
                     </button>
                   )}

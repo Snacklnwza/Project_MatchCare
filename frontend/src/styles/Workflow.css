@@ -67,12 +67,33 @@
   color: #006948;
   background: white;
 }
+.workflow-page button.workflow-complete-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-color: #d89937;
+  background: #fff6e8;
+  color: #8a4b00;
+  font-weight: 600;
+}
+.workflow-complete-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #b96a06;
+  color: #fff;
+  font-size: 13px;
+  line-height: 1;
+}
 .workflow-page button:disabled {
   opacity: 0.55;
   cursor: not-allowed;
 }
 .workflow-page button:not(:disabled):hover { filter: brightness(.94); }
 .workflow-page button.secondary-button:not(:disabled):hover { background: #eef7f1; filter: none; }
+.workflow-page button.workflow-complete-button:not(:disabled):hover { background: #ffe9c4; filter: none; }
 .workflow-page :focus-visible {
   outline: 3px solid #73bda1;
   outline-offset: 3px;

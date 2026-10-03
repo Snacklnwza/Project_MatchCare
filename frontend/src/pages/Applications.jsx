@@ -95,7 +95,10 @@ export default function Applications({ onNavigate }) {
                 <div className="workflow-actions">
                   <button type="button" disabled={busyId !== null} onClick={() => showContact(application.request_id)}>ดูข้อมูลติดต่อ</button>
                   {application.job_status === 'in_progress' && (
-                    <button type="button" className="secondary-button" disabled={busyId !== null} onClick={() => requestCompletion(application)}>แจ้งจบงาน</button>
+                    <button type="button" className="workflow-complete-button" disabled={busyId !== null} onClick={() => requestCompletion(application)}>
+                      <span className="workflow-complete-icon" aria-hidden="true">✓</span>
+                      แจ้งจบงาน
+                    </button>
                   )}
                 </div>
               )}

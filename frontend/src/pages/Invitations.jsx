@@ -178,24 +178,26 @@ export default function Invitations({ profile, onNavigate }) {
                   </div>
                 )}
               {request.status === 'accepted' && (
-                <button
-                  type="button"
-                  disabled={busyId !== null}
-                  onClick={() => showContact(request.request_id)}
-                >
-                  ดูข้อมูลติดต่อ
-                </button>
-              )}
-              {profile.role === 'caregiver' && request.status === 'accepted' &&
-                request.job_status === 'in_progress' && (
+                <div className="workflow-actions">
                   <button
                     type="button"
                     disabled={busyId !== null}
-                    onClick={() => requestCompletion(request)}
+                    onClick={() => showContact(request.request_id)}
                   >
-                    {busyId === request.request_id ? 'กำลังส่งคำขอ...' : 'แจ้งจบงาน'}
+                    ดูข้อมูลติดต่อ
                   </button>
-                )}
+                  {profile.role === 'caregiver' && request.job_status === 'in_progress' && (
+                    <button
+                      type="button"
+                      className="secondary-button"
+                      disabled={busyId !== null}
+                      onClick={() => requestCompletion(request)}
+                    >
+                      {busyId === request.request_id ? 'กำลังส่งคำขอ...' : 'แจ้งจบงาน'}
+                    </button>
+                  )}
+                </div>
+              )}
               {contact?.requestId === request.request_id && (
                 <MatchContact contact={contact} onHide={() => setContact(null)} />
               )}

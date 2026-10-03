@@ -92,10 +92,12 @@ export default function Applications({ onNavigate }) {
                 <p role="status">ส่งคำขอแล้ว กำลังรอผู้ว่าจ้างยืนยันจบงาน</p>
               )}
               {application.status === 'accepted' && (
-                <button type="button" disabled={busyId !== null} onClick={() => showContact(application.request_id)}>ดูข้อมูลติดต่อ</button>
-              )}
-              {application.status === 'accepted' && application.job_status === 'in_progress' && (
-                <button type="button" disabled={busyId !== null} onClick={() => requestCompletion(application)}>แจ้งจบงาน</button>
+                <div className="workflow-actions">
+                  <button type="button" disabled={busyId !== null} onClick={() => showContact(application.request_id)}>ดูข้อมูลติดต่อ</button>
+                  {application.job_status === 'in_progress' && (
+                    <button type="button" className="secondary-button" disabled={busyId !== null} onClick={() => requestCompletion(application)}>แจ้งจบงาน</button>
+                  )}
+                </div>
               )}
               {contact?.requestId === application.request_id && (
                 <MatchContact contact={contact} onHide={() => setContact(null)} />

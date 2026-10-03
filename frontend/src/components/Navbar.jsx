@@ -20,6 +20,7 @@ const menuItemsByRole = {
   ],
   admin: [
     { id: 'dashboard', label: 'หน้าหลัก' },
+    { id: 'catalog', label: 'คลังกลาง' },
     { id: 'verifications', label: 'ตรวจสอบผู้ดูแล' },
     { id: 'users', label: 'จัดการผู้ใช้' },
   ],

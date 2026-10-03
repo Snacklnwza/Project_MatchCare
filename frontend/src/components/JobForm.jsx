@@ -63,8 +63,7 @@ function JobForm({ job = null, onCancel, onSaved }) {
       setSkillError('')
       const { data, error: queryError } = await supabase
         .from('skills')
-        .select('id, name')
-        .eq('is_active', true)
+        .select('id, name, is_active')
         .order('name')
 
       if (cancelled) return
@@ -281,14 +280,15 @@ function JobForm({ job = null, onCancel, onSaved }) {
           ) : skills.length === 0 ? (
             <p>ไม่มีทักษะให้เลือกในขณะนี้</p>
           ) : (
-            skills.map((skill) => (
+            skills.filter(skill => skill.is_active || selectedSkillIds.includes(skill.id)).map((skill) => (
               <label key={skill.id}>
                 <input
                   type="checkbox"
                   checked={selectedSkillIds.includes(skill.id)}
+                  disabled={!skill.is_active}
                   onChange={() => toggleSkill(skill.id)}
                 />
-                {skill.name}
+                {skill.name}{!skill.is_active && ' (ปิดใช้งานแล้ว · เก็บข้อมูลเดิม)'}
               </label>
             ))
           )}

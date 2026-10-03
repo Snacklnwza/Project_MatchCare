@@ -60,8 +60,7 @@ function CaregiverProfile({ profile }) {
             const [skillsResult, selectedResult] = await Promise.all([
                 supabase
                     .from('skills')
-                    .select('id, name')
-                    .eq('is_active', true)
+                    .select('id, name, is_active')
                     .order('name'),
                 supabase
                     .from('caregiver_skills')
@@ -91,6 +90,7 @@ function CaregiverProfile({ profile }) {
 
     async function handleSubmit(event) {
         event.preventDefault()
+        if (saving || availabilitySaving) return
         setSaveError('')
         setSaveSuccess('')
 
@@ -117,63 +117,20 @@ function CaregiverProfile({ profile }) {
         setSaving(true)
 
         try {
-            const values = {
-                bio: bio.trim(),
-                experience_years: years,
-            }
-
-            const query = caregiverData
-                ? supabase
-                    .from('caregiver_profiles')
-                    .update(values)
-                    .eq('caregiver_id', profile.id)
-                : supabase
-                    .from('caregiver_profiles')
-                    .insert({ caregiver_id: profile.id, ...values })
-
-            const { data, error: saveFailure } = await query
-                .select('bio, experience_years, availability_status, verification_status')
+            // RPC บันทึกโปรไฟล์และทักษะพร้อมกัน ถ้าล้มเหลวจะย้อนกลับทั้งหมด
+            const { data, error: saveFailure } = await supabase
+                .rpc('save_caregiver_profile_with_skills', {
+                    p_bio: bio.trim(),
+                    p_experience_years: years,
+                    p_skill_ids: selectedSkillIds,
+                })
                 .single()
 
             if (saveFailure) throw saveFailure
-
             setCaregiverData(data)
-            const { data: savedSkills, error: readError } = await supabase
-                .from('caregiver_skills')
-                .select('skill_id')
-                .eq('caregiver_id', profile.id)
-
-            if (readError) throw readError
-
-            const savedIds = new Set((savedSkills ?? []).map((item) => item.skill_id))
-            const toAdd = selectedSkillIds.filter((id) => !savedIds.has(id))
-            const toRemove = [...savedIds].filter(
-                (id) => !selectedSkillIds.includes(id),
-            )
-
-            if (toAdd.length > 0) {
-                const { error: addError } = await supabase
-                    .from('caregiver_skills')
-                    .insert(
-                        toAdd.map((skillId) => ({
-                            caregiver_id: profile.id,
-                            skill_id: skillId,
-                        })),
-                    )
-                if (addError) throw addError
-            }
-
-            if (toRemove.length > 0) {
-                const { error: removeError } = await supabase
-                    .from('caregiver_skills')
-                    .delete()
-                    .eq('caregiver_id', profile.id)
-                    .in('skill_id', toRemove)
-                if (removeError) throw removeError
-            }
             setSaveSuccess('บันทึกโปรไฟล์แล้ว')
         } catch {
-            setSaveError('บันทึกข้อมูลไม่ครบ กรุณาลองใหม่')
+            setSaveError('บันทึกไม่สำเร็จ กรุณาลองใหม่')
         } finally {
             setSaving(false)
         }
@@ -263,12 +220,13 @@ function CaregiverProfile({ profile }) {
                         )}
                         {!skillsLoading && !skillsError && (
                             <ul>
-                                {skills.map((skill) => (
+                                {skills.filter(skill => skill.is_active || selectedSkillIds.includes(skill.id)).map((skill) => (
                                     <li key={skill.id}>
                                         <label>
                                             <input
                                                 type="checkbox"
                                                 checked={selectedSkillIds.includes(skill.id)}
+                                                disabled={!skill.is_active}
                                                 onChange={() =>
                                                     setSelectedSkillIds((current) =>
                                                         current.includes(skill.id)
@@ -277,7 +235,7 @@ function CaregiverProfile({ profile }) {
                                                     )
                                                 }
                                             />
-                                            {skill.name}
+                                            {skill.name}{!skill.is_active && ' (ปิดใช้งานแล้ว · เก็บข้อมูลเดิม)'}
                                         </label>
                                     </li>
                                 ))}

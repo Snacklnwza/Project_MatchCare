@@ -402,7 +402,10 @@ begin
   end if;
   if coalesce(cardinality(p_skill_ids), 0) = 0 or exists (
     select 1 from unnest(p_skill_ids) requested(id)
-    left join public.skills s on s.id = requested.id and s.is_active
+    left join public.skills s on s.id = requested.id and (s.is_active or exists (
+      select 1 from public.job_required_skills existing
+      where existing.job_post_id=p_job_id and existing.skill_id=s.id
+    ))
     where s.id is null
   ) then raise exception 'กรุณาเลือกทักษะที่ใช้งานอยู่อย่างน้อย 1 รายการ'; end if;
   update public.job_posts set patient_id = p_patient_id, title = btrim(p_title),
@@ -414,6 +417,8 @@ begin
   -- เพิ่มชุดใหม่ก่อนลบชุดเก่า; ถ้าล้มเหลว transaction จะย้อนกลับทั้งชุด
   insert into public.job_required_skills(job_post_id, skill_id)
   select p_job_id, id from (select distinct unnest(p_skill_ids) id) ids
+  where not exists (select 1 from public.job_required_skills existing
+    where existing.job_post_id=p_job_id and existing.skill_id=ids.id)
   on conflict do nothing;
   delete from public.job_required_skills
   where job_post_id = p_job_id and not (skill_id = any(p_skill_ids));

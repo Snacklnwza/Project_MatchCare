@@ -80,13 +80,11 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
       const [conditionResult, skillResult] = await Promise.all([
         supabase
           .from('conditions')
-          .select('id, name')
-          .eq('is_active', true)
+          .select('id, name, is_active')
           .order('name'),
         supabase
           .from('skills')
-          .select('id, name')
-          .eq('is_active', true)
+          .select('id, name, is_active')
           .order('name'),
       ])
 
@@ -316,16 +314,17 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
         {optionsLoading ? (
           <p>กำลังโหลดสภาวะ...</p>
         ) : (
-          conditions.map((condition) => (
+          conditions.filter(condition => condition.is_active || selectedConditionIds.includes(condition.id)).map((condition) => (
             <label key={condition.id}>
               <input
                 type="checkbox"
                 checked={selectedConditionIds.includes(condition.id)}
+                disabled={!condition.is_active}
                 onChange={() =>
                   toggleSelectedId(condition.id, setSelectedConditionIds)
                 }
               />
-              {condition.name}
+              {condition.name}{!condition.is_active && ' (ปิดใช้งานแล้ว · เก็บข้อมูลเดิม)'}
             </label>
           ))
         )}
@@ -337,14 +336,15 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
         {optionsLoading ? (
           <p>กำลังโหลดทักษะ...</p>
         ) : (
-          skills.map((skill) => (
+          skills.filter(skill => skill.is_active || selectedSkillIds.includes(skill.id)).map((skill) => (
             <label key={skill.id}>
               <input
                 type="checkbox"
                 checked={selectedSkillIds.includes(skill.id)}
+                disabled={!skill.is_active}
                 onChange={() => toggleSelectedId(skill.id, setSelectedSkillIds)}
               />
-              {skill.name}
+              {skill.name}{!skill.is_active && ' (ปิดใช้งานแล้ว · เก็บข้อมูลเดิม)'}
             </label>
           ))
         )}

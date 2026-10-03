@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import AdminDashboard from './AdminDashboard'
+import AdminCatalog from './AdminCatalog'
 import CaregiverDashboard from './CaregiverDashboard'
 import CaregiverProfile from './CaregiverProfile'
 import EmployerDashboard from './EmployerDashboard'
@@ -13,6 +14,7 @@ import AdminVerifications from './AdminVerifications'
 import Invitations from './Invitations'
 import Applications from './Applications'
 import EmployerApplications from './EmployerApplications'
+import CaregiverSearch from './CaregiverSearch'
 import '../styles/Workflow.css'
 
 const pageDetails = {
@@ -87,6 +89,8 @@ function RoleDashboard({ profile, onSignOut }) {
     content = <PatientManager />
   } else if (profile.role === 'employer' && activePage === 'jobs') {
     content = <JobManager />
+  } else if (profile.role === 'employer' && activePage === 'caregivers') {
+    content = <CaregiverSearch onNavigate={setActivePage} />
   } else if (profile.role === 'employer' && activePage === 'receivedApplications') {
     content = <EmployerApplications />
   } else if (profile.role === 'caregiver' && activePage === 'jobs') {
@@ -99,6 +103,8 @@ function RoleDashboard({ profile, onSignOut }) {
     content = <Applications />
   } else if (profile.role === 'admin' && activePage === 'verifications') {
     content = <AdminVerifications />
+  } else if (profile.role === 'admin' && activePage === 'catalog') {
+    content = <AdminCatalog />
   } else if (
     ['employer', 'caregiver'].includes(profile.role) &&
     activePage === 'invitations'

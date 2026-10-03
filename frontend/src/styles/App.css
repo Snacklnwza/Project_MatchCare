@@ -314,12 +314,15 @@
   .landing-navbar-inner {
     width: 100%;
     padding: 12px 16px;
+    gap: 8px;
   }
+  .landing-navbar .navbar-brand { font-size: 16px; gap: 6px; }
   .landing-auth-actions {
     gap: 8px;
   }
   .landing-auth-actions button {
-    padding: 8px 12px;
+    padding: 8px;
+    white-space: nowrap;
   }
   .landing-hero-inner {
     width: 100%;
@@ -902,6 +905,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 24px;
+  position: relative;
 }
 
 .navbar-brand {
@@ -939,10 +943,11 @@
 .role-navigation {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: clamp(12px, 1.6vw, 24px);
 }
 
-.role-navigation button {
+.role-navigation > button,
+.navbar-nav-group > summary {
   padding: 0;
   background: transparent;
   color: #64748b;
@@ -954,16 +959,56 @@
   white-space: nowrap;
   cursor: pointer;
 }
-
-.role-navigation button.active {
+.landing-navbar .navbar-brand { cursor: default; }
+.role-navigation > button.active,
+.navbar-nav-group > summary.active {
   color: #059669;
   border-bottom-color: #059669;
   font-weight: 700;
 }
 
-.role-navigation button:hover {
+.role-navigation > button:hover,
+.navbar-nav-group > summary:hover {
   color: #059669;
 }
+
+.navbar-nav-group { position: relative; }
+.navbar-nav-group > summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+}
+.navbar-nav-group > summary::-webkit-details-marker { display: none; }
+.navbar-nav-group > summary img { width: 10px; height: 7px; }
+.navbar-nav-popover {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: 0;
+  width: 204px;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid #dce7e1;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgb(15 45 32 / 14%);
+}
+.navbar-nav-popover button {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #344b3e;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+.navbar-nav-popover button:hover,
+.navbar-nav-popover button.active { background: #edf7f1; color: #006948; }
+
+.navbar-menu-toggle { display: none; }
 
 .navbar-account,
 .account-toggle {
@@ -985,17 +1030,21 @@
 .navbar-dropdown summary::-webkit-details-marker {
   display: none;
 }
-.notification-toggle {
-  padding: 10px;
-  display: flex;
-}
-.notification-toggle img {
-  width: 16px;
-  height: 20px;
-}
 .account-toggle {
   min-height: 44px;
   color: #171d19;
+}
+.account-avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e4f3ea;
+  color: #006948;
+  font-size: 14px;
+  font-weight: 700;
 }
 .account-toggle img {
   width: 12px;
@@ -1023,11 +1072,6 @@
   border: 1px solid #dee4de;
   border-radius: 8px;
   box-shadow: 0 8px 24px rgb(15 23 42 / 12%);
-}
-.navbar-popover p {
-  margin: 8px 0 0;
-  font-size: 14px;
-  color: #64748b;
 }
 .navbar-popover button {
   width: 100%;
@@ -1078,24 +1122,65 @@
   outline-offset: 4px;
 }
 
-@media (max-width: 1150px) {
+@media (max-width: 1050px) {
   .top-navbar-inner {
-    flex-wrap: wrap;
-    gap: 0 16px;
+    gap: 16px;
+  }
+  .navbar-menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 8px 10px;
+    border: 1px solid #dce7e1;
+    border-radius: 8px;
+    background: #fff;
+    color: #006948;
+    font: inherit;
+    cursor: pointer;
   }
   .role-navigation {
-    order: 3;
-    width: 100%;
-    overflow-x: auto;
-    padding: 12px 0;
+    display: none;
+    position: absolute;
+    top: calc(100% - 2px);
+    left: 0;
+    right: 0;
+    z-index: 25;
+    padding: 12px;
+    background: #fff;
+    border: 1px solid #dce7e1;
+    border-radius: 0 0 14px 14px;
+    box-shadow: 0 14px 24px rgb(15 45 32 / 12%);
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0;
   }
-  .navbar-brand,
-  .navbar-account {
-    min-height: 64px;
+  .role-navigation.is-open { display: flex; }
+  .role-navigation > button,
+  .navbar-nav-group > summary {
+    min-height: 44px;
+    padding: 10px 12px;
+    box-sizing: border-box;
+    border: 0;
+    border-radius: 8px;
+    text-align: left;
   }
-  .app-shell-dashboard {
-    padding-top: 140px;
+  .navbar-nav-popover {
+    position: static;
+    width: auto;
+    border: 0;
+    box-shadow: none;
+    padding: 0 0 4px 16px;
   }
+  .navbar-nav-popover button { padding-left: 16px; }
+  .navbar-brand, .navbar-account { min-height: 64px; }
+  .role-navigation > button.active,
+  .navbar-nav-group > summary.active { background: #edf7f1; }
+  .account-role { display: none; }
+  .account-name { max-width: 110px; }
+  .navbar-account { margin-left: auto; }
+  .navbar-popover { z-index: 26; }
+  .app-shell-dashboard { padding-top: 96px; }
 }
 
 @media (max-width: 600px) {
@@ -1113,18 +1198,12 @@
     display: none;
   }
   .account-name {
-    max-width: 85px;
-    font-size: 14px;
+    display: none;
   }
   .account-toggle {
     gap: 6px;
   }
-  .role-navigation {
-    gap: 20px;
-  }
-  .role-navigation button {
-    font-size: 14px;
-  }
+  .navbar-menu-toggle { font-size: 14px; }
 }
 
 .role-dashboard {
@@ -1134,14 +1213,25 @@
   border-radius: 16px;
 }
 .caregiver-profile {
+  box-sizing: border-box;
   width: 100%;
-  max-width: 760px;
-  margin: 32px auto;
+  margin: 0 0 48px;
 }
+.caregiver-profile-heading { margin-bottom: 28px; }
+.caregiver-profile-heading h1 { margin: 0 0 8px; font-size: clamp(28px, 2.5vw, 32px); color: #173128; }
+.caregiver-profile-heading > p:last-child { margin: 0; color: #53675c; }
+.caregiver-profile-form h2 { margin: 0 0 8px; font-size: 20px; }
+.caregiver-profile-hint { margin: -4px 0 8px; color: #53675c; font-size: 13px; }
 
 .caregiver-profile-form {
   display: grid;
   gap: 12px;
+  box-sizing: border-box;
+  width: min(100%, 760px);
+  padding: 24px;
+  border: 1px solid #dce7e1;
+  border-radius: 16px;
+  background: #fff;
 }
 
 .caregiver-profile-form > label {
@@ -1150,6 +1240,7 @@
 
 .caregiver-profile-form textarea,
 .caregiver-profile-form input[type='number'] {
+  box-sizing: border-box;
   width: 100%;
   min-height: 46px;
   padding: 10px 12px;
@@ -1207,6 +1298,8 @@
 }
 
 .caregiver-profile-availability {
+  box-sizing: border-box;
+  width: min(100%, 760px);
   margin-top: 24px;
   padding: 16px;
   border: 1px solid #dce7e2;
@@ -1261,10 +1354,11 @@
 .employer-dashboard {
   display: grid;
   grid-template-columns: minmax(280px, 1fr) minmax(0, 2fr);
-  gap: 32px;
+  gap: 24px 32px;
   min-height: 500px;
-  padding-top: 0;
+  align-content: start;
 }
+.employer-dashboard-heading { grid-column: 1 / -1; }
 
 .dashboard-patients,
 .dashboard-jobs {
@@ -1276,6 +1370,16 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+}
+.dashboard-section-heading span {
+  margin-bottom: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #e8f4ec;
+  color: #006948;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .employer-dashboard h2 {
@@ -1477,11 +1581,7 @@
   margin: 0;
 }
 
-.app-footer nav {
-  display: flex;
-  gap: 24px;
-  color: #475569;
-}
+.footer-note { color: #5d7067; }
 
 @media (max-width: 900px) {
   .employer-dashboard {
@@ -1494,9 +1594,6 @@
     padding: 24px 0;
   }
 
-  .app-footer nav {
-    flex-wrap: wrap;
-  }
 }
 
 @media (max-width: 600px) {
@@ -1518,8 +1615,34 @@
 }
 
 .patient-manager {
-  width: 100%;
+  min-width: 0;
 }
+.patient-manager-heading {
+  min-width: 0;
+}
+.patient-manager .patient-add-button,
+.patient-manager-empty button {
+  min-height: 44px;
+  padding: 10px 18px;
+  border: 1px solid #006948;
+  border-radius: 8px;
+  background: #006948;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.patient-manager-empty {
+  margin-bottom: 20px;
+  padding: 40px 24px;
+  border: 1px solid #dce7e1;
+  border-radius: 16px;
+  background: #fff;
+  text-align: center;
+}
+.patient-manager-empty strong { font-size: 20px; }
+.patient-manager-empty p { color: #53675c; }
 
 .patient-manager h2 {
   margin: 24px 0 18px;
@@ -1575,11 +1698,14 @@
   gap: 24px;
 }
 
-.patient-card,
-.add-patient-card {
+.patient-card {
   box-sizing: border-box;
   min-height: 188px;
   border-radius: 12px;
+}
+@media (max-width: 600px) {
+  .patient-manager-heading { align-items: stretch; flex-direction: column; }
+  .patient-manager .patient-add-button { width: 100%; }
 }
 
 .patient-card {
@@ -1624,25 +1750,6 @@
   border-color: #059669;
   background: #059669;
   color: #ffffff;
-}
-
-.add-patient-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 24px;
-  border: 2px dashed #bccac0;
-  background: transparent;
-  color: #64748b;
-  font: inherit;
-  cursor: pointer;
-}
-
-.add-patient-card span {
-  font-size: 28px;
-  line-height: 1;
 }
 
 .patient-form-overlay {
@@ -1757,10 +1864,6 @@
     width: calc(100vw - 32px);
   }
 
-  .patient-manager {
-    width: calc(100vw - 32px);
-  }
-
   .patient-grid {
     grid-template-columns: 1fr;
   }
@@ -1805,26 +1908,36 @@ button:disabled {
 }
 .job-form {
   max-width: 900px;
-  margin-inline: auto;
-  padding: 32px;
-  border: 1px solid #dce7e2;
-  border-radius: 20px;
-  background: white;
+  box-sizing: border-box;
+  margin: 0 0 48px;
 }
-.job-form h2,
+.job-form h1 {
+  margin: 0 0 8px;
+  color: #173128;
+  font-size: clamp(28px, 2.5vw, 32px);
+  line-height: 1.25;
+}
 .job-heading h2,
 .job-heading h3 {
   margin: 0;
 }
-.job-form > p,
 .job-heading p {
   color: #64748b;
+}
+.job-form > p:first-of-type {
+  max-width: 68ch;
+  margin: 0 0 24px;
+  color: #53675c;
+  font-size: 15px;
+  line-height: 1.6;
 }
 .job-form-fields {
   display: grid;
   gap: 12px;
-  border: 0;
-  padding: 0;
+  padding: 32px;
+  border: 1px solid #dce7e2;
+  border-radius: 20px;
+  background: #fff;
   min-width: 0;
 }
 .job-form-fields > label {
@@ -1955,7 +2068,7 @@ button:disabled {
   border-color: #a61b1b !important;
 }
 @media (max-width: 600px) {
-  .job-form {
+  .job-form-fields {
     padding: 20px 16px;
   }
   .job-card {

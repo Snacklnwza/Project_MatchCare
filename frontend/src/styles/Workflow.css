@@ -1,18 +1,16 @@
 .workflow-page {
-  width: min(calc(100% - 64px), 1480px);
-  margin: 32px auto 48px;
+  width: 100%;
+  margin: 0 0 48px;
 }
 .workflow-page header {
   margin-bottom: 24px;
 }
 .workflow-page h1 {
-  margin: 6px 0 12px;
+  margin: 0 0 8px;
   font-size: clamp(24px, 3vw, 32px);
+  line-height: 1.25;
 }
-.workflow-eyebrow {
-  color: #00704b;
-  font-size: 13px;
-}
+.workflow-page header > p:last-child { color: #53675c; margin: 0; max-width: 68ch; }
 .workflow-columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -26,7 +24,11 @@
   border-radius: 16px;
   min-width: 0;
   overflow-wrap: anywhere;
+  box-shadow: 0 6px 24px rgb(25 70 46 / 4%);
 }
+.workflow-card > p { line-height: 1.65; }
+.workflow-empty { padding: 40px 28px; text-align: center; }
+.workflow-empty p { color: #53675c; margin-bottom: 22px; }
 .workflow-card h2 {
   font-size: 20px;
   margin-top: 0;
@@ -65,10 +67,33 @@
   color: #006948;
   background: white;
 }
+.workflow-page button.workflow-complete-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-color: #d89937;
+  background: #fff6e8;
+  color: #8a4b00;
+  font-weight: 600;
+}
+.workflow-complete-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #b96a06;
+  color: #fff;
+  font-size: 13px;
+  line-height: 1;
+}
 .workflow-page button:disabled {
   opacity: 0.55;
   cursor: not-allowed;
 }
+.workflow-page button:not(:disabled):hover { filter: brightness(.94); }
+.workflow-page button.secondary-button:not(:disabled):hover { background: #eef7f1; filter: none; }
+.workflow-page button.workflow-complete-button:not(:disabled):hover { background: #ffe9c4; filter: none; }
 .workflow-page :focus-visible {
   outline: 3px solid #73bda1;
   outline-offset: 3px;
@@ -105,7 +130,13 @@
   color: #286348;
   border-radius: 20px;
   font-size: 13px;
+  font-weight: 600;
 }
+.workflow-badge[data-status='pending'] { background: #fff6df; color: #865700; }
+.workflow-badge[data-status='accepted'] { background: #e5f5ec; color: #006948; }
+.workflow-badge[data-status='rejected'],
+.workflow-badge[data-status='not_selected'],
+.workflow-badge[data-status='cancelled'] { background: #f1f3f1; color: #5c6b61; }
 .workflow-actions,
 .workflow-heading {
   display: flex;
@@ -120,6 +151,7 @@
 .workflow-heading h2 {
   margin: 0;
 }
+.workflow-heading .workflow-badge { flex-shrink: 0; }
 .workflow-stack {
   display: grid;
   gap: 20px;
@@ -132,16 +164,55 @@
 .workflow-page [role='alert'] {
   color: #a12c2c;
 }
+.admin-home-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.admin-home-grid .workflow-card { display: flex; flex-direction: column; align-items: flex-start; min-height: 220px; }
+.admin-home-grid .workflow-card p { color: #53675c; margin-top: 0; }
+.admin-home-grid .workflow-card button { margin-top: auto; }
 @media (max-width: 800px) {
-  .workflow-page {
-    width: calc(100% - 32px);
-  }
   .workflow-columns {
     grid-template-columns: 1fr;
   }
   .workflow-card {
     padding: 20px;
   }
+  .admin-home-grid { grid-template-columns: 1fr; }
+}
+
+/* หน้าในระบบเริ่มที่ขอบซ้ายเดียวกับหน้าหลักเดิม */
+.app-shell-dashboard :is(.employer-dashboard, .patient-manager, .job-manager, .workflow-page) {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  margin: 0 0 48px;
+}
+.app-shell-dashboard :is(.page-intro, .workflow-page > header) {
+  margin: 0 0 24px;
+}
+.app-shell-dashboard .page-intro {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+}
+.app-shell-dashboard :is(.page-intro, .workflow-page > header) h1 {
+  margin: 0 0 8px;
+  color: #173128;
+  font-size: clamp(28px, 2.5vw, 32px);
+  line-height: 1.25;
+}
+.app-shell-dashboard :is(.page-intro, .workflow-page > header) p:last-child {
+  max-width: 68ch;
+  margin: 0;
+  color: #53675c;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.app-shell-dashboard .employer-dashboard .page-intro {
+  margin-bottom: 0;
+}
+.app-shell-dashboard .job-manager > .job-filter {
+  margin-top: 0;
 }
 @media (max-width: 480px) {
   .workflow-list li {

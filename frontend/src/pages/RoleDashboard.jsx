@@ -17,47 +17,6 @@ import EmployerApplications from './EmployerApplications'
 import CaregiverSearch from './CaregiverSearch'
 import '../styles/Workflow.css'
 
-const pageDetails = {
-  employer: {
-    history: {
-      title: 'ประวัติการจ้างงาน',
-      emptyMessage: 'ระบบประวัติการจ้างงานยังไม่เปิดใช้งาน',
-    },
-    patients: {
-      title: 'ข้อมูลผู้ป่วย',
-      emptyMessage: 'ยังไม่มีข้อมูลผู้ป่วย',
-    },
-    jobs: {
-      title: 'ประกาศงาน',
-      emptyMessage: 'ยังไม่มีประกาศงาน',
-    },
-    caregivers: {
-      title: 'ค้นหาผู้ดูแล',
-      emptyMessage: 'ยังไม่มีข้อมูลผู้ดูแล',
-    },
-  },
-  caregiver: {
-    profile: {
-      title: 'โปรไฟล์ผู้ดูแล',
-      emptyMessage: 'ยังไม่มีข้อมูลโปรไฟล์ผู้ดูแล',
-    },
-    applications: {
-      title: 'งานที่สมัคร',
-      emptyMessage: 'ยังไม่มีรายการสมัครงาน',
-    },
-  },
-  admin: {
-    verifications: {
-      title: 'ตรวจสอบผู้ดูแล',
-      emptyMessage: 'ไม่มีผู้ดูแลที่รอการตรวจสอบ',
-    },
-    users: {
-      title: 'จัดการผู้ใช้',
-      emptyMessage: 'ยังไม่มีข้อมูลผู้ใช้',
-    },
-  },
-}
-
 function RoleDashboard({ profile, onSignOut }) {
   const [activePage, setActivePage] = useState('dashboard')
 
@@ -70,29 +29,21 @@ function RoleDashboard({ profile, onSignOut }) {
       <CaregiverDashboard profile={profile} onNavigate={setActivePage} />
     )
   } else if (profile.role === 'admin') {
-    dashboard = <AdminDashboard profile={profile} />
+    dashboard = <AdminDashboard profile={profile} onNavigate={setActivePage} />
   } else {
     return <p role="alert">ไม่พบบทบาทผู้ใช้งาน</p>
   }
 
-  const selectedPage = pageDetails[profile.role]?.[activePage]
-  let content = (
-    <section className="role-dashboard">
-      <h2>{selectedPage?.title}</h2>
-      <p>{selectedPage?.emptyMessage}</p>
-    </section>
-  )
+  let content = dashboard
 
-  if (activePage === 'dashboard') {
-    content = dashboard
-  } else if (profile.role === 'employer' && activePage === 'patients') {
+  if (profile.role === 'employer' && activePage === 'patients') {
     content = <PatientManager />
   } else if (profile.role === 'employer' && activePage === 'jobs') {
     content = <JobManager />
   } else if (profile.role === 'employer' && activePage === 'caregivers') {
     content = <CaregiverSearch onNavigate={setActivePage} />
   } else if (profile.role === 'employer' && activePage === 'receivedApplications') {
-    content = <EmployerApplications />
+    content = <EmployerApplications onNavigate={setActivePage} />
   } else if (profile.role === 'caregiver' && activePage === 'jobs') {
     content = <JobSearch />
   } else if (profile.role === 'caregiver' && activePage === 'profile') {
@@ -100,7 +51,7 @@ function RoleDashboard({ profile, onSignOut }) {
   } else if (profile.role === 'caregiver' && activePage === 'documents') {
     content = <CaregiverDocuments profile={profile} />
   } else if (profile.role === 'caregiver' && activePage === 'applications') {
-    content = <Applications />
+    content = <Applications onNavigate={setActivePage} />
   } else if (profile.role === 'admin' && activePage === 'verifications') {
     content = <AdminVerifications />
   } else if (profile.role === 'admin' && activePage === 'catalog') {
@@ -109,7 +60,7 @@ function RoleDashboard({ profile, onSignOut }) {
     ['employer', 'caregiver'].includes(profile.role) &&
     activePage === 'invitations'
   ) {
-    content = <Invitations profile={profile} />
+    content = <Invitations profile={profile} onNavigate={setActivePage} />
   }
 
   return (

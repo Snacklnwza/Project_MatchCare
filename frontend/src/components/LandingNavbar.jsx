@@ -4,16 +4,12 @@ function LandingNavbar({ onLogin, onRegister }) {
   return (
     <header className="landing-navbar">
       <div className="landing-navbar-inner">
-        <button
-          className="navbar-brand"
-          type="button"
-          aria-label="MatchCare หน้าหลัก"
-        >
+        <div className="navbar-brand" aria-label="MatchCare">
           <span className="navbar-logo">
             <img src={logo} alt="" />
           </span>
           <span>MatchCare</span>
-        </button>
+        </div>
 
         <nav className="landing-auth-actions" aria-label="บัญชีผู้ใช้">
           <button

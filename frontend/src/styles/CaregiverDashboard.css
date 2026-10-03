@@ -1,6 +1,6 @@
 .care-home {
-  width: min(calc(100% - 64px), 1480px);
-  margin: 36px auto 56px;
+  width: 100%;
+  margin: 0 0 56px;
   color: #243b33;
 }
 
@@ -17,8 +17,8 @@
 }
 
 .care-home-heading h1 {
-  font-size: clamp(24px, 2.5vw, 32px);
-  margin: 4px 0 8px;
+  font-size: clamp(28px, 2.5vw, 32px);
+  margin: 0 0 8px;
   letter-spacing: -0.6px;
 }
 
@@ -27,11 +27,6 @@
   color: #63766d;
 }
 
-.care-home .care-eyebrow {
-  color: #007453;
-  font-size: 13px;
-  font-weight: 600;
-}
 
 .care-home button {
   font: inherit;
@@ -73,7 +68,7 @@
   font-size: clamp(23px, 2.3vw, 31px);
   line-height: 1.5;
   letter-spacing: -0.5px;
-  margin: 10px 0;
+  margin: 0 0 12px;
   color: #174d37;
 }
 
@@ -275,11 +270,6 @@
 }
 
 @media (max-width: 800px) {
-  .care-home {
-    width: calc(100% - 32px);
-    margin-top: 24px;
-  }
-
   .care-columns {
     grid-template-columns: 1fr;
     gap: 16px;

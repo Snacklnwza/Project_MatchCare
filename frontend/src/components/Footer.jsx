@@ -11,11 +11,7 @@ function Footer() {
           <strong>MatchCare</strong>
         </div>
         <p>© 2026 MatchCare Healthcare Matching. สงวนลิขสิทธิ์</p>
-        <nav aria-label="ข้อมูลเว็บไซต์">
-          <span>นโยบายความเป็นส่วนตัว</span>
-          <span>ข้อตกลงการใช้งาน</span>
-          <span>ติดต่อเรา</span>
-        </nav>
+        <span className="footer-note">พื้นที่จับคู่การดูแลอย่างใส่ใจ</span>
       </div>
     </footer>
   )

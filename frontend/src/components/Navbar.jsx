@@ -1,5 +1,5 @@
+import { useState } from 'react'
 import logo from '../assets/navbar/logo.png'
-import bell from '../assets/navbar/bell.svg'
 import chevron from '../assets/navbar/chevron.svg'
 
 const menuItemsByRole = {
@@ -7,10 +7,13 @@ const menuItemsByRole = {
     { id: 'dashboard', label: 'หน้าหลัก' },
     { id: 'patients', label: 'ผู้ป่วยของฉัน' },
     { id: 'jobs', label: 'ประกาศงาน' },
-    { id: 'receivedApplications', label: 'ใบสมัครที่ได้รับ' },
     { id: 'caregivers', label: 'ค้นหาผู้ดูแล' },
-    { id: 'invitations', label: 'คำเชิญที่ส่ง' },
-    { id: 'history', label: 'ประวัติการจ้างงาน' },
+    {
+      id: 'requests', label: 'คำขอ', children: [
+        { id: 'receivedApplications', label: 'ใบสมัครที่ได้รับ' },
+        { id: 'invitations', label: 'คำเชิญที่ส่ง' },
+      ],
+    },
   ],
   caregiver: [
     { id: 'dashboard', label: 'หน้าหลัก' },
@@ -22,11 +25,11 @@ const menuItemsByRole = {
     { id: 'dashboard', label: 'หน้าหลัก' },
     { id: 'catalog', label: 'คลังกลาง' },
     { id: 'verifications', label: 'ตรวจสอบผู้ดูแล' },
-    { id: 'users', label: 'จัดการผู้ใช้' },
   ],
 }
 
 function Navbar({ profile, activePage, onSelect, onSignOut }) {
+  const [menuOpen, setMenuOpen] = useState(false)
   const role = profile.role
   const menuItems = menuItemsByRole[role] ?? []
   const roleLabel = {
@@ -35,13 +38,18 @@ function Navbar({ profile, activePage, onSelect, onSignOut }) {
     admin: 'ผู้ดูแลระบบ',
   }[role]
 
+  function selectPage(page) {
+    setMenuOpen(false)
+    onSelect(page)
+  }
+
   return (
     <header className="top-navbar">
       <div className="top-navbar-inner">
         <button
           type="button"
           className="navbar-brand"
-          onClick={() => onSelect('dashboard')}
+          onClick={() => selectPage('dashboard')}
           aria-label="MatchCare หน้าหลัก"
         >
           <span className="navbar-logo">
@@ -49,31 +57,43 @@ function Navbar({ profile, activePage, onSelect, onSignOut }) {
           </span>
           <span>MatchCare</span>
         </button>
-        <nav className="role-navigation" aria-label="เมนูหลัก">
-          {menuItems.map((item) => (
-            <button
-              key={item.id}
-              type="button"
+        <nav id="role-navigation" className={`role-navigation${menuOpen ? ' is-open' : ''}`} aria-label="เมนูหลัก">
+          {menuItems.map((item) => item.children ? (
+            <details className="navbar-nav-group" key={`${item.id}-${activePage}`}>
+              <summary className={item.children.some((child) => child.id === activePage) ? 'active' : ''}>
+                {item.label}<img src={chevron} alt="" />
+              </summary>
+              <div className="navbar-nav-popover">
+                {item.children.map((child) => (
+                  <button key={child.id} type="button"
+                    className={activePage === child.id ? 'active' : ''}
+                    aria-current={activePage === child.id ? 'page' : undefined}
+                    onClick={(event) => {
+                      event.currentTarget.closest('details').open = false
+                      selectPage(child.id)
+                    }}>
+                    {child.label}
+                  </button>
+                ))}
+              </div>
+            </details>
+          ) : (
+            <button key={item.id} type="button"
               className={activePage === item.id ? 'active' : ''}
               aria-current={activePage === item.id ? 'page' : undefined}
-              onClick={() => onSelect(item.id)}
-            >
+              onClick={() => selectPage(item.id)}>
               {item.label}
             </button>
           ))}
         </nav>
         <div className="navbar-account">
+          <button className="navbar-menu-toggle" type="button" aria-controls="role-navigation"
+            aria-expanded={menuOpen} onClick={() => setMenuOpen((open) => !open)}>
+            {menuOpen ? 'ปิดเมนู' : 'เมนู'} <span aria-hidden="true">{menuOpen ? '×' : '☰'}</span>
+          </button>
           <details className="navbar-dropdown">
-            <summary className="notification-toggle" aria-label="การแจ้งเตือน">
-              <img src={bell} alt="" />
-            </summary>
-            <div className="navbar-popover">
-              <strong>การแจ้งเตือน</strong>
-              <p>ระบบแจ้งเตือนยังไม่เปิดใช้งาน</p>
-            </div>
-          </details>
-          <details className="navbar-dropdown">
-            <summary className="account-toggle">
+            <summary className="account-toggle" aria-label={`บัญชีคุณ${profile.first_name || 'ผู้ใช้งาน'} (${roleLabel})`}>
+              <span className="account-avatar" aria-hidden="true">{profile.first_name?.charAt(0) || 'ผ'}</span>
               <span className="account-name">
                 คุณ{profile.first_name || 'ผู้ใช้งาน'}
               </span>
@@ -87,7 +107,7 @@ function Navbar({ profile, activePage, onSelect, onSignOut }) {
                   aria-current={activePage === 'profile' ? 'page' : undefined}
                   onClick={(event) => {
                     event.currentTarget.closest('details').open = false
-                    onSelect('profile')
+                    selectPage('profile')
                   }}
                 >
                   <svg
@@ -110,7 +130,7 @@ function Navbar({ profile, activePage, onSelect, onSignOut }) {
                   aria-current={activePage === 'documents' ? 'page' : undefined}
                   onClick={(event) => {
                     event.currentTarget.closest('details').open = false
-                    onSelect('documents')
+                    selectPage('documents')
                   }}
                 >
                   เอกสารยืนยันตัวตน

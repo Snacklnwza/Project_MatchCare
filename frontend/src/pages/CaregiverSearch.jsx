@@ -52,9 +52,8 @@ export default function CaregiverSearch({ onNavigate }) {
   }
 
   return (
-    <main className="caregiver-search" aria-labelledby="caregiver-search-title">
+    <section className="caregiver-search" aria-labelledby="caregiver-search-title">
       <header>
-        <p className="caregiver-search-eyebrow">สำหรับผู้ว่าจ้าง</p>
         <h1 id="caregiver-search-title">ค้นหาผู้ดูแล</h1>
         <p>ดูผู้ดูแลที่ยืนยันตัวตนและพร้อมรับงาน แล้วเลือกคนที่เหมาะกับงานของคุณ</p>
       </header>
@@ -148,6 +147,6 @@ export default function CaregiverSearch({ onNavigate }) {
           </nav>
         </>}
       </section>
-    </main>
+    </section>
   )
 }

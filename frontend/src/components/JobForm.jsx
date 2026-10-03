@@ -163,7 +163,7 @@ function JobForm({ job = null, onCancel, onSaved }) {
   }
   return (
     <form className="job-form" onSubmit={handleSubmit}>
-      <h2>{job ? 'แก้ไขประกาศงาน' : 'สร้างประกาศงาน'}</h2>
+      <h1>{job ? 'แก้ไขประกาศงาน' : 'สร้างประกาศงาน'}</h1>
       <p>เลือกผู้ป่วย ระบุการดูแล วันเวลา และค่าตอบแทนให้ครบถ้วน</p>
       {(patientError || skillError) && (
         <button type="button" onClick={() => setRetryOptions((key) => key + 1)}>

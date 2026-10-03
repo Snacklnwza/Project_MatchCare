@@ -1,7 +1,7 @@
 .job-search {
   box-sizing: border-box;
-  width: min(calc(100% - 64px), 1200px);
-  margin: 32px auto 64px;
+  width: 100%;
+  margin: 0 0 64px;
   color: #173128;
 }
 
@@ -9,16 +9,9 @@
   margin-bottom: 24px;
 }
 
-.job-search-eyebrow {
-  margin: 0 0 6px;
-  color: #00704b;
-  font-size: 14px;
-  font-weight: 600;
-}
-
 .job-search-heading h1 {
   margin: 0 0 8px;
-  font-size: clamp(26px, 3vw, 34px);
+  font-size: clamp(28px, 2.5vw, 32px);
 }
 
 .job-search-heading p:last-child {
@@ -38,6 +31,12 @@
   padding: 24px;
   margin-bottom: 28px;
 }
+.job-search-filters, .job-search-card { box-shadow: 0 6px 24px rgb(25 70 46 / 4%); }
+.job-search-advanced { margin-top: 18px; border-top: 1px solid #e3ebe6; padding-top: 12px; }
+.job-search-advanced summary { width: fit-content; min-height: 44px; display: flex; align-items: center; color: #006948; font-weight: 600; cursor: pointer; }
+.job-search-advanced summary::after { content: '⌄'; margin-left: 8px; font-size: 20px; line-height: 1; }
+.job-search-advanced[open] summary::after { transform: rotate(180deg); }
+.job-search-advanced .job-search-filter-grid { margin-top: 12px; }
 
 .job-search-filter-heading,
 .job-search-results-heading {
@@ -245,10 +244,6 @@
 }
 
 @media (max-width: 600px) {
-  .job-search {
-    width: calc(100% - 32px);
-  }
-
   .job-search-filter-grid {
     grid-template-columns: 1fr;
   }

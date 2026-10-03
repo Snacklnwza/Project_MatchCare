@@ -9,7 +9,7 @@ import {
 } from '../lib/workflow'
 import { formatJobDate, jobStatusLabels, payUnitLabels } from '../lib/jobs'
 
-export default function Invitations({ profile }) {
+export default function Invitations({ profile, onNavigate }) {
   const { data, loading, error, reload } = useRemoteList(loadInvitations)
   const [busyId, setBusyId] = useState(null)
   const [actionError, setActionError] = useState('')
@@ -93,7 +93,6 @@ export default function Invitations({ profile }) {
   return (
     <section className="workflow-page">
       <header>
-        <p className="workflow-eyebrow">การจับคู่งาน</p>
         <h1>
           {profile.role === 'caregiver' ? 'คำเชิญและงานของฉัน' : 'คำเชิญที่ส่ง'}
         </h1>
@@ -111,13 +110,16 @@ export default function Invitations({ profile }) {
         </div>
       )}
       {!loading && !error && !data.length && (
-        <div className="workflow-card">
+        <div className="workflow-card workflow-empty">
           <h2>ยังไม่มีคำเชิญ</h2>
           <p>
             {profile.role === 'caregiver'
               ? 'เมื่อผู้ว่าจ้างส่งคำเชิญมา คุณจะเห็นรายละเอียดและตอบรับได้ที่นี่'
               : 'ไปที่ประกาศงาน แล้วเลือกหาผู้ดูแลเพื่อส่งคำเชิญ'}
           </p>
+          <button type="button" onClick={() => onNavigate('jobs')}>
+            {profile.role === 'caregiver' ? 'ไปค้นหางาน' : 'ไปที่ประกาศงาน'}
+          </button>
         </div>
       )}
       {!loading && !error && (
@@ -126,7 +128,7 @@ export default function Invitations({ profile }) {
             <article className="workflow-card" key={request.request_id}>
               <div className="workflow-heading">
                 <h2>{request.title}</h2>
-                <span className="workflow-badge">
+                <span className="workflow-badge" data-status={request.status}>
                   {invitationLabels[request.status]}
                 </span>
               </div>
@@ -176,24 +178,27 @@ export default function Invitations({ profile }) {
                   </div>
                 )}
               {request.status === 'accepted' && (
-                <button
-                  type="button"
-                  disabled={busyId !== null}
-                  onClick={() => showContact(request.request_id)}
-                >
-                  ดูข้อมูลติดต่อ
-                </button>
-              )}
-              {profile.role === 'caregiver' && request.status === 'accepted' &&
-                request.job_status === 'in_progress' && (
+                <div className="workflow-actions">
                   <button
                     type="button"
                     disabled={busyId !== null}
-                    onClick={() => requestCompletion(request)}
+                    onClick={() => showContact(request.request_id)}
                   >
-                    {busyId === request.request_id ? 'กำลังส่งคำขอ...' : 'แจ้งจบงาน'}
+                    ดูข้อมูลติดต่อ
                   </button>
-                )}
+                  {profile.role === 'caregiver' && request.job_status === 'in_progress' && (
+                    <button
+                      type="button"
+                      className="workflow-complete-button"
+                      disabled={busyId !== null}
+                      onClick={() => requestCompletion(request)}
+                    >
+                      <span className="workflow-complete-icon" aria-hidden="true">✓</span>
+                      {busyId === request.request_id ? 'กำลังส่งคำขอ...' : 'แจ้งจบงาน'}
+                    </button>
+                  )}
+                </div>
+              )}
               {contact?.requestId === request.request_id && (
                 <MatchContact contact={contact} onHide={() => setContact(null)} />
               )}

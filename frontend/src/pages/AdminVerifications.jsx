@@ -53,7 +53,6 @@ export default function AdminVerifications() {
   return (
     <section className="workflow-page">
       <header>
-        <p className="workflow-eyebrow">พื้นที่แอดมิน</p>
         <h1>ตรวจสอบผู้ดูแล</h1>
         <p>ตรวจเอกสารยืนยันตัวตนก่อนอนุมัติให้ผู้ดูแลปรากฏในผลค้นหา</p>
       </header>
@@ -69,7 +68,7 @@ export default function AdminVerifications() {
         </div>
       )}
       {!loading && !error && !data.length && (
-        <div className="workflow-card">
+        <div className="workflow-card workflow-empty">
           <h2>ตรวจสอบครบแล้ว</h2>
           <p>ขณะนี้ไม่มีผู้ดูแลรอตรวจสอบ</p>
         </div>

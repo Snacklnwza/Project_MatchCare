@@ -167,9 +167,22 @@ function PatientManager() {
     )
   }
 
+  function openCreateForm() {
+    setFeedback(null)
+    setEditingPatient(null)
+    setShowForm(true)
+  }
+
   return (
     <section className="patient-manager">
-      <h2>รายชื่อผู้ป่วยในการดูแล</h2>
+      <header className="patient-manager-heading">
+        <div>
+          <p className="workflow-eyebrow">ข้อมูลสำหรับสร้างประกาศ</p>
+          <h1>ผู้ป่วยของฉัน</h1>
+          <p>เพิ่มหรือแก้ไขข้อมูลผู้ป่วย เพื่อใช้ระบุความต้องการในประกาศงาน</p>
+        </div>
+        <button type="button" className="patient-add-button" onClick={openCreateForm}>+ เพิ่มผู้ป่วย</button>
+      </header>
 
       {feedback && (
         <div
@@ -187,6 +200,13 @@ function PatientManager() {
         </div>
       )}
 
+      {patients.length === 0 && (
+        <div className="patient-manager-empty">
+          <strong>ยังไม่มีผู้ป่วยในรายการ</strong>
+          <p>เริ่มเพิ่มผู้ป่วยหนึ่งคนก่อนสร้างประกาศงาน</p>
+          <button type="button" onClick={openCreateForm}>เพิ่มผู้ป่วยคนแรก</button>
+        </div>
+      )}
       <div className="patient-grid">
         {patients.map((patient) => (
           <article className="patient-card" key={patient.id}>
@@ -227,18 +247,6 @@ function PatientManager() {
           </article>
         ))}
 
-        <button
-          className="add-patient-card"
-          type="button"
-          onClick={() => {
-            setFeedback(null)
-            setEditingPatient(null)
-            setShowForm(true)
-          }}
-        >
-          <span aria-hidden="true">＋</span>
-          เพิ่มผู้ป่วยของคุณ
-        </button>
       </div>
 
       {showForm && (

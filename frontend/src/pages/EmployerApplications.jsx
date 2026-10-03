@@ -6,7 +6,7 @@ import {
   applicationLabels, callWorkflow, loadReceivedApplications, workflowError,
 } from '../lib/workflow'
 
-export default function EmployerApplications() {
+export default function EmployerApplications({ onNavigate }) {
   const { data, loading, error, reload } = useRemoteList(loadReceivedApplications)
   const [busyId, setBusyId] = useState(null)
   const [actionError, setActionError] = useState('')
@@ -62,7 +62,7 @@ export default function EmployerApplications() {
   }
 
   return (
-    <main className="workflow-page">
+    <section className="workflow-page">
       <header>
         <p className="workflow-eyebrow">สำหรับผู้ว่าจ้าง</p>
         <h1>ใบสมัครที่ได้รับ</h1>
@@ -73,9 +73,10 @@ export default function EmployerApplications() {
       {loading && <p role="status">กำลังโหลดใบสมัคร...</p>}
       {error && <div role="alert"><p>{error}</p><button type="button" onClick={reload}>ลองอีกครั้ง</button></div>}
       {!loading && !error && data.length === 0 && (
-        <section className="workflow-card">
+        <section className="workflow-card workflow-empty">
           <h2>ยังไม่มีใบสมัคร</h2>
           <p>เมื่อผู้ดูแลสมัครประกาศของคุณ ใบสมัครจะปรากฏที่นี่</p>
+          <button type="button" onClick={() => onNavigate('jobs')}>ไปที่ประกาศงาน</button>
         </section>
       )}
       {!loading && !error && data.length > 0 && (
@@ -84,7 +85,7 @@ export default function EmployerApplications() {
             <article className="workflow-card" key={application.request_id}>
               <div className="workflow-heading">
                 <h2>{application.title}</h2>
-                <span className="workflow-badge">{applicationLabels[application.status] ?? application.status}</span>
+                <span className="workflow-badge" data-status={application.status}>{applicationLabels[application.status] ?? application.status}</span>
               </div>
               <p><strong>ผู้สมัคร:</strong> {application.caregiver_name}</p>
               <p><strong>ประสบการณ์:</strong> {application.experience_years} ปี</p>
@@ -109,6 +110,6 @@ export default function EmployerApplications() {
           ))}
         </div>
       )}
-    </main>
+    </section>
   )
 }

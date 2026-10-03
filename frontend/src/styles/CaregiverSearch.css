@@ -3,7 +3,7 @@
 .caregiver-search-eyebrow { margin: 0 0 6px; color: #00704b; font-size: 14px; font-weight: 600; }
 .caregiver-search h1 { margin: 0 0 8px; font-size: clamp(26px, 3vw, 34px); }
 .caregiver-search > header > p:last-child { margin: 0; color: #5d7067; }
-.caregiver-search-panel, .caregiver-search-card { background: #fff; border: 1px solid #dce9e1; border-radius: 16px; }
+.caregiver-search-panel, .caregiver-search-card { background: #fff; border: 1px solid #dce9e1; border-radius: 16px; box-shadow: 0 6px 24px rgb(25 70 46 / 4%); }
 .caregiver-search-panel { padding: 24px; margin-bottom: 28px; }
 .caregiver-search-heading, .caregiver-search-card-head, .caregiver-search-pages { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .caregiver-search-heading { margin-bottom: 18px; }

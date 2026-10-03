@@ -176,8 +176,11 @@ function CaregiverProfile({ profile }) {
     return (
 
         <section className="role-dashboard caregiver-profile">
-            <h2>โปรไฟล์ผู้ดูแล</h2>
-            <p>คุณ{profile.first_name} {profile.last_name}</p>
+            <header className="caregiver-profile-heading">
+                <p className="workflow-eyebrow">สำหรับผู้ดูแล</p>
+                <h1>โปรไฟล์ผู้ดูแล</h1>
+                <p>คุณ{profile.first_name} {profile.last_name} · แนะนำตัวและเลือกทักษะเพื่อให้ผู้ว่าจ้างพบคุณ</p>
+            </header>
             {loading && <p>กำลังโหลดข้อมูลผู้ดูแล...</p>}
             {error && (
                 <div role="alert">
@@ -189,13 +192,14 @@ function CaregiverProfile({ profile }) {
             )}
             {!loading && !error && (
                 <form className="caregiver-profile-form" onSubmit={handleSubmit}>
-                    <p>{caregiverData ? 'แก้ไขโปรไฟล์ผู้ดูแล' : 'สร้างโปรไฟล์ผู้ดูแล'}</p>
+                    <h2>{caregiverData ? 'ข้อมูลการดูแลของฉัน' : 'เริ่มสร้างโปรไฟล์'}</h2>
                     <label htmlFor="caregiver-bio">แนะนำตัว</label>
                     <textarea
                         id="caregiver-bio"
                         value={bio}
                         onChange={(event) => setBio(event.target.value)}
                     />
+                    <p className="caregiver-profile-hint">เขียนประสบการณ์และแนวทางการดูแล ไม่ต้องใส่เบอร์โทรหรือช่องทางติดต่อ</p>
 
                     <label htmlFor="caregiver-experience">ประสบการณ์ดูแล (ปี)</label>
                     <input

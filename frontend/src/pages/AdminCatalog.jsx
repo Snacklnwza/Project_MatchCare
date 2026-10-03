@@ -6,7 +6,7 @@ import '../styles/Catalog.css'
 export default function AdminCatalog() {
   const [kind, setKind] = useState('skills')
   return (
-    <main className="workflow-page">
+    <section className="workflow-page">
       <header>
         <p className="workflow-eyebrow">สำหรับผู้ดูแลระบบ</p>
         <h1>จัดการคลังกลาง</h1>
@@ -19,7 +19,7 @@ export default function AdminCatalog() {
         ))}
       </div>
       <CatalogEditor key={kind} kind={kind} />
-    </main>
+    </section>
   )
 }
 

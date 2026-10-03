@@ -75,9 +75,15 @@ function EmployerDashboard({ onNavigate }) {
 
   return (
     <section className="employer-dashboard" aria-label="ภาพรวมผู้ว่าจ้าง">
+      <header className="employer-dashboard-heading">
+        <p className="workflow-eyebrow">พื้นที่ของผู้ว่าจ้าง</p>
+        <h1>ภาพรวมการดูแล</h1>
+        <p>ดูข้อมูลผู้ป่วยและประกาศที่เปิดรับ แล้วไปจัดการงานต่อได้จากรายการด้านล่าง</p>
+      </header>
       <aside className="dashboard-patients">
         <div className="dashboard-section-heading">
-          <h2>รายชื่อผู้ป่วยในการดูแล</h2>
+          <h2>ผู้ป่วยของฉัน</h2>
+          {!loading && !error && <span>{patients.length} คน</span>}
         </div>
 
         {loading && (
@@ -127,7 +133,10 @@ function EmployerDashboard({ onNavigate }) {
       </aside>
 
       <section className="dashboard-jobs">
-        <h2>ประกาศงานที่เปิดรับ</h2>
+        <div className="dashboard-section-heading">
+          <h2>ประกาศที่เปิดรับ</h2>
+          {!jobsLoading && !jobsError && <span>{jobs.length} งาน</span>}
+        </div>
         {jobsLoading ? (
           <p role="status">กำลังโหลดประกาศงาน...</p>
         ) : jobsError ? (

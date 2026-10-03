@@ -8,19 +8,19 @@ import heartIcon from '../assets/landing/heart.svg'
 const steps = [
   {
     title: '1. ค้นหาและจับคู่',
-    description: 'ระบบจะกรองผู้ดูแลที่มีทักษะตรงกับอาการของผู้ป่วย',
+    description: 'ค้นหาผู้ดูแลที่มีทักษะตรงกับประกาศงานของคุณ',
     icon: searchIcon,
     className: 'landing-step-search',
   },
   {
-    title: '2. ตรวจสอบประวัติ',
-    description: 'ผู้ดูแลทุกคนผ่านการยืนยันตัวตนและเอกสารวิชาชีพ',
+    title: '2. ตรวจสอบตัวตน',
+    description: 'ดูสถานะการยืนยันตัวตนของผู้ดูแลก่อนตัดสินใจ',
     icon: documentIcon,
     className: 'landing-step-document',
   },
   {
     title: '3. เริ่มการดูแล',
-    description: 'อุ่นใจกับบริการที่ได้มาตรฐาน พร้อมระบบรีวิวหลังจบงาน',
+    description: 'ตอบรับการจับคู่แล้วจึงเปิดข้อมูลติดต่อเพื่อเริ่มดูแล',
     icon: heartIcon,
     className: 'landing-step-heart',
   },
@@ -35,13 +35,13 @@ function LandingPage({ onLogin, onRegister }) {
         <div className="landing-hero-inner">
           <div className="landing-hero-copy">
             <h1>
-              หาผู้ดูแลที่ใช่ ด้วยความ
+              หาผู้ดูแลที่ใช่
               <br />
-              ใส่ใจที่เรามี
+              ด้วยความใส่ใจ
             </h1>
             <p>
-              แพลตฟอร์มจับคู่ผู้ดูแลผู้ป่วยและผู้สูงอายุที่ผ่านการตรวจสอบประวัติ
-              และใบรับรองวิชาชีพ เพื่อความอุ่นใจของครอบครัวคุณ
+              สร้างประกาศ ค้นหาผู้ดูแลที่ทักษะตรงกับงาน และติดต่อกันหลังจับคู่สำเร็จ
+              พร้อมขั้นตอนยืนยันตัวตนก่อนผู้ดูแลปรากฏในผลค้นหา
             </p>
             <div className="landing-hero-actions">
               <button

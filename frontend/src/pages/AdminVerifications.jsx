@@ -69,7 +69,7 @@ export default function AdminVerifications() {
         </div>
       )}
       {!loading && !error && !data.length && (
-        <div className="workflow-card">
+        <div className="workflow-card workflow-empty">
           <h2>ตรวจสอบครบแล้ว</h2>
           <p>ขณะนี้ไม่มีผู้ดูแลรอตรวจสอบ</p>
         </div>

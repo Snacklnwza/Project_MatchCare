@@ -52,6 +52,7 @@ function JobSearch() {
   const { data: applications, reload: reloadApplications } = useRemoteList(loadMyApplications)
   const visibleJobs = jobs.slice(0, JOB_PAGE_SIZE)
   const districts = province ? Object.keys(geography[province] ?? {}) : []
+  const advancedCount = [workDate, payUnit, minimumPay, maximumPay].filter(Boolean).length
 
   function clearDetail() {
     detailRequest.current += 1
@@ -152,7 +153,7 @@ function JobSearch() {
   }
 
   return (
-    <main className="job-search" aria-labelledby="job-search-title">
+    <section className="job-search" aria-labelledby="job-search-title">
       <header className="job-search-heading">
         <div>
           <p className="job-search-eyebrow">สำหรับผู้ดูแล</p>
@@ -199,14 +200,6 @@ function JobSearch() {
             </select>
           </label>
           <label>
-            วันที่ต้องการทำงาน
-            <input
-              type="date"
-              value={workDate}
-              onChange={(event) => changeFilter(setWorkDate, event.target.value)}
-            />
-          </label>
-          <label>
             ทักษะที่ต้องการ
             <select
               value={skillId}
@@ -219,55 +212,68 @@ function JobSearch() {
               ))}
             </select>
           </label>
-          <label>
-            หน่วยค่าตอบแทน
-            <select
-              value={payUnit}
-              onChange={(event) => {
-                setMinimumPay('')
-                setMaximumPay('')
-                changeFilter(setPayUnit, event.target.value)
-              }}
-            >
-              <option value="">ทุกหน่วย</option>
-              {Object.entries(payUnitLabels).map(([value, label]) => (
-                <option key={value} value={value}>{label}</option>
-              ))}
-            </select>
-          </label>
-          <label>
-            ค่าตอบแทนขั้นต่ำ (บาท)
-            <input
-              type="number"
-              min="0"
-              step="0.01"
-              value={minimumPay}
-              disabled={!payUnit}
-              onChange={(event) => {
-                const value = event.target.value
-                if (value === '' || Number(value) >= 0) {
-                  changeFilter(setMinimumPay, value)
-                }
-              }}
-            />
-          </label>
-          <label>
-            ค่าตอบแทนสูงสุด (บาท)
-            <input
-              type="number"
-              min="0"
-              step="0.01"
-              value={maximumPay}
-              disabled={!payUnit}
-              onChange={(event) => {
-                const value = event.target.value
-                if (value === '' || Number(value) >= 0) {
-                  changeFilter(setMaximumPay, value)
-                }
-              }}
-            />
-          </label>
         </div>
+        <details className="job-search-advanced">
+          <summary>ตัวกรองเพิ่มเติม{advancedCount > 0 ? ` · เลือกแล้ว ${advancedCount} รายการ` : ''}</summary>
+          <div className="job-search-filter-grid">
+            <label>
+              วันที่ต้องการทำงาน
+              <input
+                type="date"
+                value={workDate}
+                onChange={(event) => changeFilter(setWorkDate, event.target.value)}
+              />
+            </label>
+            <label>
+              หน่วยค่าตอบแทน
+              <select
+                value={payUnit}
+                onChange={(event) => {
+                  setMinimumPay('')
+                  setMaximumPay('')
+                  changeFilter(setPayUnit, event.target.value)
+                }}
+              >
+                <option value="">ทุกหน่วย</option>
+                {Object.entries(payUnitLabels).map(([value, label]) => (
+                  <option key={value} value={value}>{label}</option>
+                ))}
+              </select>
+            </label>
+            <label>
+              ค่าตอบแทนขั้นต่ำ (บาท)
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={minimumPay}
+                disabled={!payUnit}
+                onChange={(event) => {
+                  const value = event.target.value
+                  if (value === '' || Number(value) >= 0) {
+                    changeFilter(setMinimumPay, value)
+                  }
+                }}
+              />
+            </label>
+            <label>
+              ค่าตอบแทนสูงสุด (บาท)
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={maximumPay}
+                disabled={!payUnit}
+                onChange={(event) => {
+                  const value = event.target.value
+                  if (value === '' || Number(value) >= 0) {
+                    changeFilter(setMaximumPay, value)
+                  }
+                }}
+              />
+            </label>
+          </div>
+        </details>
         {filterError && <p role="alert">{filterError}</p>}
         <div className="job-search-search-actions">
           <button type="submit">ค้นหา</button>
@@ -298,6 +304,7 @@ function JobSearch() {
             <p>{page === 0
               ? 'ไม่พบประกาศที่ตรงกับเงื่อนไข ลองเปลี่ยนตัวกรองแล้วกดค้นหาอีกครั้ง'
               : 'ไม่พบประกาศในหน้านี้ กรุณากลับหน้าก่อน'}</p>
+            {page === 0 && <button type="button" onClick={clearFilters}>ล้างตัวกรอง</button>}
           </div>
         )}
         {!loading && !error && visibleJobs.map((job) => (
@@ -378,7 +385,7 @@ function JobSearch() {
           </div>
         )}
       </section>
-    </main>
+    </section>
   )
 }
 

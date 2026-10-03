@@ -9,7 +9,7 @@ import {
 } from '../lib/workflow'
 import { formatJobDate, jobStatusLabels, payUnitLabels } from '../lib/jobs'
 
-export default function Invitations({ profile }) {
+export default function Invitations({ profile, onNavigate }) {
   const { data, loading, error, reload } = useRemoteList(loadInvitations)
   const [busyId, setBusyId] = useState(null)
   const [actionError, setActionError] = useState('')
@@ -111,13 +111,16 @@ export default function Invitations({ profile }) {
         </div>
       )}
       {!loading && !error && !data.length && (
-        <div className="workflow-card">
+        <div className="workflow-card workflow-empty">
           <h2>ยังไม่มีคำเชิญ</h2>
           <p>
             {profile.role === 'caregiver'
               ? 'เมื่อผู้ว่าจ้างส่งคำเชิญมา คุณจะเห็นรายละเอียดและตอบรับได้ที่นี่'
               : 'ไปที่ประกาศงาน แล้วเลือกหาผู้ดูแลเพื่อส่งคำเชิญ'}
           </p>
+          <button type="button" onClick={() => onNavigate('jobs')}>
+            {profile.role === 'caregiver' ? 'ไปค้นหางาน' : 'ไปที่ประกาศงาน'}
+          </button>
         </div>
       )}
       {!loading && !error && (
@@ -126,7 +129,7 @@ export default function Invitations({ profile }) {
             <article className="workflow-card" key={request.request_id}>
               <div className="workflow-heading">
                 <h2>{request.title}</h2>
-                <span className="workflow-badge">
+                <span className="workflow-badge" data-status={request.status}>
                   {invitationLabels[request.status]}
                 </span>
               </div>

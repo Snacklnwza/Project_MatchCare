@@ -54,6 +54,7 @@ function CaregiverDashboard({ profile, onNavigate }) {
   }
 
   const verified = info?.verification_status === 'verified'
+  const pendingVerification = info?.verification_status === 'pending'
   const available = info?.availability_status === 'available'
   const steps = [
     {
@@ -72,6 +73,15 @@ function CaregiverDashboard({ profile, onNavigate }) {
       text: 'ต้องผ่านการตรวจสอบก่อนปรากฏในผลค้นหา',
     },
   ]
+  const nextAction = !info?.bio?.trim() || !skills.length
+    ? { label: 'เติมข้อมูลโปรไฟล์', page: 'profile', hint: 'แนะนำตัวและเพิ่มทักษะ เพื่อให้ผู้ว่าจ้างรู้จักคุณมากขึ้น' }
+    : pendingVerification
+      ? { label: 'ดูสถานะเอกสาร', page: 'documents', hint: 'เอกสารอยู่ระหว่างการตรวจสอบ คุณกลับมาดูสถานะได้ที่นี่' }
+      : !verified
+        ? { label: 'ส่งเอกสารยืนยันตัวตน', page: 'documents', hint: 'ยืนยันตัวตนก่อนให้ผู้ว่าจ้างพบคุณในผลค้นหา' }
+        : !available
+          ? { label: 'เปิดพร้อมรับงาน', page: 'profile', hint: 'เปิดสถานะพร้อมรับงานเพื่อให้ผู้ว่าจ้างค้นพบคุณ' }
+          : { label: 'ค้นหางานดูแล', page: 'jobs', hint: 'โปรไฟล์พร้อมแล้ว เลือกประกาศที่เหมาะกับทักษะของคุณ' }
   return (
     <section className="care-home" aria-labelledby="care-home-title">
       <header className="care-home-heading">
@@ -92,9 +102,9 @@ function CaregiverDashboard({ profile, onNavigate }) {
             <br />
             ได้พบกับคนที่ต้องการการดูแล
           </h2>
-          <p>แนะนำตัวและเพิ่มทักษะ เพื่อให้ผู้ว่าจ้างรู้จักคุณมากขึ้น</p>
-          <button type="button" onClick={openProfile}>
-            จัดการโปรไฟล์ <span aria-hidden="true">→</span>
+          <p>{loading ? 'กำลังตรวจความพร้อมของโปรไฟล์...' : nextAction.hint}</p>
+          <button type="button" disabled={loading || error} onClick={() => onNavigate(nextAction.page)}>
+            {nextAction.label} <span aria-hidden="true">→</span>
           </button>
         </div>
         <img className="care-art" src={profileIllustration} alt="" />

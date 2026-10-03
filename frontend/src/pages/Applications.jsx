@@ -4,7 +4,7 @@ import useRemoteList from '../hooks/useRemoteList'
 import { formatJobDate, jobStatusLabels, payUnitLabels } from '../lib/jobs'
 import { applicationLabels, callWorkflow, loadMyApplications, workflowError } from '../lib/workflow'
 
-export default function Applications() {
+export default function Applications({ onNavigate }) {
   const { data, loading, error, reload } = useRemoteList(loadMyApplications)
   const [busyId, setBusyId] = useState(null)
   const [actionError, setActionError] = useState('')
@@ -50,7 +50,7 @@ export default function Applications() {
   }
 
   return (
-    <main className="workflow-page">
+    <section className="workflow-page">
       <header>
         <p className="workflow-eyebrow">สำหรับผู้ดูแล</p>
         <h1>งานที่สมัคร</h1>
@@ -66,9 +66,10 @@ export default function Applications() {
         </div>
       )}
       {!loading && !error && data.length === 0 && (
-        <section className="workflow-card">
+        <section className="workflow-card workflow-empty">
           <h2>ยังไม่มีใบสมัคร</h2>
           <p>ไปที่หน้าค้นหางาน เลือกประกาศที่สนใจ แล้วกดสมัครงาน</p>
+          <button type="button" onClick={() => onNavigate('jobs')}>ไปค้นหางาน</button>
         </section>
       )}
       {!loading && !error && data.length > 0 && (
@@ -77,7 +78,7 @@ export default function Applications() {
             <article className="workflow-card" key={application.request_id}>
               <div className="workflow-heading">
                 <h2>{application.title}</h2>
-                <span className="workflow-badge">
+                <span className="workflow-badge" data-status={application.status}>
                   {applicationLabels[application.status] ?? application.status}
                 </span>
               </div>
@@ -104,6 +105,6 @@ export default function Applications() {
           ))}
         </div>
       )}
-    </main>
+    </section>
   )
 }

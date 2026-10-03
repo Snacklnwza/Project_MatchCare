@@ -213,8 +213,11 @@ function JobManager() {
         <p role="status">กำลังโหลดประกาศงาน...</p>
       ) : !error && visibleJobs.length === 0 ? (
         <div className="job-empty">
-          <h3>ยังไม่มีประกาศในรายการนี้</h3>
-          <p>เริ่มสร้างประกาศโดยเลือกผู้ป่วยและทักษะที่ต้องการ</p>
+          <h3>{jobs.length === 0 ? 'ยังไม่มีประกาศงาน' : 'ไม่พบประกาศในสถานะนี้'}</h3>
+          <p>{jobs.length === 0
+            ? 'เริ่มสร้างประกาศโดยเลือกผู้ป่วยและทักษะที่ต้องการ'
+            : 'ลองเลือกสถานะอื่นหรือแสดงประกาศทั้งหมด'}</p>
+          {jobs.length > 0 && <button type="button" className="secondary-button" onClick={() => setFilter('all')}>แสดงทั้งหมด</button>}
         </div>
       ) : (
         <div className="job-list">

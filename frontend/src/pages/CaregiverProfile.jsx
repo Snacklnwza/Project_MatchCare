@@ -177,7 +177,6 @@ function CaregiverProfile({ profile }) {
 
         <section className="role-dashboard caregiver-profile">
             <header className="caregiver-profile-heading">
-                <p className="workflow-eyebrow">สำหรับผู้ดูแล</p>
                 <h1>โปรไฟล์ผู้ดูแล</h1>
                 <p>คุณ{profile.first_name} {profile.last_name} · แนะนำตัวและเลือกทักษะเพื่อให้ผู้ว่าจ้างพบคุณ</p>
             </header>

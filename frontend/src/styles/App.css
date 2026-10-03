@@ -1214,12 +1214,12 @@
 }
 .caregiver-profile {
   box-sizing: border-box;
-  width: 100%;
+  width: min(100%, 760px);
   max-width: 760px;
-  margin: 32px auto;
+  margin: 0 0 48px;
 }
 .caregiver-profile-heading { margin-bottom: 28px; }
-.caregiver-profile-heading h1 { margin: 4px 0 8px; font-size: clamp(26px, 3vw, 32px); color: #173128; }
+.caregiver-profile-heading h1 { margin: 0 0 8px; font-size: clamp(28px, 2.5vw, 32px); color: #173128; }
 .caregiver-profile-heading > p:last-child { margin: 0; color: #53675c; }
 .caregiver-profile-form h2 { margin: 0 0 8px; font-size: 20px; }
 .caregiver-profile-hint { margin: -4px 0 8px; color: #53675c; font-size: 13px; }

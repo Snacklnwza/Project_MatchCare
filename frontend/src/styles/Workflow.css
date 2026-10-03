@@ -1,20 +1,16 @@
 .workflow-page {
-  width: min(100%, 1160px);
-  margin: 24px auto 48px;
+  width: 100%;
+  margin: 0 0 48px;
 }
 .workflow-page header {
   margin-bottom: 24px;
 }
 .workflow-page h1 {
-  margin: 6px 0 8px;
+  margin: 0 0 8px;
   font-size: clamp(24px, 3vw, 32px);
   line-height: 1.25;
 }
 .workflow-page header > p:last-child { color: #53675c; margin: 0; max-width: 68ch; }
-.workflow-eyebrow {
-  color: #00704b;
-  font-size: 13px;
-}
 .workflow-columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -151,7 +147,6 @@
 .admin-home-grid .workflow-card { display: flex; flex-direction: column; align-items: flex-start; min-height: 220px; }
 .admin-home-grid .workflow-card p { color: #53675c; margin-top: 0; }
 .admin-home-grid .workflow-card button { margin-top: auto; }
-.admin-home-step { color: #00704b; font-size: 13px; font-weight: 600; }
 @media (max-width: 800px) {
   .workflow-columns {
     grid-template-columns: 1fr;
@@ -162,12 +157,12 @@
   .admin-home-grid { grid-template-columns: 1fr; }
 }
 
-/* ทุกหน้าภายในระบบใช้แนวขอบและลำดับหัวข้อเดียวกัน */
+/* หน้าในระบบเริ่มที่ขอบซ้ายเดียวกับหน้าหลักเดิม */
 .app-shell-dashboard :is(.employer-dashboard, .patient-manager, .job-manager, .workflow-page) {
   box-sizing: border-box;
-  width: min(100%, 1160px);
+  width: 100%;
   max-width: none;
-  margin: 24px auto 48px;
+  margin: 0 0 48px;
 }
 .app-shell-dashboard :is(.page-intro, .workflow-page > header) {
   margin: 0 0 24px;
@@ -179,19 +174,13 @@
   flex-wrap: wrap;
   gap: 16px 24px;
 }
-.app-shell-dashboard :is(.page-intro, .workflow-page > header) .workflow-eyebrow {
-  margin: 0 0 4px;
-  color: #00704b;
-  font-size: 13px;
-  line-height: 1.5;
-}
 .app-shell-dashboard :is(.page-intro, .workflow-page > header) h1 {
   margin: 0 0 8px;
   color: #173128;
   font-size: clamp(28px, 2.5vw, 32px);
   line-height: 1.25;
 }
-.app-shell-dashboard :is(.page-intro, .workflow-page > header) p:last-child:not(.workflow-eyebrow) {
+.app-shell-dashboard :is(.page-intro, .workflow-page > header) p:last-child {
   max-width: 68ch;
   margin: 0;
   color: #53675c;

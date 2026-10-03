@@ -161,7 +161,6 @@ function PatientManager() {
   const pageHeader = (
     <header className="patient-manager-heading page-intro">
       <div>
-        <p className="workflow-eyebrow">ข้อมูลสำหรับสร้างประกาศ</p>
         <h1>ผู้ป่วยของฉัน</h1>
         <p>เพิ่มหรือแก้ไขข้อมูลผู้ป่วย เพื่อใช้ระบุความต้องการในประกาศงาน</p>
       </div>

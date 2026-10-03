@@ -170,7 +170,6 @@ function JobManager() {
     <section className="job-manager" aria-labelledby="jobs-heading">
       <header className="job-heading page-intro">
         <div>
-          <p className="workflow-eyebrow">จัดการงานดูแล</p>
           <h1 id="jobs-heading">ประกาศงานของฉัน</h1>
           <p>จัดการประกาศและความต้องการดูแลของคุณ</p>
         </div>

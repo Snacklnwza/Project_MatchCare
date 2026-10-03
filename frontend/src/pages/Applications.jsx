@@ -52,7 +52,6 @@ export default function Applications({ onNavigate }) {
   return (
     <section className="workflow-page">
       <header>
-        <p className="workflow-eyebrow">สำหรับผู้ดูแล</p>
         <h1>งานที่สมัคร</h1>
         <p>ติดตามใบสมัครที่ส่งแล้ว ผู้ว่าจ้างจะเห็นใบสมัครเพื่อพิจารณา</p>
       </header>

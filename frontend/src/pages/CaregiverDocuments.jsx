@@ -46,9 +46,6 @@ export default function CaregiverDocuments({ profile }) {
   return (
     <section className="workflow-page">
       <header>
-        <p className="workflow-eyebrow">
-          เตรียมพร้อมรับงาน · ขั้นตอนยืนยันตัวตน
-        </p>
         <h1>เอกสารของฉัน</h1>
         <p>
           ส่งเอกสารยืนยันตัวตนก่อน

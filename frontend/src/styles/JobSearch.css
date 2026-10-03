@@ -1,7 +1,7 @@
 .job-search {
   box-sizing: border-box;
-  width: min(calc(100% - 64px), 1200px);
-  margin: 32px auto 64px;
+  width: 100%;
+  margin: 0 0 64px;
   color: #173128;
 }
 
@@ -9,16 +9,9 @@
   margin-bottom: 24px;
 }
 
-.job-search-eyebrow {
-  margin: 0 0 6px;
-  color: #00704b;
-  font-size: 14px;
-  font-weight: 600;
-}
-
 .job-search-heading h1 {
   margin: 0 0 8px;
-  font-size: clamp(26px, 3vw, 34px);
+  font-size: clamp(28px, 2.5vw, 32px);
 }
 
 .job-search-heading p:last-child {
@@ -251,10 +244,6 @@
 }
 
 @media (max-width: 600px) {
-  .job-search {
-    width: calc(100% - 32px);
-  }
-
   .job-search-filter-grid {
     grid-template-columns: 1fr;
   }

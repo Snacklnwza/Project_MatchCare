@@ -8,7 +8,6 @@ export default function AdminCatalog() {
   return (
     <section className="workflow-page">
       <header>
-        <p className="workflow-eyebrow">สำหรับผู้ดูแลระบบ</p>
         <h1>จัดการคลังกลาง</h1>
         <p>ดูแลรายการทักษะและสภาวะการดูแลที่ใช้ในโปรไฟล์ ผู้ป่วย และประกาศงาน</p>
       </header>

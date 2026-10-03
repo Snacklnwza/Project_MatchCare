@@ -93,7 +93,6 @@ export default function Invitations({ profile, onNavigate }) {
   return (
     <section className="workflow-page">
       <header>
-        <p className="workflow-eyebrow">การจับคู่งาน</p>
         <h1>
           {profile.role === 'caregiver' ? 'คำเชิญและงานของฉัน' : 'คำเชิญที่ส่ง'}
         </h1>

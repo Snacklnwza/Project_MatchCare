@@ -53,7 +53,6 @@ export default function AdminVerifications() {
   return (
     <section className="workflow-page">
       <header>
-        <p className="workflow-eyebrow">พื้นที่แอดมิน</p>
         <h1>ตรวจสอบผู้ดูแล</h1>
         <p>ตรวจเอกสารยืนยันตัวตนก่อนอนุมัติให้ผู้ดูแลปรากฏในผลค้นหา</p>
       </header>

@@ -64,7 +64,6 @@ export default function EmployerApplications({ onNavigate }) {
   return (
     <section className="workflow-page">
       <header>
-        <p className="workflow-eyebrow">สำหรับผู้ว่าจ้าง</p>
         <h1>ใบสมัครที่ได้รับ</h1>
         <p>พิจารณาประสบการณ์และทักษะของผู้ดูแลก่อนตัดสินใจรับงาน</p>
       </header>

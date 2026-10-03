@@ -86,7 +86,6 @@ function CaregiverDashboard({ profile, onNavigate }) {
     <section className="care-home" aria-labelledby="care-home-title">
       <header className="care-home-heading">
         <div>
-          <p className="care-eyebrow">พื้นที่ของผู้ดูแล</p>
           <h1 id="care-home-title">สวัสดี คุณ{profile.first_name}</h1>
           <p>ดูแลโปรไฟล์ให้พร้อม สำหรับโอกาสดูแลครั้งต่อไป</p>
         </div>
@@ -96,7 +95,6 @@ function CaregiverDashboard({ profile, onNavigate }) {
       </header>
       <div className="care-welcome">
         <div>
-          <span className="care-eyebrow">เริ่มต้นจากความใส่ใจ</span>
           <h2>
             ให้ทักษะของคุณ
             <br />

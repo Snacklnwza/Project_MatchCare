@@ -156,7 +156,6 @@ function JobSearch() {
     <section className="job-search" aria-labelledby="job-search-title">
       <header className="job-search-heading">
         <div>
-          <p className="job-search-eyebrow">สำหรับผู้ดูแล</p>
           <h1 id="job-search-title">ค้นหางานดูแล</h1>
           <p>ดูประกาศที่เปิดรับ แล้วเลือกงานที่ตรงกับทักษะและเวลาของคุณ</p>
         </div>

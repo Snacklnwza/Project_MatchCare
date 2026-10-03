@@ -175,7 +175,7 @@ function CaregiverProfile({ profile }) {
     }
     return (
 
-        <section className="role-dashboard caregiver-profile">
+        <section className="caregiver-profile">
             <header className="caregiver-profile-heading">
                 <h1>โปรไฟล์ผู้ดูแล</h1>
                 <p>คุณ{profile.first_name} {profile.last_name} · แนะนำตัวและเลือกทักษะเพื่อให้ผู้ว่าจ้างพบคุณ</p>

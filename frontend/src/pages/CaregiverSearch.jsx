@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 import geography from '../data/geography-options.json'
+import CaregiverReviews from '../components/CaregiverReviews'
 import useRemoteList from '../hooks/useRemoteList'
 import { searchCaregivers, CAREGIVER_PAGE_SIZE } from '../lib/caregivers'
 import { loadJobSkillOptions } from '../lib/openJobs'
@@ -133,6 +134,7 @@ export default function CaregiverSearch({ onNavigate }) {
                   <h4>ข้อมูลผู้ดูแล</h4>
                   <p>ประสบการณ์ดูแล {caregiver.experience_years} ปี · พื้นที่ อ.{caregiver.district} จ.{caregiver.province}</p>
                   <p>สถานะ: ยืนยันตัวตนแล้ว และพร้อมรับงาน</p>
+                  <CaregiverReviews caregiverId={caregiver.caregiver_id} />
                   <p>หากสนใจผู้ดูแลคนนี้ ให้เลือกประกาศงานของคุณเพื่อค้นหาและส่งคำเชิญ</p>
                   <button type="button" onClick={() => onNavigate('jobs')}>ไปที่ประกาศงานของฉัน</button>
                 </div>}

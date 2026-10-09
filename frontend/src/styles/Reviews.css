@@ -1,0 +1,17 @@
+.job-review, .caregiver-reviews { margin-top: 24px; padding-top: 20px; border-top: 1px solid #dce9e1; }
+.review-score { color: #805800; font-size: 22px; font-weight: 600; }
+.review-score > span { color: #53675c; font-size: 14px; font-weight: 400; }
+.review-comment { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.7; }
+.review-rating { padding: 0; margin: 20px 0; border: 0; min-width: 0; }
+.review-rating legend { font-weight: 600; margin-bottom: 12px; }
+.review-rating-options { display: flex; flex-wrap: wrap; gap: 10px; }
+.workflow-card .review-rating-options label {
+  display: inline-flex; align-items: center; gap: 8px; margin: 0; padding: 12px;
+  border: 1px solid #cbdcd2; border-radius: 8px; cursor: pointer; font-weight: 400;
+}
+.workflow-card .review-rating-options label.is-selected { border-color: #9b6b00; background: #fff6df; }
+.workflow-card .review-rating-options input { width: auto; margin: 0; accent-color: #805800; }
+.review-rating-options label > span:first-of-type { color: #805800; }
+.caregiver-review-list { list-style: none; margin: 16px 0 0; padding: 0; }
+.caregiver-review-list li { padding: 16px 0; border-top: 1px solid #edf1ee; }
+.caregiver-review-list small { color: #53675c; }

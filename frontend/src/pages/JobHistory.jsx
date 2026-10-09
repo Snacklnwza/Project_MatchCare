@@ -3,6 +3,7 @@ import useRemoteList from '../hooks/useRemoteList'
 import { formatJobDate, jobStatusLabels, payUnitLabels } from '../lib/jobs'
 import { historyFilters, historyPageSize, loadHistoryDetails, loadJobHistory } from '../lib/history'
 import '../styles/JobHistory.css'
+import JobReview from '../components/JobReview'
 
 function HistoryDetails({ jobId }) {
   const loader = useCallback(() => loadHistoryDetails(jobId), [jobId])
@@ -86,7 +87,10 @@ export default function JobHistory({ profile }) {
                 onClick={() => setExpandedId(expandedId === job.job_post_id ? null : job.job_post_id)}>
                 {expandedId === job.job_post_id ? 'ซ่อนรายละเอียด' : 'ดูรายละเอียดงาน'}
               </button>
-              {expandedId === job.job_post_id && <div id={`history-detail-${job.job_post_id}`}><HistoryDetails jobId={job.job_post_id} /></div>}
+              {expandedId === job.job_post_id && <div id={`history-detail-${job.job_post_id}`}>
+                <HistoryDetails jobId={job.job_post_id} />
+                {job.job_status === 'completed' && <JobReview jobId={job.job_post_id} canReview={employer} />}
+              </div>}
             </article>
           ))}
         </div>

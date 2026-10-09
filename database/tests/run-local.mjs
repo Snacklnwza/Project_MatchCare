@@ -45,7 +45,7 @@ try {
   await db.exec(testEnvironment)
   const upgradeFrom = process.argv.find(arg => arg.startsWith('--upgrade-from='))?.split('=')[1]
   if (upgradeFrom) {
-    // จำลองฐานก่อนหน้า แล้วใช้เฉพาะ migration ใหม่ เพื่อตรวจว่าฐานเดิมอัปเกรดได้จริง
+    // จำลองฐานก่อนหน้า: รุ่นเก่าใช้ migration เดิม ส่วนงานใหม่ใช้ SQL ตามระบบ
     const git = (...args) => execFileSync('git', args, { encoding: 'utf8' }).trim()
     const oldSchemas = git('ls-tree', '-r', '--name-only', upgradeFrom, 'database/schema')
       .split('\n').filter(file => file.endsWith('.sql')).sort()
@@ -55,6 +55,11 @@ try {
     const migrations = fs.readdirSync('supabase/migrations').filter(file =>
       file.endsWith('.sql') && !oldMigrations.has(`supabase/migrations/${file}`)).sort()
     for (const file of migrations) await runFile('supabase/migrations', file)
+    if (!migrations.length) {
+      const addedSchemas = fs.readdirSync('database/schema').filter(file =>
+        file.endsWith('.sql') && !oldSchemas.includes(`database/schema/${file}`)).sort()
+      for (const file of addedSchemas) await runFile('database/schema', file)
+    }
   } else {
     const schemas = fs.readdirSync('database/schema')
       .filter((file) => file.endsWith('.sql')).sort()

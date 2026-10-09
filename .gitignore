@@ -20,3 +20,6 @@ Thumbs.db
 .playwright-cli/
 output/
 supabase/.temp/
+
+# คู่มือและบันทึกงานใหม่เก็บเฉพาะในเครื่อง
+/docs/

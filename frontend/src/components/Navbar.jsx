@@ -136,7 +136,16 @@ function Navbar({ profile, activePage, onSelect, onSignOut }) {
                   เอกสารยืนยันตัวตน
                 </button>
               )}
-              {role === 'caregiver' && <hr />}
+              {['employer', 'caregiver'].includes(role) && (
+                <button type="button" aria-current={activePage === 'history' ? 'page' : undefined}
+                  onClick={(event) => {
+                    event.currentTarget.closest('details').open = false
+                    selectPage('history')
+                  }}>
+                  ประวัติงาน
+                </button>
+              )}
+              {['employer', 'caregiver'].includes(role) && <hr />}
               <button
                 className="account-signout"
                 type="button"

@@ -62,6 +62,7 @@ try {
   }
 
   const tests = [
+    'job_history_test.sql',
     'catalog_test.sql',
     'caregiver_profile_save_test.sql',
     'caregiver_search_test.sql',

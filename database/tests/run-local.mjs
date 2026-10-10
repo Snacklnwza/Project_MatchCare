@@ -67,6 +67,7 @@ try {
   }
 
   const tests = [
+    'caregiver_schedule_test.sql',
     'completion_procedure_test.sql',
     'admin_statistics_test.sql',
     'notifications_test.sql',

@@ -43,6 +43,8 @@ begin
   from public.caregiver_profiles cp join public.profiles p on p.id = cp.caregiver_id
   where p.role = 'caregiver' and cp.verification_status = 'verified'
     and cp.availability_status = 'available'
+    and (p_job_id is null or not exists (select 1 from public.job_posts target where target.id=p_job_id
+      and match_internal.caregiver_has_conflict(cp.caregiver_id,target.starts_at,target.ends_at,target.id)))
     and (p_province is null or p.province = p_province)
     and (p_district is null or p.district = p_district)
     and (p_min_experience is null or cp.experience_years >= p_min_experience)

@@ -81,6 +81,60 @@ begin
 end;
 $$;
 
+-- ช่วงเวลาใช้ [เริ่ม, สิ้นสุด): งานใหม่เริ่มตรงเวลาจบงานเดิมได้
+-- ไม่ส่งรายละเอียดงานที่ชนกันออกไป ใช้ภายใน Function ที่ตรวจสิทธิ์แล้วเท่านั้น
+create or replace function match_internal.caregiver_has_conflict(
+ p_caregiver_id uuid, p_starts_at timestamptz, p_ends_at timestamptz, p_exclude_job_id bigint default null
+)
+returns boolean language sql volatile security invoker set search_path = '' as $$
+ select exists (
+   select 1 from public.match_requests r join public.job_posts j on j.id=r.job_post_id
+   where r.caregiver_id=p_caregiver_id and r.status='accepted'
+     and j.status in ('matched','in_progress','completion_pending')
+     and (p_exclude_job_id is null or j.id<>p_exclude_job_id)
+     and j.starts_at<p_ends_at and j.ends_at>p_starts_at
+ );
+$$;
+revoke all on function match_internal.caregiver_has_conflict(uuid,timestamptz,timestamptz,bigint) from public,anon,authenticated;
+
+-- ตรวจซ้ำระดับตาราง และล็อกผู้ดูแลคนเดียวกันให้ตัดสินทีละ transaction
+create or replace function private.guard_caregiver_booking() returns trigger
+language plpgsql security invoker set search_path = '' as $$
+declare v_job public.job_posts;
+begin
+ if new.status='accepted' then
+   perform 1 from public.caregiver_profiles where caregiver_id=new.caregiver_id for update;
+   select * into v_job from public.job_posts where id=new.job_post_id;
+   if match_internal.caregiver_has_conflict(new.caregiver_id,v_job.starts_at,v_job.ends_at,new.job_post_id) then
+     raise exception using errcode='P0001',message='caregiver_schedule_conflict';
+   end if;
+ end if;
+ return new;
+end $$;
+revoke all on function private.guard_caregiver_booking() from public,anon,authenticated;
+create trigger match_requests_guard_booking before insert or update of status,caregiver_id,job_post_id on public.match_requests
+for each row execute function private.guard_caregiver_booking();
+
+-- หากวันเวลาของงานที่จับคู่แล้วเปลี่ยน ต้องตรวจตารางของผู้ดูแลอีกครั้ง
+create or replace function private.guard_booked_job_time() returns trigger
+language plpgsql security invoker set search_path = '' as $$
+declare v_caregiver uuid;
+begin
+ if new.status in ('matched','in_progress','completion_pending') then
+   select caregiver_id into v_caregiver from public.match_requests where job_post_id=new.id and status='accepted';
+   if v_caregiver is not null then
+     perform 1 from public.caregiver_profiles where caregiver_id=v_caregiver for update;
+     if match_internal.caregiver_has_conflict(v_caregiver,new.starts_at,new.ends_at,new.id) then
+       raise exception 'caregiver_schedule_conflict';
+     end if;
+   end if;
+ end if;
+ return new;
+end $$;
+revoke all on function private.guard_booked_job_time() from public,anon,authenticated;
+create trigger job_posts_guard_booking before update of starts_at,ends_at,status on public.job_posts
+for each row execute function private.guard_booked_job_time();
+
 -- invite_caregiver: ตรวจสิทธิ์ภายในก่อนอ่านหรือเปลี่ยนข้อมูล
 create or replace function match_internal.invite_caregiver(p_job_id bigint, p_caregiver_id uuid)
 returns bigint language plpgsql volatile security definer set search_path = ''
@@ -95,6 +149,9 @@ begin
  perform 1 from public.caregiver_profiles cp join public.profiles p on p.id=cp.caregiver_id
  where cp.caregiver_id=p_caregiver_id and p.role='caregiver' and cp.verification_status='verified' and cp.availability_status='available' for share of cp;
  if not found then raise exception 'caregiver_not_eligible'; end if;
+ if match_internal.caregiver_has_conflict(p_caregiver_id,v_job.starts_at,v_job.ends_at,p_job_id) then
+   raise exception 'caregiver_schedule_conflict';
+ end if;
  insert into public.match_requests(job_post_id,caregiver_id) values(p_job_id,p_caregiver_id)
  on conflict(job_post_id,caregiver_id) do nothing returning id into v_id;
  if v_id is null then
@@ -130,7 +187,7 @@ begin
  if v_request.request_type<>'invitation' or v_request.status<>'pending' or v_job.status<>'open' then raise exception 'invitation_no_longer_open'; end if;
  if not exists(select 1 from public.profiles where id=auth.uid() and role='caregiver') then raise exception using errcode='42501',message='caregiver_required'; end if;
  if p_accept then
-   perform 1 from public.caregiver_profiles where caregiver_id=auth.uid() and verification_status='verified' and availability_status='available' for share;
+   perform 1 from public.caregiver_profiles where caregiver_id=auth.uid() and verification_status='verified' and availability_status='available' for update;
    if not found then raise exception 'caregiver_not_eligible'; end if;
  end if;
  update public.match_requests set status=case when p_accept then 'accepted' else 'rejected' end,responded_at=now() where id=p_request_id;
@@ -189,6 +246,9 @@ begin
  where caregiver_id=auth.uid() and verification_status='verified'
    and availability_status='available' for share;
  if not found then raise exception 'caregiver_not_eligible'; end if;
+ if match_internal.caregiver_has_conflict(auth.uid(),v_job.starts_at,v_job.ends_at,p_job_id) then
+   raise exception 'caregiver_schedule_conflict';
+ end if;
  insert into public.match_requests(job_post_id,caregiver_id,request_type)
  values(p_job_id,auth.uid(),'application')
  on conflict(job_post_id,caregiver_id) do nothing returning id into v_id;
@@ -308,7 +368,7 @@ begin
  if p_accept then
    perform 1 from public.caregiver_profiles
    where caregiver_id=v_request.caregiver_id and verification_status='verified'
-     and availability_status='available' for share;
+     and availability_status='available' for update;
    if not found then raise exception 'caregiver_not_eligible'; end if;
  end if;
  update public.match_requests

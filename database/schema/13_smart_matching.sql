@@ -86,6 +86,8 @@ begin
       coalesce((select jsonb_agg(s.name order by s.name) from condition_requirements s where not exists (select 1 from public.caregiver_skills cs where cs.caregiver_id = cp.caregiver_id and cs.skill_id = s.id)), '[]'::jsonb) condition_missing
     from public.caregiver_profiles cp join public.profiles p on p.id = cp.caregiver_id and p.role = 'caregiver'
     where cp.verification_status = 'verified' and cp.availability_status = 'available'
+      and not exists (select 1 from public.job_posts target where target.id=p_job_id
+        and match_internal.caregiver_has_conflict(cp.caregiver_id,target.starts_at,target.ends_at,target.id))
   )
   select c.caregiver_id, c.display_name, c.province, c.district, c.experience_years,
     c.job_matches, n.jobs, c.condition_matches, n.conditions,

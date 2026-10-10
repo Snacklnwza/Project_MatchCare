@@ -67,6 +67,7 @@ try {
   }
 
   const tests = [
+    'smart_matching_test.sql',
     'job_history_test.sql',
     'job_rating_test.sql',
     'catalog_test.sql',

@@ -52,7 +52,7 @@ export default function CaregiverMatches({ job, onBack }) {
       setResults([])
       try {
         const { data, error: queryError } = await supabase.rpc(
-          'search_caregivers_for_job',
+          'rank_caregivers_for_job',
           { p_job_id: job.id },
         )
         if (queryError) throw queryError
@@ -83,7 +83,7 @@ export default function CaregiverMatches({ job, onBack }) {
       {notice && <p role="status">{notice}</p>}
       {inviteError && <p role="alert">{inviteError}</p>}
       <p>
-        ผู้ดูแลที่ยืนยันแล้วและพร้อมรับงาน เรียงตามทักษะที่ตรงกับประกาศมากที่สุด
+        ผู้ดูแลที่ยืนยันแล้วและพร้อมรับงาน เรียงตามคะแนนทักษะที่ตรงกับงาน
       </p>
       {loading ? (
         <p role="status">กำลังค้นหาผู้ดูแล...</p>
@@ -108,14 +108,21 @@ export default function CaregiverMatches({ job, onBack }) {
       ) : (
         <>
           <p role="status">พบผู้ดูแล {results.length} คน</p>
+          <p className="workflow-hint">{results[0].required_skills > 0 && results[0].required_condition_skills > 0
+            ? 'คะแนนมาจากทักษะในประกาศ 70% และทักษะที่เกี่ยวข้องกับสภาวะการดูแล 30%'
+            : results[0].required_skills > 0 ? 'คะแนนมาจากทักษะในประกาศ 100%'
+              : results[0].required_condition_skills > 0 ? 'คะแนนมาจากทักษะที่เกี่ยวข้องกับสภาวะการดูแล 100%'
+                : 'ยังไม่มีเกณฑ์ทักษะ จึงเรียงตามประสบการณ์'}
+          </p>
+          {results[0].unmapped_conditions > 0 && <p className="workflow-hint">มีสภาวะการดูแลที่ยังไม่ได้กำหนดทักษะ ระบบใช้เฉพาะเกณฑ์ที่กำหนดไว้</p>}
           <ol className="caregiver-match-list">
             {results.map((caregiver) => (
               <li className="job-card" key={caregiver.caregiver_id}>
                 <div className="job-heading">
                   <h3>{caregiver.display_name}</h3>
                   <span className="job-status job-status-open">
-                    ตรง {caregiver.matched_skills} จาก{' '}
-                    {caregiver.required_skills} ทักษะ
+                    {caregiver.required_skills > 0 || caregiver.required_condition_skills > 0
+                      ? `ตรงกับเกณฑ์ ${caregiver.match_score}%` : 'ยังไม่มีเกณฑ์คะแนน'}
                   </span>
                 </div>
                 <p>
@@ -123,6 +130,8 @@ export default function CaregiverMatches({ job, onBack }) {
                 </p>
                 <p>ประสบการณ์ดูแล {caregiver.experience_years} ปี</p>
                 <p>ยืนยันแล้ว · พร้อมรับงาน</p>
+                <SkillExplanation title="ทักษะในประกาศ" matching={caregiver.matching_skills} missing={caregiver.missing_skills} />
+                <SkillExplanation title="ทักษะที่เกี่ยวข้องกับสภาวะการดูแล" matching={caregiver.matching_condition_skills} missing={caregiver.missing_condition_skills} />
                 <div className="job-actions">
                 <button
                   type="button"
@@ -151,4 +160,13 @@ export default function CaregiverMatches({ job, onBack }) {
       )}
     </section>
   )
+}
+
+function SkillExplanation({ title, matching = [], missing = [] }) {
+  if (!matching.length && !missing.length) return null
+  return <div className="match-explanation">
+    <strong>{title}</strong>
+    <p>ตรง: {matching.length ? matching.join(' · ') : 'ยังไม่มีทักษะตรง'}</p>
+    {missing.length > 0 && <p className="workflow-hint">ยังขาด: {missing.join(' · ')}</p>}
+  </div>
 }

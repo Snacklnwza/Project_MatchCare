@@ -84,10 +84,6 @@
   color: #00593d;
   border-left: 3px solid #006948;
 }
-.schedule-event.is-ended {
-  background: #edf1f4;
-  color: #53675c;
-}
 .schedule-page .schedule-day.is-busy {
   background: #f7fcf9;
 }

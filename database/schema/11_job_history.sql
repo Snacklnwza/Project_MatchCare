@@ -98,7 +98,7 @@ language sql stable security invoker set search_path = ''
 as $fn$ select * from match_internal.get_job_history_details(p_job_id); $fn$;
 revoke all on function public.get_job_history_details(bigint) from public, anon, authenticated;
 grant execute on function public.get_job_history_details(bigint) to authenticated;
--- ปฏิทินแสดงเฉพาะงานที่ผู้ดูแลคนนี้ตอบรับแล้วในเดือนที่เลือก
+-- ปฏิทินแสดงเฉพาะงานที่ผู้ดูแลคนนี้ตอบรับแล้วและยังไม่สิ้นสุดในเดือนที่เลือก
 -- ไม่คืนชื่อผู้ป่วย ที่อยู่ละเอียด หรือข้อมูลติดต่อ และไม่นับคำเชิญ pending เป็นการจอง
 create or replace function match_internal.list_my_schedule(p_month date)
 returns table(request_id bigint,job_post_id bigint,title text,job_status text,
@@ -117,7 +117,7 @@ begin
  return query select r.id,j.id,j.title,j.status,r.request_type,j.province,j.district,j.starts_at,j.ends_at
  from public.match_requests r join public.job_posts j on j.id=r.job_post_id
  where r.caregiver_id=auth.uid() and r.status='accepted'
-   and j.status in ('matched','in_progress','completion_pending','completed','cancelled')
+   and j.status in ('matched','in_progress','completion_pending')
    and j.starts_at<month_end and j.ends_at>month_start
  order by j.starts_at,j.id;
 end $$;

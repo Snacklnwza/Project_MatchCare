@@ -28,7 +28,8 @@ export default function CaregiverSchedule({ onNavigate }) {
   const [month, setMonth] = useState(() => today().slice(0, 7) + '-01')
   const [view, setView] = useState('month')
   const loader = useCallback(() => loadMySchedule(month), [month])
-  const { data: jobs, loading, error, reload } = useRemoteList(loader)
+  const { data: loadedJobs, loading, error, reload } = useRemoteList(loader)
+  const jobs = loadedJobs.filter(activeJob)
   const [year, monthNumber] = month.split('-').map(Number)
   const days = new Date(Date.UTC(year, monthNumber, 0)).getUTCDate()
   const leading = (new Date(`${month}T12:00:00+07:00`).getUTCDay() + 6) % 7
@@ -146,7 +147,7 @@ export default function CaregiverSchedule({ onNavigate }) {
                     <strong>{index + 1}</strong>
                     {daily.slice(0, 2).map((job) => (
                       <span
-                        className={`schedule-event ${activeJob(job) ? 'is-active' : 'is-ended'}`}
+                        className="schedule-event is-active"
                         key={job.job_post_id}
                       >
                         {job.title}
@@ -162,7 +163,6 @@ export default function CaregiverSchedule({ onNavigate }) {
           )}
           <div className="schedule-legend">
             <span>● งานที่รับแล้ว / กำลังดูแล / รอยืนยันจบ</span>
-            <span>○ งานสิ้นสุดแล้ว</span>
           </div>
           <section
             className="schedule-detail"
@@ -202,11 +202,9 @@ export default function CaregiverSchedule({ onNavigate }) {
                       className="secondary-button"
                       onClick={() =>
                         onNavigate(
-                          !activeJob(job)
-                            ? 'history'
-                            : job.request_type === 'application'
-                              ? 'applications'
-                              : 'invitations',
+                          job.request_type === 'application'
+                            ? 'applications'
+                            : 'invitations',
                           {
                             source_type: 'job',
                             source_id: job.job_post_id,

@@ -62,12 +62,17 @@ begin
  perform public.request_job_completion(first_job);
  perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.schedule_owner'))::text,true);
  perform public.confirm_job_completion(first_job);
+ perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.schedule_caregiver'))::text,true);
+ if exists(select 1 from public.list_my_schedule('2030-01-01') where job_post_id=first_job) then
+   raise exception 'งานจบแล้วยังอยู่ในปฏิทิน';
+ end if;
+ perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.schedule_owner'))::text,true);
  perform public.respond_to_application(app_request,true);
  edge_job := public.create_job_with_tags(p.id,'งานสิ้นสุดเที่ยงคืน','ทดสอบ','ดูแล','2030-01-31 23:00+07','2030-02-01 00:00+07',1000,'hour',array[s]);
  edge_request := public.invite_caregiver(edge_job,current_setting('test.schedule_caregiver')::uuid);
  perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.schedule_caregiver'))::text,true);
  perform public.respond_to_invitation(edge_request,true);
- if (select count(*) from public.list_my_schedule('2030-01-01'))<>4 or exists(select 1 from public.list_my_schedule('2030-02-01')) then
+ if (select count(*) from public.list_my_schedule('2030-01-01'))<>3 or exists(select 1 from public.list_my_schedule('2030-02-01')) then
    raise exception 'งานจบเที่ยงคืนถูกนับเกินช่วงเดือน';
  end if;
  perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.schedule_admin'))::text,true);

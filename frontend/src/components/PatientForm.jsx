@@ -1,5 +1,7 @@
+import useUnsavedChanges from '../hooks/useUnsavedChanges'
 import { useEffect, useRef, useState } from 'react'
 import geography from '../data/geography-options.json'
+import { formatPatientAge } from '../lib/patients'
 import { toLocalDateTime } from '../lib/jobs'
 import { supabase } from '../lib/supabase'
 
@@ -35,6 +37,39 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
   const [optionsError, setOptionsError] = useState(false)
   const [retryOptions, setRetryOptions] = useState(0)
   const formRef = useRef(null)
+  const [original] = useState(() =>
+    JSON.stringify([
+      firstName,
+      lastName,
+      birthDate,
+      mobilityStatus,
+      careNotes,
+      province,
+      district,
+      subdistrict,
+      addressDetail,
+      selectedConditionIds,
+      selectedSkillIds,
+    ]),
+  )
+  const { confirmDiscard, markSaved } = useUnsavedChanges(
+    JSON.stringify([
+      firstName,
+      lastName,
+      birthDate,
+      mobilityStatus,
+      careNotes,
+      province,
+      district,
+      subdistrict,
+      addressDetail,
+      selectedConditionIds,
+      selectedSkillIds,
+    ]) !== original,
+  )
+  const cancel = () => {
+    if (confirmDiscard()) onCancel()
+  }
 
   useEffect(() => {
     const previousFocus = document.activeElement
@@ -44,7 +79,7 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
     function handleKey(event) {
       if (event.key === 'Escape' && !submitting.current) {
         event.preventDefault()
-        onCancel()
+        if (confirmDiscard()) onCancel()
       }
       if (event.key !== 'Tab') return
       const controls = [
@@ -68,7 +103,7 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
       document.removeEventListener('keydown', handleKey)
       previousFocus?.focus()
     }
-  }, [onCancel])
+  }, [onCancel, confirmDiscard])
 
   useEffect(() => {
     let cancelled = false
@@ -78,14 +113,8 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
       setError('')
 
       const [conditionResult, skillResult] = await Promise.all([
-        supabase
-          .from('conditions')
-          .select('id, name, is_active')
-          .order('name'),
-        supabase
-          .from('skills')
-          .select('id, name, is_active')
-          .order('name'),
+        supabase.from('conditions').select('id, name, is_active').order('name'),
+        supabase.from('skills').select('id, name, is_active').order('name'),
       ])
 
       if (cancelled) return
@@ -162,6 +191,7 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
         throw saveError
       }
 
+      markSaved()
       onSaved({
         ...data,
         patient_conditions: selectedConditionIds.map((conditionId) => ({
@@ -171,8 +201,8 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
           skill_id: skillId,
         })),
       })
-    } catch (submitError) {
-      setError(submitError.message || 'ไม่สามารถบันทึกข้อมูลผู้ป่วยได้')
+    } catch {
+      setError('บันทึกข้อมูลผู้ป่วยไม่สำเร็จ ข้อมูลที่กรอกยังอยู่ กรุณาลองใหม่')
     } finally {
       submitting.current = false
       setSaving(false)
@@ -206,7 +236,7 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
 
         <button
           type="button"
-          onClick={onCancel}
+          onClick={cancel}
           disabled={saving}
           aria-label="ปิดฟอร์ม"
         >
@@ -214,6 +244,10 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
         </button>
       </div>
 
+      <h2 className="form-section-title">ข้อมูลทั่วไป</h2>
+      <p className="form-help">
+        กรอกวันเกิดเพื่อให้ระบบคำนวณอายุ เลือกปี ค.ศ. ในช่องวันที่
+      </p>
       <label htmlFor="patient-first-name">ชื่อผู้ป่วย</label>
       <input
         id="patient-first-name"
@@ -275,6 +309,12 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
         </small>
       )}
 
+      {birthDate && (
+        <p className="form-help">
+          อายุที่คำนวณได้: {formatPatientAge(birthDate)}
+        </p>
+      )}
+      <h2 className="form-section-title">ความต้องการดูแล</h2>
       <label htmlFor="patient-mobility-status">สถานะการเคลื่อนไหว</label>
       <select
         id="patient-mobility-status"
@@ -314,19 +354,26 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
         {optionsLoading ? (
           <p>กำลังโหลดสภาวะ...</p>
         ) : (
-          conditions.filter(condition => condition.is_active || selectedConditionIds.includes(condition.id)).map((condition) => (
-            <label key={condition.id}>
-              <input
-                type="checkbox"
-                checked={selectedConditionIds.includes(condition.id)}
-                disabled={!condition.is_active}
-                onChange={() =>
-                  toggleSelectedId(condition.id, setSelectedConditionIds)
-                }
-              />
-              {condition.name}{!condition.is_active && ' (ปิดใช้งานแล้ว · เก็บข้อมูลเดิม)'}
-            </label>
-          ))
+          conditions
+            .filter(
+              (condition) =>
+                condition.is_active ||
+                selectedConditionIds.includes(condition.id),
+            )
+            .map((condition) => (
+              <label key={condition.id}>
+                <input
+                  type="checkbox"
+                  checked={selectedConditionIds.includes(condition.id)}
+                  disabled={!condition.is_active}
+                  onChange={() =>
+                    toggleSelectedId(condition.id, setSelectedConditionIds)
+                  }
+                />
+                {condition.name}
+                {!condition.is_active && ' (ปิดใช้งานแล้ว · เก็บข้อมูลเดิม)'}
+              </label>
+            ))
         )}
       </fieldset>
 
@@ -336,20 +383,28 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
         {optionsLoading ? (
           <p>กำลังโหลดทักษะ...</p>
         ) : (
-          skills.filter(skill => skill.is_active || selectedSkillIds.includes(skill.id)).map((skill) => (
-            <label key={skill.id}>
-              <input
-                type="checkbox"
-                checked={selectedSkillIds.includes(skill.id)}
-                disabled={!skill.is_active}
-                onChange={() => toggleSelectedId(skill.id, setSelectedSkillIds)}
-              />
-              {skill.name}{!skill.is_active && ' (ปิดใช้งานแล้ว · เก็บข้อมูลเดิม)'}
-            </label>
-          ))
+          skills
+            .filter(
+              (skill) => skill.is_active || selectedSkillIds.includes(skill.id),
+            )
+            .map((skill) => (
+              <label key={skill.id}>
+                <input
+                  type="checkbox"
+                  checked={selectedSkillIds.includes(skill.id)}
+                  disabled={!skill.is_active}
+                  onChange={() =>
+                    toggleSelectedId(skill.id, setSelectedSkillIds)
+                  }
+                />
+                {skill.name}
+                {!skill.is_active && ' (ปิดใช้งานแล้ว · เก็บข้อมูลเดิม)'}
+              </label>
+            ))
         )}
       </fieldset>
 
+      <h2 className="form-section-title">สถานที่ดูแล</h2>
       <label htmlFor="patient-province">จังหวัด</label>
       <select
         id="patient-province"
@@ -477,7 +532,7 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
       )}
 
       <div className="patient-form-actions">
-        <button type="button" onClick={onCancel} disabled={saving}>
+        <button type="button" onClick={cancel} disabled={saving}>
           ยกเลิก
         </button>
 

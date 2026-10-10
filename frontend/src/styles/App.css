@@ -2119,3 +2119,45 @@ button:disabled {
     flex: 1;
   }
 }
+
+.password-field { position:relative; width:100%; }
+.password-field input { width:100%; box-sizing:border-box; padding-right:76px; }
+.auth-form .password-toggle { position:absolute; right:6px; top:50%; transform:translateY(-50%); width:auto; min-height:36px; margin:0; padding:6px 10px; border:0; background:transparent; color:#006948; font-size:14px; }
+.auth-form .policy-link { padding:0; min-height:auto; width:auto; border:0; background:transparent; color:#006948; text-decoration:underline; font:inherit; }
+.policy-dialog { width:min(560px,calc(100% - 48px)); padding:28px; border:1px solid #dce9e1; border-radius:16px; color:#203b30; }
+.policy-dialog::backdrop { background:rgb(0 25 15 / 45%); }
+.policy-dialog p { line-height:1.8; }
+.policy-dialog button { min-height:44px; padding:10px 24px; border:0; border-radius:8px; color:white; background:#006948; font:inherit; }
+
+.form-section-title { font-size:20px; padding-top:24px; margin:24px 0 10px; border-top:1px solid #dce9e1; }
+.form-help { font-size:14px; line-height:1.6; color:#53675c; }
+.form-pair { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; }
+.form-pair > div { min-width:0; }
+.form-summary { border-radius:10px; background:#e8f5ee; padding:16px; line-height:1.7; }
+.patient-form-actions { position:sticky; bottom:0; z-index:2; background:white; padding:16px 0 8px; border-top:1px solid #dce9e1; }
+@media(max-width:640px) { .form-pair { grid-template-columns:1fr; gap:16px; } }
+
+.mobile-filter-toggle { display:none; }
+@media(max-width:640px) {
+ .mobile-filter-toggle { display:block; width:100%; text-align:left; border:1px solid #cbdcd2; border-radius:10px; padding:14px 16px; background:white; color:#006948; font:inherit; margin-bottom:16px; }
+ .collapsible-filter-content[data-expanded="false"] { display:none; }
+}
+
+.landing-caregiver-steps { max-width:1120px; margin:0 auto; padding:32px; text-align:center; }
+.landing-caregiver-steps p { color:#53675c; line-height:1.9; }
+#condition-skill-settings { scroll-margin-top:90px; }
+@media(max-width:640px) { .site-footer { padding-top:20px; padding-bottom:20px; } }
+
+@media(max-width:640px) { .app-footer-inner { gap:16px; padding:20px 0; } .footer-note { font-size:14px; } }
+
+.form-pair label { display:block; font-weight:600; margin-bottom:8px; }
+.patient-form-actions button { min-height:44px; }
+.care-readiness > summary { font-weight:600; cursor:pointer; line-height:1.7; }
+.care-readiness[open] > summary { margin-bottom:20px; }
+.care-columns { align-items:start; }
+
+.job-form-fields > .form-section-title:first-child { border-top:0; margin-top:0; padding-top:0; }
+.form-summary p { margin:6px 0; }
+.notification-context { display:flex; align-items:center; flex-wrap:wrap; gap:12px; padding:16px; margin-bottom:24px; background:#e5f5ed; border-radius:10px; color:#164735; }
+.notification-context p { margin:0; flex:1; min-width:200px; font-size:14px; }
+.notification-context button { min-height:44px; padding:8px 12px; background:white; color:#006948; border:1px solid #006948; border-radius:8px; font:inherit; cursor:pointer; }

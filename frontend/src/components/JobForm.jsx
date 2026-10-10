@@ -1,6 +1,7 @@
+import useUnsavedChanges from '../hooks/useUnsavedChanges'
 import { useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
-import { toLocalDateTime } from '../lib/jobs'
+import { formatJobDate, payUnitLabels, toLocalDateTime } from '../lib/jobs'
 import { formatPatientAge } from '../lib/patients'
 
 function JobForm({ job = null, onCancel, onSaved }) {
@@ -25,6 +26,35 @@ function JobForm({ job = null, onCancel, onSaved }) {
   const [skillError, setSkillError] = useState('')
   const [formError, setFormError] = useState('')
   const [saving, setSaving] = useState(false)
+  const [original] = useState(() =>
+    JSON.stringify([
+      patientId,
+      title,
+      description,
+      careSummary,
+      startsAt,
+      endsAt,
+      payAmount,
+      payUnit,
+      selectedSkillIds,
+    ]),
+  )
+  const { confirmDiscard, markSaved } = useUnsavedChanges(
+    JSON.stringify([
+      patientId,
+      title,
+      description,
+      careSummary,
+      startsAt,
+      endsAt,
+      payAmount,
+      payUnit,
+      selectedSkillIds,
+    ]) !== original,
+  )
+  const cancel = () => {
+    if (confirmDiscard()) onCancel()
+  }
 
   useEffect(() => {
     let cancelled = false
@@ -153,9 +183,10 @@ function JobForm({ job = null, onCancel, onSaved }) {
       if (saveError) throw saveError
       if (!data)
         throw new Error('ไม่ได้รับผลการบันทึก กรุณาตรวจสอบรายการอีกครั้ง')
+      markSaved()
       onSaved()
-    } catch (error) {
-      setFormError(`บันทึกประกาศไม่สำเร็จ: ${error?.message ?? 'กรุณาลองใหม่'}`)
+    } catch {
+      setFormError('บันทึกประกาศไม่สำเร็จ ข้อมูลที่กรอกยังอยู่ กรุณาลองใหม่')
     } finally {
       savingRef.current = false
       setSaving(false)
@@ -171,6 +202,7 @@ function JobForm({ job = null, onCancel, onSaved }) {
         </button>
       )}
       <fieldset className="job-form-fields" disabled={saving}>
+        <h2 className="form-section-title">ประกาศและผู้ป่วย</h2>
         {loadingPatients ? (
           <p>กำลังโหลดรายชื่อผู้ป่วย...</p>
         ) : patientError ? (
@@ -190,7 +222,8 @@ function JobForm({ job = null, onCancel, onSaved }) {
               <option value="">เลือกผู้ป่วย</option>
               {patients.map((patient) => (
                 <option key={patient.id} value={patient.id}>
-                  {patient.first_name} {patient.last_name} ({formatPatientAge(patient.birth_date)})
+                  {patient.first_name} {patient.last_name} (
+                  {formatPatientAge(patient.birth_date)})
                 </option>
               ))}
             </select>
@@ -205,6 +238,7 @@ function JobForm({ job = null, onCancel, onSaved }) {
         <label htmlFor="job-title">หัวข้อประกาศ</label>
         <input
           id="job-title"
+          placeholder="เช่น หาผู้ดูแลผู้สูงอายุช่วงกลางวัน"
           type="text"
           value={title}
           onChange={(event) => setTitle(event.target.value)}
@@ -214,6 +248,7 @@ function JobForm({ job = null, onCancel, onSaved }) {
         <label htmlFor="job-description">รายละเอียดประกาศงาน</label>
         <textarea
           id="job-description"
+          placeholder="เช่น ดูแลที่บ้าน พักกับครอบครัว มีอุปกรณ์พร้อม"
           value={description}
           onChange={(event) => setDescription(event.target.value)}
           rows={4}
@@ -222,54 +257,73 @@ function JobForm({ job = null, onCancel, onSaved }) {
         <label htmlFor="job-care-summary">สรุปการดูแลที่ต้องการ</label>
         <textarea
           id="job-care-summary"
+          placeholder="เช่น ช่วยอาบน้ำ ให้อาหาร และพาเดินวันละ 2 ครั้ง"
           value={careSummary}
           onChange={(event) => setCareSummary(event.target.value)}
           rows={3}
           required
         />
-        <label htmlFor="job-starts-at">วันเวลาเริ่มงาน</label>
-        <input
-          id="job-starts-at"
-          type="datetime-local"
-          value={startsAt}
-          onChange={(event) => setStartsAt(event.target.value)}
-          required
-        />
-
-        <label htmlFor="job-ends-at">วันเวลาสิ้นสุดงาน</label>
-        <input
-          id="job-ends-at"
-          type="datetime-local"
-          value={endsAt}
-          onChange={(event) => setEndsAt(event.target.value)}
-          min={startsAt || undefined}
-          required
-        />
-        <label htmlFor="job-pay-amount">ค่าตอบแทน (บาท)</label>
-        <input
-          id="job-pay-amount"
-          type="number"
-          min="0.01"
-          max="99999999.99"
-          step="0.01"
-          value={payAmount}
-          onChange={(event) => setPayAmount(event.target.value)}
-          required
-        />
-
-        <label htmlFor="job-pay-unit">คิดค่าตอบแทน</label>
-        <select
-          id="job-pay-unit"
-          value={payUnit}
-          onChange={(event) => setPayUnit(event.target.value)}
-          required
-        >
-          <option value="">เลือกหน่วย</option>
-          <option value="hour">ต่อชั่วโมง</option>
-          <option value="day">ต่อวัน</option>
-          <option value="month">ต่อเดือน</option>
-          <option value="total">เหมาทั้งงาน</option>
-        </select>
+        <h2 className="form-section-title">วันเวลาและค่าตอบแทน</h2>
+        <p className="form-help">
+          เลือกปี ค.ศ. ในช่องวันที่ ตรวจช่วงเวลาก่อนสร้างประกาศ
+        </p>
+        <div className="form-pair">
+          <div>
+            {' '}
+            <label htmlFor="job-starts-at">วันเวลาเริ่มงาน</label>
+            <input
+              id="job-starts-at"
+              type="datetime-local"
+              value={startsAt}
+              onChange={(event) => setStartsAt(event.target.value)}
+              required
+            />
+          </div>
+          <div>
+            {' '}
+            <label htmlFor="job-ends-at">วันเวลาสิ้นสุดงาน</label>
+            <input
+              id="job-ends-at"
+              type="datetime-local"
+              value={endsAt}
+              onChange={(event) => setEndsAt(event.target.value)}
+              min={startsAt || undefined}
+              required
+            />
+          </div>
+        </div>
+        <div className="form-pair">
+          <div>
+            {' '}
+            <label htmlFor="job-pay-amount">ค่าตอบแทน (บาท)</label>
+            <input
+              id="job-pay-amount"
+              type="number"
+              min="0.01"
+              max="99999999.99"
+              step="0.01"
+              value={payAmount}
+              onChange={(event) => setPayAmount(event.target.value)}
+              required
+            />
+          </div>
+          <div>
+            {' '}
+            <label htmlFor="job-pay-unit">คิดค่าตอบแทน</label>
+            <select
+              id="job-pay-unit"
+              value={payUnit}
+              onChange={(event) => setPayUnit(event.target.value)}
+              required
+            >
+              <option value="">เลือกหน่วย</option>
+              <option value="hour">ต่อชั่วโมง</option>
+              <option value="day">ต่อวัน</option>
+              <option value="month">ต่อเดือน</option>
+              <option value="total">เหมาทั้งงาน</option>
+            </select>
+          </div>
+        </div>{' '}
         <fieldset>
           <legend>ทักษะผู้ดูแลที่ต้องการ</legend>
 
@@ -280,17 +334,23 @@ function JobForm({ job = null, onCancel, onSaved }) {
           ) : skills.length === 0 ? (
             <p>ไม่มีทักษะให้เลือกในขณะนี้</p>
           ) : (
-            skills.filter(skill => skill.is_active || selectedSkillIds.includes(skill.id)).map((skill) => (
-              <label key={skill.id}>
-                <input
-                  type="checkbox"
-                  checked={selectedSkillIds.includes(skill.id)}
-                  disabled={!skill.is_active}
-                  onChange={() => toggleSkill(skill.id)}
-                />
-                {skill.name}{!skill.is_active && ' (ปิดใช้งานแล้ว · เก็บข้อมูลเดิม)'}
-              </label>
-            ))
+            skills
+              .filter(
+                (skill) =>
+                  skill.is_active || selectedSkillIds.includes(skill.id),
+              )
+              .map((skill) => (
+                <label key={skill.id}>
+                  <input
+                    type="checkbox"
+                    checked={selectedSkillIds.includes(skill.id)}
+                    disabled={!skill.is_active}
+                    onChange={() => toggleSkill(skill.id)}
+                  />
+                  {skill.name}
+                  {!skill.is_active && ' (ปิดใช้งานแล้ว · เก็บข้อมูลเดิม)'}
+                </label>
+              ))
           )}
         </fieldset>
       </fieldset>
@@ -298,6 +358,22 @@ function JobForm({ job = null, onCancel, onSaved }) {
         <p role="alert" className="form-error">
           {formError}
         </p>
+      )}
+      {startsAt && endsAt && new Date(endsAt) > new Date(startsAt) && (
+        <div className="form-summary">
+          <p>
+            {formatJobDate(startsAt)} – {formatJobDate(endsAt)}
+          </p>
+          <p>
+            ระยะเวลาดูแล{' '}
+            {((new Date(endsAt) - new Date(startsAt)) / 3600000).toLocaleString(
+              'th-TH',
+              { maximumFractionDigits: 2 },
+            )}{' '}
+            ชั่วโมง · ค่าตอบแทน {Number(payAmount || 0).toLocaleString('th-TH')}{' '}
+            บาท {payUnitLabels[payUnit] ?? '(เลือกหน่วยค่าตอบแทน)'}
+          </p>
+        </div>
       )}
       <div className="job-actions">
         <button
@@ -318,7 +394,7 @@ function JobForm({ job = null, onCancel, onSaved }) {
           type="button"
           className="secondary-button"
           disabled={saving}
-          onClick={onCancel}
+          onClick={cancel}
         >
           ยกเลิก
         </button>

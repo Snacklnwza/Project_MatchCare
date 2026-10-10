@@ -1,3 +1,5 @@
+import DocumentPreviewDialog from './DocumentPreviewDialog'
+import { formatJobDate } from '../lib/jobs'
 import { useCallback, useState } from 'react'
 import useRemoteList from '../hooks/useRemoteList'
 import {
@@ -11,6 +13,7 @@ export default function DocumentList({ caregiverId }) {
   const loader = useCallback(() => loadDocuments(caregiverId), [caregiverId])
   const { data, loading, error, reload } = useRemoteList(loader)
   const [downloadError, setDownloadError] = useState('')
+  const [preview, setPreview] = useState(null)
   const [downloading, setDownloading] = useState(null)
   async function download(document) {
     setDownloading(document.id)
@@ -35,6 +38,12 @@ export default function DocumentList({ caregiverId }) {
     )
   return (
     <div>
+      {preview && (
+        <DocumentPreviewDialog
+          document={preview}
+          onClose={() => setPreview(null)}
+        />
+      )}
       {downloadError && <p role="alert">{downloadError}</p>}
       {!data.length && <p>ยังไม่มีเอกสารที่ส่งตรวจ</p>}
       <ul className="workflow-list">
@@ -43,6 +52,9 @@ export default function DocumentList({ caregiverId }) {
             <div>
               <strong>{documentLabels[document.document_type]}</strong>
               <p>{document.original_file_name}</p>
+              <p className="workflow-hint">
+                ส่งเมื่อ {formatJobDate(document.created_at)}
+              </p>
               <span className="workflow-badge">
                 {reviewLabels[document.review_status]}
               </span>
@@ -50,14 +62,25 @@ export default function DocumentList({ caregiverId }) {
                 <p>เหตุผล: {document.rejection_reason}</p>
               )}
             </div>
-            <button
-              type="button"
-              className="secondary-button"
-              disabled={downloading !== null}
-              onClick={() => download(document)}
-            >
-              {downloading === document.id ? 'กำลังดาวน์โหลด...' : 'ดาวน์โหลด'}
-            </button>
+            <div className="workflow-actions">
+              <button
+                type="button"
+                className="secondary-button"
+                onClick={() => setPreview(document)}
+              >
+                ดูเอกสาร
+              </button>
+              <button
+                type="button"
+                className="secondary-button"
+                disabled={downloading !== null}
+                onClick={() => download(document)}
+              >
+                {downloading === document.id
+                  ? 'กำลังดาวน์โหลด...'
+                  : 'ดาวน์โหลด'}
+              </button>
+            </div>
           </li>
         ))}
       </ul>

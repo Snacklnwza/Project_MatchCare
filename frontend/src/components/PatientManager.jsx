@@ -50,7 +50,7 @@ function PatientManager() {
         .order('created_at', { ascending: false })
 
       if (queryError) {
-        setLoadError(queryError.message)
+        setLoadError('โหลดข้อมูลผู้ป่วยไม่สำเร็จ กรุณาลองใหม่')
         setPatients([])
       } else {
         setPatients(data ?? [])
@@ -101,7 +101,7 @@ function PatientManager() {
   async function handleDeactivate(patient) {
     if (deactivating.current) return
     const confirmed = window.confirm(
-      `ต้องการปิดใช้งานข้อมูลของ ${patient.first_name} ใช่หรือไม่`,
+      `หยุดใช้ข้อมูลของ ${patient.first_name} สร้างประกาศใหม่? ข้อมูลในประวัติงานเดิมยังคงอยู่`,
     )
 
     if (!confirmed) {
@@ -126,7 +126,7 @@ function PatientManager() {
           type: 'error',
           message: updateError.message.includes('patient_has_active_job')
             ? 'ปิดใช้งานผู้ป่วยไม่ได้ เพราะยังมีประกาศงานที่เปิดอยู่ กรุณาปิดประกาศก่อน'
-            : `ไม่สามารถปิดใช้งานผู้ป่วยได้: ${updateError.message}`,
+            : 'ปิดใช้งานผู้ป่วยไม่สำเร็จ กรุณาลองใหม่',
         })
         return
       }
@@ -162,9 +162,19 @@ function PatientManager() {
     <header className="patient-manager-heading page-intro">
       <div>
         <h1>ผู้ป่วยของฉัน</h1>
-        <p>เพิ่มหรือแก้ไขข้อมูลผู้ป่วย เพื่อใช้ระบุความต้องการในประกาศงาน</p>
+        <p>
+          เพิ่มหรือแก้ไขข้อมูลผู้ป่วยเพื่อใช้สร้างประกาศ ·
+          ปิดใช้งานเพื่อหยุดเลือกผู้ป่วยในประกาศใหม่ ข้อมูลย้อนหลังยังคงอยู่
+        </p>
       </div>
-      <button type="button" className="patient-add-button" disabled={loading || Boolean(loadError)} onClick={openCreateForm}>+ เพิ่มผู้ป่วย</button>
+      <button
+        type="button"
+        className="patient-add-button"
+        disabled={loading || Boolean(loadError)}
+        onClick={openCreateForm}
+      >
+        + เพิ่มผู้ป่วย
+      </button>
     </header>
   )
 
@@ -172,10 +182,14 @@ function PatientManager() {
     return (
       <section className="patient-manager">
         {pageHeader}
-        {loading ? <p role="status">กำลังโหลดข้อมูลผู้ป่วย...</p> : (
+        {loading ? (
+          <p role="status">กำลังโหลดข้อมูลผู้ป่วย...</p>
+        ) : (
           <div role="alert">
-            <p>ไม่สามารถโหลดข้อมูลผู้ป่วย: {loadError}</p>
-            <button type="button" onClick={() => setRetry((key) => key + 1)}>ลองใหม่</button>
+            <p>{loadError}</p>
+            <button type="button" onClick={() => setRetry((key) => key + 1)}>
+              ลองใหม่
+            </button>
           </div>
         )}
       </section>
@@ -206,7 +220,9 @@ function PatientManager() {
         <div className="patient-manager-empty">
           <strong>ยังไม่มีผู้ป่วยในรายการ</strong>
           <p>เริ่มเพิ่มผู้ป่วยหนึ่งคนก่อนสร้างประกาศงาน</p>
-          <button type="button" onClick={openCreateForm}>เพิ่มผู้ป่วยคนแรก</button>
+          <button type="button" onClick={openCreateForm}>
+            เพิ่มผู้ป่วยคนแรก
+          </button>
         </div>
       )}
       <div className="patient-grid">
@@ -248,7 +264,6 @@ function PatientManager() {
             </div>
           </article>
         ))}
-
       </div>
 
       {showForm && (
@@ -262,14 +277,14 @@ function PatientManager() {
             }
           >
             <Suspense fallback={<p>กำลังโหลดแบบฟอร์ม...</p>}>
-            <PatientForm
-              patient={editingPatient}
-              onCancel={() => {
-                setEditingPatient(null)
-                setShowForm(false)
-              }}
-              onSaved={handlePatientSaved}
-            />
+              <PatientForm
+                patient={editingPatient}
+                onCancel={() => {
+                  setEditingPatient(null)
+                  setShowForm(false)
+                }}
+                onSaved={handlePatientSaved}
+              />
             </Suspense>
           </div>
         </div>

@@ -1,4 +1,63 @@
 /* แยกเมนู ฟอร์ม และสถานะ โดยใช้ขอบหน้าร่วมกับหน้าหลัก */
+.caregiver-contact-form fieldset {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.caregiver-contact-form legend {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.caregiver-contact-form label {
+  font-weight: 600;
+}
+.caregiver-contact-form label span {
+  font-weight: 400;
+  color: #53675c;
+}
+.caregiver-contact-form input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid #bdcfc5;
+  border-radius: 8px;
+  font: inherit;
+}
+.caregiver-contact-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+.caregiver-contact-actions button {
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid #006948;
+  border-radius: 8px;
+  background: #006948;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
+.caregiver-contact-actions button.secondary-button {
+  color: #006948;
+  background: white;
+}
+.caregiver-contact-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.caregiver-contact-form [role='alert'] {
+  color: #ae2929;
+}
+.caregiver-contact-form [role='status'] {
+  color: #006948;
+}
 .caregiver-mobile-section {
   display: none;
 }

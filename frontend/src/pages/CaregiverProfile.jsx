@@ -1,5 +1,6 @@
 import useUnsavedChanges from '../hooks/useUnsavedChanges'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { saveCaregiverContact } from '../lib/profiles'
 import { supabase } from '../lib/supabase'
 import CaregiverReviews from '../components/CaregiverReviews'
 import '../styles/CaregiverProfile.css'
@@ -14,6 +15,11 @@ const verificationLabels = {
 function CaregiverProfile({ profile, email, onNavigate }) {
   const [section, setSection] = useState('care')
   const [contactData, setContactData] = useState(null)
+  const [contactDraft, setContactDraft] = useState({ phone: '', line_id: '' })
+  const [contactSaving, setContactSaving] = useState(false)
+  const [contactError, setContactError] = useState('')
+  const [contactSuccess, setContactSuccess] = useState('')
+  const contactBusy = useRef(false)
   const [caregiverData, setCaregiverData] = useState(null)
   const [bio, setBio] = useState('')
   const [experienceYears, setExperienceYears] = useState('0')
@@ -31,14 +37,19 @@ function CaregiverProfile({ profile, email, onNavigate }) {
   const [availabilitySaving, setAvailabilitySaving] = useState(false)
   const [availabilityError, setAvailabilityError] = useState('')
   const [savedSkills, setSavedSkills] = useState([])
-  const dirty =
+  const careDirty =
     !loading &&
     !skillsLoading &&
     (bio !== (caregiverData?.bio ?? '') ||
       experienceYears !== String(caregiverData?.experience_years ?? 0) ||
       JSON.stringify([...selectedSkillIds].sort()) !==
         JSON.stringify([...savedSkills].sort()))
-  const { markSaved } = useUnsavedChanges(dirty)
+  const contactDirty =
+    !loading &&
+    (contactDraft.phone !== (contactData?.phone ?? '') ||
+      contactDraft.line_id !== (contactData?.line_id ?? ''))
+  // รวมร่างทั้งสองหมวดไว้ในการเตือนเดียว บันทึกหมวดหนึ่งแล้วอีกหมวดยังต้องเตือนอยู่
+  useUnsavedChanges(careDirty || contactDirty)
 
   useEffect(() => {
     let active = true
@@ -70,6 +81,10 @@ function CaregiverProfile({ profile, email, onNavigate }) {
       } else {
         setCaregiverData(data)
         setContactData(contactResult.data)
+        setContactDraft({
+          phone: contactResult.data.phone,
+          line_id: contactResult.data.line_id ?? '',
+        })
         setBio(data?.bio ?? '')
         setExperienceYears(String(data?.experience_years ?? 0))
       }
@@ -120,7 +135,7 @@ function CaregiverProfile({ profile, email, onNavigate }) {
 
   async function handleSubmit(event) {
     event.preventDefault()
-    if (saving || availabilitySaving) return
+    if (saving || availabilitySaving || contactSaving) return
     setSaveError('')
     setSaveSuccess('')
 
@@ -161,7 +176,6 @@ function CaregiverProfile({ profile, email, onNavigate }) {
       setBio(data.bio ?? bio.trim())
       setExperienceYears(String(data.experience_years ?? years))
       setSavedSkills([...selectedSkillIds])
-      markSaved()
       setSaveSuccess('บันทึกโปรไฟล์แล้ว')
     } catch {
       setSaveError('บันทึกไม่สำเร็จ กรุณาลองใหม่')
@@ -170,7 +184,7 @@ function CaregiverProfile({ profile, email, onNavigate }) {
     }
   }
   async function handleAvailabilityToggle() {
-    if (!caregiverData || saving || availabilitySaving) return
+    if (!caregiverData || saving || availabilitySaving || contactSaving) return
 
     const previousStatus = caregiverData.availability_status
     const nextStatus =
@@ -205,6 +219,31 @@ function CaregiverProfile({ profile, email, onNavigate }) {
       setAvailabilityError('เปลี่ยนสถานะไม่สำเร็จ กรุณาลองใหม่')
     } finally {
       setAvailabilitySaving(false)
+    }
+  }
+  function changeContact(field, value) {
+    setContactDraft((current) => ({ ...current, [field]: value }))
+    setContactError('')
+    setContactSuccess('')
+  }
+  async function handleContactSubmit(event) {
+    event.preventDefault()
+    if (contactBusy.current || !contactDirty || saving || availabilitySaving)
+      return
+    contactBusy.current = true
+    setContactSaving(true)
+    setContactError('')
+    setContactSuccess('')
+    try {
+      const saved = await saveCaregiverContact(profile.id, contactDraft)
+      setContactData(saved)
+      setContactDraft({ phone: saved.phone, line_id: saved.line_id ?? '' })
+      setContactSuccess('บันทึกข้อมูลติดต่อแล้ว')
+    } catch (issue) {
+      setContactError(issue.message)
+    } finally {
+      contactBusy.current = false
+      setContactSaving(false)
     }
   }
   return (
@@ -287,19 +326,82 @@ function CaregiverProfile({ profile, email, onNavigate }) {
                     <dt>อีเมล</dt>
                     <dd>{email || 'ไม่ได้ระบุ'}</dd>
                   </div>
-                  <div>
-                    <dt>เบอร์โทรศัพท์</dt>
-                    <dd>{contactData?.phone || 'ไม่ได้ระบุ'}</dd>
-                  </div>
-                  <div>
-                    <dt>LINE ID</dt>
-                    <dd>{contactData?.line_id || 'ไม่ได้ระบุ'}</dd>
-                  </div>
                 </dl>
-                <p className="caregiver-profile-hint">
-                  หน้านี้แสดงข้อมูลบัญชี
-                  ส่วนคำแนะนำตัวและทักษะแก้ไขได้ในหมวดโปรไฟล์การดูแล
-                </p>
+                <form
+                  className="caregiver-contact-form"
+                  onSubmit={handleContactSubmit}
+                >
+                  <fieldset disabled={contactSaving}>
+                    <legend>ช่องทางติดต่อ</legend>
+                    <label htmlFor="caregiver-phone">เบอร์โทรศัพท์</label>
+                    <input
+                      id="caregiver-phone"
+                      type="tel"
+                      autoComplete="tel"
+                      inputMode="numeric"
+                      required
+                      pattern="[0-9]{9,10}"
+                      maxLength={10}
+                      title="กรอกเบอร์โทรศัพท์ 9–10 หลัก"
+                      value={contactDraft.phone}
+                      onChange={(event) =>
+                        changeContact(
+                          'phone',
+                          event.target.value.replace(/\D/g, '').slice(0, 10),
+                        )
+                      }
+                    />
+                    <label htmlFor="caregiver-line">
+                      LINE ID <span>(ไม่บังคับ)</span>
+                    </label>
+                    <input
+                      id="caregiver-line"
+                      maxLength={100}
+                      autoCapitalize="none"
+                      spellCheck={false}
+                      value={contactDraft.line_id}
+                      onChange={(event) =>
+                        changeContact('line_id', event.target.value)
+                      }
+                    />
+                    <p className="caregiver-profile-hint">
+                      ลบ LINE ID ได้หากไม่ใช้แล้ว
+                      ข้อมูลติดต่อเปิดให้ผู้ว่าจ้างที่จับคู่กับคุณแล้วเห็นเท่านั้น
+                    </p>
+                  </fieldset>
+                  {contactError && <p role="alert">{contactError}</p>}
+                  {contactSuccess && <p role="status">{contactSuccess}</p>}
+                  <div className="caregiver-contact-actions">
+                    <button
+                      type="submit"
+                      disabled={
+                        !contactDirty ||
+                        contactSaving ||
+                        saving ||
+                        availabilitySaving
+                      }
+                    >
+                      {contactSaving
+                        ? 'กำลังบันทึก...'
+                        : 'บันทึกการเปลี่ยนแปลง'}
+                    </button>
+                    <button
+                      type="button"
+                      className="secondary-button"
+                      disabled={!contactDirty || contactSaving}
+                      onClick={() => {
+                        setContactDraft({
+                          phone: contactData.phone,
+                          line_id: contactData.line_id ?? '',
+                        })
+                        setContactError('')
+                        setContactSuccess('')
+                      }}
+                    >
+                      ยกเลิก
+                    </button>
+                  </div>
+                </form>
               </section>
             )}
             {/* เก็บฟอร์มไว้เมื่อสลับหมวด เพื่อไม่ให้ร่างที่ยังไม่บันทึกหาย */}
@@ -383,6 +485,7 @@ function CaregiverProfile({ profile, email, onNavigate }) {
                   type="submit"
                   disabled={
                     saving ||
+                    contactSaving ||
                     availabilitySaving ||
                     skillsLoading ||
                     Boolean(skillsError)
@@ -424,7 +527,12 @@ function CaregiverProfile({ profile, email, onNavigate }) {
                     role="switch"
                     checked={caregiverData?.availability_status === 'available'}
                     onChange={handleAvailabilityToggle}
-                    disabled={!caregiverData || saving || availabilitySaving}
+                    disabled={
+                      !caregiverData ||
+                      saving ||
+                      availabilitySaving ||
+                      contactSaving
+                    }
                   />
                   พร้อมรับงาน
                 </label>

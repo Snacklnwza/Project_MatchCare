@@ -415,8 +415,10 @@ revoke all on function public.request_job_completion(bigint) from public,anon,au
 grant execute on function public.request_job_completion(bigint) to authenticated;
 
 -- ผู้ว่าจ้างเจ้าของประกาศยืนยันปิดงาน
-create or replace function match_internal.confirm_job_completion(p_job_id bigint)
-returns bigint language plpgsql security definer set search_path = '' as $fn$
+-- Procedure ทำขั้นตอนยืนยันจบงาน ส่วน Function เดิมเป็นทางเข้าของ RPC
+-- ใช้สิทธิ์ผู้เรียกและไม่เปิดให้ client CALL โดยตรง
+create or replace procedure match_internal.confirm_job_completion_action(p_job_id bigint)
+language plpgsql security invoker set search_path = '' as $proc$
 declare v_job public.job_posts;
 begin
  if auth.uid() is null then raise exception using errcode='42501',message='login_required'; end if;
@@ -428,6 +430,16 @@ begin
  if v_job.status <> 'completion_pending' then raise exception 'job_completion_not_pending'; end if;
  if v_job.completion_requested_at is null then raise exception using errcode='23514',message='completion_request_required'; end if;
  update public.job_posts set status='completed',completed_at=now() where id=p_job_id;
+end;
+$proc$;
+revoke all on procedure match_internal.confirm_job_completion_action(bigint) from public,anon,authenticated;
+
+-- Function ภายในใช้สิทธิ์เดิม เรียก Procedure และคืน job_id ให้หน้าเว็บเหมือนเดิม
+-- ไม่มี COMMIT ระหว่างทาง: งานกับการแจ้งเตือนจาก Trigger สำเร็จหรือย้อนกลับพร้อมกัน
+create or replace function match_internal.confirm_job_completion(p_job_id bigint)
+returns bigint language plpgsql security definer set search_path = '' as $fn$
+begin
+ call match_internal.confirm_job_completion_action(p_job_id);
  return p_job_id;
 end;
 $fn$;

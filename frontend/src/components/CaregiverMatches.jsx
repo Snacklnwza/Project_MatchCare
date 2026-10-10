@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { callWorkflow, workflowError } from '../lib/workflow'
+import CaregiverReviews from './CaregiverReviews'
 
 export default function CaregiverMatches({ job, onBack }) {
   const [results, setResults] = useState([])
@@ -11,6 +12,7 @@ export default function CaregiverMatches({ job, onBack }) {
   const [sentIds, setSentIds] = useState([])
   const [notice, setNotice] = useState('')
   const [inviteError, setInviteError] = useState('')
+  const [reviewId, setReviewId] = useState(null)
   const sending = useRef(false)
 
   async function invite(caregiver) {
@@ -121,6 +123,7 @@ export default function CaregiverMatches({ job, onBack }) {
                 </p>
                 <p>ประสบการณ์ดูแล {caregiver.experience_years} ปี</p>
                 <p>ยืนยันแล้ว · พร้อมรับงาน</p>
+                <div className="job-actions">
                 <button
                   type="button"
                   disabled={
@@ -135,6 +138,12 @@ export default function CaregiverMatches({ job, onBack }) {
                       ? 'กำลังส่ง...'
                       : 'เชิญให้ดูแลงานนี้'}
                 </button>
+                <button type="button" className="secondary-button" aria-expanded={reviewId === caregiver.caregiver_id}
+                  onClick={() => setReviewId(reviewId === caregiver.caregiver_id ? null : caregiver.caregiver_id)}>
+                  {reviewId === caregiver.caregiver_id ? 'ซ่อนรีวิว' : 'ดูคะแนนและรีวิว'}
+                </button>
+                </div>
+                {reviewId === caregiver.caregiver_id && <CaregiverReviews caregiverId={caregiver.caregiver_id} />}
               </li>
             ))}
           </ol>

@@ -1,0 +1,30 @@
+.history-filter {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.history-filter select {
+  font: inherit;
+  padding: 10px 12px;
+  min-height: 44px;
+  max-width: 100%;
+  border: 1px solid #cbdcd2;
+  border-radius: 8px;
+  background: white;
+}
+.history-facts { margin: 16px 0 24px; }
+.history-facts > div {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 12px;
+  margin: 10px 0;
+}
+.history-facts dt { color: #53675c; }
+.history-facts dd { margin: 0; overflow-wrap: anywhere; }
+.history-details { margin-top: 24px; padding-top: 16px; border-top: 1px solid #dce9e1; }
+.history-text { white-space: pre-wrap; }
+@media (max-width: 600px) {
+  .history-facts > div { grid-template-columns: 1fr; gap: 4px; }
+}

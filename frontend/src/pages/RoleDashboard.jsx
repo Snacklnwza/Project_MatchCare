@@ -15,6 +15,7 @@ import Invitations from './Invitations'
 import Applications from './Applications'
 import EmployerApplications from './EmployerApplications'
 import CaregiverSearch from './CaregiverSearch'
+import JobHistory from './JobHistory'
 import '../styles/Workflow.css'
 
 function RoleDashboard({ profile, onSignOut }) {
@@ -36,7 +37,9 @@ function RoleDashboard({ profile, onSignOut }) {
 
   let content = dashboard
 
-  if (profile.role === 'employer' && activePage === 'patients') {
+  if (['employer', 'caregiver'].includes(profile.role) && activePage === 'history') {
+    content = <JobHistory profile={profile} />
+  } else if (profile.role === 'employer' && activePage === 'patients') {
     content = <PatientManager />
   } else if (profile.role === 'employer' && activePage === 'jobs') {
     content = <JobManager />

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import CaregiverReviews from '../components/CaregiverReviews'
 
 function CaregiverProfile({ profile }) {
     const [caregiverData, setCaregiverData] = useState(null)
@@ -277,6 +278,7 @@ function CaregiverProfile({ profile }) {
                     {availabilityError && <p role="alert">{availabilityError}</p>}
                 </div>
             )}
+            {!loading && !error && <CaregiverReviews caregiverId={profile.id} />}
         </section>
     )
 }

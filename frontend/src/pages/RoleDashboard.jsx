@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { PageTargetContext } from '../hooks/useRevealItem'
+import { UnsavedChangesContext } from '../hooks/useUnsavedChanges'
+import { useCallback, useRef, useState } from 'react'
 import Navbar from '../components/Navbar'
 import AdminDashboard from './AdminDashboard'
 import AdminCatalog from './AdminCatalog'
@@ -21,35 +23,62 @@ import '../styles/Workflow.css'
 
 function RoleDashboard({ profile, email, onProfileUpdated, onSignOut }) {
   const [activePage, setActivePage] = useState('dashboard')
+  const [target, setTarget] = useState(null)
+  const guard = useRef(null)
+  const registerGuard = useCallback((check) => {
+    guard.current = check
+    return () => {
+      if (guard.current === check) guard.current = null
+    }
+  }, [])
+  function navigate(page, item = null) {
+    if (page === activePage || !guard.current || guard.current()) {
+      setTarget(item)
+      setActivePage(page)
+    }
+  }
+  function signOut() {
+    if (!guard.current || guard.current()) onSignOut()
+  }
 
   let dashboard
 
   if (profile.role === 'employer') {
-    dashboard = <EmployerDashboard onNavigate={setActivePage} />
+    dashboard = <EmployerDashboard onNavigate={navigate} />
   } else if (profile.role === 'caregiver') {
-    dashboard = (
-      <CaregiverDashboard profile={profile} onNavigate={setActivePage} />
-    )
+    dashboard = <CaregiverDashboard profile={profile} onNavigate={navigate} />
   } else if (profile.role === 'admin') {
-    dashboard = <AdminDashboard profile={profile} onNavigate={setActivePage} />
+    dashboard = <AdminDashboard profile={profile} onNavigate={navigate} />
   } else {
     return <p role="alert">ไม่พบบทบาทผู้ใช้งาน</p>
   }
 
   let content = dashboard
 
-  if (['employer', 'caregiver'].includes(profile.role) && activePage === 'history') {
+  if (
+    ['employer', 'caregiver'].includes(profile.role) &&
+    activePage === 'history'
+  ) {
     content = <JobHistory profile={profile} />
   } else if (profile.role === 'employer' && activePage === 'profile') {
-    content = <EmployerProfile profile={profile} email={email} onProfileUpdated={onProfileUpdated} />
+    content = (
+      <EmployerProfile
+        profile={profile}
+        email={email}
+        onProfileUpdated={onProfileUpdated}
+      />
+    )
   } else if (profile.role === 'employer' && activePage === 'patients') {
     content = <PatientManager />
   } else if (profile.role === 'employer' && activePage === 'jobs') {
-    content = <JobManager onNavigate={setActivePage} />
+    content = <JobManager onNavigate={navigate} />
   } else if (profile.role === 'employer' && activePage === 'caregivers') {
-    content = <CaregiverSearch onNavigate={setActivePage} />
-  } else if (profile.role === 'employer' && activePage === 'receivedApplications') {
-    content = <EmployerApplications onNavigate={setActivePage} />
+    content = <CaregiverSearch onNavigate={navigate} />
+  } else if (
+    profile.role === 'employer' &&
+    activePage === 'receivedApplications'
+  ) {
+    content = <EmployerApplications onNavigate={navigate} />
   } else if (profile.role === 'caregiver' && activePage === 'jobs') {
     content = <JobSearch />
   } else if (profile.role === 'caregiver' && activePage === 'profile') {
@@ -57,7 +86,7 @@ function RoleDashboard({ profile, email, onProfileUpdated, onSignOut }) {
   } else if (profile.role === 'caregiver' && activePage === 'documents') {
     content = <CaregiverDocuments profile={profile} />
   } else if (profile.role === 'caregiver' && activePage === 'applications') {
-    content = <Applications onNavigate={setActivePage} />
+    content = <Applications onNavigate={navigate} />
   } else if (profile.role === 'admin' && activePage === 'verifications') {
     content = <AdminVerifications />
   } else if (profile.role === 'admin' && activePage === 'catalog') {
@@ -66,20 +95,36 @@ function RoleDashboard({ profile, email, onProfileUpdated, onSignOut }) {
     ['employer', 'caregiver'].includes(profile.role) &&
     activePage === 'invitations'
   ) {
-    content = <Invitations profile={profile} onNavigate={setActivePage} />
+    content = <Invitations profile={profile} onNavigate={navigate} />
   }
 
   return (
-    <>
+    <UnsavedChangesContext.Provider value={registerGuard}>
       <Navbar
         profile={profile}
-        onSignOut={onSignOut}
+        onSignOut={signOut}
         activePage={activePage}
-        onSelect={setActivePage}
+        onSelect={navigate}
       />
-      {content}
+      {target && (
+        <aside
+          className="notification-context"
+          aria-label="รายการจากการแจ้งเตือน"
+        >
+          <p>
+            เปิดจากการแจ้งเตือน: {target.source_type === 'job' ? 'งาน' : 'คำขอ'}{' '}
+            #{target.source_id} · รายการที่เน้นอาจอยู่นอกตัวกรองที่เลือก
+          </p>
+          <button type="button" onClick={() => setTarget(null)}>
+            กลับดูตามตัวกรอง
+          </button>
+        </aside>
+      )}
+      <PageTargetContext.Provider value={target}>
+        {content}
+      </PageTargetContext.Provider>
       <Footer />
-    </>
+    </UnsavedChangesContext.Provider>
   )
 }
 

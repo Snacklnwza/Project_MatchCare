@@ -1,3 +1,4 @@
+import DashboardTasks from '../components/DashboardTasks'
 import profileIllustration from '../assets/dashboard/caregiver-profile.svg'
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
@@ -73,15 +74,36 @@ function CaregiverDashboard({ profile, onNavigate }) {
       text: 'ต้องผ่านการตรวจสอบก่อนปรากฏในผลค้นหา',
     },
   ]
-  const nextAction = !info?.bio?.trim() || !skills.length
-    ? { label: 'เติมข้อมูลโปรไฟล์', page: 'profile', hint: 'แนะนำตัวและเพิ่มทักษะ เพื่อให้ผู้ว่าจ้างรู้จักคุณมากขึ้น' }
-    : pendingVerification
-      ? { label: 'ดูสถานะเอกสาร', page: 'documents', hint: 'เอกสารอยู่ระหว่างการตรวจสอบ คุณกลับมาดูสถานะได้ที่นี่' }
-      : !verified
-        ? { label: 'ส่งเอกสารยืนยันตัวตน', page: 'documents', hint: 'ยืนยันตัวตนก่อนให้ผู้ว่าจ้างพบคุณในผลค้นหา' }
-        : !available
-          ? { label: 'เปิดพร้อมรับงาน', page: 'profile', hint: 'เปิดสถานะพร้อมรับงานเพื่อให้ผู้ว่าจ้างค้นพบคุณ' }
-          : { label: 'ค้นหางานดูแล', page: 'jobs', hint: 'โปรไฟล์พร้อมแล้ว เลือกประกาศที่เหมาะกับทักษะของคุณ' }
+  const nextAction =
+    !info?.bio?.trim() || !skills.length
+      ? {
+          label: 'เติมข้อมูลโปรไฟล์',
+          page: 'profile',
+          hint: 'แนะนำตัวและเพิ่มทักษะ เพื่อให้ผู้ว่าจ้างรู้จักคุณมากขึ้น',
+        }
+      : pendingVerification
+        ? {
+            label: 'ดูสถานะเอกสาร',
+            page: 'documents',
+            hint: 'เอกสารอยู่ระหว่างการตรวจสอบ คุณกลับมาดูสถานะได้ที่นี่',
+          }
+        : !verified
+          ? {
+              label: 'ส่งเอกสารยืนยันตัวตน',
+              page: 'documents',
+              hint: 'ยืนยันตัวตนก่อนให้ผู้ว่าจ้างพบคุณในผลค้นหา',
+            }
+          : !available
+            ? {
+                label: 'เปิดพร้อมรับงาน',
+                page: 'profile',
+                hint: 'เปิดสถานะพร้อมรับงานเพื่อให้ผู้ว่าจ้างค้นพบคุณ',
+              }
+            : {
+                label: 'ค้นหางานดูแล',
+                page: 'jobs',
+                hint: 'โปรไฟล์พร้อมแล้ว เลือกประกาศที่เหมาะกับทักษะของคุณ',
+              }
   return (
     <section className="care-home" aria-labelledby="care-home-title">
       <header className="care-home-heading">
@@ -93,7 +115,14 @@ function CaregiverDashboard({ profile, onNavigate }) {
           ดูโปรไฟล์ของฉัน ↗
         </button>
       </header>
-      <div className="care-welcome">
+      <DashboardTasks role="caregiver" onNavigate={onNavigate} />
+      <div
+        className={
+          verified && available
+            ? 'care-welcome care-welcome-ready'
+            : 'care-welcome'
+        }
+      >
         <div>
           <h2>
             ให้ทักษะของคุณ
@@ -101,7 +130,11 @@ function CaregiverDashboard({ profile, onNavigate }) {
             ได้พบกับคนที่ต้องการการดูแล
           </h2>
           <p>{loading ? 'กำลังตรวจความพร้อมของโปรไฟล์...' : nextAction.hint}</p>
-          <button type="button" disabled={loading || error} onClick={() => onNavigate(nextAction.page)}>
+          <button
+            type="button"
+            disabled={loading || error}
+            onClick={() => onNavigate(nextAction.page)}
+          >
             {nextAction.label} <span aria-hidden="true">→</span>
           </button>
         </div>
@@ -151,7 +184,14 @@ function CaregiverDashboard({ profile, onNavigate }) {
             </article>
           </div>
           <div className="care-columns">
-            <section className="care-panel">
+            <details
+              className="care-panel care-readiness"
+              open={!verified || !available}
+            >
+              <summary>
+                ความพร้อมของโปรไฟล์ · {steps.filter((step) => step.done).length}
+                /3 ขั้นตอน
+              </summary>
               <div className="care-panel-heading">
                 <h2>เตรียมตัวให้พร้อมรับโอกาส</h2>
                 <span>
@@ -183,7 +223,7 @@ function CaregiverDashboard({ profile, onNavigate }) {
                   ส่งเอกสารยืนยันตัวตน
                 </button>
               )}
-            </section>
+            </details>
             <section className="care-panel">
               <div className="care-panel-heading">
                 <h2>ทักษะของคุณ</h2>

@@ -1,9 +1,28 @@
+import { jobStatusLabels } from '../lib/jobs'
+import useRevealItem from '../hooks/useRevealItem'
 import { useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import JobForm from './JobForm'
 import CaregiverMatches from './CaregiverMatches'
 import EmployerJobCard from './EmployerJobCard'
 import '../styles/EmployerJobs.css'
+
+const currentStatuses = [
+  'draft',
+  'open',
+  'matched',
+  'in_progress',
+  'completion_pending',
+]
+function matchesJobFilter(job, filter) {
+  return (
+    filter === 'all' ||
+    (filter === 'current'
+      ? currentStatuses.includes(job.status)
+      : job.status === filter)
+  )
+}
+const filters = { current: 'งานปัจจุบัน', all: 'ทั้งหมด', ...jobStatusLabels }
 
 function JobManager({ onNavigate }) {
   const [jobs, setJobs] = useState([])
@@ -13,7 +32,8 @@ function JobManager({ onNavigate }) {
   const [showForm, setShowForm] = useState(false)
   const [editingJob, setEditingJob] = useState(null)
   const [refreshKey, setRefreshKey] = useState(0)
-  const [filter, setFilter] = useState('all')
+  const targetId = useRevealItem(jobs, 'job', 'id')
+  const [filter, setFilter] = useState('current')
   const [closingId, setClosingId] = useState(null)
   const closingRef = useRef(false)
   const [matchingJob, setMatchingJob] = useState(null)
@@ -80,22 +100,32 @@ function JobManager({ onNavigate }) {
     if (
       closingRef.current ||
       !window.confirm(`เริ่มงานดูแลผู้ป่วยตามประกาศ “${job.title}” ใช่หรือไม่?`)
-    ) return
+    )
+      return
     closingRef.current = true
     setClosingId(job.id)
     setError('')
     setSuccessMessage('')
     try {
-      const { data, error: startError } = await supabase.rpc('start_matched_job', {
-        p_job_id: job.id,
-      })
+      const { data, error: startError } = await supabase.rpc(
+        'start_matched_job',
+        {
+          p_job_id: job.id,
+        },
+      )
       if (startError) throw startError
       if (!data) throw new Error('ไม่พบประกาศที่พร้อมเริ่มงาน')
-      setJobs((current) => current.map((item) =>
-        item.id === job.id
-          ? { ...item, status: 'in_progress', started_at: new Date().toISOString() }
-          : item,
-      ))
+      setJobs((current) =>
+        current.map((item) =>
+          item.id === job.id
+            ? {
+                ...item,
+                status: 'in_progress',
+                started_at: new Date().toISOString(),
+              }
+            : item,
+        ),
+      )
       setSuccessMessage('เริ่มงานแล้ว')
     } catch {
       setError('เริ่มงานไม่สำเร็จ สถานะอาจเปลี่ยนแล้ว กรุณาโหลดรายการใหม่')
@@ -108,23 +138,35 @@ function JobManager({ onNavigate }) {
   async function confirmCompletion(job) {
     if (
       closingRef.current ||
-      !window.confirm(`ผู้ดูแลแจ้งว่างาน “${job.title}” เสร็จแล้ว ยืนยันจบงานใช่หรือไม่?`)
-    ) return
+      !window.confirm(
+        `ผู้ดูแลแจ้งว่างาน “${job.title}” เสร็จแล้ว ยืนยันจบงานใช่หรือไม่?`,
+      )
+    )
+      return
     closingRef.current = true
     setClosingId(job.id)
     setError('')
     setSuccessMessage('')
     try {
-      const { data, error: confirmError } = await supabase.rpc('confirm_job_completion', {
-        p_job_id: job.id,
-      })
+      const { data, error: confirmError } = await supabase.rpc(
+        'confirm_job_completion',
+        {
+          p_job_id: job.id,
+        },
+      )
       if (confirmError) throw confirmError
       if (!data) throw new Error('ไม่พบคำขอจบงานที่รอยืนยัน')
-      setJobs((current) => current.map((item) =>
-        item.id === job.id
-          ? { ...item, status: 'completed', completed_at: new Date().toISOString() }
-          : item,
-      ))
+      setJobs((current) =>
+        current.map((item) =>
+          item.id === job.id
+            ? {
+                ...item,
+                status: 'completed',
+                completed_at: new Date().toISOString(),
+              }
+            : item,
+        ),
+      )
       setSuccessMessage('ยืนยันจบงานแล้ว')
     } catch {
       setError('ยืนยันจบงานไม่สำเร็จ สถานะอาจเปลี่ยนแล้ว กรุณาโหลดรายการใหม่')
@@ -141,12 +183,16 @@ function JobManager({ onNavigate }) {
     setShowForm(true)
   }
 
-  if (matchingJob) return (
-    <CaregiverMatches job={matchingJob} onBack={() => {
-      setMatchingJob(null)
-      setRefreshKey((value) => value + 1)
-    }} />
-  )
+  if (matchingJob)
+    return (
+      <CaregiverMatches
+        job={matchingJob}
+        onBack={() => {
+          setMatchingJob(null)
+          setRefreshKey((value) => value + 1)
+        }}
+      />
+    )
 
   if (showForm)
     return (
@@ -165,7 +211,8 @@ function JobManager({ onNavigate }) {
     )
 
   const visibleJobs = jobs.filter(
-    (job) => filter === 'all' || job.status === filter,
+    (job) =>
+      String(job.id) === String(targetId) || matchesJobFilter(job, filter),
   )
   return (
     <section className="job-manager" aria-labelledby="jobs-heading">
@@ -201,33 +248,55 @@ function JobManager({ onNavigate }) {
           value={filter}
           onChange={(event) => setFilter(event.target.value)}
         >
-          <option value="all">ทั้งหมด</option>
-          <option value="draft">ฉบับร่าง</option>
-          <option value="open">เปิดรับสมัคร</option>
-          <option value="matched">จับคู่สำเร็จ</option>
-          <option value="in_progress">กำลังดำเนินงาน</option>
-          <option value="completion_pending">รอยืนยันจบงาน</option>
-          <option value="completed">เสร็จสิ้น</option>
-          <option value="closed">ปิดรับสมัคร</option>
-          <option value="cancelled">ยกเลิก</option>
+          {Object.entries(filters).map(([value, label]) => (
+            <option key={value} value={value}>
+              {label}
+              {!loading && !error
+                ? ` (${jobs.filter((job) => matchesJobFilter(job, value)).length})`
+                : ''}
+            </option>
+          ))}
         </select>
       </label>
       {loading ? (
         <p role="status">กำลังโหลดประกาศงาน...</p>
       ) : !error && visibleJobs.length === 0 ? (
         <div className="job-empty">
-          <h3>{jobs.length === 0 ? 'ยังไม่มีประกาศงาน' : 'ไม่พบประกาศในสถานะนี้'}</h3>
-          <p>{jobs.length === 0
-            ? 'เริ่มสร้างประกาศโดยเลือกผู้ป่วยและทักษะที่ต้องการ'
-            : 'ลองเลือกสถานะอื่นหรือแสดงประกาศทั้งหมด'}</p>
-          {jobs.length > 0 && <button type="button" className="secondary-button" onClick={() => setFilter('all')}>แสดงทั้งหมด</button>}
+          <h3>
+            {jobs.length === 0 ? 'ยังไม่มีประกาศงาน' : 'ไม่พบประกาศในสถานะนี้'}
+          </h3>
+          <p>
+            {jobs.length === 0
+              ? 'เริ่มสร้างประกาศโดยเลือกผู้ป่วยและทักษะที่ต้องการ'
+              : 'ลองเลือกสถานะอื่นหรือแสดงประกาศทั้งหมด'}
+          </p>
+          {jobs.length > 0 && (
+            <button
+              type="button"
+              className="secondary-button"
+              onClick={() => setFilter('all')}
+            >
+              แสดงทั้งหมด
+            </button>
+          )}
         </div>
       ) : (
         <div className="job-list">
-          {visibleJobs.map((job) => <EmployerJobCard key={job.id} job={job}
-            busy={closingId !== null} processing={closingId === job.id} onMatch={setMatchingJob} onEdit={openForm}
-            onClose={closeJob} onStart={startJob} onComplete={confirmCompletion}
-            onHistory={() => onNavigate('history')} />)}
+          {visibleJobs.map((job) => (
+            <EmployerJobCard
+              key={job.id}
+              job={job}
+              highlighted={String(targetId) === String(job.id)}
+              busy={closingId !== null}
+              processing={closingId === job.id}
+              onMatch={setMatchingJob}
+              onEdit={openForm}
+              onClose={closeJob}
+              onStart={startJob}
+              onComplete={confirmCompletion}
+              onHistory={() => onNavigate('history')}
+            />
+          ))}
         </div>
       )}
     </section>

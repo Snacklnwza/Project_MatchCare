@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import logo from '../assets/navbar/logo.png'
 import chevron from '../assets/navbar/chevron.svg'
+import Notifications from './Notifications'
 
 const menuItemsByRole = {
   employer: [
@@ -87,6 +88,7 @@ function Navbar({ profile, activePage, onSelect, onSignOut }) {
           ))}
         </nav>
         <div className="navbar-account">
+          {role !== 'admin' && <Notifications key={profile.id} userId={profile.id} onSelect={selectPage} />}
           <button className="navbar-menu-toggle" type="button" aria-controls="role-navigation"
             aria-expanded={menuOpen} onClick={() => setMenuOpen((open) => !open)}>
             {menuOpen ? 'ปิดเมนู' : 'เมนู'} <span aria-hidden="true">{menuOpen ? '×' : '☰'}</span>

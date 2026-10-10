@@ -2,6 +2,7 @@ import { useCallback, useRef, useState } from 'react'
 import useRemoteList from '../hooks/useRemoteList'
 import { catalogError, catalogLabels, loadCatalog, saveCatalogItem } from '../lib/catalog'
 import '../styles/Catalog.css'
+import ConditionSkillsEditor from '../components/ConditionSkillsEditor'
 
 export default function AdminCatalog() {
   const [kind, setKind] = useState('skills')
@@ -18,6 +19,7 @@ export default function AdminCatalog() {
         ))}
       </div>
       <CatalogEditor key={kind} kind={kind} />
+      {kind === 'conditions' && <ConditionSkillsEditor />}
     </section>
   )
 }

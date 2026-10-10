@@ -1,4 +1,10 @@
 .catalog-tabs { margin-bottom: 24px; }
+.condition-skills-editor { margin-top: 24px; }
+.condition-skills-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 24px; }
+.condition-skills-editor .condition-skills-options label { display: flex; align-items: center; gap: 10px; min-height: 44px; margin: 0; }
+.condition-skills-options input[type="checkbox"] { width: 18px; height: 18px; margin: 0; flex-shrink: 0; }
+.condition-skills-options button { justify-self: start; grid-column: 1 / -1; }
+@media (max-width: 600px) { .condition-skills-options { grid-template-columns: 1fr; } }
 .catalog-layout { display: grid; grid-template-columns: minmax(260px, 1fr) minmax(0, 2fr); gap: 24px; align-items: start; }
 .catalog-fields { border: 0; padding: 0; margin: 0; min-width: 0; }
 .catalog-fields .workflow-actions { margin-top: 20px; }

@@ -19,6 +19,7 @@ import EmployerApplications from './EmployerApplications'
 import CaregiverSearch from './CaregiverSearch'
 import JobHistory from './JobHistory'
 import EmployerProfile from './EmployerProfile'
+import CaregiverSchedule from './CaregiverSchedule'
 import '../styles/Workflow.css'
 
 function RoleDashboard({ profile, email, onProfileUpdated, onSignOut }) {
@@ -79,6 +80,8 @@ function RoleDashboard({ profile, email, onProfileUpdated, onSignOut }) {
     activePage === 'receivedApplications'
   ) {
     content = <EmployerApplications onNavigate={navigate} />
+  } else if (profile.role === 'caregiver' && activePage === 'schedule') {
+    content = <CaregiverSchedule onNavigate={navigate} />
   } else if (profile.role === 'caregiver' && activePage === 'jobs') {
     content = <JobSearch />
   } else if (profile.role === 'caregiver' && activePage === 'profile') {
@@ -114,8 +117,11 @@ function RoleDashboard({ profile, email, onProfileUpdated, onSignOut }) {
           aria-label="รายการจากการแจ้งเตือน"
         >
           <p>
-            เปิดจากการแจ้งเตือน: {target.source_type === 'job' ? 'งาน' : 'คำขอ'}{' '}
-            #{target.source_id} · รายการที่เน้นอาจอยู่นอกตัวกรองที่เลือก
+            {target.origin === 'schedule'
+              ? 'เปิดจากปฏิทิน'
+              : 'เปิดจากการแจ้งเตือน'}
+            : {target.source_type === 'job' ? 'งาน' : 'คำขอ'} #
+            {target.source_id} · รายการที่เน้นอาจอยู่นอกตัวกรองที่เลือก
           </p>
           <button type="button" onClick={() => setTarget(null)}>
             กลับดูตามตัวกรอง

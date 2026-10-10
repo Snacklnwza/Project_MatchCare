@@ -111,6 +111,9 @@ export default function CaregiverMatches({ job, onBack }) {
         <>
           <p role="status">พบผู้ดูแล {results.length} คน</p>
           <p className="workflow-hint">
+            แสดงเฉพาะผู้ดูแลที่ไม่มีงานที่ตอบรับแล้วทับช่วงเวลาของประกาศนี้
+          </p>
+          <p className="workflow-hint">
             {results[0].required_skills > 0 &&
             results[0].required_condition_skills > 0
               ? 'คะแนนมาจากทักษะในประกาศ 70% และทักษะที่เกี่ยวข้องกับสภาวะการดูแล 30%'

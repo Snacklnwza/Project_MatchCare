@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import logo from '../assets/navbar/logo.png'
 import chevron from '../assets/navbar/chevron.svg'
 import Notifications from './Notifications'
@@ -31,6 +31,24 @@ const menuItemsByRole = {
 
 function Navbar({ profile, activePage, onSelect, onSignOut }) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const accountRef = useRef(null)
+  useEffect(() => {
+    function closeOutside(event) {
+      if (accountRef.current && !accountRef.current.contains(event.target)) accountRef.current.open = false
+    }
+    function closeOnEscape(event) {
+      if (event.key === 'Escape' && accountRef.current?.open) {
+        accountRef.current.open = false
+        accountRef.current.querySelector('summary').focus()
+      }
+    }
+    document.addEventListener('pointerdown', closeOutside)
+    document.addEventListener('keydown', closeOnEscape)
+    return () => {
+      document.removeEventListener('pointerdown', closeOutside)
+      document.removeEventListener('keydown', closeOnEscape)
+    }
+  }, [])
   const role = profile.role
   const menuItems = menuItemsByRole[role] ?? []
   const roleLabel = {
@@ -93,7 +111,10 @@ function Navbar({ profile, activePage, onSelect, onSignOut }) {
             aria-expanded={menuOpen} onClick={() => setMenuOpen((open) => !open)}>
             {menuOpen ? 'ปิดเมนู' : 'เมนู'} <span aria-hidden="true">{menuOpen ? '×' : '☰'}</span>
           </button>
-          <details className="navbar-dropdown">
+          <details className="navbar-dropdown" ref={accountRef}
+            onBlur={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget)) event.currentTarget.open = false
+            }}>
             <summary className="account-toggle" aria-label={`บัญชีคุณ${profile.first_name || 'ผู้ใช้งาน'} (${roleLabel})`}>
               <span className="account-avatar" aria-hidden="true">{profile.first_name?.charAt(0) || 'ผ'}</span>
               <span className="account-name">
@@ -103,7 +124,7 @@ function Navbar({ profile, activePage, onSelect, onSignOut }) {
               <img src={chevron} alt="" />
             </summary>
             <div className="navbar-popover account-menu">
-              {role === 'caregiver' && (
+              {['employer', 'caregiver'].includes(role) && (
                 <button
                   type="button"
                   aria-current={activePage === 'profile' ? 'page' : undefined}
@@ -123,7 +144,7 @@ function Navbar({ profile, activePage, onSelect, onSignOut }) {
                     <circle cx="12" cy="8" r="3.5" />
                     <path d="M5 21v-2a7 7 0 0 1 14 0v2" />
                   </svg>
-                  โปรไฟล์ผู้ดูแล
+                  {role === 'employer' ? 'โปรไฟล์และตั้งค่า' : 'โปรไฟล์ผู้ดูแล'}
                 </button>
               )}
               {role === 'caregiver' && (

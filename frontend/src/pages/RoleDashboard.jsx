@@ -16,9 +16,10 @@ import Applications from './Applications'
 import EmployerApplications from './EmployerApplications'
 import CaregiverSearch from './CaregiverSearch'
 import JobHistory from './JobHistory'
+import EmployerProfile from './EmployerProfile'
 import '../styles/Workflow.css'
 
-function RoleDashboard({ profile, onSignOut }) {
+function RoleDashboard({ profile, email, onProfileUpdated, onSignOut }) {
   const [activePage, setActivePage] = useState('dashboard')
 
   let dashboard
@@ -39,6 +40,8 @@ function RoleDashboard({ profile, onSignOut }) {
 
   if (['employer', 'caregiver'].includes(profile.role) && activePage === 'history') {
     content = <JobHistory profile={profile} />
+  } else if (profile.role === 'employer' && activePage === 'profile') {
+    content = <EmployerProfile profile={profile} email={email} onProfileUpdated={onProfileUpdated} />
   } else if (profile.role === 'employer' && activePage === 'patients') {
     content = <PatientManager />
   } else if (profile.role === 'employer' && activePage === 'jobs') {

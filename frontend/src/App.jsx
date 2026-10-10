@@ -127,6 +127,8 @@ function App() {
             <RoleDashboard
               key={profile.id}
               profile={profile}
+              email={session.user.email}
+              onProfileUpdated={(updated) => setProfile(updated)}
               onSignOut={handleSignOut}
             />
           )}

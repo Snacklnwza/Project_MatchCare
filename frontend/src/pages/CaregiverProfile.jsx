@@ -2,8 +2,18 @@ import useUnsavedChanges from '../hooks/useUnsavedChanges'
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import CaregiverReviews from '../components/CaregiverReviews'
+import '../styles/CaregiverProfile.css'
 
-function CaregiverProfile({ profile }) {
+const verificationLabels = {
+  verified: 'ยืนยันตัวตนแล้ว',
+  pending: 'รอแอดมินตรวจสอบ',
+  rejected: 'เอกสารต้องแก้ไข',
+  not_submitted: 'ยังไม่ได้ส่งเอกสาร',
+}
+
+function CaregiverProfile({ profile, email, onNavigate }) {
+  const [section, setSection] = useState('care')
+  const [contactData, setContactData] = useState(null)
   const [caregiverData, setCaregiverData] = useState(null)
   const [bio, setBio] = useState('')
   const [experienceYears, setExperienceYears] = useState('0')
@@ -37,20 +47,29 @@ function CaregiverProfile({ profile }) {
       setLoading(true)
       setError('')
 
-      const { data, error: loadError } = await supabase
-        .from('caregiver_profiles')
-        .select(
-          'bio, experience_years, availability_status, verification_status',
-        )
-        .eq('caregiver_id', profile.id)
-        .maybeSingle()
+      const [caregiverResult, contactResult] = await Promise.all([
+        supabase
+          .from('caregiver_profiles')
+          .select(
+            'bio, experience_years, availability_status, verification_status',
+          )
+          .eq('caregiver_id', profile.id)
+          .maybeSingle(),
+        supabase
+          .from('profiles')
+          .select('phone, line_id')
+          .eq('id', profile.id)
+          .single(),
+      ])
+      const { data, error: loadError } = caregiverResult
 
       if (!active) return
 
-      if (loadError) {
+      if (loadError || contactResult.error) {
         setError('โหลดข้อมูลผู้ดูแลไม่สำเร็จ')
       } else {
         setCaregiverData(data)
+        setContactData(contactResult.data)
         setBio(data?.bio ?? '')
         setExperienceYears(String(data?.experience_years ?? 0))
       }
@@ -207,111 +226,225 @@ function CaregiverProfile({ profile }) {
         </div>
       )}
       {!loading && !error && (
-        <form className="caregiver-profile-form" onSubmit={handleSubmit}>
-          <h2>{caregiverData ? 'ข้อมูลการดูแลของฉัน' : 'เริ่มสร้างโปรไฟล์'}</h2>
-          <label htmlFor="caregiver-bio">แนะนำตัว</label>
-          <textarea
-            id="caregiver-bio"
-            value={bio}
-            onChange={(event) => setBio(event.target.value)}
-          />
-          <p className="caregiver-profile-hint">
-            เขียนประสบการณ์และแนวทางการดูแล ไม่ต้องใส่เบอร์โทรหรือช่องทางติดต่อ
-          </p>
-
-          <label htmlFor="caregiver-experience">ประสบการณ์ดูแล (ปี)</label>
-          <input
-            id="caregiver-experience"
-            type="number"
-            min="0"
-            max="80"
-            step="1"
-            value={experienceYears}
-            onChange={(event) => setExperienceYears(event.target.value)}
-          />
-          <fieldset>
-            <legend>ทักษะการดูแล</legend>
-            {skillsLoading && <p>กำลังโหลดทักษะ...</p>}
-            {skillsError && (
-              <div role="alert">
-                <p>{skillsError}</p>
-                <button
-                  type="button"
-                  onClick={() => setSkillsRetry((key) => key + 1)}
-                >
-                  ลองใหม่
-                </button>
-              </div>
-            )}
-            {!skillsLoading && !skillsError && (
-              <ul>
-                {skills
-                  .filter(
-                    (skill) =>
-                      skill.is_active || selectedSkillIds.includes(skill.id),
-                  )
-                  .map((skill) => (
-                    <li key={skill.id}>
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={selectedSkillIds.includes(skill.id)}
-                          disabled={!skill.is_active}
-                          onChange={() =>
-                            setSelectedSkillIds((current) =>
-                              current.includes(skill.id)
-                                ? current.filter((id) => id !== skill.id)
-                                : [...current, skill.id],
-                            )
-                          }
-                        />
-                        {skill.name}
-                        {!skill.is_active &&
-                          ' (ปิดใช้งานแล้ว · เก็บข้อมูลเดิม)'}
-                      </label>
-                    </li>
-                  ))}
-              </ul>
-            )}
-          </fieldset>
-          {saveError && <p role="alert">{saveError}</p>}
-          {saveSuccess && <p role="status">{saveSuccess}</p>}
-          <button
-            type="submit"
-            disabled={
-              saving ||
-              availabilitySaving ||
-              skillsLoading ||
-              Boolean(skillsError)
-            }
+        <div className="caregiver-settings-layout">
+          <nav
+            className="caregiver-settings-nav"
+            aria-label="หมวดโปรไฟล์ผู้ดูแล"
           >
-            {saving ? 'กำลังบันทึก...' : 'บันทึกโปรไฟล์'}
-          </button>
-        </form>
-      )}
-      {!loading && !error && (
-        <div className="caregiver-profile-availability">
-          <label>
-            <input
-              type="checkbox"
-              role="switch"
-              checked={caregiverData?.availability_status === 'available'}
-              onChange={handleAvailabilityToggle}
-              disabled={!caregiverData || saving || availabilitySaving}
-            />
-            พร้อมรับงาน
-          </label>
-          <p>
-            {caregiverData
-              ? caregiverData.availability_status === 'available'
-                ? 'สถานะ: พร้อมรับงาน'
-                : 'สถานะ: ยังไม่พร้อมรับงาน'
-              : 'บันทึกโปรไฟล์ก่อนเปลี่ยนสถานะ'}
-          </p>
-          {availabilityError && <p role="alert">{availabilityError}</p>}
+            <h2>จัดการโปรไฟล์</h2>
+            <label className="caregiver-mobile-section">
+              เลือกหมวด
+              <select
+                aria-label="เลือกหมวด"
+                value={section}
+                onChange={(event) => {
+                  const next = event.target.value
+                  if (next === 'documents') onNavigate('documents')
+                  else setSection(next)
+                }}
+              >
+                <option value="personal">ข้อมูลส่วนตัว</option>
+                <option value="care">โปรไฟล์การดูแล</option>
+                <option value="documents">เอกสารยืนยันตัวตน</option>
+              </select>
+            </label>
+            <button
+              type="button"
+              aria-current={section === 'personal' ? 'page' : undefined}
+              onClick={() => setSection('personal')}
+            >
+              ข้อมูลส่วนตัว
+            </button>
+            <button
+              type="button"
+              aria-current={section === 'care' ? 'page' : undefined}
+              onClick={() => setSection('care')}
+            >
+              โปรไฟล์การดูแล
+            </button>
+            <button type="button" onClick={() => onNavigate('documents')}>
+              เอกสารยืนยันตัวตน <span aria-hidden="true">↗</span>
+            </button>
+          </nav>
+          <div className="caregiver-settings-content">
+            {section === 'personal' && (
+              <section
+                className="caregiver-personal-card"
+                aria-labelledby="caregiver-personal-title"
+              >
+                <h2 id="caregiver-personal-title">ข้อมูลส่วนตัว</h2>
+                <p className="caregiver-profile-hint">
+                  ข้อมูลบัญชีที่คุณใช้สมัครและติดต่อเมื่อจับคู่สำเร็จ
+                </p>
+                <dl>
+                  <div>
+                    <dt>ชื่อและนามสกุล</dt>
+                    <dd>
+                      {profile.first_name} {profile.last_name}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>อีเมล</dt>
+                    <dd>{email || 'ไม่ได้ระบุ'}</dd>
+                  </div>
+                  <div>
+                    <dt>เบอร์โทรศัพท์</dt>
+                    <dd>{contactData?.phone || 'ไม่ได้ระบุ'}</dd>
+                  </div>
+                  <div>
+                    <dt>LINE ID</dt>
+                    <dd>{contactData?.line_id || 'ไม่ได้ระบุ'}</dd>
+                  </div>
+                </dl>
+                <p className="caregiver-profile-hint">
+                  หน้านี้แสดงข้อมูลบัญชี
+                  ส่วนคำแนะนำตัวและทักษะแก้ไขได้ในหมวดโปรไฟล์การดูแล
+                </p>
+              </section>
+            )}
+            {/* เก็บฟอร์มไว้เมื่อสลับหมวด เพื่อไม่ให้ร่างที่ยังไม่บันทึกหาย */}
+            <div hidden={section !== 'care'}>
+              <form className="caregiver-profile-form" onSubmit={handleSubmit}>
+                <h2>
+                  {caregiverData ? 'ข้อมูลการดูแลของฉัน' : 'เริ่มสร้างโปรไฟล์'}
+                </h2>
+                <label htmlFor="caregiver-bio">แนะนำตัว</label>
+                <textarea
+                  id="caregiver-bio"
+                  value={bio}
+                  onChange={(event) => setBio(event.target.value)}
+                />
+                <p className="caregiver-profile-hint">
+                  เขียนประสบการณ์และแนวทางการดูแล
+                  ไม่ต้องใส่เบอร์โทรหรือช่องทางติดต่อ
+                </p>
+
+                <label htmlFor="caregiver-experience">
+                  ประสบการณ์ดูแล (ปี)
+                </label>
+                <input
+                  id="caregiver-experience"
+                  type="number"
+                  min="0"
+                  max="80"
+                  step="1"
+                  value={experienceYears}
+                  onChange={(event) => setExperienceYears(event.target.value)}
+                />
+                <fieldset>
+                  <legend>ทักษะการดูแล</legend>
+                  {skillsLoading && <p>กำลังโหลดทักษะ...</p>}
+                  {skillsError && (
+                    <div role="alert">
+                      <p>{skillsError}</p>
+                      <button
+                        type="button"
+                        onClick={() => setSkillsRetry((key) => key + 1)}
+                      >
+                        ลองใหม่
+                      </button>
+                    </div>
+                  )}
+                  {!skillsLoading && !skillsError && (
+                    <ul>
+                      {skills
+                        .filter(
+                          (skill) =>
+                            skill.is_active ||
+                            selectedSkillIds.includes(skill.id),
+                        )
+                        .map((skill) => (
+                          <li key={skill.id}>
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={selectedSkillIds.includes(skill.id)}
+                                disabled={!skill.is_active}
+                                onChange={() =>
+                                  setSelectedSkillIds((current) =>
+                                    current.includes(skill.id)
+                                      ? current.filter((id) => id !== skill.id)
+                                      : [...current, skill.id],
+                                  )
+                                }
+                              />
+                              {skill.name}
+                              {!skill.is_active &&
+                                ' (ปิดใช้งานแล้ว · เก็บข้อมูลเดิม)'}
+                            </label>
+                          </li>
+                        ))}
+                    </ul>
+                  )}
+                </fieldset>
+                {saveError && <p role="alert">{saveError}</p>}
+                {saveSuccess && <p role="status">{saveSuccess}</p>}
+                <button
+                  type="submit"
+                  disabled={
+                    saving ||
+                    availabilitySaving ||
+                    skillsLoading ||
+                    Boolean(skillsError)
+                  }
+                >
+                  {saving ? 'กำลังบันทึก...' : 'บันทึกโปรไฟล์'}
+                </button>
+              </form>
+            </div>
+          </div>
+          <aside
+            className="caregiver-settings-summary"
+            aria-label="สถานะและรีวิวของฉัน"
+          >
+            <section className="caregiver-status-card">
+              <span className="caregiver-summary-avatar" aria-hidden="true">
+                {profile.first_name?.charAt(0)}
+              </span>
+              <h2>
+                {profile.first_name} {profile.last_name}
+              </h2>
+              <p>ผู้ดูแล</p>
+              <h3>การยืนยันตัวตน</h3>
+              <p className="caregiver-verification-status">
+                {verificationLabels[caregiverData?.verification_status] ||
+                  'ยังไม่ได้ส่งเอกสาร'}
+              </p>
+              <button
+                type="button"
+                className="secondary-button"
+                onClick={() => onNavigate('documents')}
+              >
+                ดูเอกสารของฉัน
+              </button>
+              <div className="caregiver-profile-availability">
+                <label>
+                  <input
+                    type="checkbox"
+                    role="switch"
+                    checked={caregiverData?.availability_status === 'available'}
+                    onChange={handleAvailabilityToggle}
+                    disabled={!caregiverData || saving || availabilitySaving}
+                  />
+                  พร้อมรับงาน
+                </label>
+                <p>
+                  {caregiverData
+                    ? caregiverData.availability_status === 'available'
+                      ? 'สถานะ: พร้อมรับงาน'
+                      : 'สถานะ: ยังไม่พร้อมรับงาน'
+                    : 'บันทึกโปรไฟล์ก่อนเปลี่ยนสถานะ'}
+                </p>
+                {availabilityError && <p role="alert">{availabilityError}</p>}
+                <p className="caregiver-profile-hint">
+                  ผู้ว่าจ้างค้นพบคุณได้เมื่อยืนยันตัวตนแล้วและเปิดพร้อมรับงาน
+                </p>
+              </div>
+            </section>
+            <CaregiverReviews caregiverId={profile.id} />
+          </aside>
         </div>
       )}
-      {!loading && !error && <CaregiverReviews caregiverId={profile.id} />}
     </section>
   )
 }

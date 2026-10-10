@@ -1,0 +1,208 @@
+/* แยกเมนู ฟอร์ม และสถานะ โดยใช้ขอบหน้าร่วมกับหน้าหลัก */
+.caregiver-mobile-section {
+  display: none;
+}
+.caregiver-settings-layout {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr) 310px;
+  align-items: start;
+  gap: 24px;
+}
+.caregiver-settings-layout > * {
+  min-width: 0;
+}
+.caregiver-settings-nav {
+  display: grid;
+  gap: 8px;
+}
+.caregiver-settings-nav h2 {
+  margin: 0 0 12px;
+  font-size: 16px;
+}
+.caregiver-settings-nav button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+  padding: 12px 16px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: #53675c;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+.caregiver-settings-nav button:hover {
+  background: #eaf5ef;
+}
+.caregiver-settings-nav button[aria-current='page'] {
+  background: #e0f3e9;
+  border-color: #b7dccc;
+  color: #006948;
+  font-weight: 600;
+}
+.caregiver-settings-content .caregiver-profile-form {
+  width: 100%;
+}
+.caregiver-settings-content .caregiver-profile-form ul {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.caregiver-settings-content .caregiver-profile-form li label {
+  min-height: 44px;
+  align-items: flex-start;
+  padding: 8px 0;
+}
+.caregiver-settings-content .caregiver-profile-form li input {
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+.caregiver-status-card > button {
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid #9bbcaf;
+  border-radius: 8px;
+  background: #fff;
+  color: #006948;
+  font: inherit;
+  cursor: pointer;
+}
+.caregiver-status-card > button:hover {
+  background: #f0f8f4;
+}
+.caregiver-personal-card,
+.caregiver-status-card,
+.caregiver-settings-summary .caregiver-reviews {
+  margin: 0;
+  padding: 24px;
+  border: 1px solid #dce7e1;
+  border-radius: 16px;
+  background: #fff;
+  overflow-wrap: anywhere;
+}
+.caregiver-personal-card h2 {
+  margin: 0 0 16px;
+  font-size: 20px;
+}
+.caregiver-personal-card dl {
+  margin: 24px 0;
+}
+.caregiver-personal-card dl > div {
+  padding: 16px 0;
+  border-bottom: 1px solid #edf1ee;
+}
+.caregiver-personal-card dt {
+  color: #53675c;
+  font-size: 14px;
+}
+.caregiver-personal-card dd {
+  margin: 8px 0 0;
+}
+.caregiver-settings-summary {
+  display: grid;
+  gap: 20px;
+}
+.caregiver-summary-avatar {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #e0f3e9;
+  color: #006948;
+  font-size: 24px;
+  font-weight: 600;
+}
+.caregiver-status-card h2 {
+  margin: 16px 0 4px;
+  font-size: 20px;
+}
+.caregiver-status-card > p {
+  margin: 8px 0 20px;
+  color: #53675c;
+}
+.caregiver-status-card h3 {
+  margin: 20px 0 8px;
+  font-size: 16px;
+}
+.caregiver-status-card .caregiver-verification-status {
+  color: #173128;
+}
+.caregiver-settings-summary .caregiver-profile-availability {
+  width: 100%;
+  margin-top: 24px;
+}
+.caregiver-settings-summary .caregiver-reviews h4 {
+  margin: 0 0 16px;
+  font-size: 18px;
+}
+.caregiver-settings-summary .review-score > span {
+  display: block;
+  margin-top: 4px;
+}
+.caregiver-settings-summary .caregiver-review-list {
+  max-height: 360px;
+  overflow-y: auto;
+}
+.caregiver-settings-layout button:focus-visible,
+.caregiver-settings-layout input:focus-visible,
+.caregiver-settings-layout textarea:focus-visible {
+  outline: 3px solid #006948;
+  outline-offset: 3px;
+}
+@media (max-width: 1199px) {
+  .caregiver-settings-layout {
+    grid-template-columns: minmax(0, 1fr) 300px;
+  }
+  .caregiver-settings-nav {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .caregiver-settings-nav h2 {
+    width: 100%;
+    margin-bottom: 4px;
+  }
+}
+@media (max-width: 760px) {
+  .caregiver-settings-nav > button {
+    display: none;
+  }
+  .caregiver-mobile-section {
+    display: grid;
+    gap: 8px;
+    color: #53675c;
+    font-size: 14px;
+  }
+  .caregiver-mobile-section select {
+    width: 100%;
+    min-height: 48px;
+    padding: 10px 12px;
+    border: 1px solid #bdcfc5;
+    border-radius: 8px;
+    background: #fff;
+    color: #173128;
+    font: inherit;
+  }
+  .caregiver-settings-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+  .caregiver-settings-nav {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+  .caregiver-settings-nav h2 {
+    margin-bottom: 8px;
+  }
+  .caregiver-settings-content .caregiver-profile-form,
+  .caregiver-personal-card,
+  .caregiver-status-card,
+  .caregiver-settings-summary .caregiver-reviews {
+    padding: 20px;
+  }
+  .caregiver-settings-content .caregiver-profile-form ul {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

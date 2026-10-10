@@ -82,7 +82,9 @@ function RoleDashboard({ profile, email, onProfileUpdated, onSignOut }) {
   } else if (profile.role === 'caregiver' && activePage === 'jobs') {
     content = <JobSearch />
   } else if (profile.role === 'caregiver' && activePage === 'profile') {
-    content = <CaregiverProfile profile={profile} />
+    content = (
+      <CaregiverProfile profile={profile} email={email} onNavigate={navigate} />
+    )
   } else if (profile.role === 'caregiver' && activePage === 'documents') {
     content = <CaregiverDocuments profile={profile} />
   } else if (profile.role === 'caregiver' && activePage === 'applications') {

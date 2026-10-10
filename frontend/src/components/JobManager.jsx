@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
-import { formatJobDate, jobStatusLabels, payUnitLabels } from '../lib/jobs'
 import JobForm from './JobForm'
 import CaregiverMatches from './CaregiverMatches'
+import EmployerJobCard from './EmployerJobCard'
+import '../styles/EmployerJobs.css'
 
-function JobManager() {
+function JobManager({ onNavigate }) {
   const [jobs, setJobs] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -26,7 +27,7 @@ function JobManager() {
         const { data, error: queryError } = await supabase
           .from('job_posts')
           .select(
-            'id, patient_id, title, description, care_summary, starts_at, ends_at, pay_amount, pay_unit, status, province, district, subdistrict, address_detail, job_required_skills(skill_id, skills(name))',
+            'id, patient_id, title, description, care_summary, starts_at, ends_at, pay_amount, pay_unit, status, province, district, subdistrict, address_detail, patients(first_name, last_name), job_required_skills(skill_id, skills(name))',
           )
           .order('created_at', { ascending: false })
         if (queryError) throw queryError
@@ -201,12 +202,14 @@ function JobManager() {
           onChange={(event) => setFilter(event.target.value)}
         >
           <option value="all">ทั้งหมด</option>
+          <option value="draft">ฉบับร่าง</option>
           <option value="open">เปิดรับสมัคร</option>
           <option value="matched">จับคู่สำเร็จ</option>
           <option value="in_progress">กำลังดำเนินงาน</option>
           <option value="completion_pending">รอยืนยันจบงาน</option>
           <option value="completed">เสร็จสิ้น</option>
           <option value="closed">ปิดรับสมัคร</option>
+          <option value="cancelled">ยกเลิก</option>
         </select>
       </label>
       {loading ? (
@@ -221,81 +224,10 @@ function JobManager() {
         </div>
       ) : (
         <div className="job-list">
-          {visibleJobs.map((job) => (
-            <article className="job-card" key={job.id}>
-              <div className="job-heading">
-                <h3>{job.title}</h3>
-                <span className={`job-status job-status-${job.status}`}>
-                  {jobStatusLabels[job.status] ?? job.status}
-                </span>
-              </div>
-              <p className="job-description">{job.description}</p>
-              <p>
-                <strong>การดูแล:</strong> {job.care_summary}
-              </p>
-              <p>
-                <strong>สถานที่:</strong> {job.subdistrict} อ.{job.district} จ.
-                {job.province}
-              </p>
-              <p>
-                <strong>วันเวลา:</strong> {formatJobDate(job.starts_at)} –{' '}
-                {formatJobDate(job.ends_at)}
-              </p>
-              <p>
-                <strong>ค่าตอบแทน:</strong>{' '}
-                {Number(job.pay_amount).toLocaleString('th-TH')} บาท{' '}
-                {payUnitLabels[job.pay_unit]}
-              </p>
-              <div className="job-tags">
-                {job.job_required_skills?.map((item) => (
-                  <span key={item.skill_id}>
-                    {item.skills?.name ?? 'ทักษะที่ปิดใช้งาน'}
-                  </span>
-                ))}
-              </div>
-              {job.status === 'matched' && (
-                <div className="job-actions">
-                  <button type="button" disabled={closingId !== null}
-                    onClick={() => startJob(job)}>
-                    {closingId === job.id ? 'กำลังเริ่มงาน...' : 'เริ่มงาน'}
-                  </button>
-                </div>
-              )}
-              {job.status === 'completion_pending' && (
-                <div className="job-actions">
-                  <button type="button" disabled={closingId !== null}
-                    onClick={() => confirmCompletion(job)}>
-                    {closingId === job.id ? 'กำลังยืนยัน...' : 'ยืนยันจบงาน'}
-                  </button>
-                </div>
-              )}
-              {['draft', 'open'].includes(job.status) && (
-                <div className="job-actions">
-                  {job.status === 'open' && (
-                    <button type="button" disabled={closingId !== null}
-                      onClick={() => setMatchingJob(job)}>
-                      หาผู้ดูแลสำหรับประกาศนี้
-                    </button>
-                  )}
-                  <button
-                    type="button"
-                    disabled={closingId !== null}
-                    onClick={() => openForm(job)}
-                  >
-                    แก้ไขประกาศ
-                  </button>
-                  <button
-                    type="button"
-                    className="secondary-button"
-                    disabled={closingId !== null}
-                    onClick={() => closeJob(job)}
-                  >
-                    {closingId === job.id ? 'กำลังปิด...' : 'ปิดประกาศ'}
-                  </button>
-                </div>
-              )}
-            </article>
-          ))}
+          {visibleJobs.map((job) => <EmployerJobCard key={job.id} job={job}
+            busy={closingId !== null} processing={closingId === job.id} onMatch={setMatchingJob} onEdit={openForm}
+            onClose={closeJob} onStart={startJob} onComplete={confirmCompletion}
+            onHistory={() => onNavigate('history')} />)}
         </div>
       )}
     </section>

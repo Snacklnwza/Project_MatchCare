@@ -45,7 +45,7 @@ function RoleDashboard({ profile, email, onProfileUpdated, onSignOut }) {
   } else if (profile.role === 'employer' && activePage === 'patients') {
     content = <PatientManager />
   } else if (profile.role === 'employer' && activePage === 'jobs') {
-    content = <JobManager />
+    content = <JobManager onNavigate={setActivePage} />
   } else if (profile.role === 'employer' && activePage === 'caregivers') {
     content = <CaregiverSearch onNavigate={setActivePage} />
   } else if (profile.role === 'employer' && activePage === 'receivedApplications') {

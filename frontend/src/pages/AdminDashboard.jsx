@@ -1,3 +1,5 @@
+import AdminStatistics from '../components/AdminStatistics'
+
 function AdminDashboard({ profile, onNavigate }) {
   return (
     <section className="workflow-page admin-home" aria-labelledby="admin-home-title">
@@ -5,6 +7,7 @@ function AdminDashboard({ profile, onNavigate }) {
         <h1 id="admin-home-title">สวัสดี คุณ{profile.first_name}</h1>
         <p>เลือกงานที่ต้องจัดการเพื่อให้ข้อมูลผู้ดูแลและการค้นหาพร้อมใช้งาน</p>
       </header>
+      <AdminStatistics />
       <div className="admin-home-grid">
         <article className="workflow-card">
           <h2>ยืนยันตัวตนผู้ดูแล</h2>

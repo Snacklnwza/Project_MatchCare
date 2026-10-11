@@ -6,6 +6,10 @@ import { mobilityLabels, areaLabels, sideLabels, assistanceLabels } from '../lib
 
 export default function CaregiverMatches({ job, onBack }) {
   const care = job.patients
+  const hasCareDetails = Boolean(
+    care?.mobility_status || care?.affected_area || care?.transfer_assistance ||
+    care?.chronic_conditions || care?.care_notes || care?.patient_conditions?.length,
+  )
   const [results, setResults] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -86,27 +90,6 @@ export default function CaregiverMatches({ job, onBack }) {
         ← กลับไปประกาศงาน
       </button>
       <h2 id="matches-heading">ผู้ดูแลสำหรับ “{job.title}”</h2>
-      {(care?.mobility_status || care?.affected_area || care?.transfer_assistance || care?.chronic_conditions || care?.care_notes || care?.patient_conditions?.length > 0) && (
-        <div className="match-explanation">
-          <strong>รายละเอียดผู้ป่วยสำหรับประเมินงาน</strong>
-          {care.mobility_status && <p>การเคลื่อนไหว: {mobilityLabels[care.mobility_status]}</p>}
-          {care.chronic_conditions && <p>โรคประจำตัว/อาการ: {care.chronic_conditions}</p>}
-          {care.care_notes && <p>อาการอื่น/สิ่งที่ต้องช่วย: {care.care_notes}</p>}
-          {care.patient_conditions?.length > 0 && (
-            <p>สภาวะการดูแล: {care.patient_conditions.map(item => item.conditions?.name).filter(Boolean).join(', ')}</p>
-          )}
-          {care.affected_area && (
-            <p>
-              เคลื่อนไหวลำบาก: {areaLabels[care.affected_area]}{' '}
-              {sideLabels[care.affected_side]}
-            </p>
-          )}
-          {care.transfer_assistance && (
-            <p>{assistanceLabels[care.transfer_assistance]}</p>
-          )}
-          <p>รายละเอียดเหล่านี้ช่วยประกอบการตัดสินใจ คะแนนคิดจากทักษะในประกาศเท่านั้น</p>
-        </div>
-      )}
       {notice && <p role="status">{notice}</p>}
       {inviteError && <p role="alert">{inviteError}</p>}
       <p>ผู้ดูแลที่ยืนยันแล้วและพร้อมรับงาน เรียงตามคะแนนทักษะที่ตรงกับงาน</p>
@@ -137,7 +120,8 @@ export default function CaregiverMatches({ job, onBack }) {
             แสดงเฉพาะผู้ดูแลที่ไม่มีงานที่ตอบรับแล้วทับช่วงเวลาของประกาศนี้
           </p>
           <p className="workflow-hint">คะแนนมาจากทักษะที่เลือกในประกาศ 100% โปรดอ่านรายละเอียดสุขภาพก่อนส่งคำเชิญ</p>
-          <ol className="caregiver-match-list">
+          <div className="caregiver-results-layout">
+            <ol className="caregiver-match-list">
             {results.map((caregiver) => (
               <li className="job-card" key={caregiver.caregiver_id}>
                 <div className="job-heading">
@@ -195,7 +179,34 @@ export default function CaregiverMatches({ job, onBack }) {
                 )}
               </li>
             ))}
-          </ol>
+            </ol>
+            <aside className="caregiver-care-panel" aria-labelledby="caregiver-care-heading">
+              <h3 id="caregiver-care-heading">รายละเอียดงานดูแล</h3>
+              {hasCareDetails ? (
+                <>
+                  {care.mobility_status && (
+                    <p><strong>การเคลื่อนไหว</strong><span>{mobilityLabels[care.mobility_status]}</span></p>
+                  )}
+                  {care.chronic_conditions && (
+                    <p><strong>โรคประจำตัว/อาการ</strong><span>{care.chronic_conditions}</span></p>
+                  )}
+                  {care.care_notes && (
+                    <p><strong>อาการอื่น/สิ่งที่ต้องช่วย</strong><span>{care.care_notes}</span></p>
+                  )}
+                  {care.patient_conditions?.length > 0 && (
+                    <p><strong>สภาวะการดูแล</strong><span>{care.patient_conditions.map(item => item.conditions?.name).filter(Boolean).join(', ')}</span></p>
+                  )}
+                  {care.affected_area && (
+                    <p><strong>บริเวณที่เคลื่อนไหวลำบาก</strong><span>{areaLabels[care.affected_area]} {sideLabels[care.affected_side]}</span></p>
+                  )}
+                  {care.transfer_assistance && (
+                    <p><strong>การลุก นั่ง หรือย้ายตัว</strong><span>{assistanceLabels[care.transfer_assistance]}</span></p>
+                  )}
+                </>
+              ) : <p>ยังไม่มีรายละเอียดสุขภาพเพิ่มเติม</p>}
+              <small>ข้อมูลนี้ช่วยประกอบการตัดสินใจ คะแนนคิดจากทักษะในประกาศเท่านั้น</small>
+            </aside>
+          </div>
         </>
       )}
     </section>

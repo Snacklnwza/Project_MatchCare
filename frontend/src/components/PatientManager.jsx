@@ -1,15 +1,7 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
-import { formatPatientAge } from '../lib/patients'
+import { formatPatientAge, mobilityLabels, areaLabels, sideLabels, assistanceLabels } from '../lib/patients'
 const PatientForm = lazy(() => import('./PatientForm'))
-
-const mobilityLabels = {
-  normal: 'เคลื่อนไหวได้ปกติ',
-  bedridden: 'ผู้ป่วยติดเตียง',
-  wheelchair: 'ใช้รถเข็น',
-  walker: 'ใช้เครื่องช่วยเดิน',
-  cane: 'ใช้ไม้เท้า',
-}
 
 function PatientManager() {
   const [patients, setPatients] = useState([])
@@ -37,6 +29,10 @@ function PatientManager() {
                         last_name,
                         birth_date,
                         mobility_status,
+                        affected_area,
+                        affected_side,
+                        transfer_assistance,
+                        chronic_conditions,
                         care_notes,
                         province,
                         district,
@@ -238,6 +234,18 @@ function PatientManager() {
               {mobilityLabels[patient.mobility_status] ??
                 patient.mobility_status}
             </p>
+            {patient.affected_area && (
+              <p>
+                เคลื่อนไหวลำบาก: {areaLabels[patient.affected_area]}{' '}
+                {sideLabels[patient.affected_side]}
+              </p>
+            )}
+            {patient.transfer_assistance && (
+              <p>{assistanceLabels[patient.transfer_assistance]}</p>
+            )}
+            {patient.chronic_conditions && (
+              <p>โรคประจำตัว/อาการ: {patient.chronic_conditions}</p>
+            )}
 
             <p>
               อ.{patient.district} จ.{patient.province}

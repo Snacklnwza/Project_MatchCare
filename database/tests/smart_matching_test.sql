@@ -68,13 +68,13 @@ select set_config('request.jwt.claims',json_build_object('sub',current_setting('
 do $$ declare full_score numeric; partial_score numeric; begin
   select match_score into full_score from public.rank_caregivers_for_job(current_setting('test.job')::bigint) where caregiver_id=current_setting('test.full')::uuid;
   select match_score into partial_score from public.rank_caregivers_for_job(current_setting('test.job')::bigint) where caregiver_id=current_setting('test.partial')::uuid;
-  if full_score <> 100 or partial_score <> 65 then raise exception 'คะแนนถ่วงน้ำหนักผิด: % %',full_score,partial_score; end if;
+  if full_score <> 100 or partial_score <> 50 then raise exception 'คะแนนทักษะในประกาศผิด: % %',full_score,partial_score; end if;
   if (select ordinality from public.rank_caregivers_for_job(current_setting('test.job')::bigint) with ordinality r where r.caregiver_id=current_setting('test.full')::uuid)
     >= (select ordinality from public.rank_caregivers_for_job(current_setting('test.job')::bigint) with ordinality r where r.caregiver_id=current_setting('test.partial')::uuid) then
     raise exception 'ลำดับคะแนนผิด'; end if;
   if exists(select 1 from public.rank_caregivers_for_job(current_setting('test.job')::bigint) r
     where caregiver_id=current_setting('test.partial')::uuid and
-      (jsonb_array_length(r.missing_skills)<>1 or r.matched_condition_skills<>1 or r.required_condition_skills<>1)) then
+      (jsonb_array_length(r.missing_skills)<>1 or r.matched_condition_skills<>0 or r.required_condition_skills<>0)) then
     raise exception 'เหตุผลคะแนนไม่ตรงกับทักษะ'; end if;
   if exists(select 1 from public.rank_caregivers_for_job(current_setting('test.job')::bigint)
     where caregiver_id in (current_setting('test.unverified')::uuid,current_setting('test.unavailable')::uuid)) then
@@ -89,8 +89,8 @@ delete from public.condition_skills where condition_id=current_setting('test.con
 set local role authenticated;
 do $$ begin
   if exists(select 1 from public.rank_caregivers_for_job(current_setting('test.job')::bigint)
-    where caregiver_id=current_setting('test.partial')::uuid and (match_score<>50 or unmapped_conditions<>1)) then
-    raise exception 'เกณฑ์ยังไม่ตั้งแต่คิดคะแนนผิด'; end if;
+    where caregiver_id=current_setting('test.partial')::uuid and (match_score<>50 or unmapped_conditions<>0)) then
+    raise exception 'สภาวะเปลี่ยนคะแนนทักษะหลัก'; end if;
 end $$;
 -- กรณีไม่มีเกณฑ์ทั้งสองด้านต้องให้ 0 ไม่ใช่ 100
 reset role;

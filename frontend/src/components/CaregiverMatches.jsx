@@ -2,9 +2,18 @@ import { useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { callWorkflow, workflowError } from '../lib/workflow'
 import ReviewSummary from './ReviewSummary'
+import CaregiverAvatar from './CaregiverAvatar'
+import useCaregiverAvatars from '../hooks/useCaregiverAvatars'
+import { mobilityLabels, areaLabels, sideLabels, assistanceLabels } from '../lib/patients'
 
 export default function CaregiverMatches({ job, onBack }) {
+  const care = job.patients
+  const hasCareDetails = Boolean(
+    care?.mobility_status || care?.affected_area || care?.transfer_assistance ||
+    care?.chronic_conditions || care?.care_notes || care?.patient_conditions?.length,
+  )
   const [results, setResults] = useState([])
+  const avatarUrls = useCaregiverAvatars(results.map((item) => item.caregiver_id))
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [retry, setRetry] = useState(0)
@@ -109,33 +118,20 @@ export default function CaregiverMatches({ job, onBack }) {
         </div>
       ) : (
         <>
-          <p role="status">พบผู้ดูแล {results.length} คน</p>
-          <p className="workflow-hint">
-            แสดงเฉพาะผู้ดูแลที่ไม่มีงานที่ตอบรับแล้วทับช่วงเวลาของประกาศนี้
+          <p className="caregiver-result-count" role="status">
+            พบผู้ดูแล <strong>{results.length}</strong> คน
           </p>
-          <p className="workflow-hint">
-            {results[0].required_skills > 0 &&
-            results[0].required_condition_skills > 0
-              ? 'คะแนนมาจากทักษะในประกาศ 70% และทักษะที่เกี่ยวข้องกับสภาวะการดูแล 30%'
-              : results[0].required_skills > 0
-                ? 'คะแนนมาจากทักษะในประกาศ 100%'
-                : results[0].required_condition_skills > 0
-                  ? 'คะแนนมาจากทักษะที่เกี่ยวข้องกับสภาวะการดูแล 100%'
-                  : 'ยังไม่มีเกณฑ์ทักษะ จึงเรียงตามประสบการณ์'}
-          </p>
-          {results[0].unmapped_conditions > 0 && (
-            <p className="workflow-hint">
-              มีสภาวะการดูแลที่ยังไม่ได้กำหนดทักษะ ระบบใช้เฉพาะเกณฑ์ที่กำหนดไว้
-            </p>
-          )}
-          <ol className="caregiver-match-list">
+          <div className="caregiver-results-layout">
+            <ol className="caregiver-match-list">
             {results.map((caregiver) => (
               <li className="job-card" key={caregiver.caregiver_id}>
                 <div className="job-heading">
-                  <h3>{caregiver.display_name}</h3>
+                  <div className="caregiver-card-identity">
+                    <CaregiverAvatar name={caregiver.display_name} url={avatarUrls[caregiver.caregiver_id]} />
+                    <h3>{caregiver.display_name}</h3>
+                  </div>
                   <span className="job-status job-status-open">
-                    {caregiver.required_skills > 0 ||
-                    caregiver.required_condition_skills > 0
+                    {caregiver.required_skills > 0
                       ? `ทักษะตรงกับงาน ${caregiver.match_score}%`
                       : 'ยังไม่มีเกณฑ์คะแนน'}
                   </span>
@@ -149,11 +145,6 @@ export default function CaregiverMatches({ job, onBack }) {
                   title="ทักษะในประกาศ"
                   matching={caregiver.matching_skills}
                   missing={caregiver.missing_skills}
-                />
-                <SkillExplanation
-                  title="ทักษะที่เกี่ยวข้องกับสภาวะการดูแล"
-                  matching={caregiver.matching_condition_skills}
-                  missing={caregiver.missing_condition_skills}
                 />
                 <div className="job-actions">
                   <button
@@ -192,7 +183,34 @@ export default function CaregiverMatches({ job, onBack }) {
                 )}
               </li>
             ))}
-          </ol>
+            </ol>
+            <aside className="caregiver-care-panel" aria-labelledby="caregiver-care-heading">
+              <h3 id="caregiver-care-heading">รายละเอียดงานดูแล</h3>
+              {hasCareDetails ? (
+                <>
+                  {care.mobility_status && (
+                    <p><strong>การเคลื่อนไหว</strong><span>{mobilityLabels[care.mobility_status]}</span></p>
+                  )}
+                  {care.chronic_conditions && (
+                    <p><strong>โรคประจำตัว/อาการ</strong><span>{care.chronic_conditions}</span></p>
+                  )}
+                  {care.care_notes && (
+                    <p><strong>อาการอื่น/สิ่งที่ต้องช่วย</strong><span>{care.care_notes}</span></p>
+                  )}
+                  {care.patient_conditions?.length > 0 && (
+                    <p><strong>สภาวะการดูแล</strong><span>{care.patient_conditions.map(item => item.conditions?.name).filter(Boolean).join(', ')}</span></p>
+                  )}
+                  {care.affected_area && (
+                    <p><strong>บริเวณที่เคลื่อนไหวลำบาก</strong><span>{areaLabels[care.affected_area]} {sideLabels[care.affected_side]}</span></p>
+                  )}
+                  {care.transfer_assistance && (
+                    <p><strong>การลุก นั่ง หรือย้ายตัว</strong><span>{assistanceLabels[care.transfer_assistance]}</span></p>
+                  )}
+                </>
+              ) : <p>ยังไม่มีรายละเอียดสุขภาพเพิ่มเติม</p>}
+              <small>ข้อมูลนี้ช่วยประกอบการตัดสินใจ คะแนนคิดจากทักษะในประกาศเท่านั้น</small>
+            </aside>
+          </div>
         </>
       )}
     </section>

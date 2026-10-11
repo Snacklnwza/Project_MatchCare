@@ -2,7 +2,7 @@ import useUnsavedChanges from '../hooks/useUnsavedChanges'
 import { useEffect, useRef, useState } from 'react'
 import { saveCaregiverContact } from '../lib/profiles'
 import { supabase } from '../lib/supabase'
-import CaregiverReviews from '../components/CaregiverReviews'
+import ReviewSummary from '../components/ReviewSummary'
 import '../styles/CaregiverProfile.css'
 
 const verificationLabels = {
@@ -549,7 +549,7 @@ function CaregiverProfile({ profile, email, onNavigate }) {
                 </p>
               </div>
             </section>
-            <CaregiverReviews caregiverId={profile.id} />
+            <ReviewSummary caregiverId={profile.id} />
           </aside>
         </div>
       )}

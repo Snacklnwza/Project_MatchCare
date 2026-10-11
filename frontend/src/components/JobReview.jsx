@@ -11,10 +11,13 @@ import {
 import '../styles/Reviews.css'
 
 export default function JobReview({ jobId, kind, canReview }) {
-  const employer = kind === 'caregiver'
+  const reviewsCaregiver = kind === 'caregiver'
+  const target = reviewsCaregiver ? 'ผู้ดูแล' : 'ผู้ว่าจ้าง'
+  const writer = reviewsCaregiver ? 'ผู้ว่าจ้าง' : 'ผู้ดูแล'
   const loader = useCallback(
-    () => (employer ? loadJobReview(jobId) : loadJobEmployerReview(jobId)),
-    [jobId, employer],
+    () =>
+      reviewsCaregiver ? loadJobReview(jobId) : loadJobEmployerReview(jobId),
+    [jobId, reviewsCaregiver],
   )
   const { data, loading, error, reload } = useRemoteList(loader)
   const [rating, setRating] = useState(0)
@@ -38,7 +41,7 @@ export default function JobReview({ jobId, kind, canReview }) {
     setSaveError('')
     setMessage('')
     try {
-      await (employer
+      await (reviewsCaregiver
         ? submitJobReview(jobId, rating, comment)
         : submitEmployerReview(jobId, rating, comment))
       setMessage('บันทึกรีวิวแล้ว ขอบคุณที่แบ่งปันประสบการณ์')
@@ -53,11 +56,8 @@ export default function JobReview({ jobId, kind, canReview }) {
   }
 
   return (
-    <section
-      className="job-review"
-      aria-label={`รีวิว${employer ? 'ผู้ดูแล' : 'ผู้ว่าจ้าง'}ของงานนี้`}
-    >
-      <h3>รีวิว{employer ? 'ผู้ดูแล' : 'ผู้ว่าจ้าง'}หลังจบงาน</h3>
+    <section className="job-review" aria-label={`รีวิว${target}ของงานนี้`}>
+      <h3>รีวิว{target}หลังจบงาน</h3>
       {message && <p role="status">{message}</p>}
       {saveError && <p role="alert">{saveError}</p>}
       {loading ? (
@@ -80,11 +80,12 @@ export default function JobReview({ jobId, kind, canReview }) {
       ) : canReview ? (
         <form onSubmit={save}>
           <p>
-            ให้คะแนน{employer ? 'การดูแล' : 'ประสบการณ์ทำงานกับผู้ว่าจ้าง'}{' '}
+            ให้คะแนน
+            {reviewsCaregiver ? 'การดูแล' : 'ประสบการณ์ทำงานกับผู้ว่าจ้าง'}{' '}
             รีวิวได้หนึ่งครั้งต่องาน
           </p>
           <fieldset className="review-rating" disabled={saving}>
-            <legend>ให้คะแนน{employer ? 'ผู้ดูแล' : 'ผู้ว่าจ้าง'}</legend>
+            <legend>ให้คะแนน{target}</legend>
             <div className="review-rating-options">
               {[1, 2, 3, 4, 5].map((value) => (
                 <label
@@ -115,7 +116,9 @@ export default function JobReview({ jobId, kind, canReview }) {
           />
           <p id={`${fieldId}-hint`} className="workflow-hint">
             รีวิวจะปรากฏ
-            {employer ? 'ในข้อมูลผู้ดูแล' : 'กับประกาศของผู้ว่าจ้าง'}{' '}
+            {reviewsCaregiver
+              ? 'ในข้อมูลผู้ดูแล'
+              : 'กับประกาศของผู้ว่าจ้าง'}{' '}
             กรุณาไม่ใส่ชื่อผู้ป่วย ข้อมูลสุขภาพส่วนตัว หรือช่องทางติดต่อ ·{' '}
             {comment.length}/1,000 ตัวอักษร
           </p>
@@ -124,9 +127,7 @@ export default function JobReview({ jobId, kind, canReview }) {
           </button>
         </form>
       ) : (
-        <p className="workflow-hint">
-          {employer ? 'ผู้ว่าจ้าง' : 'ผู้ดูแล'}ยังไม่ได้เขียนรีวิวของงานนี้
-        </p>
+        <p className="workflow-hint">{writer}ยังไม่ได้เขียนรีวิวของงานนี้</p>
       )}
     </section>
   )

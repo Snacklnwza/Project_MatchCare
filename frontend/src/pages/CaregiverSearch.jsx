@@ -2,7 +2,7 @@ import InviteCaregiverPicker from '../components/InviteCaregiverPicker'
 import CollapsibleFilters from '../components/CollapsibleFilters'
 import { useCallback, useState } from 'react'
 import geography from '../data/geography-options.json'
-import CaregiverReviews from '../components/CaregiverReviews'
+import ReviewSummary from '../components/ReviewSummary'
 import useRemoteList from '../hooks/useRemoteList'
 import { searchCaregivers, CAREGIVER_PAGE_SIZE } from '../lib/caregivers'
 import { loadJobSkillOptions } from '../lib/openJobs'
@@ -283,7 +283,7 @@ export default function CaregiverSearch({ onNavigate }) {
                         อ.{caregiver.district} จ.{caregiver.province}
                       </p>
                       <p>สถานะ: ยืนยันตัวตนแล้ว และพร้อมรับงาน</p>
-                      <CaregiverReviews caregiverId={caregiver.caregiver_id} />
+                      <ReviewSummary caregiverId={caregiver.caregiver_id} />
                       <InviteCaregiverPicker
                         caregiver={caregiver}
                         onNavigate={onNavigate}

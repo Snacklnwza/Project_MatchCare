@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { callWorkflow, workflowError } from '../lib/workflow'
-import CaregiverReviews from './CaregiverReviews'
+import ReviewSummary from './ReviewSummary'
 
 export default function CaregiverMatches({ job, onBack }) {
   const [results, setResults] = useState([])
@@ -188,7 +188,7 @@ export default function CaregiverMatches({ job, onBack }) {
                   </button>
                 </div>
                 {reviewId === caregiver.caregiver_id && (
-                  <CaregiverReviews caregiverId={caregiver.caregiver_id} />
+                  <ReviewSummary caregiverId={caregiver.caregiver_id} />
                 )}
               </li>
             ))}

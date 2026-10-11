@@ -4,7 +4,7 @@ import { requestMatches } from '../lib/requestStatus'
 import { useRef, useState } from 'react'
 import useRemoteList from '../hooks/useRemoteList'
 import MatchContact from '../components/MatchContact'
-import EmployerReputation from '../components/EmployerReputation'
+import ReviewSummary from '../components/ReviewSummary'
 import {
   loadInvitations,
   callWorkflow,
@@ -198,7 +198,7 @@ export default function Invitations({ profile, onNavigate }) {
               {profile.role === 'caregiver' &&
                 request.status === 'pending' &&
                 request.job_status === 'open' && (
-                  <EmployerReputation jobId={request.job_post_id} />
+                  <ReviewSummary jobId={request.job_post_id} />
                 )}
               {profile.role === 'caregiver' &&
                 request.status === 'pending' &&

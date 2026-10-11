@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import './styles/App.css'
 import LoginForm from './components/LoginForm'
-import { supabase } from './lib/supabase'
+import { isPasswordRecoverySession, supabase } from './lib/supabase'
 import RegisterForm from './components/RegisterForm'
 import PasswordRecoveryForm from './components/PasswordRecoveryForm'
 import RoleDashboard from './pages/RoleDashboard'
@@ -9,6 +9,7 @@ import LandingPage from './pages/LandingPage'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 
 const ProfileSetupForm = lazy(() => import('./components/ProfileSetupForm'))
+const recoveryUserKey = 'matchcare-recovery-user'
 
 function App() {
   const [session, setSession] = useState(null)
@@ -28,8 +29,23 @@ function App() {
       (event, currentSession) => {
         setSession(currentSession)
         if (currentSession) setAuthError('')
-        if (event === 'PASSWORD_RECOVERY') setAuthMode('reset-password')
+        if (
+          event === 'PASSWORD_RECOVERY' ||
+          (event === 'INITIAL_SESSION' &&
+            isPasswordRecoverySession(currentSession))
+        ) {
+          if (currentSession) {
+            sessionStorage.setItem(recoveryUserKey, currentSession.user.id)
+          }
+          setAuthMode('reset-password')
+        } else if (
+          event === 'INITIAL_SESSION' &&
+          currentSession?.user.id === sessionStorage.getItem(recoveryUserKey)
+        ) {
+          setAuthMode('reset-password')
+        }
         if (event === 'SIGNED_OUT') {
+          sessionStorage.removeItem(recoveryUserKey)
           setAuthMode(manualSignOutRef.current ? 'landing' : 'login')
           if (!manualSignOutRef.current)
             setAuthError('เซสชันหมดอายุ กรุณาเข้าสู่ระบบอีกครั้ง')
@@ -111,6 +127,7 @@ function App() {
         <section className="auth-panel">
           <PasswordRecoveryForm
             mode="update"
+            onPasswordUpdated={() => sessionStorage.removeItem(recoveryUserKey)}
             onComplete={() => setAuthMode('landing')}
           />
         </section>

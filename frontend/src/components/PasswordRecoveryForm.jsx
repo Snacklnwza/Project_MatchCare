@@ -3,7 +3,12 @@ import PasswordInput from './PasswordInput'
 import { supabase } from '../lib/supabase'
 import logo from '../assets/navbar/logo.png'
 
-export default function PasswordRecoveryForm({ mode, onBack, onComplete }) {
+export default function PasswordRecoveryForm({
+  mode,
+  onBack,
+  onComplete,
+  onPasswordUpdated,
+}) {
   const updating = mode === 'update'
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -30,6 +35,7 @@ export default function PasswordRecoveryForm({ mode, onBack, onComplete }) {
           password,
         })
         if (updateError) throw updateError
+        onPasswordUpdated?.()
         setUpdated(true)
         setPassword('')
         setConfirmation('')

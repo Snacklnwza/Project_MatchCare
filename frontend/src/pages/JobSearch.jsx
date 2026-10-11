@@ -4,6 +4,7 @@ import { useCallback, useRef, useState } from 'react'
 import geography from '../data/geography-options.json'
 import useRemoteList from '../hooks/useRemoteList'
 import { formatJobDate, payUnitLabels } from '../lib/jobs'
+import { mobilityLabels, areaLabels, sideLabels, assistanceLabels } from '../lib/careContext'
 import {
   getOpenJobDetails,
   JOB_PAGE_SIZE,
@@ -20,12 +21,6 @@ import '../styles/JobSearch.css'
 const provinces = Object.keys(geography).sort((a, b) =>
   a.localeCompare(b, 'th'),
 )
-const transferAssistanceLabels = {
-  independent: 'ทำได้เอง',
-  supervision: 'ต้องมีคนคอยดูแล',
-  partial: 'ต้องมีคนช่วยพยุง',
-  full: 'ต้องมีคนช่วยย้ายตัวทั้งหมด',
-}
 const emptyFilters = {
   province: '',
   district: '',
@@ -429,14 +424,34 @@ function JobSearch() {
                   {detailError && <p role="alert">{detailError}</p>}
                   {detail && (
                     <>
+                      <h4>ทักษะหลักที่ต้องการ</h4>
+                      <div className="job-search-tags">
+                        {detail.required_skills?.map((skill) => (
+                          <span key={skill.id}>{skill.name}</span>
+                        ))}
+                      </div>
                       <h4>รายละเอียดงาน</h4>
                       <p>{detail.description}</p>
                       <h4>การดูแลที่ต้องการ</h4>
                       <p>{detail.care_summary}</p>
+                      <h4>ข้อมูลสุขภาพที่ควรรู้ก่อนสมัคร</h4>
+                      {detail.chronic_conditions ? (
+                        <p><strong>โรคประจำตัว/อาการ:</strong> {detail.chronic_conditions}</p>
+                      ) : <p>ผู้ว่าจ้างยังไม่ได้ระบุโรคประจำตัวหรืออาการเพิ่มเติม</p>}
+                      {detail.care_notes && <p><strong>อาการอื่น/สิ่งที่ต้องช่วย:</strong> {detail.care_notes}</p>}
+                      {detail.care_conditions?.length > 0 && (
+                        <p><strong>สภาวะการดูแล:</strong> {detail.care_conditions.join(', ')}</p>
+                      )}
+                      {detail.mobility_status && (
+                        <p><strong>การเคลื่อนไหว:</strong> {mobilityLabels[detail.mobility_status]}</p>
+                      )}
+                      {detail.affected_area && (
+                        <p><strong>บริเวณที่เคลื่อนไหวลำบาก:</strong> {areaLabels[detail.affected_area]} {sideLabels[detail.affected_side]}</p>
+                      )}
                       {detail.transfer_assistance && (
                         <p className="job-search-hint">
                           การลุก นั่ง หรือย้ายตัว:{' '}
-                          {transferAssistanceLabels[detail.transfer_assistance]}
+                          {assistanceLabels[detail.transfer_assistance]}
                         </p>
                       )}
                       <dl>
@@ -461,12 +476,6 @@ function JobSearch() {
                           </dd>
                         </div>
                       </dl>
-                      <h4>ทักษะที่ต้องการ</h4>
-                      <div className="job-search-tags">
-                        {detail.required_skills?.map((skill) => (
-                          <span key={skill.id}>{skill.name}</span>
-                        ))}
-                      </div>
                       <ReviewSummary jobId={job.job_id} />
                       {submittedIds.has(job.job_id) ||
                       applications.some(

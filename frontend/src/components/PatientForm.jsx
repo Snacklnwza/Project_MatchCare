@@ -20,6 +20,9 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
   const [transferAssistance, setTransferAssistance] = useState(
     patient?.transfer_assistance ?? '',
   )
+  const [chronicConditions, setChronicConditions] = useState(
+    patient?.chronic_conditions ?? '',
+  )
   const [careNotes, setCareNotes] = useState(patient?.care_notes ?? '')
   const [province, setProvince] = useState(patient?.province ?? '')
   const [district, setDistrict] = useState(patient?.district ?? '')
@@ -51,6 +54,7 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
       affectedArea,
       affectedSide,
       transferAssistance,
+      chronicConditions,
       careNotes,
       province,
       district,
@@ -69,6 +73,7 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
       affectedArea,
       affectedSide,
       transferAssistance,
+      chronicConditions,
       careNotes,
       province,
       district,
@@ -179,7 +184,7 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
 
     try {
       const { data, error: saveError } = await supabase.rpc(
-        'save_patient_with_care_details',
+        'save_patient_with_health_context',
         {
           p_patient_id: patient?.id ?? null,
           p_first_name: firstName.trim(),
@@ -196,6 +201,7 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
           p_affected_area: affectedArea || null,
           p_affected_side: affectedSide || null,
           p_transfer_assistance: transferAssistance || null,
+          p_chronic_conditions: chronicConditions.trim() || null,
         },
       )
 
@@ -362,10 +368,20 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
         </small>
       )}
 
-      <h2 className="form-section-title">รายละเอียดการช่วยเคลื่อนไหว</h2>
+      <h2 className="form-section-title">รายละเอียดสุขภาพและการดูแล</h2>
       <p className="form-help">
-        กรอกเฉพาะส่วนที่เกี่ยวข้อง เพื่อให้ผู้ดูแลเข้าใจงานที่ต้องช่วย
+        ข้อมูลส่วนนี้ให้ผู้ดูแลอ่านประกอบการตัดสินใจ ไม่ใช้คำนวณคะแนนจับคู่
       </p>
+      <label htmlFor="patient-chronic-conditions">โรคประจำตัวและอาการที่ควรรู้</label>
+      <textarea
+        id="patient-chronic-conditions"
+        value={chronicConditions}
+        onChange={(event) => setChronicConditions(event.target.value)}
+        maxLength={1000}
+        rows={3}
+        placeholder="เช่น เบาหวาน ต้องตรวจน้ำตาลก่อนอาหาร หรือมีอาการเวียนศีรษะเมื่อลุกยืน"
+      />
+      <p className="form-help">ระบุเฉพาะข้อมูลที่เกี่ยวกับการดูแล หลีกเลี่ยงชื่อและข้อมูลติดต่อในช่องนี้</p>
       <label htmlFor="patient-affected-area">
         บริเวณที่อ่อนแรงหรือเคลื่อนไหวลำบาก
       </label>
@@ -415,8 +431,17 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
         <option value="full">ต้องมีคนช่วยย้ายตัวทั้งหมด</option>
       </select>
 
+      <label htmlFor="patient-care-notes">อาการอื่นและสิ่งที่ต้องช่วยเป็นพิเศษ (ไม่บังคับ)</label>
+      <textarea
+        id="patient-care-notes"
+        value={careNotes}
+        onChange={(event) => setCareNotes(event.target.value)}
+        rows={3}
+        placeholder="เช่น เวียนศีรษะเมื่อลุกยืน ต้องช่วยพยุงไปห้องน้ำ"
+      />
+
       <fieldset className="patient-option-group">
-        <legend>สภาวะหรือโรคประจำตัว</legend>
+        <legend>สภาวะการดูแลเพิ่มเติม</legend>
 
         {optionsLoading ? (
           <p>กำลังโหลดสภาวะ...</p>
@@ -446,6 +471,7 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
 
       <fieldset className="patient-option-group">
         <legend>ทักษะผู้ดูแลที่ต้องการ</legend>
+        <p className="form-help">เลือกทักษะหลักให้ตรงกับงาน และตรวจอีกครั้งตอนสร้างประกาศ</p>
 
         {optionsLoading ? (
           <p>กำลังโหลดทักษะ...</p>
@@ -581,15 +607,6 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
           {fieldErrors['patient-address-detail']}
         </small>
       )}
-
-      <label htmlFor="patient-care-notes">
-        รายละเอียดการดูแลเพิ่มเติม (ไม่บังคับ)
-      </label>
-      <textarea
-        id="patient-care-notes"
-        value={careNotes}
-        onChange={(event) => setCareNotes(event.target.value)}
-      />
 
       {error && <p role="alert">{error}</p>}
       {optionsError && (

@@ -47,7 +47,7 @@ function JobManager({ onNavigate }) {
         const { data, error: queryError } = await supabase
           .from('job_posts')
           .select(
-            'id, patient_id, title, description, care_summary, starts_at, ends_at, pay_amount, pay_unit, status, province, district, subdistrict, address_detail, patients(first_name, last_name, affected_area, affected_side, transfer_assistance), job_required_skills(skill_id, skills(name))',
+            'id, patient_id, title, description, care_summary, starts_at, ends_at, pay_amount, pay_unit, status, province, district, subdistrict, address_detail, patients(first_name, last_name, mobility_status, affected_area, affected_side, transfer_assistance, chronic_conditions, care_notes, patient_conditions(conditions(name))), job_required_skills(skill_id, skills(name))',
           )
           .order('created_at', { ascending: false })
         if (queryError) throw queryError

@@ -2,34 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { callWorkflow, workflowError } from '../lib/workflow'
 import ReviewSummary from './ReviewSummary'
-
-const areaLabels = {
-  arm: 'แขน',
-  leg: 'ขา',
-  arm_and_leg: 'แขนและขา',
-  other: 'ส่วนอื่น',
-}
-const sideLabels = {
-  left: 'ซ้าย',
-  right: 'ขวา',
-  both: 'ทั้งสองด้าน',
-  unknown: 'ยังไม่ทราบด้าน',
-}
-const assistanceLabels = {
-  independent: 'ย้ายตัวได้เอง',
-  supervision: 'ต้องมีคนคอยดูแลขณะย้ายตัว',
-  partial: 'ต้องช่วยพยุงขณะย้ายตัว',
-  full: 'ต้องช่วยย้ายตัวทั้งหมด',
-}
+import { mobilityLabels, areaLabels, sideLabels, assistanceLabels } from '../lib/careContext'
 
 export default function CaregiverMatches({ job, onBack }) {
   const care = job.patients
-  const requiresTransferSkill = ['partial', 'full'].includes(
-    care?.transfer_assistance,
-  )
-  const skillSource = requiresTransferSkill
-    ? 'ทักษะในประกาศและการช่วยย้ายตัว'
-    : 'ทักษะในประกาศ'
   const [results, setResults] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -110,9 +86,15 @@ export default function CaregiverMatches({ job, onBack }) {
         ← กลับไปประกาศงาน
       </button>
       <h2 id="matches-heading">ผู้ดูแลสำหรับ “{job.title}”</h2>
-      {(care?.affected_area || care?.transfer_assistance) && (
+      {(care?.mobility_status || care?.affected_area || care?.transfer_assistance || care?.chronic_conditions || care?.care_notes || care?.patient_conditions?.length > 0) && (
         <div className="match-explanation">
-          <strong>ความต้องการดูแลของงานนี้</strong>
+          <strong>รายละเอียดผู้ป่วยสำหรับประเมินงาน</strong>
+          {care.mobility_status && <p>การเคลื่อนไหว: {mobilityLabels[care.mobility_status]}</p>}
+          {care.chronic_conditions && <p>โรคประจำตัว/อาการ: {care.chronic_conditions}</p>}
+          {care.care_notes && <p>อาการอื่น/สิ่งที่ต้องช่วย: {care.care_notes}</p>}
+          {care.patient_conditions?.length > 0 && (
+            <p>สภาวะการดูแล: {care.patient_conditions.map(item => item.conditions?.name).filter(Boolean).join(', ')}</p>
+          )}
           {care.affected_area && (
             <p>
               เคลื่อนไหวลำบาก: {areaLabels[care.affected_area]}{' '}
@@ -122,9 +104,7 @@ export default function CaregiverMatches({ job, onBack }) {
           {care.transfer_assistance && (
             <p>{assistanceLabels[care.transfer_assistance]}</p>
           )}
-          {requiresTransferSkill && (
-            <p>ระบบนำทักษะ “การช่วยพยุงและย้ายตัว” มาคิดคะแนนจับคู่ด้วย</p>
-          )}
+          <p>รายละเอียดเหล่านี้ช่วยประกอบการตัดสินใจ คะแนนคิดจากทักษะในประกาศเท่านั้น</p>
         </div>
       )}
       {notice && <p role="status">{notice}</p>}
@@ -156,29 +136,14 @@ export default function CaregiverMatches({ job, onBack }) {
           <p className="workflow-hint">
             แสดงเฉพาะผู้ดูแลที่ไม่มีงานที่ตอบรับแล้วทับช่วงเวลาของประกาศนี้
           </p>
-          <p className="workflow-hint">
-            {results[0].required_skills > 0 &&
-            results[0].required_condition_skills > 0
-              ? `คะแนนมาจาก${skillSource} 70% และทักษะที่เกี่ยวข้องกับสภาวะการดูแล 30%`
-              : results[0].required_skills > 0
-                ? `คะแนนมาจาก${skillSource} 100%`
-                : results[0].required_condition_skills > 0
-                  ? 'คะแนนมาจากทักษะที่เกี่ยวข้องกับสภาวะการดูแล 100%'
-                  : 'ยังไม่มีเกณฑ์ทักษะ จึงเรียงตามประสบการณ์'}
-          </p>
-          {results[0].unmapped_conditions > 0 && (
-            <p className="workflow-hint">
-              มีสภาวะการดูแลที่ยังไม่ได้กำหนดทักษะ ระบบใช้เฉพาะเกณฑ์ที่กำหนดไว้
-            </p>
-          )}
+          <p className="workflow-hint">คะแนนมาจากทักษะที่เลือกในประกาศ 100% โปรดอ่านรายละเอียดสุขภาพก่อนส่งคำเชิญ</p>
           <ol className="caregiver-match-list">
             {results.map((caregiver) => (
               <li className="job-card" key={caregiver.caregiver_id}>
                 <div className="job-heading">
                   <h3>{caregiver.display_name}</h3>
                   <span className="job-status job-status-open">
-                    {caregiver.required_skills > 0 ||
-                    caregiver.required_condition_skills > 0
+                    {caregiver.required_skills > 0
                       ? `ทักษะตรงกับงาน ${caregiver.match_score}%`
                       : 'ยังไม่มีเกณฑ์คะแนน'}
                   </span>
@@ -189,14 +154,9 @@ export default function CaregiverMatches({ job, onBack }) {
                 <p>ประสบการณ์ดูแล {caregiver.experience_years} ปี</p>
                 <p>ยืนยันแล้ว · พร้อมรับงาน</p>
                 <SkillExplanation
-                  title={skillSource}
+                  title="ทักษะในประกาศ"
                   matching={caregiver.matching_skills}
                   missing={caregiver.missing_skills}
-                />
-                <SkillExplanation
-                  title="ทักษะที่เกี่ยวข้องกับสภาวะการดูแล"
-                  matching={caregiver.matching_condition_skills}
-                  missing={caregiver.missing_condition_skills}
                 />
                 <div className="job-actions">
                   <button

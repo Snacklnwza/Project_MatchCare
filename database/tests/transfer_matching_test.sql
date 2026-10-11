@@ -1,4 +1,4 @@
--- ระดับการช่วยย้ายตัวต้องเปลี่ยนลำดับจับคู่ แต่ข้างที่อ่อนแรงไม่ควรตัดผู้ดูแล
+-- รายละเอียดการย้ายตัวและโรคไม่เปลี่ยนคะแนน ทักษะในประกาศเท่านั้นที่เปลี่ยน
 begin;
 select set_config('test.transfer_owner', gen_random_uuid()::text, true);
 select set_config('test.transfer_basic', gen_random_uuid()::text, true);
@@ -31,10 +31,10 @@ set local role authenticated;
 do $$
 declare p public.patients; j bigint;
 begin
-  p := public.save_patient_with_care_details(
-    null, 'ทดสอบ', 'จับคู่', '1950-01-01', 'walker', null,
+  p := public.save_patient_with_health_context(
+    null, 'ทดสอบ', 'จับคู่', '1950-01-01', 'walker', 'ต้องช่วยพยุงไปห้องน้ำ',
     'กรุงเทพมหานคร', 'พระนคร', 'พระบรมมหาราชวัง', 'ที่อยู่สมมติ',
-    '{}'::bigint[], '{}'::bigint[], 'arm_and_leg', 'left', 'independent'
+    '{}'::bigint[], '{}'::bigint[], 'arm_and_leg', 'left', 'independent', 'ความดันสูง'
   );
   j := public.create_job_with_tags(
     p.id, 'ทดสอบความต้องการย้ายตัว', 'รายละเอียด', 'การดูแล',
@@ -69,14 +69,13 @@ begin
   where caregiver_id = current_setting('test.transfer_basic')::uuid;
   select match_score into skilled_score from public.rank_caregivers_for_job(current_setting('test.transfer_job')::bigint)
   where caregiver_id = current_setting('test.transfer_skilled')::uuid;
-  if basic_score <> 50 or skilled_score <> 100 then
-    raise exception 'ระดับที่ต้องช่วยย้ายตัวไม่เปลี่ยนคะแนน: % %', basic_score, skilled_score;
+  if basic_score <> 100 or skilled_score <> 100 then
+    raise exception 'รายละเอียดการย้ายตัวเปลี่ยนคะแนน: % %', basic_score, skilled_score;
   end if;
-  if not exists (
-    select 1 from public.rank_caregivers_for_job(current_setting('test.transfer_job')::bigint)
-    where caregiver_id = current_setting('test.transfer_basic')::uuid
-      and missing_skills ? 'การช่วยพยุงและย้ายตัว' and required_skills = 2
-  ) then raise exception 'ไม่อธิบายทักษะที่ยังขาด'; end if;
+  update public.patients set chronic_conditions = 'เบาหวาน' where id = current_setting('test.transfer_patient')::bigint;
+  if not exists (select 1 from public.rank_caregivers_for_job(current_setting('test.transfer_job')::bigint)
+    where caregiver_id = current_setting('test.transfer_basic')::uuid and match_score = 100
+  ) then raise exception 'โรคประจำตัวเปลี่ยนคะแนน'; end if;
 
   update public.patients set affected_side = 'right'
   where id = current_setting('test.transfer_patient')::bigint;
@@ -96,7 +95,7 @@ begin
     select 1 from public.rank_caregivers_for_job(current_setting('test.transfer_job')::bigint)
     where caregiver_id = current_setting('test.transfer_basic')::uuid
       and required_skills = 2 and match_score = 50
-  ) then raise exception 'ทักษะย้ายตัวถูกนับซ้ำเมื่ออยู่ในประกาศ'; end if;
+  ) then raise exception 'ทักษะในประกาศไม่เปลี่ยนคะแนน'; end if;
 end $$;
 
 select set_config('request.jwt.claims', json_build_object(
@@ -106,11 +105,13 @@ do $$
 declare details jsonb;
 begin
   details := public.get_open_job_details(current_setting('test.transfer_job')::bigint);
-  if details->>'transfer_assistance' <> 'full' or not exists (
+  if details->>'transfer_assistance' <> 'full' or details->>'chronic_conditions' <> 'เบาหวาน'
+    or details->>'care_notes' <> 'ต้องช่วยพยุงไปห้องน้ำ'
+    or details->>'affected_side' <> 'right' or exists (
     select 1 from jsonb_array_elements(details->'required_skills') item
-    where item->>'name' = 'การช่วยพยุงและย้ายตัว'
-  ) then raise exception 'ผู้ดูแลไม่เห็นความต้องการช่วยย้ายตัวก่อนสมัคร'; end if;
-  if details ?| array['patient_id', 'patient_name', 'affected_area', 'affected_side', 'address_detail', 'phone'] then
+    where item->>'name' = 'ทักษะที่ไม่มีในประกาศ'
+  ) then raise exception 'รายละเอียดสุขภาพหรือทักษะในประกาศไม่ตรง'; end if;
+  if details ?| array['patient_id', 'patient_name', 'address_detail', 'phone'] then
     raise exception 'รายละเอียดงานเปิดข้อมูลผู้ป่วยเกินจำเป็น';
   end if;
 end $$;

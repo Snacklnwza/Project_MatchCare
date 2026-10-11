@@ -325,7 +325,8 @@ function JobForm({ job = null, onCancel, onSaved }) {
           </div>
         </div>{' '}
         <fieldset>
-          <legend>ทักษะผู้ดูแลที่ต้องการ</legend>
+          <legend>ทักษะหลักที่ต้องการใช้จับคู่</legend>
+          <p className="form-help">เลือกให้ตรงกับงานจริง คะแนนจับคู่คิดจากทักษะที่เลือกตรงนี้ ส่วนข้อมูลสุขภาพให้ผู้ดูแลอ่านก่อนสมัคร</p>
 
           {loadingSkills ? (
             <p>กำลังโหลดทักษะ...</p>

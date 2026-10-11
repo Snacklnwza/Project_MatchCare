@@ -115,7 +115,9 @@ export default function CaregiverMatches({ job, onBack }) {
         </div>
       ) : (
         <>
-          <p role="status">พบผู้ดูแล {results.length} คน</p>
+          <p className="caregiver-result-count" role="status">
+            พบผู้ดูแล <strong>{results.length}</strong> คน
+          </p>
           <p className="workflow-hint">
             แสดงเฉพาะผู้ดูแลที่ไม่มีงานที่ตอบรับแล้วทับช่วงเวลาของประกาศนี้
           </p>

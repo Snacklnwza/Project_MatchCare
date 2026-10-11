@@ -1108,6 +1108,24 @@
   padding: 0;
   list-style: none;
 }
+.caregiver-result-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin: 8px 0 12px;
+  padding: 9px 16px;
+  border: 1px solid #bde4d0;
+  border-radius: 999px;
+  background: #e5f6ec;
+  color: #006948;
+  font-weight: 600;
+}
+.caregiver-result-count strong {
+  font-size: 22px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
 .caregiver-results-layout {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);

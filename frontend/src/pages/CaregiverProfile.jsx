@@ -5,6 +5,7 @@ import { removeOwnAvatar, saveOwnAvatar, signedAvatarUrl } from '../lib/caregive
 import { supabase } from '../lib/supabase'
 import CaregiverAvatar from '../components/CaregiverAvatar'
 import AvatarCropper from '../components/AvatarCropper'
+import SkillPicker from '../components/SkillPicker'
 import ReviewSummary from '../components/ReviewSummary'
 import '../styles/CaregiverProfile.css'
 
@@ -550,35 +551,10 @@ function CaregiverProfile({ profile, email, onNavigate }) {
                     </div>
                   )}
                   {!skillsLoading && !skillsError && (
-                    <ul>
-                      {skills
-                        .filter(
-                          (skill) =>
-                            skill.is_active ||
-                            selectedSkillIds.includes(skill.id),
-                        )
-                        .map((skill) => (
-                          <li key={skill.id}>
-                            <label>
-                              <input
-                                type="checkbox"
-                                checked={selectedSkillIds.includes(skill.id)}
-                                disabled={!skill.is_active}
-                                onChange={() =>
-                                  setSelectedSkillIds((current) =>
-                                    current.includes(skill.id)
-                                      ? current.filter((id) => id !== skill.id)
-                                      : [...current, skill.id],
-                                  )
-                                }
-                              />
-                              {skill.name}
-                              {!skill.is_active &&
-                                ' (ปิดใช้งานแล้ว · เก็บข้อมูลเดิม)'}
-                            </label>
-                          </li>
-                        ))}
-                    </ul>
+                    <SkillPicker skills={skills} selectedIds={selectedSkillIds}
+                      onToggle={(id) => setSelectedSkillIds((current) =>
+                        current.includes(id) ? current.filter((item) => item !== id) : [...current, id],
+                      )} />
                   )}
                 </fieldset>
                 {saveError && <p role="alert">{saveError}</p>}

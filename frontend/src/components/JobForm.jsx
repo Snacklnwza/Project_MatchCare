@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { formatJobDate, payUnitLabels, toLocalDateTime } from '../lib/jobs'
 import { formatPatientAge } from '../lib/patients'
+import SkillPicker from './SkillPicker'
 
 function JobForm({ job = null, onCancel, onSaved }) {
   const savingRef = useRef(false)
@@ -334,25 +335,7 @@ function JobForm({ job = null, onCancel, onSaved }) {
             <p role="alert">{skillError}</p>
           ) : skills.length === 0 ? (
             <p>ไม่มีทักษะให้เลือกในขณะนี้</p>
-          ) : (
-            skills
-              .filter(
-                (skill) =>
-                  skill.is_active || selectedSkillIds.includes(skill.id),
-              )
-              .map((skill) => (
-                <label key={skill.id}>
-                  <input
-                    type="checkbox"
-                    checked={selectedSkillIds.includes(skill.id)}
-                    disabled={!skill.is_active}
-                    onChange={() => toggleSkill(skill.id)}
-                  />
-                  {skill.name}
-                  {!skill.is_active && ' (ปิดใช้งานแล้ว · เก็บข้อมูลเดิม)'}
-                </label>
-              ))
-          )}
+          ) : <SkillPicker skills={skills} selectedIds={selectedSkillIds} onToggle={toggleSkill} />}
         </fieldset>
       </fieldset>
       {formError && (

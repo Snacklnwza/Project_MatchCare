@@ -1,0 +1,11 @@
+.skill-picker { margin-top: 12px; }
+.skill-picker-toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.skill-picker-toolbar input { box-sizing: border-box; width: min(100%, 360px); min-height: 42px; padding: 8px 12px; border: 1px solid #bdcfc5; border-radius: 8px; background: #fff; font: inherit; }
+.skill-picker-toolbar input:focus { outline: 2px solid #0b8c65; outline-offset: 1px; }
+.skill-picker-toolbar span { color: #53675c; font-size: 14px; white-space: nowrap; }
+.skill-picker-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 6px 16px; max-height: 300px; overflow-y: auto; padding: 12px; border: 1px solid #dce9e1; border-radius: 10px; background: #fff; }
+.skill-picker-options label { display: flex; align-items: flex-start; gap: 8px; min-height: 36px; margin: 0; padding: 6px; border-radius: 6px; cursor: pointer; }
+.skill-picker-options label:hover { background: #f1f8f4; }
+.skill-picker-options input { flex: 0 0 auto; margin-top: 4px; accent-color: #006948; }
+.skill-picker-empty { margin: 12px 0; color: #53675c; }
+@media (max-width: 540px) { .skill-picker-toolbar { align-items: stretch; flex-direction: column; } .skill-picker-toolbar input { width: 100%; } .skill-picker-options { grid-template-columns: 1fr; } }

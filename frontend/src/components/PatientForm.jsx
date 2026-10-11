@@ -4,6 +4,7 @@ import geography from '../data/geography-options.json'
 import { formatPatientAge } from '../lib/patients'
 import { toLocalDateTime } from '../lib/jobs'
 import { supabase } from '../lib/supabase'
+import SkillPicker from './SkillPicker'
 
 const provinces = Object.keys(geography)
 
@@ -475,26 +476,8 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
 
         {optionsLoading ? (
           <p>กำลังโหลดทักษะ...</p>
-        ) : (
-          skills
-            .filter(
-              (skill) => skill.is_active || selectedSkillIds.includes(skill.id),
-            )
-            .map((skill) => (
-              <label key={skill.id}>
-                <input
-                  type="checkbox"
-                  checked={selectedSkillIds.includes(skill.id)}
-                  disabled={!skill.is_active}
-                  onChange={() =>
-                    toggleSelectedId(skill.id, setSelectedSkillIds)
-                  }
-                />
-                {skill.name}
-                {!skill.is_active && ' (ปิดใช้งานแล้ว · เก็บข้อมูลเดิม)'}
-              </label>
-            ))
-        )}
+        ) : <SkillPicker skills={skills} selectedIds={selectedSkillIds}
+          onToggle={(id) => toggleSelectedId(id, setSelectedSkillIds)} />}
       </fieldset>
 
       <h2 className="form-section-title">สถานที่ดูแล</h2>

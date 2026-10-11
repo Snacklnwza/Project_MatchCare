@@ -89,7 +89,7 @@ function RoleDashboard({ profile, email, onProfileUpdated, onSignOut }) {
       <CaregiverProfile profile={profile} email={email} onNavigate={navigate} />
     )
   } else if (profile.role === 'caregiver' && activePage === 'documents') {
-    content = <CaregiverDocuments profile={profile} />
+    content = <CaregiverDocuments profile={profile} onNavigate={navigate} />
   } else if (profile.role === 'caregiver' && activePage === 'applications') {
     content = <Applications onNavigate={navigate} />
   } else if (profile.role === 'admin' && activePage === 'verifications') {

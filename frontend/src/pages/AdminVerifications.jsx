@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import useRemoteList from '../hooks/useRemoteList'
 import DocumentList from '../components/DocumentList'
 import {
@@ -15,12 +15,25 @@ export default function AdminVerifications() {
   const [message, setMessage] = useState('')
   const [actionError, setActionError] = useState('')
   const busy = useRef(false)
+  const reviewPanel = useRef(null)
+  const reasonInput = useRef(null)
+  useEffect(() => {
+    if (!selected) return
+    reviewPanel.current?.scrollIntoView({
+      block: 'start',
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        ? 'instant'
+        : 'smooth',
+    })
+    reviewPanel.current?.focus({ preventScroll: true })
+  }, [selected])
   async function review(approve) {
     if (busy.current) return
     setActionError('')
     setMessage('')
     if (!approve && !reason.trim()) {
       setActionError('กรุณาระบุเหตุผลที่ไม่อนุมัติ')
+      reasonInput.current?.focus()
       return
     }
     if (
@@ -97,8 +110,13 @@ export default function AdminVerifications() {
             ))}
           </ul>
           {selected && (
-            <section className="workflow-card">
-              <h2>{selected.display_name}</h2>
+            <section
+              ref={reviewPanel}
+              tabIndex={-1}
+              className="workflow-card"
+              aria-labelledby="verification-person-name"
+            >
+              <h2 id="verification-person-name">{selected.display_name}</h2>
               <DocumentList
                 key={selected.caregiver_id}
                 caregiverId={selected.caregiver_id}
@@ -106,6 +124,8 @@ export default function AdminVerifications() {
               <label htmlFor="review-reason">เหตุผลกรณีไม่อนุมัติ</label>
               <textarea
                 id="review-reason"
+                ref={reasonInput}
+                placeholder="ระบุสิ่งที่ต้องแก้ เช่น รูปไม่ชัด ให้ส่งเอกสารใหม่"
                 maxLength={1000}
                 value={reason}
                 disabled={saving}

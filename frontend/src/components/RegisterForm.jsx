@@ -1,3 +1,5 @@
+import PolicyDialog from './PolicyDialog'
+import PasswordInput from './PasswordInput'
 import { useState } from 'react'
 import { supabase } from '../lib/supabase'
 import logo from '../assets/navbar/logo.png'
@@ -10,6 +12,7 @@ function RegisterForm({ onBack, onLogin }) {
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
   const [acceptedTerms, setAcceptedTerms] = useState(false)
+  const [policy, setPolicy] = useState(null)
 
   async function handleSubmit(event) {
     event.preventDefault()
@@ -46,7 +49,8 @@ function RegisterForm({ onBack, onLogin }) {
       }
     } catch (signUpError) {
       setError(
-        signUpError.status === 429 || signUpError.code === 'over_email_send_rate_limit'
+        signUpError.status === 429 ||
+          signUpError.code === 'over_email_send_rate_limit'
           ? 'ส่งอีเมลยืนยันถี่เกินไป กรุณารอสักครู่ก่อนลองใหม่'
           : 'ไม่สามารถสมัครสมาชิกได้ หากเคยสมัครแล้วให้เข้าสู่ระบบ หรือลองใหม่ภายหลัง',
       )
@@ -82,8 +86,9 @@ function RegisterForm({ onBack, onLogin }) {
       />
 
       <label htmlFor="register-password">รหัสผ่าน</label>
-      <input
+      <PasswordInput
         id="register-password"
+        aria-describedby="register-password-help"
         type="password"
         value={password}
         onChange={(event) => setPassword(event.target.value)}
@@ -93,8 +98,11 @@ function RegisterForm({ onBack, onLogin }) {
         required
       />
 
+      <small id="register-password-help" className="form-help">
+        ใช้รหัสผ่านอย่างน้อย 8 ตัวอักษร และหลีกเลี่ยงรหัสที่ใช้กับบัญชีอื่น
+      </small>
       <label htmlFor="confirm-password">ยืนยันรหัสผ่าน</label>
-      <input
+      <PasswordInput
         id="confirm-password"
         type="password"
         value={confirmPassword}
@@ -118,11 +126,26 @@ function RegisterForm({ onBack, onLogin }) {
           required
         />
         <span>
-          ฉันยอมรับ <strong>ข้อตกลงการใช้งาน</strong> และ{' '}
-          <strong>นโยบายความเป็นส่วนตัว</strong>
+          ฉันยอมรับ{' '}
+          <button
+            type="button"
+            className="policy-link"
+            onClick={() => setPolicy('terms')}
+          >
+            ข้อตกลงการใช้งาน
+          </button>{' '}
+          และ{' '}
+          <button
+            type="button"
+            className="policy-link"
+            onClick={() => setPolicy('privacy')}
+          >
+            นโยบายความเป็นส่วนตัว
+          </button>
         </span>
       </label>
 
+      {policy && <PolicyDialog type={policy} onClose={() => setPolicy(null)} />}
       {error && <p role="alert">{error}</p>}
       {message && <p role="status">{message}</p>}
 

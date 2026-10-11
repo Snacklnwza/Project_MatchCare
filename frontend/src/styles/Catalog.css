@@ -17,3 +17,7 @@
 .catalog-list .workflow-actions { flex-shrink: 0; }
 @media (max-width: 960px) { .catalog-layout { grid-template-columns: 1fr; } }
 @media (max-width: 600px) { .catalog-list li { flex-direction: column; } .catalog-filters { grid-template-columns: 1fr; gap: 0; } }
+
+.catalog-list li { padding:14px 0; }
+.catalog-mapping-link { padding:14px 18px; background:#e5f5ed; border-radius:10px; }
+.catalog-mapping-link a { color:#006948; }

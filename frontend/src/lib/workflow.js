@@ -23,6 +23,8 @@ export const applicationLabels = {
   not_selected: 'ไม่ได้รับเลือกหรือประกาศสิ้นสุดแล้ว',
 }
 const messages = {
+  caregiver_schedule_conflict:
+    'ผู้ดูแลมีงานที่ตอบรับแล้วในช่วงเวลานี้ กรุณาเลือกช่วงเวลาอื่นหรือผู้ดูแลคนอื่น',
   invitation_already_exists: 'ส่งคำเชิญให้ผู้ดูแลคนนี้แล้ว',
   application_already_exists: 'ผู้ดูแลคนนี้สมัครงานไว้แล้ว',
   request_already_exists: 'คุณสมัครงานนี้แล้ว หรือได้รับคำเชิญอยู่แล้ว',
@@ -49,7 +51,8 @@ export async function callWorkflow(name, args) {
 }
 export const loadInvitations = () => callWorkflow('list_my_invitations')
 export const loadMyApplications = () => callWorkflow('list_my_applications')
-export const loadReceivedApplications = () => callWorkflow('list_received_applications')
+export const loadReceivedApplications = () =>
+  callWorkflow('list_received_applications')
 export const loadVerificationQueue = () =>
   callWorkflow('list_verification_queue')
 export async function loadDocuments(caregiverId) {

@@ -28,3 +28,11 @@
 @media (max-width: 600px) {
   .history-facts > div { grid-template-columns: 1fr; gap: 4px; }
 }
+
+.history-local-filters { display:flex; flex-wrap:wrap; align-items:end; gap:16px; }
+.history-local-filters label { display:grid; gap:8px; }
+.history-local-filters input { min-height:44px; padding:10px; box-sizing:border-box; border:1px solid #cbdcd2; border-radius:8px; font:inherit; background:white; max-width:100%; }
+.history-timeline { border-left:2px solid #8bc6ae; padding-left:20px; }
+.history-timeline > div { position:relative; }
+.history-timeline > div::before { content:''; position:absolute; left:-26px; top:8px; width:10px; height:10px; background:#006948; border-radius:50%; }
+@media(max-width:600px) { .history-local-filters label { width:100%; } }

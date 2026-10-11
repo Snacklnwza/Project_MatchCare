@@ -1,0 +1,36 @@
+.employer-job-card .job-heading { align-items: flex-start; }
+.employer-job-card .job-heading h2 { margin: 0; font-size: 20px; line-height: 1.5; }
+.employer-job-patient { margin: 4px 0 0; font-size: 14px; color: #64776d; }
+.employer-job-info { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 14px 32px; margin: 20px 0; }
+.employer-job-info dt { font-size: 13px; color: #64776d; margin-bottom: 4px; }
+.employer-job-info dd { margin: 0; }
+.employer-job-pay { grid-column: 2; grid-row: span 2; padding-left: 24px; border-left: 1px solid #e7eeea; }
+.employer-job-pay strong { display: block; font-size: 24px; line-height: 1.5; color: #006948; }
+.employer-job-pay dd span { color: #53675c; font-size: 14px; }
+.employer-job-tags { align-items: center; }
+.job-manager .employer-job-more-skills { border: 0; background: #f1f5f3; color: #405e50; padding: 5px 10px; font-size: 14px; min-height: 36px; }
+.employer-job-description { margin-top: 16px; color: #405e50; font-size: 14px; }
+.employer-job-description summary { cursor: pointer; width: fit-content; min-height: 32px; display: list-item; }
+.employer-job-description p { line-height: 1.7; margin: 8px 0; }
+.employer-job-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; border-top: 1px solid #e7eeea; padding-top: 16px; margin-top: 12px; }
+.employer-job-next-step { margin: 0; font-size: 13px; color: #64776d; max-width: 55ch; }
+.employer-job-footer .job-actions { margin: 0; gap: 10px; }
+.employer-job-card .job-status { flex-shrink: 0; }
+.job-status-matched { background: #e9f2ff; color: #235387; }
+.job-status-in_progress { background: #e6f4f4; color: #24666a; }
+.job-status-completion_pending { background: #fff4dc; color: #865700; }
+.job-status-completed { background: #e4f3ea; color: #006948; }
+.employer-job-options { position: relative; }
+.employer-job-options > summary { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid #dce7e2; border-radius: 8px; cursor: pointer; list-style: none; font-size: 18px; letter-spacing: 2px; }
+.employer-job-options > summary::-webkit-details-marker { display: none; }
+.employer-job-options[open] > summary { background: #f1f5f3; }
+.employer-job-options > div { position: absolute; right: 0; bottom: calc(100% + 8px); width: 170px; padding: 6px; background: white; border: 1px solid #dce7e2; border-radius: 10px; box-shadow: 0 8px 24px rgb(25 50 38 / 12%); z-index: 2; }
+.job-manager .employer-job-options button { width: 100%; text-align: left; border: 0; background: #fff5f3; color: #a13434; }
+.employer-job-card :focus-visible { outline: 2px solid #059669; outline-offset: 3px; }
+@media (max-width: 600px) {
+  .employer-job-info { grid-template-columns: 1fr; }
+  .employer-job-pay { grid-column: auto; grid-row: auto; padding-left: 0; border-left: 0; }
+  .employer-job-footer { align-items: stretch; }
+  .employer-job-footer .job-actions { width: 100%; }
+  .employer-job-footer .job-actions > button { min-width: 0; }
+}

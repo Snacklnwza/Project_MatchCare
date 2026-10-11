@@ -26,7 +26,8 @@ begin
   for i in 1..23 loop
     perform set_config('request.jwt.claims', json_build_object('sub', current_setting('test.history_employer'))::text, true);
     j := public.create_job_with_tags(p.id, 'งานประวัติ ' || i, 'รายละเอียดงาน', 'ดูแล',
-      '2030-01-01 12:00+07', '2030-01-03 12:00+07', 1000, 'day', array[s]);
+      '2030-01-01 12:00+07'::timestamptz + (i-1)*interval '3 days',
+      '2030-01-03 12:00+07'::timestamptz + (i-1)*interval '3 days', 1000, 'day', array[s]);
     if i % 2 = 0 then
       r := public.invite_caregiver(j, current_setting('test.history_caregiver')::uuid);
       perform set_config('request.jwt.claims', json_build_object('sub', current_setting('test.history_caregiver'))::text, true);
@@ -49,7 +50,7 @@ begin
   perform set_config('request.jwt.claims', json_build_object('sub', current_setting('test.history_employer'))::text, true);
   perform public.confirm_job_completion(j);
   j := public.create_job_with_tags(p.id, 'ยังไม่จับคู่', 'รายละเอียด', 'ดูแล',
-    '2030-02-01 12:00+07', '2030-02-03 12:00+07', 1000, 'day', array[s]);
+    '2030-06-01 12:00+07', '2030-06-03 12:00+07', 1000, 'day', array[s]);
   perform set_config('test.history_pending', j::text, true);
   perform public.invite_caregiver(j, current_setting('test.history_caregiver')::uuid);
 end $$;

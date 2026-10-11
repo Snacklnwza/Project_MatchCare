@@ -7,20 +7,22 @@ import heartIcon from '../assets/landing/heart.svg'
 
 const steps = [
   {
-    title: '1. ค้นหาและจับคู่',
-    description: 'ค้นหาผู้ดูแลที่มีทักษะตรงกับประกาศงานของคุณ',
+    title: '1. สร้างประกาศงาน',
+    description:
+      'ผู้ว่าจ้างเพิ่มผู้ป่วย ระบุวันเวลา ค่าตอบแทน และทักษะที่ต้องการ',
     icon: searchIcon,
     className: 'landing-step-search',
   },
   {
-    title: '2. ตรวจสอบตัวตน',
-    description: 'ดูสถานะการยืนยันตัวตนของผู้ดูแลก่อนตัดสินใจ',
+    title: '2. เลือกผู้ดูแล',
+    description: 'ดูผู้ดูแลที่ยืนยันตัวตนแล้ว ส่งคำเชิญหรือพิจารณาใบสมัคร',
     icon: documentIcon,
     className: 'landing-step-document',
   },
   {
     title: '3. เริ่มการดูแล',
-    description: 'ตอบรับการจับคู่แล้วจึงเปิดข้อมูลติดต่อเพื่อเริ่มดูแล',
+    description:
+      'ผู้ดูแลตอบรับแล้วเปิดข้อมูลติดต่อ เริ่มงาน และยืนยันจบงานร่วมกัน',
     icon: heartIcon,
     className: 'landing-step-heart',
   },
@@ -40,7 +42,8 @@ function LandingPage({ onLogin, onRegister }) {
               ด้วยความใส่ใจ
             </h1>
             <p>
-              สร้างประกาศ ค้นหาผู้ดูแลที่ทักษะตรงกับงาน และติดต่อกันหลังจับคู่สำเร็จ
+              สร้างประกาศ ค้นหาผู้ดูแลที่ทักษะตรงกับงาน
+              และติดต่อกันหลังจับคู่สำเร็จ
               พร้อมขั้นตอนยืนยันตัวตนก่อนผู้ดูแลปรากฏในผลค้นหา
             </p>
             <div className="landing-hero-actions">
@@ -92,6 +95,20 @@ function LandingPage({ onLogin, onRegister }) {
         </div>
       </section>
 
+      <section className="landing-caregiver-steps">
+        <h2>สำหรับผู้ดูแล</h2>
+        <p>
+          สมัครและบันทึกโปรไฟล์ → เลือกทักษะ → ส่งเอกสารให้แอดมินตรวจ →
+          เปิดพร้อมรับงาน → สมัครงานหรือตอบรับคำเชิญ
+        </p>
+        <button
+          type="button"
+          className="landing-caregiver-button"
+          onClick={onRegister}
+        >
+          เริ่มสร้างโปรไฟล์ผู้ดูแล
+        </button>
+      </section>
       <Footer />
     </div>
   )

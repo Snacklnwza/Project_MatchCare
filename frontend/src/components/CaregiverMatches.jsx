@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { callWorkflow, workflowError } from '../lib/workflow'
-import CaregiverReviews from './CaregiverReviews'
+import ReviewSummary from './ReviewSummary'
 
 export default function CaregiverMatches({ job, onBack }) {
   const [results, setResults] = useState([])
@@ -76,15 +76,17 @@ export default function CaregiverMatches({ job, onBack }) {
 
   return (
     <section className="job-manager" aria-labelledby="matches-heading">
+      <p className="form-help">
+        เปอร์เซ็นต์นี้แสดงความตรงกันของทักษะกับงาน
+        ส่วนคะแนนรีวิวเป็นความคิดเห็นจากงานที่ผ่านมา ดูประกอบกันก่อนตัดสินใจ
+      </p>
       <button type="button" className="secondary-button" onClick={onBack}>
         ← กลับไปประกาศงาน
       </button>
       <h2 id="matches-heading">ผู้ดูแลสำหรับ “{job.title}”</h2>
       {notice && <p role="status">{notice}</p>}
       {inviteError && <p role="alert">{inviteError}</p>}
-      <p>
-        ผู้ดูแลที่ยืนยันแล้วและพร้อมรับงาน เรียงตามคะแนนทักษะที่ตรงกับงาน
-      </p>
+      <p>ผู้ดูแลที่ยืนยันแล้วและพร้อมรับงาน เรียงตามคะแนนทักษะที่ตรงกับงาน</p>
       {loading ? (
         <p role="status">กำลังค้นหาผู้ดูแล...</p>
       ) : error ? (
@@ -108,21 +110,34 @@ export default function CaregiverMatches({ job, onBack }) {
       ) : (
         <>
           <p role="status">พบผู้ดูแล {results.length} คน</p>
-          <p className="workflow-hint">{results[0].required_skills > 0 && results[0].required_condition_skills > 0
-            ? 'คะแนนมาจากทักษะในประกาศ 70% และทักษะที่เกี่ยวข้องกับสภาวะการดูแล 30%'
-            : results[0].required_skills > 0 ? 'คะแนนมาจากทักษะในประกาศ 100%'
-              : results[0].required_condition_skills > 0 ? 'คะแนนมาจากทักษะที่เกี่ยวข้องกับสภาวะการดูแล 100%'
-                : 'ยังไม่มีเกณฑ์ทักษะ จึงเรียงตามประสบการณ์'}
+          <p className="workflow-hint">
+            แสดงเฉพาะผู้ดูแลที่ไม่มีงานที่ตอบรับแล้วทับช่วงเวลาของประกาศนี้
           </p>
-          {results[0].unmapped_conditions > 0 && <p className="workflow-hint">มีสภาวะการดูแลที่ยังไม่ได้กำหนดทักษะ ระบบใช้เฉพาะเกณฑ์ที่กำหนดไว้</p>}
+          <p className="workflow-hint">
+            {results[0].required_skills > 0 &&
+            results[0].required_condition_skills > 0
+              ? 'คะแนนมาจากทักษะในประกาศ 70% และทักษะที่เกี่ยวข้องกับสภาวะการดูแล 30%'
+              : results[0].required_skills > 0
+                ? 'คะแนนมาจากทักษะในประกาศ 100%'
+                : results[0].required_condition_skills > 0
+                  ? 'คะแนนมาจากทักษะที่เกี่ยวข้องกับสภาวะการดูแล 100%'
+                  : 'ยังไม่มีเกณฑ์ทักษะ จึงเรียงตามประสบการณ์'}
+          </p>
+          {results[0].unmapped_conditions > 0 && (
+            <p className="workflow-hint">
+              มีสภาวะการดูแลที่ยังไม่ได้กำหนดทักษะ ระบบใช้เฉพาะเกณฑ์ที่กำหนดไว้
+            </p>
+          )}
           <ol className="caregiver-match-list">
             {results.map((caregiver) => (
               <li className="job-card" key={caregiver.caregiver_id}>
                 <div className="job-heading">
                   <h3>{caregiver.display_name}</h3>
                   <span className="job-status job-status-open">
-                    {caregiver.required_skills > 0 || caregiver.required_condition_skills > 0
-                      ? `ตรงกับเกณฑ์ ${caregiver.match_score}%` : 'ยังไม่มีเกณฑ์คะแนน'}
+                    {caregiver.required_skills > 0 ||
+                    caregiver.required_condition_skills > 0
+                      ? `ทักษะตรงกับงาน ${caregiver.match_score}%`
+                      : 'ยังไม่มีเกณฑ์คะแนน'}
                   </span>
                 </div>
                 <p>
@@ -130,29 +145,51 @@ export default function CaregiverMatches({ job, onBack }) {
                 </p>
                 <p>ประสบการณ์ดูแล {caregiver.experience_years} ปี</p>
                 <p>ยืนยันแล้ว · พร้อมรับงาน</p>
-                <SkillExplanation title="ทักษะในประกาศ" matching={caregiver.matching_skills} missing={caregiver.missing_skills} />
-                <SkillExplanation title="ทักษะที่เกี่ยวข้องกับสภาวะการดูแล" matching={caregiver.matching_condition_skills} missing={caregiver.missing_condition_skills} />
+                <SkillExplanation
+                  title="ทักษะในประกาศ"
+                  matching={caregiver.matching_skills}
+                  missing={caregiver.missing_skills}
+                />
+                <SkillExplanation
+                  title="ทักษะที่เกี่ยวข้องกับสภาวะการดูแล"
+                  matching={caregiver.matching_condition_skills}
+                  missing={caregiver.missing_condition_skills}
+                />
                 <div className="job-actions">
-                <button
-                  type="button"
-                  disabled={
-                    sendingId !== null ||
-                    sentIds.includes(caregiver.caregiver_id)
-                  }
-                  onClick={() => invite(caregiver)}
-                >
-                  {sentIds.includes(caregiver.caregiver_id)
-                    ? 'ส่งคำเชิญแล้ว'
-                    : sendingId === caregiver.caregiver_id
-                      ? 'กำลังส่ง...'
-                      : 'เชิญให้ดูแลงานนี้'}
-                </button>
-                <button type="button" className="secondary-button" aria-expanded={reviewId === caregiver.caregiver_id}
-                  onClick={() => setReviewId(reviewId === caregiver.caregiver_id ? null : caregiver.caregiver_id)}>
-                  {reviewId === caregiver.caregiver_id ? 'ซ่อนรีวิว' : 'ดูคะแนนและรีวิว'}
-                </button>
+                  <button
+                    type="button"
+                    disabled={
+                      sendingId !== null ||
+                      sentIds.includes(caregiver.caregiver_id)
+                    }
+                    onClick={() => invite(caregiver)}
+                  >
+                    {sentIds.includes(caregiver.caregiver_id)
+                      ? 'ส่งคำเชิญแล้ว'
+                      : sendingId === caregiver.caregiver_id
+                        ? 'กำลังส่ง...'
+                        : 'เชิญให้ดูแลงานนี้'}
+                  </button>
+                  <button
+                    type="button"
+                    className="secondary-button"
+                    aria-expanded={reviewId === caregiver.caregiver_id}
+                    onClick={() =>
+                      setReviewId(
+                        reviewId === caregiver.caregiver_id
+                          ? null
+                          : caregiver.caregiver_id,
+                      )
+                    }
+                  >
+                    {reviewId === caregiver.caregiver_id
+                      ? 'ซ่อนรีวิว'
+                      : 'ดูคะแนนและรีวิว'}
+                  </button>
                 </div>
-                {reviewId === caregiver.caregiver_id && <CaregiverReviews caregiverId={caregiver.caregiver_id} />}
+                {reviewId === caregiver.caregiver_id && (
+                  <ReviewSummary caregiverId={caregiver.caregiver_id} />
+                )}
               </li>
             ))}
           </ol>
@@ -164,9 +201,13 @@ export default function CaregiverMatches({ job, onBack }) {
 
 function SkillExplanation({ title, matching = [], missing = [] }) {
   if (!matching.length && !missing.length) return null
-  return <div className="match-explanation">
-    <strong>{title}</strong>
-    <p>ตรง: {matching.length ? matching.join(' · ') : 'ยังไม่มีทักษะตรง'}</p>
-    {missing.length > 0 && <p className="workflow-hint">ยังขาด: {missing.join(' · ')}</p>}
-  </div>
+  return (
+    <div className="match-explanation">
+      <strong>{title}</strong>
+      <p>ตรง: {matching.length ? matching.join(' · ') : 'ยังไม่มีทักษะตรง'}</p>
+      {missing.length > 0 && (
+        <p className="workflow-hint">ยังขาด: {missing.join(' · ')}</p>
+      )}
+    </div>
+  )
 }

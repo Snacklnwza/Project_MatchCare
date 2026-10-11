@@ -98,4 +98,37 @@ language sql stable security invoker set search_path = ''
 as $fn$ select * from match_internal.get_job_history_details(p_job_id); $fn$;
 revoke all on function public.get_job_history_details(bigint) from public, anon, authenticated;
 grant execute on function public.get_job_history_details(bigint) to authenticated;
+-- ปฏิทินแสดงเฉพาะงานที่ผู้ดูแลคนนี้ตอบรับแล้วและยังไม่สิ้นสุดในเดือนที่เลือก
+-- ไม่คืนชื่อผู้ป่วย ที่อยู่ละเอียด หรือข้อมูลติดต่อ และไม่นับคำเชิญ pending เป็นการจอง
+create or replace function match_internal.list_my_schedule(p_month date)
+returns table(request_id bigint,job_post_id bigint,title text,job_status text,
+ request_type text,province text,district text,starts_at timestamptz,ends_at timestamptz)
+language plpgsql stable security definer set search_path = '' as $$
+declare month_start timestamptz; month_end timestamptz;
+begin
+ if auth.uid() is null or not exists(select 1 from public.profiles where id=auth.uid() and role='caregiver') then
+   raise exception using errcode='42501',message='caregiver_required';
+ end if;
+ if p_month is null or not isfinite(p_month) or extract(day from p_month)<>1 then
+   raise exception using errcode='22023',message='invalid_schedule_month';
+ end if;
+ month_start := p_month::timestamp at time zone 'Asia/Bangkok';
+ month_end := (p_month + interval '1 month')::timestamp at time zone 'Asia/Bangkok';
+ return query select r.id,j.id,j.title,j.status,r.request_type,j.province,j.district,j.starts_at,j.ends_at
+ from public.match_requests r join public.job_posts j on j.id=r.job_post_id
+ where r.caregiver_id=auth.uid() and r.status='accepted'
+   and j.status in ('matched','in_progress','completion_pending')
+   and j.starts_at<month_end and j.ends_at>month_start
+ order by j.starts_at,j.id;
+end $$;
+revoke all on function match_internal.list_my_schedule(date) from public,anon,authenticated;
+grant execute on function match_internal.list_my_schedule(date) to authenticated;
+create or replace function public.list_my_schedule(p_month date)
+returns table(request_id bigint,job_post_id bigint,title text,job_status text,
+ request_type text,province text,district text,starts_at timestamptz,ends_at timestamptz)
+language sql stable security invoker set search_path = '' as $$
+ select * from match_internal.list_my_schedule(p_month);
+$$;
+revoke all on function public.list_my_schedule(date) from public,anon,authenticated;
+grant execute on function public.list_my_schedule(date) to authenticated;
 commit;

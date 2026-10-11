@@ -1,6 +1,10 @@
+import useRevealItem from '../hooks/useRevealItem'
+import RequestFilters, { RequestBadge } from '../components/RequestFilters'
+import { requestMatches } from '../lib/requestStatus'
 import { useRef, useState } from 'react'
 import useRemoteList from '../hooks/useRemoteList'
 import MatchContact from '../components/MatchContact'
+import ReviewSummary from '../components/ReviewSummary'
 import {
   loadInvitations,
   callWorkflow,
@@ -11,6 +15,13 @@ import { formatJobDate, jobStatusLabels, payUnitLabels } from '../lib/jobs'
 
 export default function Invitations({ profile, onNavigate }) {
   const { data, loading, error, reload } = useRemoteList(loadInvitations)
+  const [filter, setFilter] = useState('current')
+  const targetId = useRevealItem(data, 'request', 'request_id')
+  const visible = data.filter(
+    (request) =>
+      String(request.request_id) === String(targetId) ||
+      requestMatches(request, filter),
+  )
   const [busyId, setBusyId] = useState(null)
   const [actionError, setActionError] = useState('')
   const [message, setMessage] = useState('')
@@ -72,14 +83,19 @@ export default function Invitations({ profile, onNavigate }) {
   async function requestCompletion(request) {
     if (
       busy.current ||
-      !window.confirm(`แจ้งผู้ว่าจ้างว่างาน “${request.title}” เสร็จแล้วใช่หรือไม่?`)
-    ) return
+      !window.confirm(
+        `แจ้งผู้ว่าจ้างว่างาน “${request.title}” เสร็จแล้วใช่หรือไม่?`,
+      )
+    )
+      return
     busy.current = true
     setBusyId(request.request_id)
     setActionError('')
     setMessage('')
     try {
-      await callWorkflow('request_job_completion', { p_job_id: request.job_post_id })
+      await callWorkflow('request_job_completion', {
+        p_job_id: request.job_post_id,
+      })
       setMessage('ส่งคำขอจบงานแล้ว รอผู้ว่าจ้างยืนยัน')
       reload()
     } catch (issue) {
@@ -98,6 +114,24 @@ export default function Invitations({ profile, onNavigate }) {
         </h1>
         <p>ข้อมูลติดต่อจะแสดงให้ทั้งสองฝ่ายเมื่อผู้ดูแลตอบรับงานแล้วเท่านั้น</p>
       </header>
+      {!loading && !error && data.length > 0 && (
+        <RequestFilters data={data} value={filter} onChange={setFilter} />
+      )}
+      {!loading && !error && data.length > 0 && visible.length === 0 && (
+        <div className="workflow-card workflow-empty">
+          <h2>ไม่มีรายการในสถานะนี้</h2>
+          <p>
+            รายการที่จบแล้วอยู่ใน “สิ้นสุดแล้ว” และดูย้อนหลังได้ในประวัติงาน
+          </p>
+          <button
+            type="button"
+            className="secondary-button"
+            onClick={() => setFilter('all')}
+          >
+            ดูรายการทั้งหมด
+          </button>
+        </div>
+      )}
       {message && <p role="status">{message}</p>}
       {actionError && <p role="alert">{actionError}</p>}
       {loading && <p role="status">กำลังโหลดคำเชิญ...</p>}
@@ -124,20 +158,25 @@ export default function Invitations({ profile, onNavigate }) {
       )}
       {!loading && !error && (
         <div className="workflow-stack">
-          {data.map((request) => (
-            <article className="workflow-card" key={request.request_id}>
+          {visible.map((request) => (
+            <article
+              id={`request-${request.request_id}`}
+              tabIndex={-1}
+              className={`workflow-card${String(targetId) === String(request.request_id) ? ' revealed-item' : ''}`}
+              key={request.request_id}
+            >
               <div className="workflow-heading">
                 <h2>{request.title}</h2>
-                <span className="workflow-badge" data-status={request.status}>
-                  {invitationLabels[request.status]}
-                </span>
+                <RequestBadge request={request} labels={invitationLabels} />
               </div>
               {request.status === 'accepted' && (
                 <p role="status">
-                  สถานะงาน: {jobStatusLabels[request.job_status] ?? request.job_status}
+                  สถานะงาน:{' '}
+                  {jobStatusLabels[request.job_status] ?? request.job_status}
                 </p>
               )}
-              {profile.role === 'caregiver' && request.status === 'accepted' &&
+              {profile.role === 'caregiver' &&
+                request.status === 'accepted' &&
                 request.job_status === 'completion_pending' && (
                   <p role="status">ส่งคำขอแล้ว กำลังรอผู้ว่าจ้างยืนยันจบงาน</p>
                 )}
@@ -156,6 +195,11 @@ export default function Invitations({ profile, onNavigate }) {
                 {Number(request.pay_amount).toLocaleString('th-TH')} บาท{' '}
                 {payUnitLabels[request.pay_unit]}
               </p>
+              {profile.role === 'caregiver' &&
+                request.status === 'pending' &&
+                request.job_status === 'open' && (
+                  <ReviewSummary jobId={request.job_post_id} />
+                )}
               {profile.role === 'caregiver' &&
                 request.status === 'pending' &&
                 request.job_status === 'open' && (
@@ -186,21 +230,32 @@ export default function Invitations({ profile, onNavigate }) {
                   >
                     ดูข้อมูลติดต่อ
                   </button>
-                  {profile.role === 'caregiver' && request.job_status === 'in_progress' && (
-                    <button
-                      type="button"
-                      className="workflow-complete-button"
-                      disabled={busyId !== null}
-                      onClick={() => requestCompletion(request)}
-                    >
-                      <span className="workflow-complete-icon" aria-hidden="true">✓</span>
-                      {busyId === request.request_id ? 'กำลังส่งคำขอ...' : 'แจ้งจบงาน'}
-                    </button>
-                  )}
+                  {profile.role === 'caregiver' &&
+                    request.job_status === 'in_progress' && (
+                      <button
+                        type="button"
+                        className="workflow-complete-button"
+                        disabled={busyId !== null}
+                        onClick={() => requestCompletion(request)}
+                      >
+                        <span
+                          className="workflow-complete-icon"
+                          aria-hidden="true"
+                        >
+                          ✓
+                        </span>
+                        {busyId === request.request_id
+                          ? 'กำลังส่งคำขอ...'
+                          : 'แจ้งจบงาน'}
+                      </button>
+                    )}
                 </div>
               )}
               {contact?.requestId === request.request_id && (
-                <MatchContact contact={contact} onHide={() => setContact(null)} />
+                <MatchContact
+                  contact={contact}
+                  onHide={() => setContact(null)}
+                />
               )}
             </article>
           ))}

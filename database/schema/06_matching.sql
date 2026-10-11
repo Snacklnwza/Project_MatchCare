@@ -52,6 +52,8 @@ begin
   left join required r on r.skill_id = cs.skill_id
   where cp.verification_status = 'verified'
     and cp.availability_status = 'available'
+    and not exists (select 1 from public.job_posts target where target.id=p_job_id
+      and match_internal.caregiver_has_conflict(cp.caregiver_id,target.starts_at,target.ends_at,target.id))
   group by cp.caregiver_id, p.first_name, p.last_name, p.province, p.district,
     cp.experience_years
   order by count(r.skill_id) desc, cp.experience_years desc, cp.caregiver_id;

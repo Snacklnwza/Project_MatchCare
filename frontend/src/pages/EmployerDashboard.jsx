@@ -1,3 +1,4 @@
+import DashboardTasks from '../components/DashboardTasks'
 import { useEffect, useState } from 'react'
 import addIcon from '../assets/dashboard/add.svg'
 import careIcon from '../assets/dashboard/care.svg'
@@ -78,9 +79,13 @@ function EmployerDashboard({ onNavigate }) {
       <header className="employer-dashboard-heading page-intro">
         <div>
           <h1>ภาพรวมการดูแล</h1>
-          <p>ดูข้อมูลผู้ป่วยและประกาศที่เปิดรับ แล้วไปจัดการงานต่อได้จากรายการด้านล่าง</p>
+          <p>
+            ดูข้อมูลผู้ป่วยและประกาศที่เปิดรับ
+            แล้วไปจัดการงานต่อได้จากรายการด้านล่าง
+          </p>
         </div>
       </header>
+      <DashboardTasks role="employer" onNavigate={onNavigate} />
       <aside className="dashboard-patients">
         <div className="dashboard-section-heading">
           <h2>ผู้ป่วยของฉัน</h2>
@@ -116,7 +121,9 @@ function EmployerDashboard({ onNavigate }) {
                   <h3>
                     {patient.first_name} {patient.last_name}
                   </h3>
-                  <p>ผู้ป่วยในการดูแล · {formatPatientAge(patient.birth_date)}</p>
+                  <p>
+                    ผู้ป่วยในการดูแล · {formatPatientAge(patient.birth_date)}
+                  </p>
                 </div>
               </div>
               <p className="dashboard-patient-detail">

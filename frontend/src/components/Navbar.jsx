@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import logo from '../assets/navbar/logo.png'
 import chevron from '../assets/navbar/chevron.svg'
 import Notifications from './Notifications'
@@ -10,7 +10,9 @@ const menuItemsByRole = {
     { id: 'jobs', label: 'ประกาศงาน' },
     { id: 'caregivers', label: 'ค้นหาผู้ดูแล' },
     {
-      id: 'requests', label: 'คำขอ', children: [
+      id: 'requests',
+      label: 'คำขอ',
+      children: [
         { id: 'receivedApplications', label: 'ใบสมัครที่ได้รับ' },
         { id: 'invitations', label: 'คำเชิญที่ส่ง' },
       ],
@@ -21,6 +23,7 @@ const menuItemsByRole = {
     { id: 'jobs', label: 'ค้นหางาน' },
     { id: 'applications', label: 'งานที่สมัคร' },
     { id: 'invitations', label: 'คำเชิญและงานของฉัน' },
+    { id: 'schedule', label: 'ปฏิทินงาน' },
   ],
   admin: [
     { id: 'dashboard', label: 'หน้าหลัก' },
@@ -31,6 +34,25 @@ const menuItemsByRole = {
 
 function Navbar({ profile, activePage, onSelect, onSignOut }) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const accountRef = useRef(null)
+  useEffect(() => {
+    function closeOutside(event) {
+      if (accountRef.current && !accountRef.current.contains(event.target))
+        accountRef.current.open = false
+    }
+    function closeOnEscape(event) {
+      if (event.key === 'Escape' && accountRef.current?.open) {
+        accountRef.current.open = false
+        accountRef.current.querySelector('summary').focus()
+      }
+    }
+    document.addEventListener('pointerdown', closeOutside)
+    document.addEventListener('keydown', closeOnEscape)
+    return () => {
+      document.removeEventListener('pointerdown', closeOutside)
+      document.removeEventListener('keydown', closeOnEscape)
+    }
+  }, [])
   const role = profile.role
   const menuItems = menuItemsByRole[role] ?? []
   const roleLabel = {
@@ -39,9 +61,9 @@ function Navbar({ profile, activePage, onSelect, onSignOut }) {
     admin: 'ผู้ดูแลระบบ',
   }[role]
 
-  function selectPage(page) {
+  function selectPage(page, target = null) {
     setMenuOpen(false)
-    onSelect(page)
+    onSelect(page, target)
   }
 
   return (
@@ -58,44 +80,92 @@ function Navbar({ profile, activePage, onSelect, onSignOut }) {
           </span>
           <span>MatchCare</span>
         </button>
-        <nav id="role-navigation" className={`role-navigation${menuOpen ? ' is-open' : ''}`} aria-label="เมนูหลัก">
-          {menuItems.map((item) => item.children ? (
-            <details className="navbar-nav-group" key={`${item.id}-${activePage}`}>
-              <summary className={item.children.some((child) => child.id === activePage) ? 'active' : ''}>
-                {item.label}<img src={chevron} alt="" />
-              </summary>
-              <div className="navbar-nav-popover">
-                {item.children.map((child) => (
-                  <button key={child.id} type="button"
-                    className={activePage === child.id ? 'active' : ''}
-                    aria-current={activePage === child.id ? 'page' : undefined}
-                    onClick={(event) => {
-                      event.currentTarget.closest('details').open = false
-                      selectPage(child.id)
-                    }}>
-                    {child.label}
-                  </button>
-                ))}
-              </div>
-            </details>
-          ) : (
-            <button key={item.id} type="button"
-              className={activePage === item.id ? 'active' : ''}
-              aria-current={activePage === item.id ? 'page' : undefined}
-              onClick={() => selectPage(item.id)}>
-              {item.label}
-            </button>
-          ))}
+        <nav
+          id="role-navigation"
+          className={`role-navigation${menuOpen ? ' is-open' : ''}`}
+          aria-label="เมนูหลัก"
+        >
+          {menuItems.map((item) =>
+            item.children ? (
+              <details
+                className="navbar-nav-group"
+                key={`${item.id}-${activePage}`}
+              >
+                <summary
+                  className={
+                    item.children.some((child) => child.id === activePage)
+                      ? 'active'
+                      : ''
+                  }
+                >
+                  {item.label}
+                  <img src={chevron} alt="" />
+                </summary>
+                <div className="navbar-nav-popover">
+                  {item.children.map((child) => (
+                    <button
+                      key={child.id}
+                      type="button"
+                      className={activePage === child.id ? 'active' : ''}
+                      aria-current={
+                        activePage === child.id ? 'page' : undefined
+                      }
+                      onClick={(event) => {
+                        event.currentTarget.closest('details').open = false
+                        selectPage(child.id)
+                      }}
+                    >
+                      {child.label}
+                    </button>
+                  ))}
+                </div>
+              </details>
+            ) : (
+              <button
+                key={item.id}
+                type="button"
+                className={activePage === item.id ? 'active' : ''}
+                aria-current={activePage === item.id ? 'page' : undefined}
+                onClick={() => selectPage(item.id)}
+              >
+                {item.label}
+              </button>
+            ),
+          )}
         </nav>
         <div className="navbar-account">
-          {role !== 'admin' && <Notifications key={profile.id} userId={profile.id} onSelect={selectPage} />}
-          <button className="navbar-menu-toggle" type="button" aria-controls="role-navigation"
-            aria-expanded={menuOpen} onClick={() => setMenuOpen((open) => !open)}>
-            {menuOpen ? 'ปิดเมนู' : 'เมนู'} <span aria-hidden="true">{menuOpen ? '×' : '☰'}</span>
+          {role !== 'admin' && (
+            <Notifications
+              key={profile.id}
+              userId={profile.id}
+              onSelect={selectPage}
+            />
+          )}
+          <button
+            className="navbar-menu-toggle"
+            type="button"
+            aria-controls="role-navigation"
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            {menuOpen ? 'ปิดเมนู' : 'เมนู'}{' '}
+            <span aria-hidden="true">{menuOpen ? '×' : '☰'}</span>
           </button>
-          <details className="navbar-dropdown">
-            <summary className="account-toggle" aria-label={`บัญชีคุณ${profile.first_name || 'ผู้ใช้งาน'} (${roleLabel})`}>
-              <span className="account-avatar" aria-hidden="true">{profile.first_name?.charAt(0) || 'ผ'}</span>
+          <details
+            className="navbar-dropdown"
+            ref={accountRef}
+            onBlur={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget))
+                event.currentTarget.open = false
+            }}
+          >
+            <summary
+              className="account-toggle"
+              aria-label={`บัญชีคุณ${profile.first_name || 'ผู้ใช้งาน'} (${roleLabel})`}
+            >
+              <span className="account-avatar" aria-hidden="true">
+                {profile.first_name?.charAt(0) || 'ผ'}
+              </span>
               <span className="account-name">
                 คุณ{profile.first_name || 'ผู้ใช้งาน'}
               </span>
@@ -103,7 +173,7 @@ function Navbar({ profile, activePage, onSelect, onSignOut }) {
               <img src={chevron} alt="" />
             </summary>
             <div className="navbar-popover account-menu">
-              {role === 'caregiver' && (
+              {['employer', 'caregiver'].includes(role) && (
                 <button
                   type="button"
                   aria-current={activePage === 'profile' ? 'page' : undefined}
@@ -123,7 +193,7 @@ function Navbar({ profile, activePage, onSelect, onSignOut }) {
                     <circle cx="12" cy="8" r="3.5" />
                     <path d="M5 21v-2a7 7 0 0 1 14 0v2" />
                   </svg>
-                  โปรไฟล์ผู้ดูแล
+                  {role === 'employer' ? 'โปรไฟล์และตั้งค่า' : 'โปรไฟล์ผู้ดูแล'}
                 </button>
               )}
               {role === 'caregiver' && (
@@ -139,11 +209,14 @@ function Navbar({ profile, activePage, onSelect, onSignOut }) {
                 </button>
               )}
               {['employer', 'caregiver'].includes(role) && (
-                <button type="button" aria-current={activePage === 'history' ? 'page' : undefined}
+                <button
+                  type="button"
+                  aria-current={activePage === 'history' ? 'page' : undefined}
                   onClick={(event) => {
                     event.currentTarget.closest('details').open = false
                     selectPage('history')
-                  }}>
+                  }}
+                >
                   ประวัติงาน
                 </button>
               )}

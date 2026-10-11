@@ -1,3 +1,4 @@
+import PasswordInput from './PasswordInput'
 import { useState } from 'react'
 import { supabase } from '../lib/supabase'
 import logo from '../assets/navbar/logo.png'
@@ -58,7 +59,7 @@ function LoginForm({ onBack, onRegister }) {
       />
 
       <label htmlFor="password">รหัสผ่าน</label>
-      <input
+      <PasswordInput
         id="password"
         type="password"
         value={password}

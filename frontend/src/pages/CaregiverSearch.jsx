@@ -3,7 +3,9 @@ import CollapsibleFilters from '../components/CollapsibleFilters'
 import { useCallback, useState } from 'react'
 import geography from '../data/geography-options.json'
 import ReviewSummary from '../components/ReviewSummary'
+import CaregiverAvatar from '../components/CaregiverAvatar'
 import useRemoteList from '../hooks/useRemoteList'
+import useCaregiverAvatars from '../hooks/useCaregiverAvatars'
 import { searchCaregivers, CAREGIVER_PAGE_SIZE } from '../lib/caregivers'
 import { loadJobSkillOptions } from '../lib/openJobs'
 import '../styles/CaregiverSearch.css'
@@ -37,6 +39,7 @@ export default function CaregiverSearch({ onNavigate }) {
     reload: reloadSkills,
   } = useRemoteList(loadJobSkillOptions)
   const visible = results.slice(0, CAREGIVER_PAGE_SIZE)
+  const avatarUrls = useCaregiverAvatars(visible.map((item) => item.caregiver_id))
   const districts = filters.province
     ? Object.keys(geography[filters.province] ?? {})
     : []
@@ -239,12 +242,15 @@ export default function CaregiverSearch({ onNavigate }) {
                   key={caregiver.caregiver_id}
                 >
                   <div className="caregiver-search-card-head">
-                    <div>
-                      <h3>{caregiver.display_name}</h3>
-                      <p>
-                        อ.{caregiver.district} จ.{caregiver.province} ·
-                        ประสบการณ์ {caregiver.experience_years} ปี
-                      </p>
+                    <div className="caregiver-card-identity">
+                      <CaregiverAvatar name={caregiver.display_name} url={avatarUrls[caregiver.caregiver_id]} />
+                      <div>
+                        <h3>{caregiver.display_name}</h3>
+                        <p>
+                          อ.{caregiver.district} จ.{caregiver.province} ·
+                          ประสบการณ์ {caregiver.experience_years} ปี
+                        </p>
+                      </div>
                     </div>
                     <span className="caregiver-search-badge">
                       ยืนยันแล้ว · พร้อมรับงาน

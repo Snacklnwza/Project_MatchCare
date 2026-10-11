@@ -1,7 +1,9 @@
 import useUnsavedChanges from '../hooks/useUnsavedChanges'
 import { useEffect, useRef, useState } from 'react'
 import { saveCaregiverContact } from '../lib/profiles'
+import { removeOwnAvatar, saveOwnAvatar, signedAvatarUrl } from '../lib/caregiverAvatars'
 import { supabase } from '../lib/supabase'
+import CaregiverAvatar from '../components/CaregiverAvatar'
 import ReviewSummary from '../components/ReviewSummary'
 import '../styles/CaregiverProfile.css'
 
@@ -21,6 +23,12 @@ function CaregiverProfile({ profile, email, onNavigate }) {
   const [contactSuccess, setContactSuccess] = useState('')
   const contactBusy = useRef(false)
   const [caregiverData, setCaregiverData] = useState(null)
+  const [signedAvatar, setSignedAvatar] = useState({ path: '', url: '' })
+  const avatarUrl = caregiverData?.avatar_path === signedAvatar.path
+    ? signedAvatar.url : ''
+  const [avatarBusy, setAvatarBusy] = useState(false)
+  const [avatarMessage, setAvatarMessage] = useState('')
+  const [avatarError, setAvatarError] = useState('')
   const [bio, setBio] = useState('')
   const [experienceYears, setExperienceYears] = useState('0')
   const [loading, setLoading] = useState(true)
@@ -62,7 +70,7 @@ function CaregiverProfile({ profile, email, onNavigate }) {
         supabase
           .from('caregiver_profiles')
           .select(
-            'bio, experience_years, availability_status, verification_status',
+            'bio, experience_years, availability_status, verification_status, avatar_path',
           )
           .eq('caregiver_id', profile.id)
           .maybeSingle(),
@@ -97,6 +105,55 @@ function CaregiverProfile({ profile, email, onNavigate }) {
       active = false
     }
   }, [profile.id, retryKey])
+  useEffect(() => {
+    let active = true
+    const path = caregiverData?.avatar_path
+    if (!path) return undefined
+    signedAvatarUrl(path)
+      .then((url) => { if (active) setSignedAvatar({ path, url }) })
+      .catch(() => { if (active) setAvatarError('โหลดรูปโปรไฟล์ไม่สำเร็จ') })
+    return () => { active = false }
+  }, [caregiverData?.avatar_path])
+
+  async function changeAvatar(event) {
+    const file = event.target.files?.[0]
+    event.target.value = ''
+    if (!file || avatarBusy || !caregiverData) return
+    setAvatarBusy(true)
+    setAvatarError('')
+    setAvatarMessage('')
+    try {
+      const { path, cleanupFailed } = await saveOwnAvatar(
+        profile.id, file, caregiverData.avatar_path,
+      )
+      setCaregiverData((current) => ({ ...current, avatar_path: path }))
+      setAvatarMessage(cleanupFailed
+        ? 'เปลี่ยนรูปแล้ว แต่ลบไฟล์รูปเก่าไม่สำเร็จ'
+        : 'เปลี่ยนรูปโปรไฟล์แล้ว')
+    } catch (issue) {
+      setAvatarError(issue.message || 'อัปโหลดรูปไม่สำเร็จ กรุณาลองใหม่')
+    } finally {
+      setAvatarBusy(false)
+    }
+  }
+
+  async function removeAvatar() {
+    if (!caregiverData?.avatar_path || avatarBusy) return
+    setAvatarBusy(true)
+    setAvatarError('')
+    setAvatarMessage('')
+    try {
+      const { cleanupFailed } = await removeOwnAvatar(profile.id, caregiverData.avatar_path)
+      setCaregiverData((current) => ({ ...current, avatar_path: null }))
+      setAvatarMessage(cleanupFailed
+        ? 'เอารูปออกจากโปรไฟล์แล้ว แต่ลบไฟล์เดิมไม่สำเร็จ'
+        : 'เอารูปโปรไฟล์ออกแล้ว')
+    } catch {
+      setAvatarError('เอารูปออกไม่สำเร็จ กรุณาลองใหม่')
+    } finally {
+      setAvatarBusy(false)
+    }
+  }
   useEffect(() => {
     let active = true
 
@@ -315,6 +372,35 @@ function CaregiverProfile({ profile, email, onNavigate }) {
                 <p className="caregiver-profile-hint">
                   ข้อมูลบัญชีที่คุณใช้สมัครและติดต่อเมื่อจับคู่สำเร็จ
                 </p>
+                <div className="caregiver-avatar-editor">
+                  <CaregiverAvatar
+                    name={profile.first_name}
+                    url={avatarUrl}
+                    className="caregiver-avatar-preview"
+                  />
+                  <div>
+                    <strong>รูปโปรไฟล์ (ไม่บังคับ)</strong>
+                    <p>ผู้ว่าจ้างที่เข้าสู่ระบบจะเห็นรูปเมื่อบัญชีผ่านการยืนยันตัวตน รูปนี้แยกจากเอกสารยืนยันตัวตน</p>
+                    <label className="caregiver-avatar-upload">
+                      {avatarBusy ? 'กำลังบันทึกรูป...' : caregiverData?.avatar_path ? 'เปลี่ยนรูป' : 'เพิ่มรูป'}
+                      <input
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        disabled={avatarBusy || !caregiverData}
+                        aria-label="เลือกรูปโปรไฟล์ผู้ดูแล"
+                        onChange={changeAvatar}
+                      />
+                    </label>
+                    {caregiverData?.avatar_path && (
+                      <button type="button" className="secondary-button" disabled={avatarBusy} onClick={removeAvatar}>
+                        เอารูปออก
+                      </button>
+                    )}
+                    <small>JPG, PNG หรือ WebP ไม่เกิน 2 MB</small>
+                    {avatarError && <p role="alert">{avatarError}</p>}
+                    {avatarMessage && <p role="status">{avatarMessage}</p>}
+                  </div>
+                </div>
                 <dl>
                   <div>
                     <dt>ชื่อและนามสกุล</dt>
@@ -501,9 +587,7 @@ function CaregiverProfile({ profile, email, onNavigate }) {
             aria-label="สถานะและรีวิวของฉัน"
           >
             <section className="caregiver-status-card">
-              <span className="caregiver-summary-avatar" aria-hidden="true">
-                {profile.first_name?.charAt(0)}
-              </span>
+              <CaregiverAvatar name={profile.first_name} url={avatarUrl} className="caregiver-summary-avatar" />
               <h2>
                 {profile.first_name} {profile.last_name}
               </h2>

@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { callWorkflow, workflowError } from '../lib/workflow'
 import ReviewSummary from './ReviewSummary'
+import CaregiverAvatar from './CaregiverAvatar'
+import useCaregiverAvatars from '../hooks/useCaregiverAvatars'
 import { mobilityLabels, areaLabels, sideLabels, assistanceLabels } from '../lib/careContext'
 
 export default function CaregiverMatches({ job, onBack }) {
@@ -11,6 +13,7 @@ export default function CaregiverMatches({ job, onBack }) {
     care?.chronic_conditions || care?.care_notes || care?.patient_conditions?.length,
   )
   const [results, setResults] = useState([])
+  const avatarUrls = useCaregiverAvatars(results.map((item) => item.caregiver_id))
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [retry, setRetry] = useState(0)
@@ -123,7 +126,10 @@ export default function CaregiverMatches({ job, onBack }) {
             {results.map((caregiver) => (
               <li className="job-card" key={caregiver.caregiver_id}>
                 <div className="job-heading">
-                  <h3>{caregiver.display_name}</h3>
+                  <div className="caregiver-card-identity">
+                    <CaregiverAvatar name={caregiver.display_name} url={avatarUrls[caregiver.caregiver_id]} />
+                    <h3>{caregiver.display_name}</h3>
+                  </div>
                   <span className="job-status job-status-open">
                     {caregiver.required_skills > 0
                       ? `ทักษะตรงกับงาน ${caregiver.match_score}%`

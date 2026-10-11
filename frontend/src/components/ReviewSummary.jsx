@@ -34,7 +34,7 @@ export default function ReviewSummary({ caregiverId, jobId }) {
           </button>
         </div>
       ) : !Number(info?.review_count) ? (
-        <p className="workflow-hint">
+        <p className={caregiver ? undefined : 'workflow-hint'}>
           {caregiver
             ? 'ยังไม่มีรีวิวจากงานที่เสร็จสิ้น'
             : 'ยังไม่มีรีวิวผู้ว่าจ้างจากงานที่จบแล้ว'}
@@ -54,9 +54,11 @@ export default function ReviewSummary({ caregiverId, jobId }) {
             {info.reviews.map((review) => (
               <li key={review.id}>
                 <strong>★ {review.rating} / 5</strong>
-                <p className="review-comment">
-                  {review.comment || 'ให้คะแนนโดยไม่ได้เขียนข้อความ'}
-                </p>
+                {(caregiver || review.comment) && (
+                  <p className="review-comment">
+                    {review.comment || 'ให้คะแนนโดยไม่ได้เขียนข้อความ'}
+                  </p>
+                )}
                 <small>{formatJobDate(review.created_at)}</small>
               </li>
             ))}

@@ -3,6 +3,7 @@ import './styles/App.css'
 import LoginForm from './components/LoginForm'
 import { supabase } from './lib/supabase'
 import RegisterForm from './components/RegisterForm'
+import PasswordRecoveryForm from './components/PasswordRecoveryForm'
 import RoleDashboard from './pages/RoleDashboard'
 import LandingPage from './pages/LandingPage'
 import { SpeedInsights } from '@vercel/speed-insights/react'
@@ -27,6 +28,7 @@ function App() {
       (event, currentSession) => {
         setSession(currentSession)
         if (currentSession) setAuthError('')
+        if (event === 'PASSWORD_RECOVERY') setAuthMode('reset-password')
         if (event === 'SIGNED_OUT') {
           setAuthMode(manualSignOutRef.current ? 'landing' : 'login')
           if (!manualSignOutRef.current)
@@ -92,10 +94,11 @@ function App() {
   const isProfilePending =
     profileLoading || (session && loadedUserId !== session.user.id)
   const isLandingPage = !session && authMode === 'landing'
+  const isResettingPassword = Boolean(session) && authMode === 'reset-password'
 
   return (
     <main
-      className={`app-shell${session && profile ? ' app-shell-dashboard' : ''}${isLandingPage ? ' app-shell-landing' : ''}`}
+      className={`app-shell${session && profile && !isResettingPassword ? ' app-shell-dashboard' : ''}${isLandingPage ? ' app-shell-landing' : ''}`}
     >
       {isLandingPage && (
         <LandingPage
@@ -104,7 +107,14 @@ function App() {
         />
       )}
 
-      {session ? (
+      {isResettingPassword ? (
+        <section className="auth-panel">
+          <PasswordRecoveryForm
+            mode="update"
+            onComplete={() => setAuthMode('landing')}
+          />
+        </section>
+      ) : session ? (
         <section className="auth-status">
           {isProfilePending && <p>กำลังโหลดข้อมูลโปรไฟล์...</p>}
 
@@ -161,6 +171,12 @@ function App() {
             <LoginForm
               onBack={() => setAuthMode('landing')}
               onRegister={() => setAuthMode('register')}
+              onForgotPassword={() => setAuthMode('forgot-password')}
+            />
+          ) : authMode === 'forgot-password' || authMode === 'reset-password' ? (
+            <PasswordRecoveryForm
+              mode="request"
+              onBack={() => setAuthMode('login')}
             />
           ) : (
             <RegisterForm

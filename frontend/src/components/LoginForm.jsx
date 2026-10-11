@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { supabase } from '../lib/supabase'
 import logo from '../assets/navbar/logo.png'
 
-function LoginForm({ onBack, onRegister }) {
+function LoginForm({ onBack, onRegister, onForgotPassword }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -69,6 +69,12 @@ function LoginForm({ onBack, onRegister }) {
         required
         disabled={loading}
       />
+
+      <p className="auth-helper-link">
+        <button type="button" onClick={onForgotPassword}>
+          ลืมรหัสผ่าน?
+        </button>
+      </p>
 
       {error && <p role="alert">{error}</p>}
 

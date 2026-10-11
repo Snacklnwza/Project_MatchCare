@@ -44,7 +44,7 @@ function RegisterForm({ onBack, onLogin }) {
         setMessage('สมัครสมาชิกสำเร็จ')
       } else {
         setMessage(
-          'กรุณาตรวจสอบอีเมลเพื่อยืนยันบัญชี หากเคยสมัครแล้วให้เข้าสู่ระบบด้วยบัญชีเดิม',
+          'หากเพิ่งสมัคร โปรดตรวจสอบอีเมลเพื่อยืนยันบัญชี หากมีบัญชีอยู่แล้วให้เข้าสู่ระบบ',
         )
       }
     } catch (signUpError) {
@@ -147,18 +147,29 @@ function RegisterForm({ onBack, onLogin }) {
 
       {policy && <PolicyDialog type={policy} onClose={() => setPolicy(null)} />}
       {error && <p role="alert">{error}</p>}
-      {message && <p role="status">{message}</p>}
+      {message && (
+        <div className="auth-result" role="status">
+          <p>{message}</p>
+          <button type="button" onClick={onLogin}>
+            เข้าสู่ระบบ
+          </button>
+        </div>
+      )}
 
-      <button type="submit" disabled={loading || !acceptedTerms}>
-        {loading ? 'กำลังสมัครสมาชิก...' : 'สมัครสมาชิก'}
-      </button>
+      {!message && (
+        <>
+          <button type="submit" disabled={loading || !acceptedTerms}>
+            {loading ? 'กำลังสมัครสมาชิก...' : 'สมัครสมาชิก'}
+          </button>
 
-      <p className="auth-switch-copy">
-        มีบัญชีอยู่แล้ว?{' '}
-        <button type="button" onClick={onLogin}>
-          เข้าสู่ระบบ
-        </button>
-      </p>
+          <p className="auth-switch-copy">
+            มีบัญชีอยู่แล้ว?{' '}
+            <button type="button" onClick={onLogin}>
+              เข้าสู่ระบบ
+            </button>
+          </p>
+        </>
+      )}
     </form>
   )
 }

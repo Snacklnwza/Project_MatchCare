@@ -118,10 +118,6 @@ export default function CaregiverMatches({ job, onBack }) {
           <p className="caregiver-result-count" role="status">
             พบผู้ดูแล <strong>{results.length}</strong> คน
           </p>
-          <p className="workflow-hint">
-            แสดงเฉพาะผู้ดูแลที่ไม่มีงานที่ตอบรับแล้วทับช่วงเวลาของประกาศนี้
-          </p>
-          <p className="workflow-hint">คะแนนมาจากทักษะที่เลือกในประกาศ 100% โปรดอ่านรายละเอียดสุขภาพก่อนส่งคำเชิญ</p>
           <div className="caregiver-results-layout">
             <ol className="caregiver-match-list">
             {results.map((caregiver) => (

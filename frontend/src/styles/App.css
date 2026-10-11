@@ -1382,21 +1382,6 @@
   font-weight: 600;
 }
 
-.caregiver-profile-form ul {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.caregiver-profile-form li label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
 .caregiver-profile-form input[type='checkbox'],
 .caregiver-profile-availability input {
   accent-color: #006948;

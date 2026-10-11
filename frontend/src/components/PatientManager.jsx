@@ -1,7 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
-import { formatPatientAge } from '../lib/patients'
-import { mobilityLabels, areaLabels, sideLabels, assistanceLabels } from '../lib/careContext'
+import { formatPatientAge, mobilityLabels, areaLabels, sideLabels, assistanceLabels } from '../lib/patients'
 const PatientForm = lazy(() => import('./PatientForm'))
 
 function PatientManager() {

@@ -7,7 +7,7 @@ import CaregiverAvatar from '../components/CaregiverAvatar'
 import useRemoteList from '../hooks/useRemoteList'
 import useCaregiverAvatars from '../hooks/useCaregiverAvatars'
 import { searchCaregivers, CAREGIVER_PAGE_SIZE } from '../lib/caregivers'
-import { loadJobSkillOptions } from '../lib/openJobs'
+import { loadJobSkillOptions } from '../lib/jobs'
 import '../styles/CaregiverSearch.css'
 
 const provinces = Object.keys(geography).sort((a, b) =>

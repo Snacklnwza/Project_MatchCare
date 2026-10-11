@@ -1,7 +1,7 @@
 import useUnsavedChanges from '../hooks/useUnsavedChanges'
 import { useEffect, useRef, useState } from 'react'
 import { saveCaregiverContact } from '../lib/profiles'
-import { removeOwnAvatar, saveOwnAvatar, signedAvatarUrl } from '../lib/caregiverAvatars'
+import { avatarSelectionError, removeOwnAvatar, saveOwnAvatar, signedAvatarUrl } from '../lib/caregiverAvatars'
 import { supabase } from '../lib/supabase'
 import CaregiverAvatar from '../components/CaregiverAvatar'
 import AvatarCropper from '../components/AvatarCropper'
@@ -122,8 +122,9 @@ function CaregiverProfile({ profile, email, onNavigate }) {
     const file = event.target.files?.[0]
     event.target.value = ''
     if (!file || avatarBusy || !caregiverData) return
-    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 10485760) {
-      setAvatarError('เลือกรูป JPG, PNG หรือ WebP ขนาดไม่เกิน 10 MB')
+    const validationError = avatarSelectionError(file)
+    if (validationError) {
+      setAvatarError(validationError)
       return
     }
     setAvatarError('')

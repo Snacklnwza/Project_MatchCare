@@ -7,6 +7,12 @@ const extensions = {
   'image/webp': 'webp',
 }
 
+export function avatarSelectionError(file) {
+  return !file || !extensions[file.type] || file.size < 1 || file.size > 10485760
+    ? 'เลือกรูป JPG, PNG หรือ WebP ขนาดไม่เกิน 10 MB'
+    : ''
+}
+
 export async function signedAvatarUrl(path) {
   if (!path) return ''
   const { data, error } = await bucket.createSignedUrl(path, 3600)

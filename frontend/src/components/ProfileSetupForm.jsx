@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
-import { saveOwnAvatar } from '../lib/caregiverAvatars'
+import { avatarSelectionError, saveOwnAvatar } from '../lib/caregiverAvatars'
 import geography from '../data/geography-options.json'
 import logo from '../assets/navbar/logo.png'
 import AvatarCropper from './AvatarCropper'
@@ -37,8 +37,9 @@ function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
     const file = event.target.files?.[0]
     event.target.value = ''
     if (!file) return
-    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 10485760) {
-      setError('เลือกรูป JPG, PNG หรือ WebP ขนาดไม่เกิน 10 MB')
+    const validationError = avatarSelectionError(file)
+    if (validationError) {
+      setError(validationError)
       return
     }
     setError('')

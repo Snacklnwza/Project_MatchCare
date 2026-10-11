@@ -4,7 +4,7 @@ import { callWorkflow, workflowError } from '../lib/workflow'
 import ReviewSummary from './ReviewSummary'
 import CaregiverAvatar from './CaregiverAvatar'
 import useCaregiverAvatars from '../hooks/useCaregiverAvatars'
-import { mobilityLabels, areaLabels, sideLabels, assistanceLabels } from '../lib/careContext'
+import { mobilityLabels, areaLabels, sideLabels, assistanceLabels } from '../lib/patients'
 
 export default function CaregiverMatches({ job, onBack }) {
   const care = job.patients

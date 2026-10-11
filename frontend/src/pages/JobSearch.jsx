@@ -3,14 +3,15 @@ import ReviewSummary from '../components/ReviewSummary'
 import { useCallback, useRef, useState } from 'react'
 import geography from '../data/geography-options.json'
 import useRemoteList from '../hooks/useRemoteList'
-import { formatJobDate, payUnitLabels } from '../lib/jobs'
-import { mobilityLabels, areaLabels, sideLabels, assistanceLabels } from '../lib/careContext'
 import {
+  formatJobDate,
+  payUnitLabels,
   getOpenJobDetails,
   JOB_PAGE_SIZE,
   loadJobSkillOptions,
   searchOpenJobs,
-} from '../lib/openJobs'
+} from '../lib/jobs'
+import { mobilityLabels, areaLabels, sideLabels, assistanceLabels } from '../lib/patients'
 import {
   callWorkflow,
   loadMyApplications,

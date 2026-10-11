@@ -137,6 +137,60 @@
 .workflow-badge[data-status='rejected'],
 .workflow-badge[data-status='not_selected'],
 .workflow-badge[data-status='cancelled'] { background: #f1f3f1; color: #5c6b61; }
+.admin-verification-layout {
+  grid-template-columns: minmax(280px, 2fr) minmax(0, 3fr);
+}
+.admin-verification-queue-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.admin-verification-queue-heading h2 { margin: 0 0 4px; }
+.admin-verification-queue-heading p,
+.admin-verification-placeholder p { margin: 0; color: #64776d; font-size: 14px; line-height: 1.5; }
+.admin-verification-queue-heading .workflow-badge { flex: none; }
+.admin-verification-queue-list { list-style: none; display: grid; gap: 10px; margin: 0; padding: 0; }
+.workflow-page button.admin-verification-person {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 12px;
+  padding: 14px;
+  text-align: left;
+  background: #fff;
+  color: #173128;
+  border: 1px solid #dce9e1;
+  border-radius: 12px;
+}
+.workflow-page button.admin-verification-person[aria-pressed='true'] {
+  background: #eff9f3;
+  border-color: #007354;
+  box-shadow: inset 3px 0 #007354;
+}
+.workflow-page button.admin-verification-person:not(:disabled):hover {
+  background: #f4fbf7;
+  border-color: #78b99d;
+  filter: none;
+}
+.admin-verification-avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #dff2e8;
+  color: #006948;
+  font-weight: 700;
+}
+.admin-verification-person-info { display: grid; gap: 2px; min-width: 0; }
+.admin-verification-person-info strong { overflow-wrap: anywhere; }
+.admin-verification-person-info > span { color: #64776d; font-size: 13px; }
+.admin-verification-person-action { flex: none; margin-left: auto; color: #006948; font-size: 13px; font-weight: 600; }
+.admin-verification-placeholder { display: grid; align-content: center; min-height: 220px; text-align: center; }
+.admin-verification-placeholder h2 { margin-bottom: 6px; }
 .workflow-actions,
 .workflow-heading {
   display: flex;
@@ -176,6 +230,10 @@
     padding: 20px;
   }
   .admin-home-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .admin-verification-person-action { font-size: 0; }
+  .admin-verification-person-action::after { content: '→'; font-size: 18px; }
 }
 
 /* หน้าในระบบเริ่มที่ขอบซ้ายเดียวกับหน้าหลักเดิม */

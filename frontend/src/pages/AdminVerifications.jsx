@@ -86,29 +86,58 @@ export default function AdminVerifications() {
           <p>ขณะนี้ไม่มีผู้ดูแลรอตรวจสอบ</p>
         </div>
       )}
-      {!loading && !error && (
-        <div className="workflow-columns">
-          <ul className="workflow-list">
-            {data.map((person) => (
-              <li key={person.caregiver_id}>
-                <div>
-                  <strong>{person.display_name}</strong>
-                  <p>รอการตรวจสอบ</p>
-                </div>
-                <button
-                  type="button"
-                  disabled={saving}
-                  onClick={() => {
-                    setSelected(person)
-                    setReason('')
-                    setActionError('')
-                  }}
-                >
-                  ตรวจเอกสาร
-                </button>
-              </li>
-            ))}
-          </ul>
+      {!loading && !error && data.length > 0 && (
+        <div className="workflow-columns admin-verification-layout">
+          <section
+            className="workflow-card admin-verification-queue"
+            aria-labelledby="verification-queue-title"
+          >
+            <div className="admin-verification-queue-heading">
+              <div>
+                <h2 id="verification-queue-title">คิวรอตรวจสอบ</h2>
+                <p>เลือกผู้ดูแลเพื่อดูเอกสารและพิจารณาผล</p>
+              </div>
+              <span className="workflow-badge">{data.length} คน</span>
+            </div>
+            <ul className="admin-verification-queue-list">
+              {data.map((person) => {
+                const isSelected =
+                  selected?.caregiver_id === person.caregiver_id
+                return (
+                  <li key={person.caregiver_id}>
+                    <button
+                      type="button"
+                      className="admin-verification-person"
+                      aria-pressed={isSelected}
+                      disabled={saving}
+                      onClick={() => {
+                        setSelected(person)
+                        setReason('')
+                        setActionError('')
+                      }}
+                    >
+                      <span
+                        className="admin-verification-avatar"
+                        aria-hidden="true"
+                      >
+                        {person.display_name?.trim().charAt(0) || 'ผ'}
+                      </span>
+                      <span className="admin-verification-person-info">
+                        <strong>{person.display_name}</strong>
+                        <span>รอตรวจเอกสาร</span>
+                      </span>
+                      <span
+                        className="admin-verification-person-action"
+                        aria-hidden="true"
+                      >
+                        {isSelected ? 'กำลังตรวจ' : 'ตรวจเอกสาร'} →
+                      </span>
+                    </button>
+                  </li>
+                )
+              })}
+            </ul>
+          </section>
           {selected && (
             <section
               ref={reviewPanel}
@@ -148,6 +177,12 @@ export default function AdminVerifications() {
                   ไม่อนุมัติ
                 </button>
               </div>
+            </section>
+          )}
+          {!selected && (
+            <section className="workflow-card admin-verification-placeholder">
+              <h2>เลือกผู้ดูแลจากคิว</h2>
+              <p>รายละเอียดเอกสารและปุ่มอนุมัติจะแสดงตรงนี้</p>
             </section>
           )}
         </div>

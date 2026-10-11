@@ -1,7 +1,10 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { saveOwnAvatar } from '../lib/caregiverAvatars'
 import geography from '../data/geography-options.json'
 import logo from '../assets/navbar/logo.png'
+import AvatarCropper from './AvatarCropper'
+import CaregiverAvatar from './CaregiverAvatar'
 
 const provinces = Object.keys(geography)
 
@@ -18,8 +21,29 @@ function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
   const [addressDetail, setAddressDetail] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [selectedImage, setSelectedImage] = useState(null)
+  const [avatarFile, setAvatarFile] = useState(null)
+  const [avatarPreview, setAvatarPreview] = useState('')
+  const [profileSaved, setProfileSaved] = useState(false)
+  const [caregiverSaved, setCaregiverSaved] = useState(false)
   const districts = Object.keys(geography[province] ?? {})
   const subdistricts = geography[province]?.[district] ?? []
+
+  useEffect(() => () => {
+    if (avatarPreview) URL.revokeObjectURL(avatarPreview)
+  }, [avatarPreview])
+
+  function chooseAvatar(event) {
+    const file = event.target.files?.[0]
+    event.target.value = ''
+    if (!file) return
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 10485760) {
+      setError('เลือกรูป JPG, PNG หรือ WebP ขนาดไม่เกิน 10 MB')
+      return
+    }
+    setError('')
+    setSelectedImage(file)
+  }
 
   function handlePhoneChange(event) {
     const digitsOnly = event.target.value.replace(/\D/g, '').slice(0, 10)
@@ -41,28 +65,48 @@ function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
     submitting.current = true
     setLoading(true)
     setError('')
+    let stage = 'account'
 
     try {
-      const { error: insertError } = await supabase.from('profiles').insert({
-        id: userId,
-        role,
-        first_name: firstName.trim(),
-        last_name: lastName.trim(),
-        phone: phone.trim(),
-        line_id: lineId.trim() || null,
-        province: province.trim(),
-        district: district.trim(),
-        subdistrict: subdistrict.trim(),
-        address_detail: addressDetail.trim(),
-      })
+      if (!profileSaved) {
+        const { error: insertError } = await supabase.from('profiles').insert({
+          id: userId,
+          role,
+          first_name: firstName.trim(),
+          last_name: lastName.trim(),
+          phone: phone.trim(),
+          line_id: lineId.trim() || null,
+          province: province.trim(),
+          district: district.trim(),
+          subdistrict: subdistrict.trim(),
+          address_detail: addressDetail.trim(),
+        })
 
-      if (insertError) {
-        throw insertError
+        if (insertError) throw insertError
+        setProfileSaved(true)
+      }
+
+      // บัญชีผู้ดูแลต้องมีแถวโปรไฟล์ก่อน จึงจะผูกรูปที่อัปโหลดได้
+      if (role === 'caregiver' && !caregiverSaved) {
+        stage = 'caregiver'
+        const { error: caregiverError } = await supabase.from('caregiver_profiles')
+          .insert({ caregiver_id: userId })
+        if (caregiverError) throw caregiverError
+        setCaregiverSaved(true)
+      }
+
+      if (role === 'caregiver' && avatarFile) {
+        stage = 'avatar'
+        await saveOwnAvatar(userId, avatarFile, null)
       }
 
       await onProfileCreated()
     } catch (insertError) {
-      setError(insertError.message || 'ไม่สามารถสร้างโปรไฟล์ได้')
+      setError(stage === 'avatar'
+        ? 'บันทึกข้อมูลบัญชีแล้ว แต่รูปโปรไฟล์ยังไม่สำเร็จ ลองอีกครั้งหรือข้ามไปเปลี่ยนรูปในหน้าโปรไฟล์'
+        : stage === 'caregiver'
+          ? 'บันทึกข้อมูลบัญชีแล้ว แต่สร้างโปรไฟล์ผู้ดูแลไม่สำเร็จ กรุณาลองอีกครั้ง'
+          : insertError.message || 'ไม่สามารถสร้างโปรไฟล์ได้')
     } finally {
       submitting.current = false
       setLoading(false)
@@ -105,6 +149,7 @@ function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
               name="role"
               value="employer"
               checked={role === 'employer'}
+              disabled={profileSaved}
               onChange={(event) => setRole(event.target.value)}
               required
             />
@@ -120,6 +165,7 @@ function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
               name="role"
               value="caregiver"
               checked={role === 'caregiver'}
+              disabled={profileSaved}
               onChange={(event) => setRole(event.target.value)}
               required
             />
@@ -130,6 +176,32 @@ function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
           </label>
         </div>
       </fieldset>
+
+      {role === 'caregiver' && (
+        <section className="profile-setup-avatar" aria-label="รูปโปรไฟล์ผู้ดูแล">
+          <CaregiverAvatar name={firstName} url={avatarPreview} className="caregiver-avatar-preview" />
+          <div>
+            <strong>รูปโปรไฟล์ (ไม่บังคับ)</strong>
+            <p>ผู้ว่าจ้างจะเห็นรูปหลังยืนยันตัวตนแล้ว เลือกและครอบภาพได้ตอนนี้ หรือเพิ่มภายหลัง</p>
+            <label className="caregiver-avatar-upload">
+              {avatarFile ? 'เปลี่ยนรูปที่เลือก' : 'เลือกรูป'}
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                aria-label="เลือกรูปโปรไฟล์ผู้ดูแล"
+                onChange={chooseAvatar}
+                disabled={loading}
+              />
+            </label>
+            {avatarFile && (
+              <button type="button" className="secondary-button" onClick={() => { setAvatarFile(null); setAvatarPreview('') }}>
+                เอารูปที่เลือกออก
+              </button>
+            )}
+            <small>JPG, PNG หรือ WebP ไม่เกิน 10 MB · ระบบจะบันทึกเป็นภาพสี่เหลี่ยมจัตุรัส</small>
+          </div>
+        </section>
+      )}
 
       <div className="profile-form-row">
         <div className="profile-field">
@@ -286,14 +358,26 @@ function ProfileSetupForm({ userId, email, onSignOut, onProfileCreated }) {
       </section>
 
       {error && <p role="alert">{error}</p>}
+      {profileSaved && caregiverSaved && <button type="button" className="profile-skip-avatar" onClick={onProfileCreated}>ไปหน้าโปรไฟล์ก่อน</button>}
 
       <button
         className="profile-submit-button"
         type="submit"
         disabled={loading}
       >
-        {loading ? 'กำลังบันทึก...' : 'บันทึกและเริ่มใช้งาน'}
+        {loading ? 'กำลังบันทึก...' : profileSaved ? 'ลองบันทึกต่อ' : 'บันทึกและเริ่มใช้งาน'}
       </button>
+      {selectedImage && (
+        <AvatarCropper
+          file={selectedImage}
+          onCancel={() => setSelectedImage(null)}
+          onConfirm={(cropped) => {
+            setAvatarFile(cropped)
+            setAvatarPreview(URL.createObjectURL(cropped))
+            setSelectedImage(null)
+          }}
+        />
+      )}
     </form>
   )
 }

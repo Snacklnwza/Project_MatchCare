@@ -4,6 +4,7 @@ import { saveCaregiverContact } from '../lib/profiles'
 import { removeOwnAvatar, saveOwnAvatar, signedAvatarUrl } from '../lib/caregiverAvatars'
 import { supabase } from '../lib/supabase'
 import CaregiverAvatar from '../components/CaregiverAvatar'
+import AvatarCropper from '../components/AvatarCropper'
 import ReviewSummary from '../components/ReviewSummary'
 import '../styles/CaregiverProfile.css'
 
@@ -29,6 +30,7 @@ function CaregiverProfile({ profile, email, onNavigate }) {
   const [avatarBusy, setAvatarBusy] = useState(false)
   const [avatarMessage, setAvatarMessage] = useState('')
   const [avatarError, setAvatarError] = useState('')
+  const [selectedAvatar, setSelectedAvatar] = useState(null)
   const [bio, setBio] = useState('')
   const [experienceYears, setExperienceYears] = useState('0')
   const [loading, setLoading] = useState(true)
@@ -115,10 +117,19 @@ function CaregiverProfile({ profile, email, onNavigate }) {
     return () => { active = false }
   }, [caregiverData?.avatar_path])
 
-  async function changeAvatar(event) {
+  function chooseAvatar(event) {
     const file = event.target.files?.[0]
     event.target.value = ''
     if (!file || avatarBusy || !caregiverData) return
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 10485760) {
+      setAvatarError('เลือกรูป JPG, PNG หรือ WebP ขนาดไม่เกิน 10 MB')
+      return
+    }
+    setAvatarError('')
+    setSelectedAvatar(file)
+  }
+
+  async function changeAvatar(file) {
     setAvatarBusy(true)
     setAvatarError('')
     setAvatarMessage('')
@@ -127,6 +138,7 @@ function CaregiverProfile({ profile, email, onNavigate }) {
         profile.id, file, caregiverData.avatar_path,
       )
       setCaregiverData((current) => ({ ...current, avatar_path: path }))
+      setSelectedAvatar(null)
       setAvatarMessage(cleanupFailed
         ? 'เปลี่ยนรูปแล้ว แต่ลบไฟล์รูปเก่าไม่สำเร็จ'
         : 'เปลี่ยนรูปโปรไฟล์แล้ว')
@@ -388,7 +400,7 @@ function CaregiverProfile({ profile, email, onNavigate }) {
                         accept="image/jpeg,image/png,image/webp"
                         disabled={avatarBusy || !caregiverData}
                         aria-label="เลือกรูปโปรไฟล์ผู้ดูแล"
-                        onChange={changeAvatar}
+                        onChange={chooseAvatar}
                       />
                     </label>
                     {caregiverData?.avatar_path && (
@@ -396,11 +408,15 @@ function CaregiverProfile({ profile, email, onNavigate }) {
                         เอารูปออก
                       </button>
                     )}
-                    <small>JPG, PNG หรือ WebP ไม่เกิน 2 MB</small>
+                    <small>JPG, PNG หรือ WebP ไม่เกิน 10 MB · ครอบภาพก่อนบันทึก</small>
                     {avatarError && <p role="alert">{avatarError}</p>}
                     {avatarMessage && <p role="status">{avatarMessage}</p>}
                   </div>
                 </div>
+                {selectedAvatar && (
+                  <AvatarCropper file={selectedAvatar} busy={avatarBusy}
+                    onCancel={() => setSelectedAvatar(null)} onConfirm={changeAvatar} />
+                )}
                 <dl>
                   <div>
                     <dt>ชื่อและนามสกุล</dt>

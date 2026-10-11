@@ -745,6 +745,26 @@
   font-size: 13px;
 }
 
+.profile-setup-avatar {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 24px;
+  padding: 18px;
+  border: 1px solid #dce9e1;
+  border-radius: 12px;
+  background: #f7fbf8;
+}
+.profile-setup-avatar .caregiver-avatar { flex: 0 0 76px; width: 76px; height: 76px; font-size: 28px; }
+.profile-setup-avatar > div { min-width: 0; }
+.profile-setup-avatar p { margin: 5px 0 12px; color: #53675c; font-size: 14px; }
+.profile-setup-avatar small { display: block; margin-top: 10px; color: #53675c; }
+.profile-setup-avatar .secondary-button { margin-left: 8px; }
+.profile-setup-avatar .caregiver-avatar-upload { display: inline-block; padding: 10px 14px; border-radius: 8px; background: #006948; color: #fff; cursor: pointer; }
+.profile-setup-avatar .caregiver-avatar-upload:focus-within { outline: 2px solid #006948; outline-offset: 3px; }
+.profile-setup-avatar .caregiver-avatar-upload input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.profile-skip-avatar { display: block; margin-top: 16px; border: 0; background: transparent; color: #006948; text-decoration: underline; cursor: pointer; }
+
 .profile-form-row,
 .profile-location-grid {
   display: grid;
@@ -853,6 +873,8 @@
   .profile-setup-form {
     padding: 20px;
   }
+
+  .profile-setup-avatar { flex-direction: column; }
 
   .profile-setup-header {
     align-items: flex-start;

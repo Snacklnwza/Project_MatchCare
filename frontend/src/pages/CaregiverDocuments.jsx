@@ -7,7 +7,7 @@ import { useRef, useState } from 'react'
 import DocumentList from '../components/DocumentList'
 import { documentLabels, uploadDocument, workflowError } from '../lib/workflow'
 
-export default function CaregiverDocuments({ profile }) {
+export default function CaregiverDocuments({ profile, onNavigate }) {
   const [type, setType] = useState('identity')
   const [file, setFile] = useState(null)
   useUnsavedChanges(Boolean(file))
@@ -39,6 +39,7 @@ export default function CaregiverDocuments({ profile }) {
     reload: reloadStatus,
   } = useRemoteList(loader)
   const verification = statuses[0]?.verification_status
+  const profileMissing = !statusLoading && !statusError && !statuses.length
   const statusLabels = {
     verified: 'ยืนยันตัวตนแล้ว ไม่ต้องส่งเอกสารซ้ำ',
     pending: 'ส่งเอกสารแล้ว รอแอดมินตรวจสอบ',
@@ -104,74 +105,88 @@ export default function CaregiverDocuments({ profile }) {
         </p>
       )}
       <div className="workflow-columns">
-        <details
-          className="workflow-card document-upload"
-          open={verification !== 'verified'}
-        >
-          <summary>ส่งเอกสารตรวจสอบ</summary>
-          <form onSubmit={submit}>
+        {profileMissing ? (
+          <section className="workflow-card document-upload">
+            <h2>บันทึกโปรไฟล์ก่อนส่งเอกสาร</h2>
             <p>
-              บันทึกโปรไฟล์ผู้ดูแลก่อนส่งเอกสาร
-              ใช้ข้อมูลสมมติสำหรับการทดสอบโครงการ
+              บัญชีของคุณยังไม่มีโปรไฟล์การดูแล
+              กรุณาแนะนำตัวและบันทึกโปรไฟล์ก่อน
+              แล้วจึงกลับมาส่งเอกสารให้แอดมินตรวจสอบ
             </p>
-            <label htmlFor="document-type">ประเภทเอกสาร</label>
-            <select
-              id="document-type"
-              value={type}
-              disabled={saving}
-              onChange={(event) => setType(event.target.value)}
-            >
-              {Object.entries(documentLabels).map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
-            <label htmlFor="document-file" className="document-file-label">
-              {file ? 'เปลี่ยนไฟล์เอกสาร' : 'เลือกไฟล์เอกสาร'}
-            </label>
-            <input
-              id="document-file"
-              className="document-file-input"
-              type="file"
-              accept="image/jpeg,image/png,application/pdf"
-              disabled={saving}
-              required
-              onChange={(event) => {
-                const selected = event.target.files[0] ?? null
-                setFile(selected)
-                setPreviewUrl(
-                  selected &&
-                    ['image/jpeg', 'image/png', 'application/pdf'].includes(
-                      selected.type,
-                    ) &&
-                    selected.size <= 5242880
-                    ? URL.createObjectURL(selected)
-                    : null,
-                )
-              }}
-            />
-            <FilePreview file={file} url={previewUrl} />
-            <p className="workflow-hint">
-              JPG, PNG หรือ PDF · สูงสุด 5 MB ต่อไฟล์
-              <br />
-              เอกสารเปิดดูได้เฉพาะคุณและแอดมินที่ตรวจสอบ
-            </p>
-            {error && <p role="alert">{error}</p>}
-            {success && <p role="status">{success}</p>}
-            <button
-              type="submit"
-              disabled={
-                saving ||
-                verification === 'verified' ||
-                statusLoading ||
-                !!statusError
-              }
-            >
-              {saving ? 'กำลังส่งเอกสาร...' : 'ส่งให้แอดมินตรวจสอบ'}
+            <button type="button" onClick={() => onNavigate('profile')}>
+              ไปบันทึกโปรไฟล์
             </button>
-          </form>
-        </details>
+          </section>
+        ) : (
+          <details
+            className="workflow-card document-upload"
+            open={verification !== 'verified'}
+          >
+            <summary>ส่งเอกสารตรวจสอบ</summary>
+            <form onSubmit={submit}>
+              <p>
+                บันทึกโปรไฟล์ผู้ดูแลก่อนส่งเอกสาร
+                ใช้ข้อมูลสมมติสำหรับการทดสอบโครงการ
+              </p>
+              <label htmlFor="document-type">ประเภทเอกสาร</label>
+              <select
+                id="document-type"
+                value={type}
+                disabled={saving}
+                onChange={(event) => setType(event.target.value)}
+              >
+                {Object.entries(documentLabels).map(([value, label]) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+              <label htmlFor="document-file" className="document-file-label">
+                {file ? 'เปลี่ยนไฟล์เอกสาร' : 'เลือกไฟล์เอกสาร'}
+              </label>
+              <input
+                id="document-file"
+                className="document-file-input"
+                type="file"
+                accept="image/jpeg,image/png,application/pdf"
+                disabled={saving}
+                required
+                onChange={(event) => {
+                  const selected = event.target.files[0] ?? null
+                  setFile(selected)
+                  setPreviewUrl(
+                    selected &&
+                      ['image/jpeg', 'image/png', 'application/pdf'].includes(
+                        selected.type,
+                      ) &&
+                      selected.size <= 5242880
+                      ? URL.createObjectURL(selected)
+                      : null,
+                  )
+                }}
+              />
+              <FilePreview file={file} url={previewUrl} />
+              <p className="workflow-hint">
+                JPG, PNG หรือ PDF · สูงสุด 5 MB ต่อไฟล์
+                <br />
+                เอกสารเปิดดูได้เฉพาะคุณและแอดมินที่ตรวจสอบ
+              </p>
+              {error && <p role="alert">{error}</p>}
+              {success && <p role="status">{success}</p>}
+              <button
+                type="submit"
+                disabled={
+                  saving ||
+                  verification === 'verified' ||
+                  statusLoading ||
+                  !!statusError
+                }
+              >
+                {saving ? 'กำลังส่งเอกสาร...' : 'ส่งให้แอดมินตรวจสอบ'}
+              </button>
+            </form>
+          </details>
+        )}
         <section className="workflow-card">
           <h2>เอกสารที่ส่งแล้ว</h2>
           <DocumentList key={version} caregiverId={profile.id} />

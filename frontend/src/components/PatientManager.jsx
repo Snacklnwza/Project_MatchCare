@@ -10,6 +10,24 @@ const mobilityLabels = {
   walker: 'ใช้เครื่องช่วยเดิน',
   cane: 'ใช้ไม้เท้า',
 }
+const areaLabels = {
+  arm: 'แขน',
+  leg: 'ขา',
+  arm_and_leg: 'แขนและขา',
+  other: 'ส่วนอื่น',
+}
+const sideLabels = {
+  left: 'ซ้าย',
+  right: 'ขวา',
+  both: 'ทั้งสองด้าน',
+  unknown: 'ยังไม่ทราบด้าน',
+}
+const assistanceLabels = {
+  independent: 'ย้ายตัวได้เอง',
+  supervision: 'ต้องมีคนคอยดูแลขณะย้ายตัว',
+  partial: 'ต้องช่วยพยุงขณะย้ายตัว',
+  full: 'ต้องช่วยย้ายตัวทั้งหมด',
+}
 
 function PatientManager() {
   const [patients, setPatients] = useState([])
@@ -37,6 +55,9 @@ function PatientManager() {
                         last_name,
                         birth_date,
                         mobility_status,
+                        affected_area,
+                        affected_side,
+                        transfer_assistance,
                         care_notes,
                         province,
                         district,
@@ -238,6 +259,15 @@ function PatientManager() {
               {mobilityLabels[patient.mobility_status] ??
                 patient.mobility_status}
             </p>
+            {patient.affected_area && (
+              <p>
+                เคลื่อนไหวลำบาก: {areaLabels[patient.affected_area]}{' '}
+                {sideLabels[patient.affected_side]}
+              </p>
+            )}
+            {patient.transfer_assistance && (
+              <p>{assistanceLabels[patient.transfer_assistance]}</p>
+            )}
 
             <p>
               อ.{patient.district} จ.{patient.province}

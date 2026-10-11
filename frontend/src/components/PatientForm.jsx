@@ -15,6 +15,11 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
   const [mobilityStatus, setMobilityStatus] = useState(
     patient?.mobility_status ?? '',
   )
+  const [affectedArea, setAffectedArea] = useState(patient?.affected_area ?? '')
+  const [affectedSide, setAffectedSide] = useState(patient?.affected_side ?? '')
+  const [transferAssistance, setTransferAssistance] = useState(
+    patient?.transfer_assistance ?? '',
+  )
   const [careNotes, setCareNotes] = useState(patient?.care_notes ?? '')
   const [province, setProvince] = useState(patient?.province ?? '')
   const [district, setDistrict] = useState(patient?.district ?? '')
@@ -43,6 +48,9 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
       lastName,
       birthDate,
       mobilityStatus,
+      affectedArea,
+      affectedSide,
+      transferAssistance,
       careNotes,
       province,
       district,
@@ -58,6 +66,9 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
       lastName,
       birthDate,
       mobilityStatus,
+      affectedArea,
+      affectedSide,
+      transferAssistance,
       careNotes,
       province,
       district,
@@ -168,7 +179,7 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
 
     try {
       const { data, error: saveError } = await supabase.rpc(
-        'save_patient_with_tags',
+        'save_patient_with_care_details',
         {
           p_patient_id: patient?.id ?? null,
           p_first_name: firstName.trim(),
@@ -182,6 +193,9 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
           p_address_detail: addressDetail.trim(),
           p_condition_ids: selectedConditionIds,
           p_skill_ids: selectedSkillIds,
+          p_affected_area: affectedArea || null,
+          p_affected_side: affectedSide || null,
+          p_transfer_assistance: transferAssistance || null,
         },
       )
 
@@ -347,6 +361,59 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
           {fieldErrors['patient-mobility-status']}
         </small>
       )}
+
+      <h2 className="form-section-title">รายละเอียดการช่วยเคลื่อนไหว</h2>
+      <p className="form-help">
+        กรอกเฉพาะส่วนที่เกี่ยวข้อง เพื่อให้ผู้ดูแลเข้าใจงานที่ต้องช่วย
+      </p>
+      <label htmlFor="patient-affected-area">
+        บริเวณที่อ่อนแรงหรือเคลื่อนไหวลำบาก
+      </label>
+      <select
+        id="patient-affected-area"
+        value={affectedArea}
+        onChange={(event) => {
+          setAffectedArea(event.target.value)
+          if (!event.target.value) setAffectedSide('')
+        }}
+      >
+        <option value="">ไม่มีข้อมูลเพิ่มเติม</option>
+        <option value="arm">แขน</option>
+        <option value="leg">ขา</option>
+        <option value="arm_and_leg">แขนและขา</option>
+        <option value="other">ส่วนอื่นของร่างกาย</option>
+      </select>
+
+      {affectedArea && (
+        <>
+          <label htmlFor="patient-affected-side">ด้านที่ได้รับผลกระทบ</label>
+          <select
+            id="patient-affected-side"
+            value={affectedSide}
+            onChange={(event) => setAffectedSide(event.target.value)}
+            required
+          >
+            <option value="">เลือกด้าน</option>
+            <option value="left">ซ้าย</option>
+            <option value="right">ขวา</option>
+            <option value="both">ทั้งสองด้าน</option>
+            <option value="unknown">ยังไม่ทราบ</option>
+          </select>
+        </>
+      )}
+
+      <label htmlFor="patient-transfer-assistance">การลุก นั่ง หรือย้ายตัว</label>
+      <select
+        id="patient-transfer-assistance"
+        value={transferAssistance}
+        onChange={(event) => setTransferAssistance(event.target.value)}
+      >
+        <option value="">ยังไม่ระบุ</option>
+        <option value="independent">ทำได้เอง</option>
+        <option value="supervision">ต้องมีคนคอยดูแล</option>
+        <option value="partial">ต้องมีคนช่วยพยุง</option>
+        <option value="full">ต้องมีคนช่วยย้ายตัวทั้งหมด</option>
+      </select>
 
       <fieldset className="patient-option-group">
         <legend>สภาวะหรือโรคประจำตัว</legend>

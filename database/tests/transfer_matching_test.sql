@@ -98,4 +98,20 @@ begin
       and required_skills = 2 and match_score = 50
   ) then raise exception 'ทักษะย้ายตัวถูกนับซ้ำเมื่ออยู่ในประกาศ'; end if;
 end $$;
+
+select set_config('request.jwt.claims', json_build_object(
+  'sub', current_setting('test.transfer_skilled'), 'role', 'authenticated'
+)::text, true);
+do $$
+declare details jsonb;
+begin
+  details := public.get_open_job_details(current_setting('test.transfer_job')::bigint);
+  if details->>'transfer_assistance' <> 'full' or not exists (
+    select 1 from jsonb_array_elements(details->'required_skills') item
+    where item->>'name' = 'การช่วยพยุงและย้ายตัว'
+  ) then raise exception 'ผู้ดูแลไม่เห็นความต้องการช่วยย้ายตัวก่อนสมัคร'; end if;
+  if details ?| array['patient_id', 'patient_name', 'affected_area', 'affected_side', 'address_detail', 'phone'] then
+    raise exception 'รายละเอียดงานเปิดข้อมูลผู้ป่วยเกินจำเป็น';
+  end if;
+end $$;
 rollback;

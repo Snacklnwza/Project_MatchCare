@@ -20,6 +20,12 @@ import '../styles/JobSearch.css'
 const provinces = Object.keys(geography).sort((a, b) =>
   a.localeCompare(b, 'th'),
 )
+const transferAssistanceLabels = {
+  independent: 'ทำได้เอง',
+  supervision: 'ต้องมีคนคอยดูแล',
+  partial: 'ต้องมีคนช่วยพยุง',
+  full: 'ต้องมีคนช่วยย้ายตัวทั้งหมด',
+}
 const emptyFilters = {
   province: '',
   district: '',
@@ -427,6 +433,12 @@ function JobSearch() {
                       <p>{detail.description}</p>
                       <h4>การดูแลที่ต้องการ</h4>
                       <p>{detail.care_summary}</p>
+                      {detail.transfer_assistance && (
+                        <p className="job-search-hint">
+                          การลุก นั่ง หรือย้ายตัว:{' '}
+                          {transferAssistanceLabels[detail.transfer_assistance]}
+                        </p>
+                      )}
                       <dl>
                         <div>
                           <dt>ช่วงเวลาทำงาน</dt>

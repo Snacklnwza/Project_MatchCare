@@ -71,3 +71,49 @@ begin
   order by score desc, c.experience_years desc, c.caregiver_id;
 end;
 $$;
+
+-- ผู้ดูแลเห็นงานที่ต้องช่วยจริงก่อนสมัคร โดยไม่เปิดข้อมูลระบุตัวผู้ป่วย
+create or replace function match_internal.get_open_job_details(p_job_id bigint)
+returns jsonb
+language plpgsql stable security definer set search_path = '' as $$
+declare v_result jsonb;
+begin
+  if auth.uid() is null or not exists (
+    select 1 from public.profiles p
+    where p.id = auth.uid() and p.role = 'caregiver'
+  ) then
+    raise exception using errcode = '42501', message = 'caregiver_account_required';
+  end if;
+
+  select jsonb_build_object(
+    'job_id', j.id,
+    'title', j.title,
+    'description', j.description,
+    'care_summary', j.care_summary,
+    'transfer_assistance', pt.transfer_assistance,
+    'province', j.province,
+    'district', j.district,
+    'starts_at', j.starts_at,
+    'ends_at', j.ends_at,
+    'pay_amount', j.pay_amount,
+    'pay_unit', j.pay_unit,
+    'required_skills', coalesce((
+      select jsonb_agg(jsonb_build_object('id', needed.id, 'name', needed.name) order by needed.name)
+      from (
+        select s.id, s.name from public.job_required_skills jrs
+        join public.skills s on s.id = jrs.skill_id
+        where jrs.job_post_id = j.id
+        union
+        select s.id, s.name from public.skills s
+        where s.name = 'การช่วยพยุงและย้ายตัว' and s.is_active
+          and pt.transfer_assistance in ('partial', 'full')
+      ) needed
+    ), '[]'::jsonb)
+  ) into v_result
+  from public.job_posts j
+  join public.patients pt on pt.id = j.patient_id
+  where j.id = p_job_id and j.status = 'open';
+
+  return v_result;
+end;
+$$;

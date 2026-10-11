@@ -273,7 +273,18 @@ export default function JobHistory({ profile }) {
                 <div id={`history-detail-${job.job_post_id}`}>
                   <HistoryDetails jobId={job.job_post_id} />
                   {job.job_status === 'completed' && (
-                    <JobReview jobId={job.job_post_id} canReview={employer} />
+                    <>
+                      <JobReview
+                        jobId={job.job_post_id}
+                        kind="caregiver"
+                        canReview={employer}
+                      />
+                      <JobReview
+                        jobId={job.job_post_id}
+                        kind="employer"
+                        canReview={!employer}
+                      />
+                    </>
                   )}
                 </div>
               )}

@@ -74,6 +74,7 @@ try {
     'smart_matching_test.sql',
     'job_history_test.sql',
     'job_rating_test.sql',
+    'employer_review_test.sql',
     'catalog_test.sql',
     'caregiver_profile_save_test.sql',
     'caregiver_search_test.sql',

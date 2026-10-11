@@ -1,4 +1,5 @@
 import CollapsibleFilters from '../components/CollapsibleFilters'
+import EmployerReputation from '../components/EmployerReputation'
 import { useCallback, useRef, useState } from 'react'
 import geography from '../data/geography-options.json'
 import useRemoteList from '../hooks/useRemoteList'
@@ -454,6 +455,7 @@ function JobSearch() {
                           <span key={skill.id}>{skill.name}</span>
                         ))}
                       </div>
+                      <EmployerReputation jobId={job.job_id} />
                       {submittedIds.has(job.job_id) ||
                       applications.some(
                         (item) => item.job_post_id === job.job_id,

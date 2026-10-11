@@ -4,6 +4,7 @@ import { requestMatches } from '../lib/requestStatus'
 import { useRef, useState } from 'react'
 import useRemoteList from '../hooks/useRemoteList'
 import MatchContact from '../components/MatchContact'
+import EmployerReputation from '../components/EmployerReputation'
 import {
   loadInvitations,
   callWorkflow,
@@ -194,6 +195,11 @@ export default function Invitations({ profile, onNavigate }) {
                 {Number(request.pay_amount).toLocaleString('th-TH')} บาท{' '}
                 {payUnitLabels[request.pay_unit]}
               </p>
+              {profile.role === 'caregiver' &&
+                request.status === 'pending' &&
+                request.job_status === 'open' && (
+                  <EmployerReputation jobId={request.job_post_id} />
+                )}
               {profile.role === 'caregiver' &&
                 request.status === 'pending' &&
                 request.job_status === 'open' && (

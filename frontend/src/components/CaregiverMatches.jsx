@@ -3,7 +3,33 @@ import { supabase } from '../lib/supabase'
 import { callWorkflow, workflowError } from '../lib/workflow'
 import ReviewSummary from './ReviewSummary'
 
+const areaLabels = {
+  arm: 'แขน',
+  leg: 'ขา',
+  arm_and_leg: 'แขนและขา',
+  other: 'ส่วนอื่น',
+}
+const sideLabels = {
+  left: 'ซ้าย',
+  right: 'ขวา',
+  both: 'ทั้งสองด้าน',
+  unknown: 'ยังไม่ทราบด้าน',
+}
+const assistanceLabels = {
+  independent: 'ย้ายตัวได้เอง',
+  supervision: 'ต้องมีคนคอยดูแลขณะย้ายตัว',
+  partial: 'ต้องช่วยพยุงขณะย้ายตัว',
+  full: 'ต้องช่วยย้ายตัวทั้งหมด',
+}
+
 export default function CaregiverMatches({ job, onBack }) {
+  const care = job.patients
+  const requiresTransferSkill = ['partial', 'full'].includes(
+    care?.transfer_assistance,
+  )
+  const skillSource = requiresTransferSkill
+    ? 'ทักษะในประกาศและการช่วยย้ายตัว'
+    : 'ทักษะในประกาศ'
   const [results, setResults] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -84,6 +110,23 @@ export default function CaregiverMatches({ job, onBack }) {
         ← กลับไปประกาศงาน
       </button>
       <h2 id="matches-heading">ผู้ดูแลสำหรับ “{job.title}”</h2>
+      {(care?.affected_area || care?.transfer_assistance) && (
+        <div className="match-explanation">
+          <strong>ความต้องการดูแลของงานนี้</strong>
+          {care.affected_area && (
+            <p>
+              เคลื่อนไหวลำบาก: {areaLabels[care.affected_area]}{' '}
+              {sideLabels[care.affected_side]}
+            </p>
+          )}
+          {care.transfer_assistance && (
+            <p>{assistanceLabels[care.transfer_assistance]}</p>
+          )}
+          {requiresTransferSkill && (
+            <p>ระบบนำทักษะ “การช่วยพยุงและย้ายตัว” มาคิดคะแนนจับคู่ด้วย</p>
+          )}
+        </div>
+      )}
       {notice && <p role="status">{notice}</p>}
       {inviteError && <p role="alert">{inviteError}</p>}
       <p>ผู้ดูแลที่ยืนยันแล้วและพร้อมรับงาน เรียงตามคะแนนทักษะที่ตรงกับงาน</p>
@@ -116,9 +159,9 @@ export default function CaregiverMatches({ job, onBack }) {
           <p className="workflow-hint">
             {results[0].required_skills > 0 &&
             results[0].required_condition_skills > 0
-              ? 'คะแนนมาจากทักษะในประกาศ 70% และทักษะที่เกี่ยวข้องกับสภาวะการดูแล 30%'
+              ? `คะแนนมาจาก${skillSource} 70% และทักษะที่เกี่ยวข้องกับสภาวะการดูแล 30%`
               : results[0].required_skills > 0
-                ? 'คะแนนมาจากทักษะในประกาศ 100%'
+                ? `คะแนนมาจาก${skillSource} 100%`
                 : results[0].required_condition_skills > 0
                   ? 'คะแนนมาจากทักษะที่เกี่ยวข้องกับสภาวะการดูแล 100%'
                   : 'ยังไม่มีเกณฑ์ทักษะ จึงเรียงตามประสบการณ์'}
@@ -146,7 +189,7 @@ export default function CaregiverMatches({ job, onBack }) {
                 <p>ประสบการณ์ดูแล {caregiver.experience_years} ปี</p>
                 <p>ยืนยันแล้ว · พร้อมรับงาน</p>
                 <SkillExplanation
-                  title="ทักษะในประกาศ"
+                  title={skillSource}
                   matching={caregiver.matching_skills}
                   missing={caregiver.missing_skills}
                 />

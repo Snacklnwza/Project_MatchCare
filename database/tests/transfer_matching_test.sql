@@ -1,0 +1,101 @@
+-- ระดับการช่วยย้ายตัวต้องเปลี่ยนลำดับจับคู่ แต่ข้างที่อ่อนแรงไม่ควรตัดผู้ดูแล
+begin;
+select set_config('test.transfer_owner', gen_random_uuid()::text, true);
+select set_config('test.transfer_basic', gen_random_uuid()::text, true);
+select set_config('test.transfer_skilled', gen_random_uuid()::text, true);
+insert into auth.users (id, email)
+select current_setting(k)::uuid, current_setting(k) || '@example.com'
+from unnest(array['test.transfer_owner', 'test.transfer_basic', 'test.transfer_skilled']) k;
+insert into public.profiles (
+  id, role, first_name, last_name, phone, province, district, subdistrict, address_detail
+)
+select current_setting(k)::uuid,
+  case when k = 'test.transfer_owner' then 'employer' else 'caregiver' end,
+  'ทดสอบ', k, '0800000000', 'กรุงเทพมหานคร', 'พระนคร', 'พระบรมมหาราชวัง', 'ที่อยู่สมมติ'
+from unnest(array['test.transfer_owner', 'test.transfer_basic', 'test.transfer_skilled']) k;
+insert into public.caregiver_profiles (
+  caregiver_id, availability_status, verification_status, verified_by, verified_at
+)
+select current_setting(k)::uuid, 'available', 'verified',
+  current_setting('test.transfer_owner')::uuid, now()
+from unnest(array['test.transfer_basic', 'test.transfer_skilled']) k;
+select set_config('test.transfer_skill', id::text, true)
+from public.skills where name = 'การช่วยพยุงและย้ายตัว';
+select set_config('test.base_skill', id::text, true)
+from public.skills where name = 'การปฐมพยาบาลเบื้องต้น';
+
+select set_config('request.jwt.claims', json_build_object(
+  'sub', current_setting('test.transfer_owner'), 'role', 'authenticated'
+)::text, true);
+set local role authenticated;
+do $$
+declare p public.patients; j bigint;
+begin
+  p := public.save_patient_with_care_details(
+    null, 'ทดสอบ', 'จับคู่', '1950-01-01', 'walker', null,
+    'กรุงเทพมหานคร', 'พระนคร', 'พระบรมมหาราชวัง', 'ที่อยู่สมมติ',
+    '{}'::bigint[], '{}'::bigint[], 'arm_and_leg', 'left', 'independent'
+  );
+  j := public.create_job_with_tags(
+    p.id, 'ทดสอบความต้องการย้ายตัว', 'รายละเอียด', 'การดูแล',
+    now() + interval '1 day', now() + interval '2 days', 1000, 'day',
+    array[current_setting('test.base_skill')::bigint]
+  );
+  perform set_config('test.transfer_patient', p.id::text, true);
+  perform set_config('test.transfer_job', j::text, true);
+end $$;
+reset role;
+insert into public.caregiver_skills (caregiver_id, skill_id)
+select current_setting(k)::uuid, current_setting('test.base_skill')::bigint
+from unnest(array['test.transfer_basic', 'test.transfer_skilled']) k;
+insert into public.caregiver_skills (caregiver_id, skill_id)
+values (current_setting('test.transfer_skilled')::uuid, current_setting('test.transfer_skill')::bigint);
+set local role authenticated;
+
+do $$
+declare basic_score numeric; skilled_score numeric;
+begin
+  select match_score into basic_score from public.rank_caregivers_for_job(current_setting('test.transfer_job')::bigint)
+  where caregiver_id = current_setting('test.transfer_basic')::uuid;
+  select match_score into skilled_score from public.rank_caregivers_for_job(current_setting('test.transfer_job')::bigint)
+  where caregiver_id = current_setting('test.transfer_skilled')::uuid;
+  if basic_score <> 100 or skilled_score <> 100 then
+    raise exception 'ย้ายตัวได้เองไม่ควรเพิ่มเกณฑ์: % %', basic_score, skilled_score;
+  end if;
+
+  update public.patients set transfer_assistance = 'partial'
+  where id = current_setting('test.transfer_patient')::bigint;
+  select match_score into basic_score from public.rank_caregivers_for_job(current_setting('test.transfer_job')::bigint)
+  where caregiver_id = current_setting('test.transfer_basic')::uuid;
+  select match_score into skilled_score from public.rank_caregivers_for_job(current_setting('test.transfer_job')::bigint)
+  where caregiver_id = current_setting('test.transfer_skilled')::uuid;
+  if basic_score <> 50 or skilled_score <> 100 then
+    raise exception 'ระดับที่ต้องช่วยย้ายตัวไม่เปลี่ยนคะแนน: % %', basic_score, skilled_score;
+  end if;
+  if not exists (
+    select 1 from public.rank_caregivers_for_job(current_setting('test.transfer_job')::bigint)
+    where caregiver_id = current_setting('test.transfer_basic')::uuid
+      and missing_skills ? 'การช่วยพยุงและย้ายตัว' and required_skills = 2
+  ) then raise exception 'ไม่อธิบายทักษะที่ยังขาด'; end if;
+
+  update public.patients set affected_side = 'right'
+  where id = current_setting('test.transfer_patient')::bigint;
+  if not exists (
+    select 1 from public.rank_caregivers_for_job(current_setting('test.transfer_job')::bigint)
+    where caregiver_id = current_setting('test.transfer_basic')::uuid and match_score = basic_score
+  ) then raise exception 'การเปลี่ยนข้างทำให้คะแนนเปลี่ยน'; end if;
+
+  update public.patients set transfer_assistance = 'full'
+  where id = current_setting('test.transfer_patient')::bigint;
+  insert into public.job_required_skills (job_post_id, skill_id)
+  values (
+    current_setting('test.transfer_job')::bigint,
+    current_setting('test.transfer_skill')::bigint
+  );
+  if not exists (
+    select 1 from public.rank_caregivers_for_job(current_setting('test.transfer_job')::bigint)
+    where caregiver_id = current_setting('test.transfer_basic')::uuid
+      and required_skills = 2 and match_score = 50
+  ) then raise exception 'ทักษะย้ายตัวถูกนับซ้ำเมื่ออยู่ในประกาศ'; end if;
+end $$;
+rollback;

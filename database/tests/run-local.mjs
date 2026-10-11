@@ -68,6 +68,7 @@ try {
 
   const tests = [
     'patient_care_details_test.sql',
+    'transfer_matching_test.sql',
     'caregiver_schedule_test.sql',
     'completion_procedure_test.sql',
     'admin_statistics_test.sql',

@@ -215,6 +215,15 @@
   margin-top: 24px;
   padding-top: 16px;
 }
+.matched-patient-details {
+  margin: 20px 0;
+  padding: 18px 20px;
+  border: 1px solid #cfe6d8;
+  border-radius: 12px;
+  background: #f3faf6;
+}
+.matched-patient-details h3 { margin: 0 0 12px; font-size: 18px; }
+.matched-patient-details p { margin: 8px 0; line-height: 1.6; }
 .workflow-page [role='alert'] {
   color: #a12c2c;
 }

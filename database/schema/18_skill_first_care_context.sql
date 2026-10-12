@@ -125,3 +125,49 @@ begin
   return v_result;
 end;
 $$;
+
+-- เปิดรายละเอียดผู้ป่วยพร้อมชื่อเฉพาะผู้ดูแลที่ตอบรับงานนั้นแล้ว
+create or replace function match_internal.get_matched_patient_details(p_request_id bigint)
+returns jsonb language sql stable security definer set search_path = ''
+as $fn$
+  select pg_catalog.jsonb_build_object(
+    'patient_name', pg_catalog.concat_ws(' ', pt.first_name, pt.last_name),
+    'age_years', pg_catalog.date_part('year', pg_catalog.age(current_date, pt.birth_date))::integer,
+    'mobility_status', pt.mobility_status,
+    'chronic_conditions', pt.chronic_conditions,
+    'care_notes', pt.care_notes,
+    'affected_area', pt.affected_area,
+    'affected_side', pt.affected_side,
+    'transfer_assistance', pt.transfer_assistance,
+    'care_summary', j.care_summary,
+    'care_conditions', coalesce((
+      select pg_catalog.jsonb_agg(c.name order by c.name)
+      from public.patient_conditions pc
+      join public.conditions c on c.id = pc.condition_id
+      where pc.patient_id = pt.id
+    ), '[]'::jsonb),
+    'required_skills', coalesce((
+      select pg_catalog.jsonb_agg(s.name order by s.name)
+      from public.job_required_skills js
+      join public.skills s on s.id = js.skill_id
+      where js.job_post_id = j.id
+    ), '[]'::jsonb)
+  )
+  from public.match_requests r
+  join public.job_posts j on j.id = r.job_post_id
+  join public.patients pt on pt.id = j.patient_id
+  join public.profiles me on me.id = (select auth.uid()) and me.role = 'caregiver'
+  where r.id = p_request_id
+    and r.caregiver_id = me.id
+    and r.status = 'accepted';
+$fn$;
+revoke all on function match_internal.get_matched_patient_details(bigint)
+from public, anon, authenticated;
+grant execute on function match_internal.get_matched_patient_details(bigint) to authenticated;
+
+create or replace function public.get_matched_patient_details(p_request_id bigint)
+returns jsonb language sql stable security invoker set search_path = ''
+as $fn$ select match_internal.get_matched_patient_details(p_request_id); $fn$;
+revoke all on function public.get_matched_patient_details(bigint)
+from public, anon, authenticated;
+grant execute on function public.get_matched_patient_details(bigint) to authenticated;

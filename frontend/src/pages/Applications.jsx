@@ -3,6 +3,7 @@ import RequestFilters, { RequestBadge } from '../components/RequestFilters'
 import { requestMatches } from '../lib/requestStatus'
 import { useRef, useState } from 'react'
 import MatchContact from '../components/MatchContact'
+import MatchedPatientDetails from '../components/MatchedPatientDetails'
 import useRemoteList from '../hooks/useRemoteList'
 import { formatJobDate, jobStatusLabels, payUnitLabels } from '../lib/jobs'
 import {
@@ -148,6 +149,9 @@ export default function Applications({ onNavigate }) {
               <p className="workflow-hint">
                 สมัครเมื่อ {formatJobDate(application.created_at)}
               </p>
+              {application.status === 'accepted' && (
+                <MatchedPatientDetails requestId={application.request_id} />
+              )}
               {application.status === 'accepted' && (
                 <p role="status">
                   สถานะงาน:{' '}

@@ -4,6 +4,7 @@ import { requestMatches } from '../lib/requestStatus'
 import { useRef, useState } from 'react'
 import useRemoteList from '../hooks/useRemoteList'
 import MatchContact from '../components/MatchContact'
+import MatchedPatientDetails from '../components/MatchedPatientDetails'
 import ReviewSummary from '../components/ReviewSummary'
 import {
   loadInvitations,
@@ -195,6 +196,9 @@ export default function Invitations({ profile, onNavigate }) {
                 {Number(request.pay_amount).toLocaleString('th-TH')} บาท{' '}
                 {payUnitLabels[request.pay_unit]}
               </p>
+              {profile.role === 'caregiver' && request.status === 'accepted' && (
+                <MatchedPatientDetails requestId={request.request_id} />
+              )}
               {profile.role === 'caregiver' &&
                 request.status === 'pending' &&
                 request.job_status === 'open' && (

@@ -66,7 +66,7 @@ function JobForm({ job = null, onCancel, onSaved }) {
       const { data, error: queryError } = await supabase
         .from('patients')
         .select(
-          'id, first_name, last_name, birth_date, province, district, subdistrict, address_detail, patient_required_skills(skill_id)',
+          'id, first_name, last_name, birth_date, province, district, subdistrict, address_detail',
         )
         .eq('is_active', true)
         .order('created_at', { ascending: false })
@@ -120,13 +120,9 @@ function JobForm({ job = null, onCancel, onSaved }) {
     )
   }
   function choosePatient(nextPatientId) {
+    if (nextPatientId === patientId) return
     setPatientId(nextPatientId)
-    if (job && nextPatientId === String(job.patient_id)) {
-      setSelectedSkillIds(job.job_required_skills?.map((item) => item.skill_id) ?? [])
-      return
-    }
-    const patient = patients.find((item) => String(item.id) === nextPatientId)
-    setSelectedSkillIds(patient?.patient_required_skills?.map((item) => item.skill_id) ?? [])
+    setSelectedSkillIds([])
   }
   const selectedPatient = patients.find(
     (patient) => String(patient.id) === patientId,
@@ -337,10 +333,7 @@ function JobForm({ job = null, onCancel, onSaved }) {
         <fieldset>
           <legend>ทักษะหลักที่ต้องการใช้จับคู่</legend>
           <p className="form-help">
-            {job
-              ? 'ทักษะของประกาศเดิมยังอยู่ เปลี่ยนผู้ป่วยแล้วระบบจะเตรียมทักษะจากข้อมูลผู้ป่วยรายใหม่ให้'
-              : 'เมื่อเลือกผู้ป่วย ระบบจะเลือกทักษะจากข้อมูลผู้ป่วยให้ก่อน'}
-            {' '}ปรับเพิ่มหรือลดให้ตรงกับงานนี้ได้ คะแนนจับคู่คิดจากทักษะในประกาศ
+            เลือกทักษะให้ตรงกับงานนี้ คะแนนจับคู่คิดจากทักษะที่เลือกในประกาศเท่านั้น
           </p>
 
           {loadingSkills ? (

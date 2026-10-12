@@ -4,7 +4,6 @@ import geography from '../data/geography-options.json'
 import { formatPatientAge } from '../lib/patients'
 import { toLocalDateTime } from '../lib/jobs'
 import { supabase } from '../lib/supabase'
-import SkillPicker from './SkillPicker'
 
 const provinces = Object.keys(geography)
 
@@ -32,12 +31,8 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
     patient?.address_detail ?? '',
   )
   const [conditions, setConditions] = useState([])
-  const [skills, setSkills] = useState([])
   const [selectedConditionIds, setSelectedConditionIds] = useState(
     patient?.patient_conditions?.map((item) => item.condition_id) ?? [],
-  )
-  const [selectedSkillIds, setSelectedSkillIds] = useState(
-    patient?.patient_required_skills?.map((item) => item.skill_id) ?? [],
   )
   const [optionsLoading, setOptionsLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -62,7 +57,6 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
       subdistrict,
       addressDetail,
       selectedConditionIds,
-      selectedSkillIds,
     ]),
   )
   const { confirmDiscard, markSaved } = useUnsavedChanges(
@@ -81,7 +75,6 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
       subdistrict,
       addressDetail,
       selectedConditionIds,
-      selectedSkillIds,
     ]) !== original,
   )
   const cancel = () => {
@@ -129,22 +122,17 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
       setOptionsError(false)
       setError('')
 
-      const [conditionResult, skillResult] = await Promise.all([
-        supabase.from('conditions').select('id, name, is_active').order('name'),
-        supabase.from('skills').select('id, name, is_active').order('name'),
-      ])
+      const conditionResult = await supabase
+        .from('conditions')
+        .select('id, name, is_active')
+        .order('name')
 
       if (cancelled) return
-      if (conditionResult.error || skillResult.error) {
+      if (conditionResult.error) {
         setOptionsError(true)
-        setError(
-          conditionResult.error?.message ||
-            skillResult.error?.message ||
-            'ไม่สามารถโหลดตัวเลือกได้',
-        )
+        setError(conditionResult.error.message)
       } else {
         setConditions(conditionResult.data ?? [])
-        setSkills(skillResult.data ?? [])
       }
 
       setOptionsLoading(false)
@@ -198,7 +186,7 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
           p_subdistrict: subdistrict,
           p_address_detail: addressDetail.trim(),
           p_condition_ids: selectedConditionIds,
-          p_skill_ids: selectedSkillIds,
+          p_skill_ids: patient?.patient_required_skills?.map((item) => item.skill_id) ?? [],
           p_affected_area: affectedArea || null,
           p_affected_side: affectedSide || null,
           p_transfer_assistance: transferAssistance || null,
@@ -217,9 +205,6 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
         ...data,
         patient_conditions: selectedConditionIds.map((conditionId) => ({
           condition_id: conditionId,
-        })),
-        patient_required_skills: selectedSkillIds.map((skillId) => ({
-          skill_id: skillId,
         })),
       })
     } catch {
@@ -468,16 +453,6 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
               </label>
             ))
         )}
-      </fieldset>
-
-      <fieldset className="patient-option-group">
-        <legend>ทักษะผู้ดูแลที่ต้องการ</legend>
-        <p className="form-help">เลือกทักษะที่ผู้ป่วยต้องการ ระบบจะนำไปเลือกไว้ให้เมื่อสร้างประกาศ และปรับเฉพาะงานได้ภายหลัง</p>
-
-        {optionsLoading ? (
-          <p>กำลังโหลดทักษะ...</p>
-        ) : <SkillPicker skills={skills} selectedIds={selectedSkillIds}
-          onToggle={(id) => toggleSelectedId(id, setSelectedSkillIds)} />}
       </fieldset>
 
       <h2 className="form-section-title">สถานที่ดูแล</h2>

@@ -5,6 +5,7 @@ import { useRef, useState } from 'react'
 import useRemoteList from '../hooks/useRemoteList'
 import MatchContact from '../components/MatchContact'
 import MatchedPatientDetails from '../components/MatchedPatientDetails'
+import InvitationCareDetails from '../components/InvitationCareDetails'
 import ReviewSummary from '../components/ReviewSummary'
 import {
   loadInvitations,
@@ -184,7 +185,9 @@ export default function Invitations({ profile, onNavigate }) {
               {profile.role === 'employer' && (
                 <p>ผู้ดูแล: {request.caregiver_name}</p>
               )}
-              <p>{request.description}</p>
+              {(profile.role !== 'caregiver' ||
+                request.status !== 'pending' ||
+                request.job_status !== 'open') && <p>{request.description}</p>}
               <p>
                 อ.{request.district} จ.{request.province}
               </p>
@@ -199,6 +202,11 @@ export default function Invitations({ profile, onNavigate }) {
               {profile.role === 'caregiver' && request.status === 'accepted' && (
                 <MatchedPatientDetails requestId={request.request_id} />
               )}
+              {profile.role === 'caregiver' &&
+                request.status === 'pending' &&
+                request.job_status === 'open' && (
+                  <InvitationCareDetails jobId={request.job_post_id} />
+                )}
               {profile.role === 'caregiver' &&
                 request.status === 'pending' &&
                 request.job_status === 'open' && (

@@ -224,6 +224,18 @@
 }
 .matched-patient-details h3 { margin: 0 0 12px; font-size: 18px; }
 .matched-patient-details p { margin: 8px 0; line-height: 1.6; }
+.invitation-care-details {
+  margin: 20px 0;
+  padding: 18px 20px;
+  border: 1px solid #cfe6d8;
+  border-radius: 12px;
+  background: #f3faf6;
+}
+.invitation-care-details h3 { margin: 0 0 12px; font-size: 18px; }
+.invitation-care-details h4 { margin: 18px 0 8px; font-size: 16px; }
+.invitation-care-details p { margin: 8px 0; line-height: 1.6; overflow-wrap: anywhere; }
+.invitation-care-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.invitation-care-tags span { padding: 5px 10px; border-radius: 8px; background: #e4f3eb; color: #006948; font-weight: 600; }
 .workflow-page [role='alert'] {
   color: #a12c2c;
 }

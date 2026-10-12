@@ -205,33 +205,26 @@ export default function Invitations({ profile, onNavigate }) {
               {profile.role === 'caregiver' &&
                 request.status === 'pending' &&
                 request.job_status === 'open' && (
-                  <InvitationCareDetails jobId={request.job_post_id} />
-                )}
-              {profile.role === 'caregiver' &&
-                request.status === 'pending' &&
-                request.job_status === 'open' && (
-                  <ReviewSummary jobId={request.job_post_id} />
-                )}
-              {profile.role === 'caregiver' &&
-                request.status === 'pending' &&
-                request.job_status === 'open' && (
-                  <div className="workflow-actions">
-                    <button
-                      type="button"
-                      disabled={busyId !== null}
-                      onClick={() => respond(request, true)}
-                    >
-                      ตอบรับงาน
-                    </button>
-                    <button
-                      type="button"
-                      className="secondary-button"
-                      disabled={busyId !== null}
-                      onClick={() => respond(request, false)}
-                    >
-                      ปฏิเสธ
-                    </button>
-                  </div>
+                  <InvitationCareDetails jobId={request.job_post_id}>
+                    <ReviewSummary jobId={request.job_post_id} />
+                    <div className="workflow-actions">
+                      <button
+                        type="button"
+                        disabled={busyId !== null}
+                        onClick={() => respond(request, true)}
+                      >
+                        ตอบรับงาน
+                      </button>
+                      <button
+                        type="button"
+                        className="secondary-button"
+                        disabled={busyId !== null}
+                        onClick={() => respond(request, false)}
+                      >
+                        ปฏิเสธ
+                      </button>
+                    </div>
+                  </InvitationCareDetails>
                 )}
               {request.status === 'accepted' && (
                 <div className="workflow-actions">

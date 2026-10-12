@@ -66,7 +66,7 @@ function JobForm({ job = null, onCancel, onSaved }) {
       const { data, error: queryError } = await supabase
         .from('patients')
         .select(
-          'id, first_name, last_name, birth_date, province, district, subdistrict, address_detail',
+          'id, first_name, last_name, birth_date, province, district, subdistrict, address_detail, patient_required_skills(skill_id)',
         )
         .eq('is_active', true)
         .order('created_at', { ascending: false })
@@ -118,6 +118,15 @@ function JobForm({ job = null, onCancel, onSaved }) {
         ? currentIds.filter((id) => id !== skillId)
         : [...currentIds, skillId],
     )
+  }
+  function choosePatient(nextPatientId) {
+    setPatientId(nextPatientId)
+    if (job && nextPatientId === String(job.patient_id)) {
+      setSelectedSkillIds(job.job_required_skills?.map((item) => item.skill_id) ?? [])
+      return
+    }
+    const patient = patients.find((item) => String(item.id) === nextPatientId)
+    setSelectedSkillIds(patient?.patient_required_skills?.map((item) => item.skill_id) ?? [])
   }
   const selectedPatient = patients.find(
     (patient) => String(patient.id) === patientId,
@@ -217,7 +226,7 @@ function JobForm({ job = null, onCancel, onSaved }) {
             <select
               id="job-patient"
               value={patientId}
-              onChange={(event) => setPatientId(event.target.value)}
+              onChange={(event) => choosePatient(event.target.value)}
               required
             >
               <option value="">เลือกผู้ป่วย</option>
@@ -327,7 +336,12 @@ function JobForm({ job = null, onCancel, onSaved }) {
         </div>{' '}
         <fieldset>
           <legend>ทักษะหลักที่ต้องการใช้จับคู่</legend>
-          <p className="form-help">เลือกให้ตรงกับงานจริง คะแนนจับคู่คิดจากทักษะที่เลือกตรงนี้ ส่วนข้อมูลสุขภาพให้ผู้ดูแลอ่านก่อนสมัคร</p>
+          <p className="form-help">
+            {job
+              ? 'ทักษะของประกาศเดิมยังอยู่ เปลี่ยนผู้ป่วยแล้วระบบจะเตรียมทักษะจากข้อมูลผู้ป่วยรายใหม่ให้'
+              : 'เมื่อเลือกผู้ป่วย ระบบจะเลือกทักษะจากข้อมูลผู้ป่วยให้ก่อน'}
+            {' '}ปรับเพิ่มหรือลดให้ตรงกับงานนี้ได้ คะแนนจับคู่คิดจากทักษะในประกาศ
+          </p>
 
           {loadingSkills ? (
             <p>กำลังโหลดทักษะ...</p>

@@ -472,7 +472,7 @@ function PatientForm({ patient = null, onCancel, onSaved }) {
 
       <fieldset className="patient-option-group">
         <legend>ทักษะผู้ดูแลที่ต้องการ</legend>
-        <p className="form-help">เลือกทักษะหลักให้ตรงกับงาน และตรวจอีกครั้งตอนสร้างประกาศ</p>
+        <p className="form-help">เลือกทักษะที่ผู้ป่วยต้องการ ระบบจะนำไปเลือกไว้ให้เมื่อสร้างประกาศ และปรับเฉพาะงานได้ภายหลัง</p>
 
         {optionsLoading ? (
           <p>กำลังโหลดทักษะ...</p>

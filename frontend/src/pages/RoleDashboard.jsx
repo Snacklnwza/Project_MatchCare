@@ -14,7 +14,7 @@ import CaregiverDocuments from './CaregiverDocuments'
 import JobSearch from './JobSearch'
 import AdminVerifications from './AdminVerifications'
 import Invitations from './Invitations'
-import Applications from './Applications'
+import MyWork from './MyWork'
 import EmployerApplications from './EmployerApplications'
 import CaregiverSearch from './CaregiverSearch'
 import JobHistory from './JobHistory'
@@ -33,6 +33,7 @@ function RoleDashboard({ profile, email, onProfileUpdated, onSignOut }) {
     }
   }, [])
   function navigate(page, item = null) {
+    if (profile.role === 'caregiver' && ['applications', 'invitations'].includes(page)) page = 'myWork'
     if (page === activePage || !guard.current || guard.current()) {
       setTarget(item)
       setActivePage(page)
@@ -90,8 +91,8 @@ function RoleDashboard({ profile, email, onProfileUpdated, onSignOut }) {
     )
   } else if (profile.role === 'caregiver' && activePage === 'documents') {
     content = <CaregiverDocuments profile={profile} onNavigate={navigate} />
-  } else if (profile.role === 'caregiver' && activePage === 'applications') {
-    content = <Applications onNavigate={navigate} />
+  } else if (profile.role === 'caregiver' && activePage === 'myWork') {
+    content = <MyWork key={target?.work_filter ?? 'current'} initialFilter={target?.work_filter} onNavigate={navigate} />
   } else if (profile.role === 'admin' && activePage === 'verifications') {
     content = <AdminVerifications />
   } else if (profile.role === 'admin' && activePage === 'catalog') {
@@ -111,7 +112,7 @@ function RoleDashboard({ profile, email, onProfileUpdated, onSignOut }) {
         activePage={activePage}
         onSelect={navigate}
       />
-      {target && (
+      {target?.source_type && (
         <aside
           className="notification-context"
           aria-label="รายการจากการแจ้งเตือน"

@@ -2,11 +2,11 @@ import { useCallback } from 'react'
 import useRemoteList from '../hooks/useRemoteList'
 import { supabase } from '../lib/supabase'
 import {
-  loadInvitations,
-  loadMyApplications,
+  loadMyWork,
   loadReceivedApplications,
 } from '../lib/workflow'
 import { requestGroup } from '../lib/requestStatus'
+import { workGroup } from '../lib/caregiverWork'
 
 export default function DashboardTasks({ role, onNavigate }) {
   const loader = useCallback(async () => {
@@ -36,36 +36,9 @@ export default function DashboardTasks({ role, onNavigate }) {
         { title: 'งานที่ตอบรับแล้ว', count: result.data.length, page: 'jobs' },
       ]
     }
-    const [invitations, applications] = await Promise.all([
-      loadInvitations(),
-      loadMyApplications(),
-    ])
-    const active = [...invitations, ...applications].filter(
-      (item) => requestGroup(item) === 'active',
-    )
-    return [
-      {
-        title: 'คำเชิญรอคำตอบ',
-        count: invitations.filter((item) => requestGroup(item) === 'waiting')
-          .length,
-        page: 'invitations',
-      },
-      {
-        title: 'งานจากคำเชิญ',
-        count: active.filter((item) =>
-          invitations.some(
-            (invitation) => invitation.request_id === item.request_id,
-          ),
-        ).length,
-        page: 'invitations',
-      },
-      {
-        title: 'งานจากใบสมัคร',
-        count: applications.filter((item) => requestGroup(item) === 'active')
-          .length,
-        page: 'applications',
-      },
-    ]
+    const requests = await loadMyWork()
+    return [['waiting', 'รอคำตอบ'], ['matched', 'รับงานแล้ว'], ['in_progress', 'กำลังดูแล']]
+      .map(([filter, title]) => ({ title, count: requests.filter(item => workGroup(item) === filter).length, page: 'myWork', filter }))
   }, [role])
   const { data, loading, error, reload } = useRemoteList(loader)
   return (
@@ -86,7 +59,7 @@ export default function DashboardTasks({ role, onNavigate }) {
             <button
               type="button"
               key={task.title}
-              onClick={() => onNavigate(task.page)}
+              onClick={() => onNavigate(task.page, task.filter ? { work_filter: task.filter } : null)}
             >
               <span>{task.title}</span>
               <strong>{task.count} รายการ</strong>

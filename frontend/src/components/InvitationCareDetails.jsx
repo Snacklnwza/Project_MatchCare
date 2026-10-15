@@ -3,10 +3,12 @@ import useRemoteList from '../hooks/useRemoteList'
 import { callWorkflow } from '../lib/workflow'
 import { areaLabels, assistanceLabels, mobilityLabels, sideLabels } from '../lib/patients'
 
-export default function InvitationCareDetails({ jobId, children }) {
+export default function InvitationCareDetails({ jobId, requestId, children }) {
   const load = useCallback(
-    () => callWorkflow('get_open_job_details', { p_job_id: jobId }),
-    [jobId],
+    () => requestId != null
+      ? callWorkflow('get_my_work_details', { p_request_id: requestId })
+      : callWorkflow('get_open_job_details', { p_job_id: jobId }),
+    [jobId, requestId],
   )
   const { data, loading, error, reload } = useRemoteList(load)
 
@@ -14,7 +16,7 @@ export default function InvitationCareDetails({ jobId, children }) {
   if (error || !data) {
     return (
       <div className="invitation-care-details" role="alert">
-        <p>โหลดรายละเอียดงานไม่สำเร็จ กรุณาลองใหม่ก่อนตัดสินใจรับงาน</p>
+        <p>โหลดรายละเอียดงานไม่สำเร็จ กรุณาลองใหม่</p>
         <button type="button" className="secondary-button" onClick={reload}>ลองใหม่</button>
       </div>
     )
@@ -22,14 +24,16 @@ export default function InvitationCareDetails({ jobId, children }) {
 
   return (
     <>
-      <section className="invitation-care-details" aria-label="รายละเอียดงานและผู้ป่วยก่อนตอบรับ">
-        <h3>รายละเอียดก่อนตอบรับงาน</h3>
+      <section className="invitation-care-details" aria-label="รายละเอียดงานและการดูแล">
+        <h3>{requestId != null ? 'รายละเอียดงาน' : 'รายละเอียดก่อนตอบรับงาน'}</h3>
         <p><strong>รายละเอียดงาน:</strong> {data.description}</p>
         <p><strong>สรุปการดูแลที่ต้องการ:</strong> {data.care_summary}</p>
         <div className="invitation-care-tags" aria-label="ทักษะที่งานต้องการ">
           {data.required_skills?.map((skill) => <span key={skill.id}>{skill.name}</span>)}
         </div>
+        {data.health_visible === false ? <p className="workflow-hint">รายการนี้สิ้นสุดแล้ว แสดงรายละเอียดงานและทักษะที่ต้องการ</p> : <>
         <h4>ข้อมูลผู้ป่วยที่เกี่ยวกับการดูแล</h4>
+        {data.patient_name && <p><strong>ผู้ป่วย:</strong> {data.patient_name}{data.age_years != null && ` · อายุ ${data.age_years} ปี`}</p>}
         <p><strong>การเคลื่อนไหว:</strong> {mobilityLabels[data.mobility_status] ?? 'ไม่ได้ระบุ'}</p>
         {data.chronic_conditions && <p><strong>โรคประจำตัว/อาการ:</strong> {data.chronic_conditions}</p>}
         {data.care_notes && <p><strong>ข้อควรรู้ในการดูแล:</strong> {data.care_notes}</p>}
@@ -38,6 +42,7 @@ export default function InvitationCareDetails({ jobId, children }) {
           <p><strong>บริเวณที่เคลื่อนไหวลำบาก:</strong> {areaLabels[data.affected_area]} {sideLabels[data.affected_side]}</p>
         )}
         {data.transfer_assistance && <p><strong>การย้ายตัว:</strong> {assistanceLabels[data.transfer_assistance]}</p>}
+        </>}
       </section>
       {children}
     </>

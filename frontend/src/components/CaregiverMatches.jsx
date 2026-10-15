@@ -95,7 +95,7 @@ export default function CaregiverMatches({ job, onBack }) {
       <h2 id="matches-heading">ผู้ดูแลสำหรับ “{job.title}”</h2>
       {notice && <p role="status">{notice}</p>}
       {inviteError && <p role="alert">{inviteError}</p>}
-      <p>ผู้ดูแลที่ยืนยันแล้วและพร้อมรับงาน เรียงตามคะแนนทักษะที่ตรงกับงาน</p>
+      <p>แสดงเฉพาะผู้ดูแลที่ยืนยันแล้ว เปิดรับงาน และไม่มีงานที่ตอบรับไว้ทับช่วงเวลาประกาศนี้ โดยเรียงตามทักษะที่ตรงกับงาน</p>
       {loading ? (
         <p role="status">กำลังค้นหาผู้ดูแล...</p>
       ) : error ? (
@@ -107,10 +107,10 @@ export default function CaregiverMatches({ job, onBack }) {
         </div>
       ) : results.length === 0 ? (
         <div className="job-empty" role="status">
-          <h3>ยังไม่พบผู้ดูแลที่พร้อมรับงาน</h3>
+          <h3>ยังไม่พบผู้ดูแลที่ว่างในช่วงเวลานี้</h3>
           <p>
-            ขณะนี้ยังไม่มีผู้ดูแลที่ผ่านการยืนยันและเปิดรับงาน
-            ลองค้นหาอีกครั้งภายหลัง
+            ผู้ดูแลที่เปิดรับงานอาจมีงานอื่นที่ตอบรับไว้ทับช่วงวันที่ของประกาศ
+            ลองปรับวันเวลาในประกาศ หรือค้นหาอีกครั้งภายหลัง
           </p>
           <button type="button" onClick={() => setRetry((value) => value + 1)}>
             ค้นหาอีกครั้ง
@@ -132,13 +132,18 @@ export default function CaregiverMatches({ job, onBack }) {
                   </div>
                   <span className="job-status job-status-open">
                     {caregiver.required_skills > 0
-                      ? `ทักษะตรงกับงาน ${caregiver.match_score}%`
+                      ? `ทักษะตรง ${caregiver.matched_skills}/${caregiver.required_skills} — ${caregiver.match_score}%`
                       : 'ยังไม่มีเกณฑ์คะแนน'}
                   </span>
                 </div>
-                <p>
-                  อ.{caregiver.district} จ.{caregiver.province}
-                </p>
+                <div className="match-location-context">
+                  <p><strong>ที่อยู่ผู้ดูแล:</strong> อ.{caregiver.district} จ.{caregiver.province}</p>
+                  <p><strong>สถานที่ทำงาน:</strong> อ.{job.district} จ.{job.province}</p>
+                  <p className="form-help">
+                    {caregiver.province !== job.province ? 'อยู่คนละจังหวัด · ' : ''}
+                    พื้นที่รับงาน/ความพร้อมเดินทาง: ยังไม่ระบุ · คะแนนทักษะไม่รวมพื้นที่และการเดินทาง
+                  </p>
+                </div>
                 <p>ประสบการณ์ดูแล {caregiver.experience_years} ปี</p>
                 <p>ยืนยันแล้ว · พร้อมรับงาน</p>
                 <SkillExplanation

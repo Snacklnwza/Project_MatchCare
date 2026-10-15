@@ -21,8 +21,7 @@ const menuItemsByRole = {
   caregiver: [
     { id: 'dashboard', label: 'หน้าหลัก' },
     { id: 'jobs', label: 'ค้นหางาน' },
-    { id: 'applications', label: 'งานที่สมัคร' },
-    { id: 'invitations', label: 'คำเชิญและงานของฉัน' },
+    { id: 'myWork', label: 'งานของฉัน' },
     { id: 'schedule', label: 'ปฏิทินงาน' },
   ],
   admin: [

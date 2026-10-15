@@ -1,4 +1,5 @@
 import { supabase } from './supabase'
+import { mergeCaregiverWork } from './caregiverWork'
 
 export const documentLabels = {
   identity: 'เอกสารยืนยันตัวตน',
@@ -51,6 +52,10 @@ export async function callWorkflow(name, args) {
 }
 export const loadInvitations = () => callWorkflow('list_my_invitations')
 export const loadMyApplications = () => callWorkflow('list_my_applications')
+export async function loadMyWork() {
+  const [invitations, applications] = await Promise.all([loadInvitations(), loadMyApplications()])
+  return mergeCaregiverWork(invitations, applications)
+}
 export const loadReceivedApplications = () =>
   callWorkflow('list_received_applications')
 export const loadVerificationQueue = () =>

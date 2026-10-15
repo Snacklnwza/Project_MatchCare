@@ -483,7 +483,7 @@ function JobSearch() {
                         (item) => item.job_post_id === job.job_id,
                       ) ? (
                         <p role="status" className="job-search-hint">
-                          สมัครงานนี้แล้ว ดูสถานะได้ที่เมนูงานที่สมัคร
+                          สมัครงานนี้แล้ว ดูสถานะและรายละเอียดได้ที่เมนูงานของฉัน
                         </p>
                       ) : (
                         <button

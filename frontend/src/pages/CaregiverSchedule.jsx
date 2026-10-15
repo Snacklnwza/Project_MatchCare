@@ -202,9 +202,7 @@ export default function CaregiverSchedule({ onNavigate }) {
                       className="secondary-button"
                       onClick={() =>
                         onNavigate(
-                          job.request_type === 'application'
-                            ? 'applications'
-                            : 'invitations',
+                          'myWork',
                           {
                             source_type: 'job',
                             source_id: job.job_post_id,

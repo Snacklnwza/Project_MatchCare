@@ -303,6 +303,10 @@
 .request-filters { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:24px; }
 .workflow-page .request-filters button[aria-pressed="true"] { background:#006948; color:white; }
 .request-filters span { margin-left:6px; font-variant-numeric:tabular-nums; }
+.work-source { display:inline-block; padding:4px 10px; border-radius:6px; background:#edf3f8; color:#36566d; font-size:13px; }
+.match-location-context { margin:16px 0; padding:12px 16px; border:1px solid #dce9e1; border-radius:10px; background:#f5faf7; }
+.match-location-context p { margin:4px 0; }
+.match-location-context .form-help { line-height:1.6; }
 .workflow-badge[data-status="completed"] { background:#e5eef6; color:#285579; }
 .workflow-badge[data-status="in_progress"], .workflow-badge[data-status="matched"] { background:#e0f4eb; color:#006948; }
 .workflow-badge[data-status="completion_pending"] { background:#fff0d6; color:#825000; }

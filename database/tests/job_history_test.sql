@@ -65,7 +65,7 @@ alter table public.job_posts enable trigger job_posts_validate;
 set local role authenticated;
 
 do $$
-declare item jsonb;
+declare item jsonb; v_request bigint;
 begin
   if (select count(*) from public.list_job_history()) <> 21
     or (select count(*) from public.list_job_history('all', 20)) <> 3 then
@@ -102,11 +102,35 @@ begin
   perform set_config('request.jwt.claims', json_build_object('sub', current_setting('test.history_caregiver'))::text, true);
   if (select count(*) from public.list_job_history('all', 20)) <> 3 then raise exception 'ผู้ดูแลไม่เห็นประวัติทั้งสองเส้นทาง'; end if;
   perform public.get_job_history_details(current_setting('test.history_completed')::bigint);
+  select request_id into v_request from public.list_my_applications()
+    where job_post_id = current_setting('test.history_completed')::bigint;
+  item := public.get_my_work_details(v_request);
+  if item->>'description' <> 'รายละเอียดงาน' or item->>'patient_name' is null
+    or item->>'health_visible' <> 'true' or jsonb_typeof(item->'required_skills'->0) <> 'object' then
+    raise exception 'งานที่จบแล้วเปิดรายละเอียดและแท็กไม่ได้';
+  end if;
+  select request_id into v_request from public.list_my_invitations()
+    where job_post_id = current_setting('test.history_pending')::bigint;
+  item := public.get_my_work_details(v_request);
+  if item->>'health_visible' <> 'true' or item ? 'patient_name' then
+    raise exception 'รายละเอียดก่อนตอบรับไม่ถูกต้องหรือเปิดชื่อผู้ป่วย';
+  end if;
+  perform public.respond_to_invitation(v_request, false);
+  item := public.get_my_work_details(v_request);
+  if item->>'description' is null or item->>'health_visible' <> 'false'
+    or item ?| array['patient_name', 'chronic_conditions', 'phone', 'address_detail'] then
+    raise exception 'รายการปฏิเสธต้องยังเปิดงานได้โดยไม่เปิดข้อมูลผู้ป่วย';
+  end if;
+  perform set_config('test.history_request', v_request::text, true);
   perform set_config('request.jwt.claims', json_build_object('sub', current_setting('test.history_other'))::text, true);
   if exists(select 1 from public.list_job_history()) then raise exception 'บัญชีอื่นอ่านประวัติได้'; end if;
   begin
     perform public.get_job_history_details(current_setting('test.history_completed')::bigint);
     raise exception 'บัญชีอื่นเปิดรายละเอียดได้';
+  exception when insufficient_privilege then null; end;
+  begin
+    perform public.get_my_work_details(current_setting('test.history_request')::bigint);
+    raise exception 'บัญชีอื่นเปิดงานของผู้ดูแลได้';
   exception when insufficient_privilege then null; end;
   perform set_config('request.jwt.claims', json_build_object('sub', current_setting('test.history_admin'))::text, true);
   begin
@@ -115,6 +139,9 @@ begin
 end $$;
 set local role anon;
 do $$ begin
+  begin perform public.get_my_work_details(current_setting('test.history_request')::bigint);
+    raise exception 'ผู้ไม่ล็อกอินเปิดงานของผู้ดูแลได้';
+  exception when insufficient_privilege then null; end;
   begin perform public.list_job_history(); raise exception 'ผู้ไม่ล็อกอินอ่านประวัติได้';
   exception when insufficient_privilege then null; end;
 end $$;

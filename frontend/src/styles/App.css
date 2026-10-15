@@ -1123,13 +1123,13 @@
   font-size: 14px;
   font-weight: 700;
 }
-.account-toggle img {
+.account-toggle > img {
   width: 12px;
   height: 8px;
   margin-left: 4px;
   transition: transform 180ms ease;
 }
-.navbar-dropdown[open] .account-toggle img { transform: rotate(180deg); }
+.navbar-dropdown[open] .account-toggle > img { transform: rotate(180deg); }
 .account-toggle .account-avatar { flex:0 0 32px; width:32px; height:32px; font-size:14px; }
 .account-toggle .account-avatar img { width:100%; height:100%; margin:0; object-fit:cover; transform:none; transition:none; }
 .account-name {

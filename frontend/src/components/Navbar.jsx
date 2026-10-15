@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import logo from '../assets/navbar/logo.png'
 import chevron from '../assets/navbar/chevron.svg'
 import Notifications from './Notifications'
+import CaregiverAvatar from './CaregiverAvatar'
+import useOwnAvatar from '../hooks/useOwnAvatar'
 
 const menuItemsByRole = {
   employer: [
@@ -32,6 +34,7 @@ const menuItemsByRole = {
 }
 
 function Navbar({ profile, activePage, onSelect, onSignOut }) {
+  const avatarUrl = useOwnAvatar(profile.role === 'caregiver' ? profile.id : null)
   const [menuOpen, setMenuOpen] = useState(false)
   const accountRef = useRef(null)
   useEffect(() => {
@@ -162,9 +165,7 @@ function Navbar({ profile, activePage, onSelect, onSignOut }) {
               className="account-toggle"
               aria-label={`บัญชีคุณ${profile.first_name || 'ผู้ใช้งาน'} (${roleLabel})`}
             >
-              <span className="account-avatar" aria-hidden="true">
-                {profile.first_name?.charAt(0) || 'ผ'}
-              </span>
+              <CaregiverAvatar name={profile.first_name} url={avatarUrl} className="account-avatar" />
               <span className="account-name">
                 คุณ{profile.first_name || 'ผู้ใช้งาน'}
               </span>

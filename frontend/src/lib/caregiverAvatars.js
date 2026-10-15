@@ -1,5 +1,7 @@
 import { supabase } from './supabase'
 
+export const avatarChangedEvent = 'matchcare:avatar-changed'
+
 const bucket = supabase.storage.from('caregiver-avatars')
 const extensions = {
   'image/jpeg': 'jpg',
@@ -59,6 +61,7 @@ export async function saveOwnAvatar(caregiverId, file, oldPath) {
     await bucket.remove([path])
     throw saveError
   }
+  window.dispatchEvent(new CustomEvent(avatarChangedEvent, { detail: { caregiverId } }))
   const { error: cleanupError } = oldPath
     ? await bucket.remove([oldPath]) : { error: null }
   return { path: data.avatar_path, cleanupFailed: Boolean(cleanupError) }
@@ -72,6 +75,7 @@ export async function removeOwnAvatar(caregiverId, path) {
     .select('avatar_path')
     .single()
   if (saveError) throw saveError
+  window.dispatchEvent(new CustomEvent(avatarChangedEvent, { detail: { caregiverId } }))
   const { error: removeError } = await bucket.remove([path])
   return { cleanupFailed: Boolean(removeError) }
 }

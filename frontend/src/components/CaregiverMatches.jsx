@@ -6,7 +6,7 @@ import CaregiverAvatar from './CaregiverAvatar'
 import useCaregiverAvatars from '../hooks/useCaregiverAvatars'
 import { mobilityLabels, areaLabels, sideLabels, assistanceLabels } from '../lib/patients'
 
-export default function CaregiverMatches({ job, onBack }) {
+export default function CaregiverMatches({ job, onBack, onNavigate }) {
   const care = job.patients
   const hasCareDetails = Boolean(
     care?.mobility_status || care?.affected_area || care?.transfer_assistance ||
@@ -19,6 +19,7 @@ export default function CaregiverMatches({ job, onBack }) {
   const [retry, setRetry] = useState(0)
   const [sendingId, setSendingId] = useState(null)
   const [sentIds, setSentIds] = useState([])
+  const [requests, setRequests] = useState({})
   const [notice, setNotice] = useState('')
   const [inviteError, setInviteError] = useState('')
   const [reviewId, setReviewId] = useState(null)
@@ -47,6 +48,8 @@ export default function CaregiverMatches({ job, onBack }) {
       setInviteError(workflowError(issue))
       if (issue.message === 'invitation_already_exists')
         setSentIds((ids) => [...ids, caregiver.caregiver_id])
+      if (['application_already_exists', 'invitation_already_exists'].includes(issue.message))
+        setRetry(value => value + 1)
     } finally {
       sending.current = false
       setSendingId(null)
@@ -59,13 +62,18 @@ export default function CaregiverMatches({ job, onBack }) {
       setLoading(true)
       setError('')
       setResults([])
+      setSentIds([])
+      setRequests({})
       try {
-        const { data, error: queryError } = await supabase.rpc(
-          'rank_caregivers_for_job',
-          { p_job_id: job.id },
-        )
-        if (queryError) throw queryError
-        if (!cancelled) setResults(data ?? [])
+        const [ranked, existing] = await Promise.all([
+          supabase.rpc('rank_caregivers_for_job', { p_job_id: job.id }),
+          supabase.from('match_requests').select('id,caregiver_id,request_type,status').eq('job_post_id', job.id),
+        ])
+        if (ranked.error || existing.error) throw ranked.error || existing.error
+        if (!cancelled) {
+          setResults(ranked.data ?? [])
+          setRequests(Object.fromEntries((existing.data ?? []).map(request => [request.caregiver_id, request])))
+        }
       } catch (queryError) {
         if (!cancelled)
           setError(
@@ -156,16 +164,26 @@ export default function CaregiverMatches({ job, onBack }) {
                     type="button"
                     disabled={
                       sendingId !== null ||
+                      Boolean(requests[caregiver.caregiver_id]) ||
                       sentIds.includes(caregiver.caregiver_id)
                     }
                     onClick={() => invite(caregiver)}
                   >
-                    {sentIds.includes(caregiver.caregiver_id)
+                    {requests[caregiver.caregiver_id]?.request_type === 'application'
+                      ? 'สมัครงานนี้แล้ว'
+                      : requests[caregiver.caregiver_id]
+                        ? 'มีคำเชิญของงานนี้แล้ว'
+                        : sentIds.includes(caregiver.caregiver_id)
                       ? 'ส่งคำเชิญแล้ว'
                       : sendingId === caregiver.caregiver_id
                         ? 'กำลังส่ง...'
                         : 'เชิญให้ดูแลงานนี้'}
                   </button>
+                  {requests[caregiver.caregiver_id]?.request_type === 'application' && onNavigate && (
+                    <button type="button" className="secondary-button" onClick={() => onNavigate('receivedApplications', {
+                      source_type: 'request', source_id: requests[caregiver.caregiver_id].id, origin: 'matching',
+                    })}>ดูใบสมัคร</button>
+                  )}
                   <button
                     type="button"
                     className="secondary-button"

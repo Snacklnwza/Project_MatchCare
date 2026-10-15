@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import useRemoteList from '../hooks/useRemoteList'
+import useWorkflowUpdates from '../hooks/useWorkflowUpdates'
 import { supabase } from '../lib/supabase'
 import {
   loadMyWork,
@@ -40,7 +41,8 @@ export default function DashboardTasks({ role, onNavigate }) {
     return [['waiting', 'รอคำตอบ'], ['matched', 'รับงานแล้ว'], ['in_progress', 'กำลังดูแล']]
       .map(([filter, title]) => ({ title, count: requests.filter(item => workGroup(item) === filter).length, page: 'myWork', filter }))
   }, [role])
-  const { data, loading, error, reload } = useRemoteList(loader)
+  const { data, loading, error, reload } = useRemoteList(loader, { backgroundRefresh: true })
+  useWorkflowUpdates(reload)
   return (
     <section className="dashboard-tasks" aria-label="รายการที่ต้องติดตาม">
       <h2>ติดตามงานของคุณ</h2>

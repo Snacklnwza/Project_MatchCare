@@ -23,7 +23,7 @@ create policy notifications_update_own on public.notifications for update to aut
 using(recipient_id=(select auth.uid())) with check(recipient_id=(select auth.uid()));
 
 -- ไม่ใส่ชื่อผู้ป่วย เบอร์ หรือข้อมูลติดต่อในข้อความแจ้งเตือน
-create function private.notify_match_request() returns trigger
+create or replace function private.notify_match_request() returns trigger
 language plpgsql security definer set search_path = '' as $$
 declare owner_id uuid; recipient uuid; heading text; page text;
 begin
@@ -40,7 +40,7 @@ begin
     heading := case when new.request_type='application' then 'ใบสมัครของคุณไม่ได้รับการตอบรับ' else 'ผู้ดูแลปฏิเสธคำเชิญ' end;
   elsif new.status='not_selected' then
     recipient := new.caregiver_id;
-    heading := 'ประกาศที่คุณสมัครหรือได้รับเชิญสิ้นสุดการรับสมัครแล้ว';
+    heading := 'คำขอสมัครงานหรือคำเชิญนี้สิ้นสุดแล้ว';
   else return new;
   end if;
   page := case when recipient=owner_id then
@@ -48,6 +48,12 @@ begin
     else case when new.request_type='application' then 'applications' else 'invitations' end end;
   insert into public.notifications(recipient_id,source_type,source_id,event,title,target_page)
   values(recipient,'request',new.id,new.status,heading,page) on conflict do nothing;
+  if new.status = 'not_selected' and owner_id <> recipient then
+    insert into public.notifications(recipient_id,source_type,source_id,event,title,target_page)
+    values(owner_id,'request',new.id,new.status,heading,
+      case when new.request_type='application' then 'receivedApplications' else 'invitations' end)
+    on conflict do nothing;
+  end if;
   return new;
 end;
 $$;

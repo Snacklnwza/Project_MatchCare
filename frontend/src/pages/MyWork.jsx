@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import useRemoteList from '../hooks/useRemoteList'
 import useRevealItem from '../hooks/useRevealItem'
+import useWorkflowUpdates from '../hooks/useWorkflowUpdates'
 import { RequestBadge } from '../components/RequestFilters'
 import InvitationCareDetails from '../components/InvitationCareDetails'
 import MatchContact from '../components/MatchContact'
@@ -11,7 +12,8 @@ import { workFilters, workMatches } from '../lib/caregiverWork'
 import { applicationLabels, invitationLabels, callWorkflow, loadMyWork, workflowError } from '../lib/workflow'
 
 export default function MyWork({ initialFilter = 'current', onNavigate }) {
-  const { data, loading, error, reload } = useRemoteList(loadMyWork)
+  const { data, loading, error, reload } = useRemoteList(loadMyWork, { backgroundRefresh: true })
+  useWorkflowUpdates(reload)
   const [filter, setFilter] = useState(initialFilter)
   const [expandedId, setExpandedId] = useState(null)
   const [busyId, setBusyId] = useState(null)
@@ -129,7 +131,7 @@ export default function MyWork({ initialFilter = 'current', onNavigate }) {
                 </div>
                 {expanded && (
                   <div id={`work-details-${request.request_id}`}>
-                    <InvitationCareDetails requestId={request.request_id}>
+                    <InvitationCareDetails key={`${request.status}-${request.job_status}`} requestId={request.request_id}>
                       {request.status !== 'accepted' && request.job_status === 'open' && <ReviewSummary jobId={request.job_post_id} />}
                       {canRespond && (
                         <div className="workflow-actions">

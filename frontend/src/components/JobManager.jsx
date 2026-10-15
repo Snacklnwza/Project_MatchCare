@@ -187,6 +187,7 @@ function JobManager({ onNavigate }) {
     return (
       <CaregiverMatches
         job={matchingJob}
+        onNavigate={onNavigate}
         onBack={() => {
           setMatchingJob(null)
           setRefreshKey((value) => value + 1)

@@ -26,14 +26,21 @@ begin
  app_job := public.create_job_with_tags(p.id,'งานใบสมัครที่ทับ','ทดสอบ','ดูแล','2030-01-02 12:00+07','2030-01-04 12:00+07',1000,'day',array[s]);
  first_request := public.invite_caregiver(first_job,current_setting('test.schedule_caregiver')::uuid);
  conflict_request := public.invite_caregiver(conflict_job,current_setting('test.schedule_caregiver')::uuid);
+ next_request := public.invite_caregiver(next_job,current_setting('test.schedule_caregiver')::uuid);
  perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.schedule_caregiver'))::text,true);
  app_request := public.submit_application(app_job);
  if exists(select 1 from public.list_my_schedule('2030-01-01')) then raise exception 'pending ถูกนับเป็นการจอง'; end if;
  perform public.respond_to_invitation(first_request,true);
  begin
    perform public.respond_to_invitation(conflict_request,true); raise exception 'รับคำเชิญเวลาทับกันได้';
- exception when raise_exception then if sqlerrm<>'caregiver_schedule_conflict' then raise; end if; end;
- if not exists(select 1 from public.match_requests where id=conflict_request and status='pending') then raise exception 'รับไม่สำเร็จแต่คำเชิญเปลี่ยน'; end if;
+ exception when raise_exception then if sqlerrm<>'invitation_no_longer_open' then raise; end if; end;
+ if not exists(select 1 from public.match_requests where id=conflict_request and status='not_selected' and responded_at is not null)
+ or not exists(select 1 from public.match_requests where id=app_request and status='not_selected') then
+   raise exception 'รับคำเชิญแล้วคำขอทับเวลายังค้าง';
+ end if;
+ if not exists(select 1 from public.match_requests where id=next_request and status='pending') then
+   raise exception 'คำของานต่อเนื่องที่ไม่ทับเวลาถูกยุติ';
+ end if;
  if (select count(*) from public.list_my_schedule('2030-01-01'))<>1 or exists(select 1 from public.list_my_schedule('2030-02-01')) then raise exception 'ช่วงเดือนปฏิทินผิด'; end if;
  select to_jsonb(j) into payload from public.list_my_schedule('2030-01-01') j;
  if payload ?| array['patient_id','patient_name','phone','line_id','address_detail','caregiver_id'] then raise exception 'ปฏิทินส่งข้อมูลเกินจำเป็น'; end if;
@@ -48,11 +55,13 @@ begin
  begin perform public.invite_caregiver(app_job,current_setting('test.schedule_caregiver')::uuid); raise exception 'เชิญหลังติดงานได้';
  exception when raise_exception then if sqlerrm<>'caregiver_schedule_conflict' then raise; end if; end;
  begin perform public.respond_to_application(app_request,true); raise exception 'รับใบสมัครเวลาทับได้';
- exception when raise_exception then if sqlerrm<>'caregiver_schedule_conflict' then raise; end if; end;
+ exception when raise_exception then if sqlerrm<>'application_no_longer_open' then raise; end if; end;
+ if not exists(select 1 from public.notifications where source_type='request' and source_id=app_request and event='not_selected') then
+   raise exception 'ผู้ว่าจ้างไม่ได้รับแจ้งว่าคำขอสิ้นสุด';
+ end if;
  begin perform public.list_my_schedule('2030-01-01'); raise exception 'ผู้ว่าจ้างอ่านปฏิทินส่วนตัวได้';
  exception when insufficient_privilege then null; end;
  if not exists(select 1 from public.rank_caregivers_for_job(next_job) where caregiver_id=current_setting('test.schedule_caregiver')::uuid) then raise exception 'งานต่อเนื่องถูกตัดออก'; end if;
- next_request := public.invite_caregiver(next_job,current_setting('test.schedule_caregiver')::uuid);
  perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.schedule_caregiver'))::text,true);
  perform public.respond_to_invitation(next_request,true);
  if (select count(*) from public.list_my_schedule('2030-01-01'))<>2 then raise exception 'รับงานต่อเนื่องไม่ได้'; end if;
@@ -67,7 +76,17 @@ begin
    raise exception 'งานจบแล้วยังอยู่ในปฏิทิน';
  end if;
  perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.schedule_owner'))::text,true);
+ -- หลังงานเดิมจบ ทดสอบอีกทิศทาง: รับใบสมัครแล้วยุติคำเชิญที่ทับเวลาด้วย
+ app_job := public.create_job_with_tags(p.id,'ใบสมัครใหม่หลังจบงาน','ทดสอบ','ดูแล','2030-01-02 12:00+07','2030-01-04 12:00+07',1000,'day',array[s]);
+ conflict_job := public.create_job_with_tags(p.id,'คำเชิญรอที่ทับใบสมัคร','ทดสอบ','ดูแล','2030-01-02 12:00+07','2030-01-04 12:00+07',1000,'day',array[s]);
+ conflict_request := public.invite_caregiver(conflict_job,current_setting('test.schedule_caregiver')::uuid);
+ perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.schedule_caregiver'))::text,true);
+ app_request := public.submit_application(app_job);
+ perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.schedule_owner'))::text,true);
  perform public.respond_to_application(app_request,true);
+ if not exists(select 1 from public.match_requests where id=conflict_request and status='not_selected') then
+   raise exception 'รับใบสมัครแล้วคำเชิญทับเวลายังค้าง';
+ end if;
  edge_job := public.create_job_with_tags(p.id,'งานสิ้นสุดเที่ยงคืน','ทดสอบ','ดูแล','2030-01-31 23:00+07','2030-02-01 00:00+07',1000,'hour',array[s]);
  edge_request := public.invite_caregiver(edge_job,current_setting('test.schedule_caregiver')::uuid);
  perform set_config('request.jwt.claims',json_build_object('sub',current_setting('test.schedule_caregiver'))::text,true);

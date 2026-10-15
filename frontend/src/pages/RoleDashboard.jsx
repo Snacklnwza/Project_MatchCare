@@ -120,6 +120,8 @@ function RoleDashboard({ profile, email, onProfileUpdated, onSignOut }) {
           <p>
             {target.origin === 'schedule'
               ? 'เปิดจากปฏิทิน'
+              : target.origin === 'matching'
+                ? 'เปิดจากผลจับคู่'
               : 'เปิดจากการแจ้งเตือน'}
             : {target.source_type === 'job' ? 'งาน' : 'คำขอ'} #
             {target.source_id} · รายการที่เน้นอาจอยู่นอกตัวกรองที่เลือก

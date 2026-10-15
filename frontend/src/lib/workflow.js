@@ -15,13 +15,13 @@ export const invitationLabels = {
   pending: 'รอคำตอบ',
   accepted: 'จับคู่สำเร็จ',
   rejected: 'ปฏิเสธแล้ว',
-  not_selected: 'คำเชิญสิ้นสุดแล้ว',
+  not_selected: 'คำขอสิ้นสุดแล้ว',
 }
 export const applicationLabels = {
   pending: 'รอผู้ว่าจ้างพิจารณา',
   accepted: 'จับคู่สำเร็จ',
   rejected: 'ไม่ผ่านการพิจารณา',
-  not_selected: 'ไม่ได้รับเลือกหรือประกาศสิ้นสุดแล้ว',
+  not_selected: 'คำขอสิ้นสุดแล้ว',
 }
 const messages = {
   caregiver_schedule_conflict:

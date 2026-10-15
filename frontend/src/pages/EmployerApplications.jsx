@@ -4,6 +4,7 @@ import { requestMatches } from '../lib/requestStatus'
 import { useRef, useState } from 'react'
 import MatchContact from '../components/MatchContact'
 import useRemoteList from '../hooks/useRemoteList'
+import useWorkflowUpdates from '../hooks/useWorkflowUpdates'
 import { formatJobDate, jobStatusLabels, payUnitLabels } from '../lib/jobs'
 import {
   applicationLabels,
@@ -15,7 +16,9 @@ import {
 export default function EmployerApplications({ onNavigate }) {
   const { data, loading, error, reload } = useRemoteList(
     loadReceivedApplications,
+    { backgroundRefresh: true },
   )
+  useWorkflowUpdates(reload)
   const [filter, setFilter] = useState('current')
   const targetId = useRevealItem(data, 'request', 'request_id')
   const visible = data.filter(

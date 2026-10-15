@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react'
 
 // loader ต้องมี reference คงที่ (ประกาศนอก component หรือใช้ useCallback)
-export default function useRemoteList(loader) {
+export default function useRemoteList(loader, { backgroundRefresh = false } = {}) {
   const [result, setResult] = useState({ loader: null, version: -1, data: [], error: '' })
   const [version, setVersion] = useState(0)
   const reload = useCallback(() => {
@@ -21,6 +21,6 @@ export default function useRemoteList(loader) {
     }
   }, [loader, version])
   // ผลเก่าไม่ใช่ผลของหน้า/ตัวกรองปัจจุบัน จึงแสดง loading จนได้ผลชุดใหม่
-  const loading = result.loader !== loader || result.version !== version
+  const loading = result.loader !== loader || (!backgroundRefresh && result.version !== version)
   return { data: loading ? [] : result.data, loading, error: loading ? '' : result.error, reload }
 }

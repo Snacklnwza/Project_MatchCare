@@ -3,6 +3,7 @@ import RequestFilters, { RequestBadge } from '../components/RequestFilters'
 import { requestMatches } from '../lib/requestStatus'
 import { useRef, useState } from 'react'
 import useRemoteList from '../hooks/useRemoteList'
+import useWorkflowUpdates from '../hooks/useWorkflowUpdates'
 import MatchContact from '../components/MatchContact'
 import MatchedPatientDetails from '../components/MatchedPatientDetails'
 import InvitationCareDetails from '../components/InvitationCareDetails'
@@ -16,7 +17,8 @@ import {
 import { formatJobDate, jobStatusLabels, payUnitLabels } from '../lib/jobs'
 
 export default function Invitations({ profile, onNavigate }) {
-  const { data, loading, error, reload } = useRemoteList(loadInvitations)
+  const { data, loading, error, reload } = useRemoteList(loadInvitations, { backgroundRefresh: true })
+  useWorkflowUpdates(reload)
   const [filter, setFilter] = useState('current')
   const targetId = useRevealItem(data, 'request', 'request_id')
   const visible = data.filter(

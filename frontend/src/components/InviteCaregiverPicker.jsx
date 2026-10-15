@@ -1,5 +1,6 @@
-import { useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import useRemoteList from '../hooks/useRemoteList'
+import useWorkflowUpdates from '../hooks/useWorkflowUpdates'
 import { supabase } from '../lib/supabase'
 import { callWorkflow, workflowError } from '../lib/workflow'
 
@@ -14,7 +15,16 @@ async function loadJobs() {
 }
 
 export default function InviteCaregiverPicker({ caregiver, onNavigate }) {
-  const { data, loading, error, reload } = useRemoteList(loadJobs)
+  const loader = useCallback(async () => {
+    const [jobs, requests] = await Promise.all([
+      loadJobs(),
+      supabase.from('match_requests').select('job_post_id,request_type').eq('caregiver_id', caregiver.caregiver_id),
+    ])
+    if (requests.error) throw requests.error
+    return jobs.map(job => ({ ...job, request: requests.data?.find(request => request.job_post_id === job.id) }))
+  }, [caregiver.caregiver_id])
+  const { data, loading, error, reload } = useRemoteList(loader, { backgroundRefresh: true })
+  useWorkflowUpdates(reload)
   const [jobId, setJobId] = useState('')
   const [sending, setSending] = useState(false)
   const [notice, setNotice] = useState('')
@@ -26,6 +36,7 @@ export default function InviteCaregiverPicker({ caregiver, onNavigate }) {
     const job = data.find((item) => String(item.id) === jobId)
     if (
       !job ||
+      job.request ||
       busy.current ||
       !window.confirm(
         `ส่งคำเชิญงาน “${job.title}” ให้คุณ${caregiver.display_name}?`,
@@ -45,6 +56,7 @@ export default function InviteCaregiverPicker({ caregiver, onNavigate }) {
       setNotice(`ส่งคำเชิญงาน “${job.title}” แล้ว ติดตามได้ในคำเชิญที่ส่ง`)
     } catch (error) {
       setIssue(workflowError(error))
+      if (['application_already_exists', 'invitation_already_exists'].includes(error.message)) reload()
     } finally {
       busy.current = false
       setSending(false)
@@ -83,15 +95,15 @@ export default function InviteCaregiverPicker({ caregiver, onNavigate }) {
               >
                 <option value="">เลือกประกาศของคุณ</option>
                 {data.map((job) => (
-                  <option key={job.id} value={job.id}>
-                    {job.title}
+                  <option key={job.id} value={job.id} disabled={Boolean(job.request)}>
+                    {job.title}{job.request ? job.request.request_type === 'application' ? ' — สมัครงานนี้แล้ว' : ' — มีคำเชิญแล้ว' : ''}
                   </option>
                 ))}
               </select>
             </label>
             <button
               type="submit"
-              disabled={sending || !jobId || sent.includes(jobId)}
+              disabled={sending || !jobId || sent.includes(jobId) || Boolean(data.find(job => String(job.id) === jobId)?.request)}
             >
               {sending
                 ? 'กำลังส่ง...'
